@@ -22,6 +22,7 @@ import {
 import { LANDING_HTML, PRIVACY_HTML } from "./landing";
 import { limoudTools, limoudHandlers } from "./limoud";
 import { renderDaily, LANDING_HE } from "./pages";
+import { dafViewerTools, dafViewerHandlers, DAF_VIEWER_URI, DAF_VIEWER_HTML, MCP_APP_MIME } from "./dafviewer";
 import { ICON_PNG_BASE64 } from "./icon";
 
 // Origines navigateur autorisées à interroger /mcp (protection DNS rebinding).
@@ -61,8 +62,8 @@ interface JsonRpcRequest {
   params?: any;
 }
 
-const allTools = [...sefariaTools, ...hebrewbooksTools, ...limoudTools];
-const allHandlers = { ...sefariaHandlers, ...hebrewbooksHandlers, ...limoudHandlers };
+const allTools = [...sefariaTools, ...hebrewbooksTools, ...limoudTools, ...dafViewerTools];
+const allHandlers = { ...sefariaHandlers, ...hebrewbooksHandlers, ...limoudHandlers, ...dafViewerHandlers };
 
 const CORS_HEADERS: Record<string, string> = {
   "Access-Control-Allow-Origin": "*",
@@ -140,7 +141,11 @@ async function handleRpc(req: JsonRpcRequest, env: Env) {
       case "initialize":
         return rpcResult(id, {
           protocolVersion: "2025-06-18",
-          capabilities: { tools: { listChanged: false }, prompts: { listChanged: false } },
+          capabilities: {
+            tools: { listChanged: false },
+            prompts: { listChanged: false },
+            resources: { listChanged: false, subscribe: false },
+          },
           serverInfo: { name: env.SERVER_NAME, version: env.SERVER_VERSION },
           instructions: SERVER_INSTRUCTIONS,
         });
@@ -157,10 +162,39 @@ async function handleRpc(req: JsonRpcRequest, env: Env) {
         const handler = (allHandlers as any)[name];
         if (!handler) return rpcError(id, -32601, `Unknown tool: ${name}`);
         const out = await handler(req.params?.arguments ?? {}, env);
+        // Un handler peut renvoyer un CallToolResult complet (MCP Apps :
+        // content + structuredContent) via la cle __mcpResult.
+        if (out && typeof out === "object" && (out as any).__mcpResult) {
+          const { __mcpResult, ...result } = out as any;
+          return rpcResult(id, result);
+        }
         return rpcResult(id, {
           content: [
             { type: "text", text: typeof out === "string" ? out : JSON.stringify(out, null, 2) },
           ],
+        });
+      }
+
+      case "resources/list":
+        return rpcResult(id, {
+          resources: [
+            {
+              uri: DAF_VIEWER_URI,
+              name: "daf-viewer",
+              description: "Visualiseur de daf facon Vilna (MCP App)",
+              mimeType: MCP_APP_MIME,
+            },
+          ],
+        });
+
+      case "resources/templates/list":
+        return rpcResult(id, { resourceTemplates: [] });
+
+      case "resources/read": {
+        const uri: string = req.params?.uri;
+        if (uri !== DAF_VIEWER_URI) return rpcError(id, -32002, `Resource inconnue : ${uri}`);
+        return rpcResult(id, {
+          contents: [{ uri: DAF_VIEWER_URI, mimeType: MCP_APP_MIME, text: DAF_VIEWER_HTML }],
         });
       }
 

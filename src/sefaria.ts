@@ -20,6 +20,8 @@ export interface ToolDefinition {
   annotations?: { title?: string; readOnlyHint?: boolean; destructiveHint?: boolean };
   description?: string;
   inputSchema: any;
+  /** MCP Apps : lie le tool à sa ressource UI (spec ext-apps). */
+  _meta?: Record<string, unknown>;
 }
 
 export type ToolHandler = (args: any, env: Env) => Promise<any>;
