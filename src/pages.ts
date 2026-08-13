@@ -132,3 +132,171 @@ export const LANDING_HE = `<!doctype html>
 </main>
 </body>
 </html>`;
+
+
+// ----------------------------------------------------------------------------
+// /outils — les fonctions du MCP utilisables directement sur le site
+// ----------------------------------------------------------------------------
+
+export const OUTILS_HTML = `<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Outils — Torah MCP</title>
+<meta name="description" content="Zmanim, dates hébraïques, guematria, nikoud et fiches sources — utilisables directement, sans installation.">
+<style>
+  :root { --paper:#faf7f0; --card:#ffffff; --ink:#221f1a; --muted:#6d675c; --line:#e6dfd0; --accent:#7a1f1f; --gold:#9a7b3f; }
+  * { box-sizing:border-box; margin:0; }
+  body { font:16px/1.65 -apple-system, "Segoe UI", Roboto, sans-serif; color:var(--ink); background:var(--paper); padding:0 1.25rem 4rem; }
+  main { max-width:760px; margin:0 auto; }
+  h1 { font-family:Georgia, serif; font-size:2rem; margin:2.4rem 0 .3rem; }
+  .muted { color:var(--muted); }
+  .tool { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:1.3rem 1.4rem; margin:1.1rem 0; }
+  .tool h2 { font-family:Georgia, serif; font-size:1.25rem; margin-bottom:.2rem; }
+  .tool p.d { color:var(--muted); font-size:.9rem; margin-bottom:.8rem; }
+  form { display:flex; gap:.6rem; flex-wrap:wrap; align-items:center; }
+  input, select, textarea { padding:.5rem .8rem; border:1px solid var(--line); border-radius:8px; font-size:.95rem; background:#fdfcf9; color:var(--ink); }
+  textarea { width:100%; min-height:70px; direction:rtl; font-family:Georgia, serif; font-size:1.1rem; }
+  input[type=text] { flex:1; min-width:180px; }
+  button { padding:.5rem 1.1rem; border:0; border-radius:8px; background:var(--accent); color:#fff; font-weight:600; cursor:pointer; }
+  button.copy { background:transparent; border:1px solid var(--line); color:var(--ink); font-weight:400; font-size:.82rem; }
+  .out { margin-top:.9rem; font-size:.92rem; white-space:pre-wrap; background:#fbf9f4; border:1px dashed var(--line); border-radius:10px; padding:.8rem 1rem; display:none; }
+  .out.he { direction:rtl; font-family:Georgia, serif; font-size:1.15rem; white-space:normal; }
+  .out table { border-collapse:collapse; width:100%; font-size:.88rem; }
+  .out td, .out th { border-bottom:1px solid var(--line); padding:.3rem .5rem; text-align:left; }
+  a { color:var(--accent); }
+  .back { display:inline-block; margin-top:1.6rem; color:var(--muted); text-decoration:none; font-size:.9rem; }
+  nav.top { padding:1rem 0 0; font-size:.9rem; }
+</style>
+</head>
+<body>
+<main>
+  <nav class="top"><a href="/" style="text-decoration:none;color:var(--muted)">← torah-mcp.com</a> · <a href="/daf" style="color:var(--accent)">Ouvrir le daf du jour</a> · <a href="/daily" style="color:var(--accent)">Le limoud du jour</a></nav>
+  <h1>Les outils, sans installation</h1>
+  <p class="muted">Les mêmes fonctions que le connecteur Claude, utilisables ici même. Aucune donnée conservée.</p>
+
+  <div class="tool">
+    <h2>Zmanim et Chabbat</h2>
+    <p class="d">Les horaires du jour ou de Chabbat pour votre ville (données Hebcal).</p>
+    <form data-api="zmanim">
+      <select name="ville">
+        <option value="paris">Paris</option><option value="marseille">Marseille</option>
+        <option value="lyon">Lyon</option><option value="nice">Nice</option>
+        <option value="strasbourg">Strasbourg</option><option value="geneve">Genève</option>
+        <option value="bruxelles">Bruxelles</option><option value="jerusalem">Jérusalem</option>
+        <option value="tel-aviv">Tel-Aviv</option><option value="new-york">New York</option>
+        <option value="londres">Londres</option><option value="montreal">Montréal</option>
+        <option value="casablanca">Casablanca</option>
+      </select>
+      <select name="chabbat"><option value="false">Zmanim du jour</option><option value="true">Horaires de Chabbat</option></select>
+      <button>Afficher</button>
+    </form>
+    <div class="out" data-render="zmanim"></div>
+  </div>
+
+  <div class="tool">
+    <h2>Date hébraïque</h2>
+    <p class="d">Convertit une date civile — avec les événements du jour (fêtes, paracha, Rosh Hodesh).</p>
+    <form data-api="date">
+      <input type="date" name="date">
+      <button>Convertir</button>
+    </form>
+    <div class="out" data-render="date"></div>
+  </div>
+
+  <div class="tool">
+    <h2>Guematria</h2>
+    <p class="d">Cinq méthodes, mot à mot : hechrechi, gadol, katan, siduri, atbash.</p>
+    <form data-api="gematria">
+      <input type="text" name="texte" dir="rtl" placeholder="חי" style="font-family:Georgia,serif;font-size:1.1rem">
+      <button>Calculer</button>
+    </form>
+    <div class="out" data-render="gematria"></div>
+  </div>
+
+  <div class="tool">
+    <h2>Nikoud</h2>
+    <p class="d">Vocalisation d'un texte hébreu par le nakdan de Dicta.</p>
+    <form data-api="nikoud" data-post="1">
+      <textarea name="texte" placeholder="ואהבת לרעך כמוך"></textarea>
+      <button>Vocaliser</button>
+    </form>
+    <div class="out he" data-render="nikoud"></div>
+  </div>
+
+  <div class="tool">
+    <h2>Fiche source</h2>
+    <p class="d">Une carte hébreu + traduction + lien, prête à coller dans WhatsApp. Le texte est lu via Sefaria.</p>
+    <form data-api="fiche">
+      <input type="text" name="ref" placeholder="Pirkei Avot 1:14, Berakhot 2a…">
+      <button>Composer</button>
+    </form>
+    <div class="out" data-render="fiche"></div>
+  </div>
+
+  <a class="back" href="/">← Retour à l'accueil</a>
+</main>
+<script>
+(function () {
+  function esc(s) { return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+  var renderers = {
+    zmanim: function (d) {
+      if (d.evenements) {
+        return "<table>" + d.evenements.map(function (e) {
+          return "<tr><td>" + esc(e.titre) + (e.hebreu ? " · <span dir=rtl>" + esc(e.hebreu) + "</span>" : "") + "</td><td>" + esc((e.date||"").replace("T"," ").slice(0,17)) + "</td></tr>";
+        }).join("") + "</table><p style='margin-top:.5rem;color:#6d675c;font-size:.8rem'>" + esc(d.lieu||"") + "</p>";
+      }
+      var t = d.zmanim || {};
+      var noms = { alotHaShachar:"Alot hachahar", sunrise:"Netz (lever)", sofZmanShma:"Sof zman Chema", sofZmanTfilla:"Sof zman tefila", chatzot:"Hatsot", minchaGedola:"Minha guedola", minchaKetana:"Minha ketana", plagHaMincha:"Plag haminha", sunset:"Chkia (coucher)", tzeit7083deg:"Tset hakokhavim" };
+      return "<table>" + Object.keys(noms).filter(function(k){return t[k];}).map(function (k) {
+        return "<tr><td>" + noms[k] + "</td><td>" + esc(String(t[k]).slice(11,16)) + "</td></tr>";
+      }).join("") + "</table><p style='margin-top:.5rem;color:#6d675c;font-size:.8rem'>" + esc(d.lieu||"") + " — " + esc(d.date||"") + "</p>";
+    },
+    date: function (d) {
+      var ev = (d.events||[]).map(esc).join(" · ");
+      return "<strong dir=rtl style='font-family:Georgia,serif;font-size:1.2rem'>" + esc(d.hebrew||"") + "</strong><br>" + esc(String(d.hd)) + " " + esc(d.hm||"") + " " + esc(String(d.hy)) + (ev ? "<br><span style='color:#6d675c'>" + ev + "</span>" : "");
+    },
+    gematria: function (d) {
+      var rows = (d.mots||[]).map(function (m) {
+        return "<tr><td dir=rtl style='font-family:Georgia,serif'>" + esc(m.mot) + "</td><td>" + m.hechrechi + "</td><td>" + m.gadol + "</td><td>" + m.katan + "</td><td>" + m.siduri + "</td><td>" + m.atbash + "</td></tr>";
+      }).join("");
+      var t = d.totaux || {};
+      return "<table><tr><th>Mot</th><th>Hechrechi</th><th>Gadol</th><th>Katan</th><th>Siduri</th><th>Atbash</th></tr>" + rows +
+        "<tr><th>Total</th><th>" + t.hechrechi + "</th><th>" + t.gadol + "</th><th>" + t.katan + "</th><th>" + t.siduri + "</th><th>" + t.atbash + "</th></tr></table>";
+    },
+    nikoud: function (d) {
+      return esc(d.vocalise || "") + "<p style='margin-top:.5rem;color:#6d675c;font-size:.72rem;direction:ltr'>" + esc(d.credit||"") + "</p>";
+    },
+    fiche: function (d) {
+      var id = "f" + Date.now();
+      return "<div id='" + id + "' style='white-space:pre-wrap'>" + esc(d.fiche||"") + "</div><button class='copy' style='margin-top:.6rem' onclick=\\"navigator.clipboard.writeText(document.getElementById('" + id + "').innerText).then(()=>{this.textContent='Copié !'})\\">Copier pour WhatsApp</button>";
+    },
+  };
+  document.querySelectorAll("form[data-api]").forEach(function (form) {
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var api = form.getAttribute("data-api");
+      var out = form.parentElement.querySelector(".out");
+      out.style.display = "block";
+      out.innerHTML = "…";
+      var fd = new FormData(form);
+      var run;
+      if (form.getAttribute("data-post")) {
+        var body = {};
+        fd.forEach(function (v, k) { body[k] = v; });
+        run = fetch("/api/" + api, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      } else {
+        var qs = new URLSearchParams();
+        fd.forEach(function (v, k) { if (v) qs.set(k, v); });
+        run = fetch("/api/" + api + "?" + qs.toString());
+      }
+      run.then(function (r) { return r.json(); }).then(function (d) {
+        out.innerHTML = d.error ? "<span style='color:#7a1f1f'>" + esc(d.error) + "</span>" : renderers[api](d);
+      }).catch(function () { out.textContent = "Erreur — réessayez."; });
+    });
+  });
+})();
+</script>
+</body>
+</html>`;

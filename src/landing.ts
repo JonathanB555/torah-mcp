@@ -121,6 +121,8 @@ export const LANDING_HTML = `<!doctype html>
   <a class="lnk" href="#daf">Le daf</a>
   <a class="lnk" href="#bibliotheque">Bibliothèque</a>
   <a class="lnk" href="#quotidien">Au quotidien</a>
+  <a class="lnk" href="/daf">Le daf en ligne</a>
+  <a class="lnk" href="/outils">Outils en ligne</a>
   <a class="lnk" href="/daily">Limoud du jour</a>
   <a class="lnk" href="/he">עברית</a>
   <a class="cta" href="/install">Installer</a>
@@ -133,7 +135,7 @@ export const LANDING_HTML = `<!doctype html>
     <p class="sub">Torah MCP branche une discipline des sources sur votre assistant : chaque réponse de halakha ou de limoud est lue dans le texte, citée exactement, reliée à ses commentateurs — jamais inventée de mémoire.</p>
     <div class="btns">
       <a class="btn primary" href="/install">Installer en 2 minutes</a>
-      <a class="btn ghost" href="#methode">Découvrir les fonctions</a>
+      <a class="btn ghost" href="/daf">Essayer sans installer : le daf du jour</a>
     </div>
   </div>
   <div class="chat" aria-hidden="true">
@@ -252,7 +254,7 @@ export const LANDING_HTML = `<!doctype html>
 </div>
 
 <footer>
-  <div class="links"><a href="/install">Installation et guide technique</a> · <a href="/daily">Le limoud du jour</a> · <a href="/he">עברית</a> · <a href="/privacy">Confidentialité</a> · <a href="https://github.com/JonathanB555/torah-mcp">GitHub</a></div>
+  <div class="links"><a href="/daf">Le daf en ligne</a> · <a href="/outils">Outils en ligne</a> · <a href="/install">Installation et guide technique</a> · <a href="/daily">Le limoud du jour</a> · <a href="/he">עברית</a> · <a href="/privacy">Confidentialité</a> · <a href="https://github.com/JonathanB555/torah-mcp">GitHub</a></div>
   <p><a href="https://www.sefaria.org" aria-label="Powered by Sefaria"><img src="https://files.readme.io/dcee0a8-image.png" alt="Powered by Sefaria" width="116" height="60" style="display:block;margin-bottom:.6rem"></a>
   Textes servis par l'API publique de Sefaria — licences indiquées dans chaque réponse. Vocalisation par le nakdan de Dicta, calendriers Hebcal. Ce projet est indépendant de Sefaria et de hebrewbooks.org.</p>
 </footer>

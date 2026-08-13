@@ -184,6 +184,14 @@ export const DAF_VIEWER_HTML = `<!doctype html>
 </style>
 </head>
 <body>
+  <div id="topbar" style="display:none; margin-bottom:12px;">
+    <form id="refform" style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+      <input id="refinput" dir="ltr" placeholder="Berakhot 2a, Bava Metzia 21a…" style="flex:1; min-width:200px; padding:.5rem .8rem; border:1px solid var(--line); border-radius:8px; background:var(--panel); color:var(--ink); font-size:.95rem;">
+      <button type="submit" style="padding:.5rem 1rem; border:0; border-radius:8px; background:var(--accent); color:#fff; font-weight:600; cursor:pointer;">Ouvrir</button>
+      <button type="button" id="today" style="padding:.5rem 1rem; border:1px solid var(--line); border-radius:8px; background:transparent; color:var(--ink); cursor:pointer;">Daf du jour</button>
+      <a href="/" style="font-size:.8rem; color:var(--muted); text-decoration:none;">← torah-mcp.com</a>
+    </form>
+  </div>
   <div id="loading">טוען את הדף…</div>
   <div id="app" style="display:none">
     <header><span class="he" id="heref"></span><span class="en" id="enref"></span></header>
@@ -266,16 +274,50 @@ export const DAF_VIEWER_HTML = `<!doctype html>
     if (m.method === "ui/notifications/tool-result") render(m.params);
     if (m.method === "ui/notifications/host-context-changed" && m.params && m.params.theme) applyTheme(m.params.theme);
   });
-  req("ui/initialize", {
-    protocolVersion: "2026-01-26",
-    clientInfo: { name: "torah-mcp-daf-viewer", version: "1.0.0" },
-    appCapabilities: { availableDisplayModes: ["inline"] },
-  }).then(function (init) {
-    var ctx = (init && init.hostContext) || {};
-    if (ctx.theme) applyTheme(ctx.theme);
-    notif("ui/notifications/initialized", {});
-    reportSize();
-  }).catch(function () { /* hôte sans MCP Apps : rien à faire */ });
+  var standalone = (window.parent === window);
+  if (standalone) {
+    // Mode web : la page est servie sur torah-mcp.com/daf — on interroge l'API.
+    document.getElementById("topbar").style.display = "block";
+    if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) applyTheme("dark");
+    var loadRef = function (ref) {
+      document.getElementById("app").style.display = "none";
+      var l = document.getElementById("loading");
+      l.style.display = "block";
+      l.textContent = "טוען את הדף…";
+      fetch("/api/daf" + (ref ? "?ref=" + encodeURIComponent(ref) : ""))
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          if (d.error) { l.textContent = d.error; return; }
+          render({ structuredContent: d });
+          var seg = (d.segments || []).length;
+          document.title = d.ref + " — Torah MCP";
+          if (history.replaceState) history.replaceState(null, "", "/daf" + (ref ? "?ref=" + encodeURIComponent(ref) : ""));
+        })
+        .catch(function () { l.textContent = "Erreur de chargement — réessayez."; });
+    };
+    document.getElementById("refform").addEventListener("submit", function (e) {
+      e.preventDefault();
+      loadRef(document.getElementById("refinput").value.trim());
+    });
+    document.getElementById("today").addEventListener("click", function () {
+      document.getElementById("refinput").value = "";
+      loadRef("");
+    });
+    var initial = new URLSearchParams(location.search).get("ref") || "";
+    if (initial) document.getElementById("refinput").value = initial;
+    loadRef(initial);
+  } else {
+    req("ui/initialize", {
+      protocolVersion: "2026-01-26",
+      clientInfo: { name: "torah-mcp-daf-viewer", version: "1.0.0" },
+      appCapabilities: { availableDisplayModes: ["inline"] },
+    }).then(function (init) {
+      var ctx = (init && init.hostContext) || {};
+      if (ctx.theme) applyTheme(ctx.theme);
+      notif("ui/notifications/initialized", {});
+      reportSize();
+    }).catch(function () { /* hôte sans MCP Apps : rien à faire */ });
+  }
 })();
 </script>
 </body>

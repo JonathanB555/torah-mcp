@@ -21,7 +21,7 @@ import {
 } from "./hebrewbooks";
 import { LANDING_HTML, PRIVACY_HTML, INSTALL_HTML } from "./landing";
 import { limoudTools, limoudHandlers } from "./limoud";
-import { renderDaily, LANDING_HE } from "./pages";
+import { renderDaily, LANDING_HE, OUTILS_HTML } from "./pages";
 import { dafViewerTools, dafViewerHandlers, DAF_VIEWER_URI, DAF_VIEWER_HTML, MCP_APP_MIME } from "./dafviewer";
 import { ICON_PNG_BASE64 } from "./icon";
 
@@ -230,6 +230,46 @@ export default {
       return new Response(null, { status: 204, headers: CORS_HEADERS });
     }
 
+    // ------------------------------------------------------------------
+    // API web publique : les mêmes fonctions que les tools MCP, en JSON,
+    // pour les pages du site (/daf, /outils). Même limiteur de débit.
+    // ------------------------------------------------------------------
+    if (url.pathname.startsWith("/api/")) {
+      const toolMap: Record<string, string> = {
+        daf: "daf_viewer",
+        zmanim: "zmanim",
+        date: "date_hebraique",
+        gematria: "gematria",
+        nikoud: "nikoud",
+        fiche: "fiche_source",
+        calendrier: "sefaria_calendar",
+      };
+      const key = url.pathname.slice("/api/".length);
+      const toolName = toolMap[key];
+      if (!toolName) return jsonResponse({ error: "Endpoint inconnu" }, 404);
+      const ip = request.headers.get("CF-Connecting-IP") || "unknown";
+      if (isRateLimited(ip)) {
+        return jsonResponse({ error: "Trop de requêtes — réessayez dans un instant." }, 429, { "Retry-After": "30" });
+      }
+      let args: Record<string, unknown> = {};
+      if (request.method === "POST") {
+        try { args = await request.json(); } catch { return jsonResponse({ error: "JSON invalide" }, 400); }
+      } else {
+        for (const [k, v] of url.searchParams) {
+          args[k] = v === "true" ? true : v === "false" ? false : v;
+        }
+      }
+      try {
+        const out = await (allHandlers as any)[toolName](args, env);
+        const payload = out && typeof out === "object" && (out as any).__mcpResult
+          ? (out as any).structuredContent
+          : out;
+        return jsonResponse(payload);
+      } catch (e: any) {
+        return jsonResponse({ error: e?.message || String(e) }, 400);
+      }
+    }
+
     // Page d'accueil auto-suffisante (le lien partagé explique l'installation)
     if (request.method === "GET" && url.pathname === "/") {
       return new Response(LANDING_HTML, {
@@ -241,6 +281,18 @@ export default {
       const bytes = Uint8Array.from(atob(ICON_PNG_BASE64), (c) => c.charCodeAt(0));
       return new Response(bytes, {
         headers: { "Content-Type": "image/png", "Cache-Control": "public, max-age=86400" },
+      });
+    }
+
+    if (request.method === "GET" && url.pathname === "/daf") {
+      return new Response(DAF_VIEWER_HTML, {
+        headers: { "Content-Type": "text/html; charset=utf-8", ...CORS_HEADERS },
+      });
+    }
+
+    if (request.method === "GET" && url.pathname === "/outils") {
+      return new Response(OUTILS_HTML, {
+        headers: { "Content-Type": "text/html; charset=utf-8", ...CORS_HEADERS },
       });
     }
 
