@@ -19,7 +19,7 @@ import {
   listHebrewbooksPrompts,
   getHebrewbooksPrompt,
 } from "./hebrewbooks";
-import { LANDING_HTML, PRIVACY_HTML } from "./landing";
+import { LANDING_HTML, PRIVACY_HTML, INSTALL_HTML } from "./landing";
 import { limoudTools, limoudHandlers } from "./limoud";
 import { renderDaily, LANDING_HE } from "./pages";
 import { dafViewerTools, dafViewerHandlers, DAF_VIEWER_URI, DAF_VIEWER_HTML, MCP_APP_MIME } from "./dafviewer";
@@ -241,6 +241,12 @@ export default {
       const bytes = Uint8Array.from(atob(ICON_PNG_BASE64), (c) => c.charCodeAt(0));
       return new Response(bytes, {
         headers: { "Content-Type": "image/png", "Cache-Control": "public, max-age=86400" },
+      });
+    }
+
+    if (request.method === "GET" && url.pathname === "/install") {
+      return new Response(INSTALL_HTML, {
+        headers: { "Content-Type": "text/html; charset=utf-8", ...CORS_HEADERS },
       });
     }
 
