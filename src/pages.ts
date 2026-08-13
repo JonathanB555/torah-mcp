@@ -8,7 +8,7 @@ import type { Env } from "./sefaria";
 const STYLE = `
   :root { --ink:#0a1c4d; --muted:#54648f; --accent:#0038b8; --paper:#f6f8fd; --card:#ffffff; --line:#d9e2f5; }
   * { box-sizing:border-box; margin:0; }
-  body { font:16px/1.65 -apple-system, "Segoe UI", Roboto, sans-serif; color:var(--ink); background:var(--paper); padding:3rem 1.25rem 4rem; border-top:10px solid var(--accent); }
+  body { font:16px/1.65 -apple-system, "Segoe UI", Roboto, sans-serif; color:var(--ink); background:var(--paper); padding:3rem 1.25rem 4rem; }
   main { max-width:680px; margin:0 auto; }
   h1 { font-size:2rem; line-height:1.2; margin-bottom:.5rem; }
   h2 { font-size:1.15rem; margin:2.2rem 0 .7rem; }
@@ -164,7 +164,7 @@ export const OUTILS_HTML = `<!doctype html>
 <style>
   :root { --paper:#f6f8fd; --card:#ffffff; --ink:#0a1c4d; --muted:#54648f; --line:#d9e2f5; --accent:#0038b8; --gold:#0038b8; }
   * { box-sizing:border-box; margin:0; }
-  body { font:16px/1.65 -apple-system, "Segoe UI", Roboto, sans-serif; color:var(--ink); background:var(--paper); padding:0 1.25rem 4rem; border-top:10px solid var(--accent); }
+  body { font:16px/1.65 -apple-system, "Segoe UI", Roboto, sans-serif; color:var(--ink); background:var(--paper); padding:0 1.25rem 4rem; }
   main { max-width:760px; margin:0 auto; }
   h1 { font-family:Georgia, serif; font-size:2rem; margin:2.4rem 0 .3rem; }
   .muted { color:var(--muted); }

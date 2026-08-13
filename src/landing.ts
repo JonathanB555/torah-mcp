@@ -91,9 +91,7 @@ export const LANDING_HTML = `<!doctype html>
       var(--bg);
     background-size: 44px 44px, 44px 44px, auto;
     background-attachment: fixed;
-    border-top: 10px solid var(--blue);
   }
-  body::before { content:""; display:block; height:3px; background:var(--blue); margin-top:5px; }
   .serif { font-family: Georgia, "Times New Roman", serif; }
   a { color:var(--blue); }
   main { max-width:980px; margin:0 auto; padding:0 1.25rem 4rem; }
@@ -104,17 +102,16 @@ export const LANDING_HTML = `<!doctype html>
   nav .brand b { color:var(--blue); }
   nav a.lnk { color:var(--muted); text-decoration:none; font-size:.88rem; }
   nav a.lnk:hover { color:var(--blue); }
-  nav .cta { margin-inline-start:auto; background:var(--blue); color:#fff; text-decoration:none; padding:.45rem 1.05rem; border-radius:999px; font-size:.9rem; font-weight:600; transition:transform .15s ease, box-shadow .15s ease; }
+  nav .cta { margin-inline-start:auto; background:var(--blue); color:#fff; text-decoration:none; padding:.5rem 1.1rem; border-radius:9px; font-size:.9rem; font-weight:600; transition:transform .15s ease, box-shadow .15s ease; }
   nav .cta:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(0,56,184,.35); }
 
   .hero { padding:4.5rem 0 3rem; display:grid; grid-template-columns:1.05fr .95fr; gap:2.6rem; align-items:center; position:relative; }
   @media (max-width:800px) { .hero { grid-template-columns:1fr; padding-top:3rem; } }
-  .hero .magen { position:absolute; inset-inline-end:-60px; top:-30px; width:340px; height:340px; opacity:.07; pointer-events:none; }
   .hero h1 { font-family:Georgia, serif; font-size:clamp(2.3rem, 5vw, 3.4rem); line-height:1.08; letter-spacing:-.01em; margin-bottom:1rem; }
   .hero h1 em { color:var(--blue); font-style:normal; }
   .hero p.sub { color:var(--muted); font-size:1.1rem; margin-bottom:1.6rem; max-width:34rem; }
   .btns { display:flex; gap:.7rem; flex-wrap:wrap; }
-  .btn { text-decoration:none; padding:.7rem 1.35rem; border-radius:999px; font-weight:600; transition:transform .15s ease, box-shadow .15s ease; }
+  .btn { text-decoration:none; padding:.75rem 1.4rem; border-radius:10px; font-weight:600; transition:transform .15s ease, box-shadow .15s ease; }
   .btn.primary { background:var(--blue); color:#fff; }
   .btn.primary:hover { transform:translateY(-2px); box-shadow:0 10px 26px rgba(0,56,184,.35); }
   .btn.ghost { border:1.5px solid var(--blue); color:var(--blue); background:transparent; }
@@ -159,7 +156,7 @@ export const LANDING_HTML = `<!doctype html>
   .cell h4 { font-family:Georgia, serif; font-size:1.05rem; margin-bottom:.3rem; }
   .cell p { font-size:.9rem; color:var(--muted); }
   .cell .ex { display:block; margin-top:.55rem; font-size:.82rem; font-style:italic; color:var(--ink); }
-  .tag { display:inline-block; font-family:var(--mono); font-size:.64rem; text-transform:uppercase; letter-spacing:.12em; background:var(--blue-soft); color:var(--blue); border-radius:999px; padding:.18rem .6rem; margin-bottom:.45rem; }
+  .tag { display:inline-block; font-family:var(--mono); font-size:.64rem; text-transform:uppercase; letter-spacing:.12em; background:var(--blue-soft); color:var(--blue); border-radius:6px; padding:.2rem .6rem; margin-bottom:.45rem; }
 
   .duo { position:relative; overflow:hidden; background:var(--blue-deep); color:#eaf0ff; border-radius:20px; padding:2rem 1.8rem; margin-top:1.2rem;
     background-image: linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
@@ -173,8 +170,6 @@ export const LANDING_HTML = `<!doctype html>
   .final h2 { font-family:Georgia, serif; font-size:clamp(1.6rem, 3.4vw, 2.1rem); margin-bottom:.5rem; }
   footer { border-top:1px solid var(--line); margin-top:3rem; padding:1.5rem 0 0; font-size:.85rem; color:var(--muted); }
   footer .links { margin-bottom:.8rem; }
-  .stripes { height:3px; background:var(--blue); margin-top:2rem; }
-  .stripes + .stripes2 { height:10px; background:var(--blue); margin-top:5px; }
 </style>
 </head>
 <body>
@@ -193,9 +188,6 @@ export const LANDING_HTML = `<!doctype html>
 <main>
 
 <div class="hero">
-  <svg class="magen" viewBox="0 0 100 100" fill="none" stroke="#0038b8" stroke-width="1.6" aria-hidden="true">
-    <path d="M50 8 L86 71 L14 71 Z"/><path d="M50 92 L14 29 L86 29 Z"/>
-  </svg>
   <div>
     <h1 class="serif">Et si Claude citait la Torah <em>depuis les vrais textes</em> ?</h1>
     <p class="sub">Torah MCP branche une discipline des sources sur votre assistant : chaque réponse de halakha ou de limoud est lue dans le texte, citée exactement, reliée à ses commentateurs — jamais inventée de mémoire.</p>
@@ -324,7 +316,6 @@ export const LANDING_HTML = `<!doctype html>
   <div class="links"><a href="/daf">Le daf en ligne</a> · <a href="/outils">Outils en ligne</a> · <a href="/install">Installation et guide technique</a> · <a href="/daily">Le limoud du jour</a> · <a href="/he">עברית</a> · <a href="/privacy">Confidentialité</a> · <a href="https://github.com/JonathanB555/torah-mcp">GitHub</a></div>
   <p><a href="https://www.sefaria.org" aria-label="Powered by Sefaria"><img src="https://files.readme.io/dcee0a8-image.png" alt="Powered by Sefaria" width="116" height="60" style="display:block;margin-bottom:.6rem"></a>
   Textes servis par l'API publique de Sefaria — licences indiquées dans chaque réponse. Vocalisation par le nakdan de Dicta, calendriers Hebcal. Ce projet est indépendant de Sefaria et de hebrewbooks.org.</p>
-  <div class="stripes"></div><div class="stripes2"></div>
 </footer>
 </main>
 </body>
@@ -340,7 +331,7 @@ export const INSTALL_HTML = `<!doctype html>
 <style>
   :root { --paper:#f6f8fd; --card:#ffffff; --ink:#0a1c4d; --muted:#54648f; --line:#d9e2f5; --accent:#0038b8; }
   * { box-sizing:border-box; margin:0; }
-  body { font:16px/1.65 -apple-system, "Segoe UI", Roboto, sans-serif; color:var(--ink); background:var(--paper); padding:0 1.25rem 4rem; border-top:10px solid var(--accent); }
+  body { font:16px/1.65 -apple-system, "Segoe UI", Roboto, sans-serif; color:var(--ink); background:var(--paper); padding:0 1.25rem 4rem; }
   main { max-width:680px; margin:0 auto; }
   h1 { font-family:Georgia, serif; font-size:2rem; margin:2.6rem 0 .5rem; }
   h2 { font-family:Georgia, serif; font-size:1.2rem; margin:2rem 0 .6rem; }
