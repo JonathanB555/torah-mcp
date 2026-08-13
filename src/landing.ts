@@ -66,7 +66,10 @@ export const LANDING_HTML = `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Torah MCP — la discipline des sources pour Claude</title>
-<meta name="description" content="Claude qui cite la Torah depuis les vrais textes : méthode d'étude, havrouta, guide de paracha, page de Vilna interactive, Sefaria, HebrewBooks, zmanim, guematria. Gratuit, sans compte.">
+<meta name="description" content="Claude ne citera plus jamais la Torah de mémoire. Méthode d'étude, havrouta, guide de paracha, page de Vilna interactive, Sefaria, HebrewBooks, zmanim, guematria. Gratuit, sans compte.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Frank+Ruhl+Libre:wght@300;400;700&display=swap" rel="stylesheet">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-NG6P5HPH9K"></script>
 <script>
@@ -77,247 +80,258 @@ export const LANDING_HTML = `<!doctype html>
 </script>
 <style>
   :root {
-    --bg:#f6f8fd; --surface:#ffffff; --ink:#0a1c4d; --muted:#54648f; --line:#d9e2f5;
-    --blue:#0038b8; --blue-deep:#021d5e; --blue-soft:#e7eeff; --blue-ghost:#f0f4ff;
-    --mono:ui-monospace, "SF Mono", Menlo, monospace;
+    --paper:#f7f6f1; --ink:#082a99; --ink-deep:#041a66; --ink-40:rgba(8,42,153,.4); --ink-15:rgba(8,42,153,.14);
+    --hl:#dbe3ff;
+    --ease:cubic-bezier(0.16, 1, 0.3, 1);
   }
   * { box-sizing:border-box; margin:0; }
   html { scroll-behavior:smooth; }
-  body {
-    font:16px/1.65 -apple-system, "Segoe UI", Roboto, sans-serif; color:var(--ink);
-    background:
-      linear-gradient(var(--line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--line) 1px, transparent 1px),
-      var(--bg);
-    background-size: 44px 44px, 44px 44px, auto;
-    background-attachment: fixed;
+  body { background:var(--paper); color:var(--ink); font:17px/1.7 "Frank Ruhl Libre", Georgia, serif; }
+  ::selection { background:var(--ink); color:var(--paper); }
+  a { color:var(--ink); text-decoration-thickness:1px; text-underline-offset:3px; }
+  a:hover { text-decoration-thickness:2px; }
+  .fr { font-family:"Fraunces", Georgia, serif; }
+
+  /* ---- liens-crochets, pas de boutons ---- */
+  .lnk { font-family:"Fraunces", Georgia, serif; font-weight:600; text-decoration:none; white-space:nowrap; }
+  .lnk::before { content:"[ "; color:var(--ink-40); }
+  .lnk::after { content:" ]"; color:var(--ink-40); }
+  .lnk:hover::before { content:"[ → "; }
+
+  /* ---- nav : une ligne, rien d'autre ---- */
+  nav { position:fixed; top:0; left:0; right:0; z-index:20; display:flex; justify-content:space-between; align-items:baseline;
+        padding:1.1rem 4vw; mix-blend-mode:multiply; }
+  nav .wm { font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.05rem; text-decoration:none; letter-spacing:.01em; }
+  nav .r { display:flex; gap:1.6rem; font-size:.92rem; }
+  nav .r a { text-decoration:none; }
+  nav .r a:hover { text-decoration:underline; }
+  @media (max-width:720px) { nav .r a.hide-m { display:none; } }
+
+  /* ---- ouverture plein écran ---- */
+  .cover { min-height:100svh; position:relative; display:flex; flex-direction:column; justify-content:center; padding:0 4vw; overflow:hidden; }
+  .cover .he-giant { position:absolute; inset-inline-end:-2vw; top:50%; transform:translateY(-54%); font-weight:700;
+    font-size:clamp(11rem, 34vw, 30rem); line-height:1; color:transparent; -webkit-text-stroke:1.5px var(--ink-15); pointer-events:none; user-select:none; direction:rtl; }
+  .cover h1 { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(2.6rem, 7.2vw, 6.2rem); line-height:1.02; letter-spacing:-.02em; max-width:11em; position:relative; }
+  .cover h1 strong { font-weight:600; }
+  .cover h1 .no { text-decoration:line-through; text-decoration-thickness:.06em; text-decoration-color:var(--ink); }
+  .cover p.deck { margin-top:2rem; max-width:34rem; font-size:1.12rem; color:var(--ink); opacity:.85; position:relative; }
+  .cover .acts { margin-top:2.6rem; display:flex; gap:2.4rem; flex-wrap:wrap; font-size:1.1rem; position:relative; }
+  .cover .hint { position:absolute; bottom:2rem; left:4vw; font-size:.8rem; letter-spacing:.18em; text-transform:uppercase; opacity:.5; }
+
+  /* ---- reveal ---- */
+  .rv { opacity:0; transform:translateY(28px); transition:opacity .9s var(--ease), transform .9s var(--ease); }
+  .rv.in { opacity:1; transform:none; }
+  .rv.d1 { transition-delay:.08s } .rv.d2 { transition-delay:.16s } .rv.d3 { transition-delay:.24s }
+  @media (prefers-reduced-motion: reduce) { .rv { opacity:1; transform:none; transition:none; } html { scroll-behavior:auto; } }
+
+  /* ---- section daf : le manifeste commenté ---- */
+  .amud { padding:9rem 4vw 5rem; max-width:1200px; margin:0 auto; }
+  .amud-head { display:flex; align-items:baseline; gap:1.4rem; margin-bottom:3.5rem; }
+  .amud-head .otiot { font-size:2rem; font-weight:700; direction:rtl; }
+  .amud-head .rule { flex:1; height:1px; background:var(--ink-15); }
+  .amud-head .lbl { font-size:.8rem; letter-spacing:.22em; text-transform:uppercase; opacity:.55; }
+
+  .daf { display:grid; grid-template-columns: 1fr 2fr 1fr; gap:3.2rem; align-items:start; }
+  .guf { font-size:clamp(1.25rem, 1.9vw, 1.6rem); line-height:1.85; font-weight:400; }
+  .guf p + p { margin-top:1.4em; }
+  .guf mark { background:transparent; color:inherit; border-bottom:2px solid var(--ink-40); cursor:default; transition:background .35s var(--ease); padding:0 .08em; }
+  .guf mark.on, .guf mark:hover { background:var(--hl); border-bottom-color:var(--ink); }
+  .margin { font-size:.86rem; line-height:1.6; display:flex; flex-direction:column; gap:2.2rem; position:sticky; top:7rem; }
+  .glose { border-inline-start:2px solid var(--ink-15); padding-inline-start:1rem; transition:border-color .35s var(--ease); }
+  .glose.on, .glose:hover { border-color:var(--ink); }
+  .glose h3 { font-size:.78rem; letter-spacing:.16em; text-transform:uppercase; margin-bottom:.4rem; }
+  .glose p { opacity:.8; }
+  .glose .try { display:block; margin-top:.5rem; font-style:italic; opacity:.95; }
+  .glose a { font-size:.82rem; }
+  @media (max-width:900px) {
+    .daf { grid-template-columns:1fr; gap:2rem; }
+    .margin { position:static; flex-direction:column; gap:1.4rem; }
   }
-  .serif { font-family: Georgia, "Times New Roman", serif; }
-  a { color:var(--blue); }
-  main { max-width:980px; margin:0 auto; padding:0 1.25rem 4rem; }
 
-  nav { position:sticky; top:0; z-index:10; background:rgba(255,255,255,.82); backdrop-filter:blur(12px); border-bottom:1px solid var(--line); }
-  nav .in { max-width:980px; margin:0 auto; padding:.75rem 1.25rem; display:flex; align-items:center; gap:1.1rem; flex-wrap:wrap; }
-  nav .brand { font-family:var(--mono); font-weight:700; font-size:1rem; letter-spacing:.02em; color:var(--ink); text-decoration:none; }
-  nav .brand b { color:var(--blue); }
-  nav a.lnk { color:var(--muted); text-decoration:none; font-size:.88rem; }
-  nav a.lnk:hover { color:var(--blue); }
-  nav .cta { margin-inline-start:auto; background:var(--blue); color:#fff; text-decoration:none; padding:.5rem 1.1rem; border-radius:9px; font-size:.9rem; font-weight:600; transition:transform .15s ease, box-shadow .15s ease; }
-  nav .cta:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(0,56,184,.35); }
+  /* ---- le mafteah : index à points de conduite ---- */
+  .mafteah { max-width:1200px; margin:0 auto; padding:4rem 4vw 6rem; }
+  .toc { border-top:1px solid var(--ink-15); }
+  .toc a { display:flex; align-items:baseline; gap:.8rem; padding:1.05rem 0; border-bottom:1px solid var(--ink-15); text-decoration:none;
+           transition:padding-inline-start .4s var(--ease), background .4s var(--ease); }
+  .toc a:hover { padding-inline-start:1rem; background:rgba(219,227,255,.5); }
+  .toc .t { font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:clamp(1.15rem, 2.2vw, 1.7rem); white-space:nowrap; }
+  .toc .dots { flex:1; border-bottom:2px dotted var(--ink-40); transform:translateY(-.35em); min-width:2rem; }
+  .toc .d { font-size:.9rem; opacity:.75; text-align:right; max-width:44%; }
+  .toc .he { direction:rtl; font-weight:700; white-space:nowrap; }
+  @media (max-width:720px) { .toc .d { display:none; } }
 
-  .hero { padding:4.5rem 0 3rem; display:grid; grid-template-columns:1.05fr .95fr; gap:2.6rem; align-items:center; position:relative; }
-  @media (max-width:800px) { .hero { grid-template-columns:1fr; padding-top:3rem; } }
-  .hero h1 { font-family:Georgia, serif; font-size:clamp(2.3rem, 5vw, 3.4rem); line-height:1.08; letter-spacing:-.01em; margin-bottom:1rem; }
-  .hero h1 em { color:var(--blue); font-style:normal; }
-  .hero p.sub { color:var(--muted); font-size:1.1rem; margin-bottom:1.6rem; max-width:34rem; }
-  .btns { display:flex; gap:.7rem; flex-wrap:wrap; }
-  .btn { text-decoration:none; padding:.75rem 1.4rem; border-radius:10px; font-weight:600; transition:transform .15s ease, box-shadow .15s ease; }
-  .btn.primary { background:var(--blue); color:#fff; }
-  .btn.primary:hover { transform:translateY(-2px); box-shadow:0 10px 26px rgba(0,56,184,.35); }
-  .btn.ghost { border:1.5px solid var(--blue); color:var(--blue); background:transparent; }
-  .btn.ghost:hover { background:var(--blue-soft); }
+  /* ---- bande daf viewer, pleine largeur, parchemin ---- */
+  .band { background:#f4ecd7; color:#22201b; padding:6rem 4vw; }
+  .band .in { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1.1fr .9fr; gap:4rem; align-items:center; }
+  @media (max-width:900px) { .band .in { grid-template-columns:1fr; } }
+  .band h2 { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(2rem, 4.4vw, 3.4rem); line-height:1.06; letter-spacing:-.015em; margin-bottom:1.2rem; }
+  .band p { max-width:30rem; opacity:.85; }
+  .band .acts { margin-top:2rem; font-size:1.05rem; display:flex; gap:2.2rem; }
+  .band .lnk::before, .band .lnk::after { color:rgba(34,32,27,.4); }
+  .band a { color:#22201b; }
+  .vilna { background:#faf5e6; border:1px solid #d9d0bb; padding:1.4rem 1.6rem; direction:rtl; box-shadow:0 30px 60px rgba(34,32,27,.14); }
+  .vilna .t { font-weight:700; border-bottom:2px solid #22201b; padding-bottom:.35rem; margin-bottom:.6rem; font-size:1.1rem; }
+  .vilna .g { line-height:1.85; text-align:justify; font-size:1.02rem; }
+  .vilna .r { margin-top:.7rem; font-size:.82rem; color:#6d675c; border-top:1px dotted #b7ad93; padding-top:.45rem; display:flex; justify-content:space-between; }
 
-  .fig { position:relative; border:1.5px dashed var(--blue); border-radius:14px; padding:1.1rem; background:var(--surface); box-shadow:0 18px 50px rgba(2,29,94,.10); }
-  .fig::before { content:attr(data-fig); position:absolute; top:-.72rem; inset-inline-start:1rem; background:var(--blue); color:#fff; font-family:var(--mono); font-size:.66rem; letter-spacing:.12em; padding:.18rem .6rem; border-radius:4px; text-transform:uppercase; }
-  .fig .tick { position:absolute; width:10px; height:10px; border:1.5px solid var(--blue); }
-  .fig .tick.tl { top:-6px; left:-6px; border-right:0; border-bottom:0; }
-  .fig .tick.br { bottom:-6px; right:-6px; border-left:0; border-top:0; }
-  .msg { border-radius:12px; padding:.65rem .9rem; font-size:.89rem; margin:.5rem 0; max-width:94%; }
-  .msg.user { background:var(--blue-soft); margin-inline-start:auto; }
-  .msg.ai { background:var(--blue-ghost); border:1px solid var(--line); }
-  .msg .he { direction:rtl; display:block; font-family:Georgia, serif; font-size:1.05rem; margin:.35rem 0; }
-  .msg .src { display:block; font-family:var(--mono); font-size:.68rem; color:var(--muted); border-top:1px dashed var(--line); margin-top:.45rem; padding-top:.35rem; }
+  /* ---- fin : l'invitation ---- */
+  .invite { padding:9rem 4vw 7rem; max-width:1200px; margin:0 auto; }
+  .invite h2 { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(2.4rem, 6.4vw, 5.4rem); line-height:1.04; letter-spacing:-.02em; max-width:14em; }
+  .invite h2 strong { font-weight:600; }
+  .invite .acts { margin-top:3rem; display:flex; gap:2.6rem; flex-wrap:wrap; font-size:1.2rem; }
+  .invite .note { margin-top:2.4rem; font-size:.92rem; opacity:.7; max-width:36rem; }
 
-  section { padding:3rem 0 0; }
-  section > h2 { font-family:Georgia, serif; font-size:clamp(1.5rem, 3vw, 2rem); margin-bottom:.4rem; letter-spacing:-.01em; }
-  section > p.lead { color:var(--muted); margin-bottom:1.2rem; max-width:640px; }
-  .kicker { font-family:var(--mono); text-transform:uppercase; letter-spacing:.16em; font-size:.7rem; color:var(--blue); font-weight:700; display:block; margin-bottom:.5rem; }
-
-  .feature { display:grid; grid-template-columns:1fr 1fr; gap:1.7rem; align-items:start; background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:1.6rem; margin:1rem 0; transition:box-shadow .2s ease; }
-  .feature:hover { box-shadow:0 14px 40px rgba(2,29,94,.08); }
-  @media (max-width:800px) { .feature { grid-template-columns:1fr; } }
-  .feature h3 { font-family:Georgia, serif; font-size:1.25rem; margin-bottom:.45rem; }
-  .feature ul { padding-left:1.2rem; color:var(--muted); font-size:.94rem; } .feature li { margin:.28rem 0; }
-  .try { background:var(--blue-ghost); border:1.5px dashed var(--line); border-radius:12px; padding:.9rem 1.1rem; font-size:.9rem; }
-  .try b { display:block; font-family:var(--mono); font-size:.66rem; text-transform:uppercase; letter-spacing:.14em; color:var(--blue); margin-bottom:.4rem; }
-  .try q { quotes:"« " " »"; font-style:italic; }
-
-  .vilna { background:#f8f3e6; border:1px solid #d9d0bb; border-radius:10px; padding:1rem 1.2rem; direction:rtl; font-family:Georgia, serif; }
-  .vilna .t { font-weight:700; border-bottom:2px solid #22201b; color:#22201b; padding-bottom:.3rem; margin-bottom:.5rem; font-size:1.05rem; }
-  .vilna .g { font-size:.98rem; line-height:1.8; text-align:justify; color:#22201b; }
-  .vilna .r { margin-top:.6rem; font-size:.8rem; color:#6d675c; border:1px solid #d9d0bb; border-radius:6px; padding:.35rem .6rem; display:flex; justify-content:space-between; }
-
-  .bento { display:grid; grid-template-columns:repeat(6, 1fr); gap:.9rem; margin-top:1.2rem; }
-  .cell { background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:1.1rem 1.2rem; grid-column:span 2; transition:transform .18s ease, box-shadow .18s ease; }
-  .cell:hover { transform:translateY(-3px); box-shadow:0 12px 30px rgba(2,29,94,.10); }
-  .cell.wide { grid-column:span 3; }
-  .cell.full { grid-column:span 6; background:linear-gradient(135deg, var(--blue-ghost), var(--surface)); }
-  @media (max-width:800px) { .bento { grid-template-columns:1fr; } .cell, .cell.wide, .cell.full { grid-column:span 1; } }
-  .cell h4 { font-family:Georgia, serif; font-size:1.05rem; margin-bottom:.3rem; }
-  .cell p { font-size:.9rem; color:var(--muted); }
-  .cell .ex { display:block; margin-top:.55rem; font-size:.82rem; font-style:italic; color:var(--ink); }
-  .tag { display:inline-block; font-family:var(--mono); font-size:.64rem; text-transform:uppercase; letter-spacing:.12em; background:var(--blue-soft); color:var(--blue); border-radius:6px; padding:.2rem .6rem; margin-bottom:.45rem; }
-
-  .duo { position:relative; overflow:hidden; background:var(--blue-deep); color:#eaf0ff; border-radius:20px; padding:2rem 1.8rem; margin-top:1.2rem;
-    background-image: linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
-    background-size: 36px 36px; }
-  .duo a { color:#bcd0ff; }
-  .duo .kicker { color:#8fb0ff; }
-  .duo h2 { font-family:Georgia, serif; font-size:1.6rem; margin-bottom:.6rem; color:#fff; }
-  .url { display:inline-block; background:#01123a; color:#dbe7ff; border:1px solid rgba(255,255,255,.15); border-radius:8px; padding:.55rem .95rem; font-family:var(--mono); font-size:.88rem; margin:.5rem 0; word-break:break-all; }
-
-  .final { text-align:center; padding:3.4rem 0 1rem; }
-  .final h2 { font-family:Georgia, serif; font-size:clamp(1.6rem, 3.4vw, 2.1rem); margin-bottom:.5rem; }
-  footer { border-top:1px solid var(--line); margin-top:3rem; padding:1.5rem 0 0; font-size:.85rem; color:var(--muted); }
-  footer .links { margin-bottom:.8rem; }
+  footer { border-top:1px solid var(--ink-15); max-width:1200px; margin:0 auto; padding:2rem 4vw 3rem; font-size:.88rem; }
+  footer .row { display:flex; flex-wrap:wrap; gap:1.6rem; margin-bottom:1.2rem; }
+  footer .row a { text-decoration:none; opacity:.8; } footer .row a:hover { text-decoration:underline; opacity:1; }
+  footer p { opacity:.65; max-width:52rem; }
 </style>
 </head>
 <body>
-<nav><div class="in">
-  <a class="brand" href="/">TORAH·<b>MCP</b></a>
-  <a class="lnk" href="#methode">La méthode</a>
-  <a class="lnk" href="#havrouta">Havrouta</a>
-  <a class="lnk" href="#daf">Le daf</a>
-  <a class="lnk" href="#bibliotheque">Bibliothèque</a>
-  <a class="lnk" href="#quotidien">Au quotidien</a>
-  <a class="lnk" href="/daf">Daf en ligne</a>
-  <a class="lnk" href="/outils">Outils</a>
-  <a class="lnk" href="/he">עברית</a>
-  <a class="cta" href="/install">Installer</a>
-</div></nav>
-<main>
 
-<div class="hero">
-  <div>
-    <h1 class="serif">Et si Claude citait la Torah <em>depuis les vrais textes</em> ?</h1>
-    <p class="sub">Torah MCP branche une discipline des sources sur votre assistant : chaque réponse de halakha ou de limoud est lue dans le texte, citée exactement, reliée à ses commentateurs — jamais inventée de mémoire.</p>
-    <div class="btns">
-      <a class="btn primary" href="/install">Installer en 2 minutes</a>
-      <a class="btn ghost" href="/daf">Essayer sans installer</a>
-    </div>
+<nav>
+  <a class="wm" href="/">Torah&nbsp;MCP</a>
+  <div class="r">
+    <a href="#daf-a" class="hide-m">Le manifeste</a>
+    <a href="#mafteah" class="hide-m">L'index</a>
+    <a href="/daf">Le daf en ligne</a>
+    <a href="/he">עברית</a>
+    <a href="/install"><strong>Installer</strong></a>
   </div>
-  <div class="fig" data-fig="Fig. 1 — réponse sourcée" aria-hidden="true">
-    <span class="tick tl"></span><span class="tick br"></span>
-    <div class="msg user">Quelle est la source de « si je ne suis pas pour moi, qui le sera » ?</div>
-    <div class="msg ai">C'est la michna de Hillel, Pirkei Avot 1:14 — je viens de la lire :
-      <span class="he">אִם אֵין אֲנִי לִי, מִי לִי. וּכְשֶׁאֲנִי לְעַצְמִי, מָה אֲנִי.</span>
-      <span class="src">SOURCE : SEFARIA · LICENCE CC-BY · LIEN D'ÉTUDE FOURNI</span>
-    </div>
-  </div>
-</div>
+</nav>
 
-<section id="methode">
-  <span class="kicker">01 / Le cœur</span>
-  <h2>La méthode : jamais de citation de mémoire</h2>
-  <p class="lead">Les assistants IA « se souviennent » des textes — et se trompent avec assurance. Torah MCP charge une méthode d'étude avant toute réponse religieuse.</p>
-  <div class="feature">
-    <div>
-      <h3>Ce que la méthode impose</h3>
-      <ul>
-        <li>Lire le texte réel avant de répondre — et citer depuis cette lecture</li>
-        <li>Signaler les divergences : rishonim / aharonim, ashkénaze / séfarade</li>
-        <li>Donner les liens hebrewbooks.org pour étudier sur la page</li>
-        <li>Ne jamais fabriquer une référence, un daf ou un numéro de page</li>
-        <li>Pour la halakha pratique : renvoyer vers un Rav</li>
-      </ul>
+<header class="cover">
+  <div class="he-giant" aria-hidden="true">מקור</div>
+  <h1 class="fr rv">Claude ne citera <strong>plus jamais</strong> la Torah <span class="no">de&nbsp;mémoire</span>.</h1>
+  <p class="deck rv d1">Torah MCP impose une discipline des sources à votre assistant : chaque réponse de halakha ou de limoud est lue dans le texte réel, citée exactement, reliée à ses commentateurs.</p>
+  <div class="acts rv d2">
+    <a class="lnk" href="/install">Installer — 2 minutes</a>
+    <a class="lnk" href="/daf">Essayer sans installer</a>
+  </div>
+  <span class="hint">Gratuit · sans compte · sans collecte — défilez</span>
+</header>
+
+<section class="amud" id="daf-a">
+  <div class="amud-head rv"><span class="otiot">א</span><span class="rule"></span><span class="lbl">Le manifeste, commenté en marge</span></div>
+  <div class="daf">
+    <aside class="margin rv d1" aria-label="Commentaires — colonne intérieure">
+      <div class="glose" data-ref="methode">
+        <h3>La méthode</h3>
+        <p>Chargée avant toute réponse religieuse : lire, citer depuis la lecture, signaler les mahloket, ne jamais fabriquer une référence.</p>
+        <span class="try">« Que dit la Guemara sur l'objet perdu ? Cite la sougya. »</span>
+      </div>
+      <div class="glose" data-ref="havrouta">
+        <h3>La havrouta</h3>
+        <p>Claude questionne au lieu de répondre : une kouchia à la fois, Rachi à défendre contre Tossafot, récapitulatif des chidouchim.</p>
+        <span class="try">« Étudions Berakhot 2a en havrouta. »</span>
+      </div>
+      <div class="glose" data-ref="paracha">
+        <h3>Le guide de paracha</h3>
+        <p>Fil par aliya, trois questions du texte tranchées par deux commentateurs qui divergent, l'écho de la haftara, questions pour la table.</p>
+        <span class="try">« Prépare-moi la paracha. »</span>
+      </div>
+    </aside>
+    <div class="guf rv">
+      <p>Les assistants répondent aux questions de Torah <mark data-ref="memoire">de mémoire</mark> — avec l'assurance de celui qui n'a pas ouvert le livre. Torah MCP renverse le geste : avant toute réponse, votre assistant charge <mark data-ref="methode">une méthode d'étude</mark> qui l'oblige à lire le texte, à le citer tel qu'il est écrit, et à dire où l'étudier.</p>
+      <p>Parce qu'on n'apprend pas seul, il sait aussi devenir <mark data-ref="havrouta">partenaire de havrouta</mark> — celui qui pose les questions plutôt que d'y répondre — et préparer <mark data-ref="paracha">la paracha de la semaine</mark> comme un chantier : aliya par aliya, machloket comprises.</p>
+      <p>Et parce que l'étude vit dans une journée juive, il porte <mark data-ref="quotidien">les outils du quotidien</mark> — zmanim, dates, guematria, nikoud, fiches à partager — et <mark data-ref="sources">toute la bibliothèque</mark> : Sefaria pour lire et relier, HebrewBooks pour étudier sur la page scannée.</p>
     </div>
-    <div class="try"><b>Essayez</b><q>Que dit la Guemara sur la restitution d'un objet perdu ? Cite la sougya.</q><br><br>Claude charge la méthode, lit Bava Metzia, cite le texte et vous donne où l'étudier.</div>
+    <aside class="margin rv d2" aria-label="Commentaires — colonne extérieure">
+      <div class="glose" data-ref="memoire">
+        <h3>Pourquoi c'est grave</h3>
+        <p>Une citation approximative est une citation fausse. La discipline du texte n'est pas un luxe : c'est la condition du limoud.</p>
+      </div>
+      <div class="glose" data-ref="quotidien">
+        <h3>Le quotidien</h3>
+        <p>Zmanim et horaires de Chabbat, dates hébraïques, guematria exacte, nikoud (Dicta), fiche source prête pour WhatsApp.</p>
+        <a href="/outils">Utilisables en ligne, sans installation</a>
+      </div>
+      <div class="glose" data-ref="sources">
+        <h3>Les sources</h3>
+        <p>Textes, commentateurs et recherche Sefaria — licences affichées — et le catalogue HebrewBooks (~65 000 seforim).</p>
+        <a href="https://developers.sefaria.org/docs/the-sefaria-mcp">S'accorde avec le MCP officiel de Sefaria</a>
+      </div>
+    </aside>
   </div>
 </section>
 
-<section id="havrouta">
-  <span class="kicker">02 / Étudier, pas consommer</span>
-  <h2>Havrouta et guide de paracha</h2>
-  <p class="lead">Un partenaire d'étude ne donne pas les réponses : il les fait naître. Et chaque semaine, la sidra se prépare comme un chantier.</p>
-  <div class="feature">
-    <div class="try"><b>Essayez</b><q>Étudions Berakhot 2a en havrouta.</q> — une question à la fois, les positions à défendre.<br><br><q>Prépare-moi la paracha de la semaine.</q> — fil par aliya, machloket de commentateurs, questions pour la table de Chabbat.</div>
-    <div>
-      <h3>Deux modes d'étude</h3>
-      <ul>
-        <li><strong>Havrouta</strong> : une question par étape, machloket à défendre, kouchiot confrontées aux commentateurs, récapitulatif des chidouchim</li>
-        <li><strong>Guide de paracha</strong> (façon AlHaTorah) : résumé aliya par aliya, trois questions du texte avec deux commentateurs qui divergent, l'écho de la haftara, trois questions graduées pour la table</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<section id="daf">
-  <span class="kicker">03 / MCP App</span>
-  <h2>Le daf en page de Vilna, dans la conversation</h2>
-  <p class="lead">« Montre-moi le daf du jour » — et une page interactive s'ouvre : la Guemara au centre, Rachi et Tossafot dépliables, la traduction au clic. Aussi <a href="/daf">en ligne, sans installation</a>.</p>
-  <div class="feature">
-    <div class="fig" data-fig="Fig. 2 — daf viewer" aria-hidden="true" style="border-style:solid">
-      <div class="vilna">
-        <div class="t">ברכות ב׳ א</div>
-        <div class="g">מֵאֵימָתַי קוֹרִין אֶת שְׁמַע בְּעַרְבִין? מִשָּׁעָה שֶׁהַכֹּהֲנִים נִכְנָסִים לֶאֱכוֹל בִּתְרוּמָתָן…</div>
-        <div class="r"><span>רש״י</span><span>+</span></div>
-        <div class="r"><span>תוספות</span><span>+</span></div>
+<section class="band" id="daf-viewer">
+  <div class="in">
+    <div class="rv">
+      <h2>« Montre-moi le daf du jour. »</h2>
+      <p>Et une page de Vilna s'ouvre dans la conversation : la Guemara au centre, Rachi et Tossafot dépliables, la traduction au clic sur chaque segment. Sans référence, c'est le daf yomi qui s'ouvre.</p>
+      <div class="acts">
+        <a class="lnk" href="/daf">Ouvrir le daf en ligne</a>
+        <a class="lnk" href="/daily">Le limoud du jour</a>
       </div>
     </div>
-    <div>
-      <h3>Dans le visualiseur</h3>
-      <ul>
-        <li>Texte vocalisé, justifié, mise en page inspirée du Shas de Vilna</li>
-        <li>Un clic sur un passage : la traduction Steinsaltz apparaît</li>
-        <li>Rachi et Tossafot du daf, en accordéons</li>
-        <li>Sans référence : c'est le daf yomi du jour qui s'ouvre</li>
-        <li>Clients sans MCP Apps : résumé texte + lien d'étude (rien ne casse)</li>
-      </ul>
+    <div class="vilna rv d1" aria-hidden="true">
+      <div class="t">ברכות ב׳ א</div>
+      <div class="g">מֵאֵימָתַי קוֹרִין אֶת שְׁמַע בְּעַרְבִין? מִשָּׁעָה שֶׁהַכֹּהֲנִים נִכְנָסִים לֶאֱכוֹל בִּתְרוּמָתָן…</div>
+      <div class="r"><span>רש״י</span><span>תוספות</span></div>
     </div>
   </div>
 </section>
 
-<section id="bibliotheque">
-  <span class="kicker">04 / Les sources</span>
-  <h2>Toute la bibliothèque, vérifiable</h2>
-  <p class="lead">Quatre outils Sefaria pour lire, relier et retrouver — et la recherche du catalogue HebrewBooks pour prolonger l'étude sur les seforim scannés.</p>
-  <div class="bento">
-    <div class="cell wide"><span class="tag">texte</span><h4>Lire une référence</h4><p>Tanakh, Talmud, Michné Torah, Choulhan Aroukh, responsa — hébreu et traduction, licence affichée.</p><span class="ex">« Montre-moi Choulhan Aroukh, Orah Hayim 271. »</span></div>
-    <div class="cell wide"><span class="tag">commentaires</span><h4>Explorer les commentateurs</h4><p>Rachi, Tossafot, midrachim, halakha — les textes liés à chaque passage, par catégorie.</p><span class="ex">« Que disent Rachi et Tossafot ici ? »</span></div>
-    <div class="cell wide"><span class="tag">recherche</span><h4>Retrouver une source</h4><p>Recherche plein texte dans toute la bibliothèque, en hébreu ou en anglais.</p><span class="ex">« Où parle-t-on du prozboul ? »</span></div>
-    <div class="cell wide"><span class="tag">hebrewbooks</span><h4>Le catalogue des seforim</h4><p>~65 000 livres scannés cherchables par titre et auteur, avec le lien de lecture exact.</p><span class="ex">« Trouve-moi le Michna Beroura sur HebrewBooks. »</span></div>
+<section class="mafteah" id="mafteah">
+  <div class="amud-head rv"><span class="otiot">ב</span><span class="rule"></span><span class="lbl">Mafteah — l'index des quatorze outils</span></div>
+  <div class="toc rv d1">
+    <a href="/install"><span class="t">La méthode d'étude</span><span class="dots"></span><span class="d">chargée avant toute réponse religieuse</span></a>
+    <a href="/install"><span class="t">Havrouta</span><span class="dots"></span><span class="d">le partenaire qui questionne</span></a>
+    <a href="/install"><span class="t">Guide de paracha</span><span class="dots"></span><span class="d">aliyot, mahloket, table de Chabbat</span></a>
+    <a href="/daf"><span class="t">Le daf — page de Vilna</span><span class="dots"></span><span class="d">MCP App interactive, aussi en ligne</span></a>
+    <a href="/install"><span class="t">Textes, commentateurs, recherche</span><span class="dots"></span><span class="d">la bibliothèque Sefaria, vérifiable</span></a>
+    <a href="/install"><span class="t">Catalogue HebrewBooks</span><span class="dots"></span><span class="d">~65 000 seforim par titre et auteur</span></a>
+    <a href="/outils"><span class="t">Zmanim et Chabbat</span><span class="dots"></span><span class="d">Paris, Marseille, Genève, Jérusalem…</span></a>
+    <a href="/outils"><span class="t">Dates hébraïques</span><span class="dots"></span><span class="d">conversion, fêtes, Rosh Hodesh</span></a>
+    <a href="/outils"><span class="t">Guematria</span><span class="dots"></span><span class="d">cinq méthodes, calcul exact</span></a>
+    <a href="/outils"><span class="t">Nikoud</span><span class="dots"></span><span class="d">vocalisation par le nakdan de Dicta</span></a>
+    <a href="/outils"><span class="t">Fiche source</span><span class="dots"></span><span class="d">hébreu, traduction, lien — pour WhatsApp</span></a>
+    <a href="/daily"><span class="t">Le limoud du jour</span><span class="dots"></span><span class="d">paracha, daf yomi, Rambam quotidien</span></a>
   </div>
 </section>
 
-<section id="quotidien">
-  <span class="kicker">05 / Chaque jour</span>
-  <h2>Les outils du quotidien</h2>
-  <p class="lead">Parce que l'étude vit dans une journée juive : horaires, dates, calculs et partage — aussi <a href="/outils">utilisables en ligne</a>.</p>
-  <div class="bento">
-    <div class="cell"><h4>Zmanim et Chabbat</h4><p>Les zmanim du jour et les horaires de Chabbat — Paris, Marseille, Genève, Jérusalem…</p><span class="ex">« À quelle heure rentre Chabbat à Genève ? »</span></div>
-    <div class="cell"><h4>Dates hébraïques</h4><p>Conversion dans les deux sens, avec fêtes, Rosh Hodesh et paracha.</p><span class="ex">« Quel jour tombe le 14 août ? »</span></div>
-    <div class="cell"><h4>Guematria</h4><p>Cinq méthodes calculées exactement, mot à mot.</p><span class="ex">« La guematria de חי ? »</span></div>
-    <div class="cell"><h4>Nikoud</h4><p>Vocalisation par le nakdan de Dicta, variantes comprises.</p><span class="ex">« Mets le nikoud sur ce Rachi. »</span></div>
-    <div class="cell"><h4>Fiche source</h4><p>Hébreu, traduction, référence, lien — prête pour WhatsApp.</p><span class="ex">« Une fiche de Pirkei Avot 1:14. »</span></div>
-    <div class="cell"><h4>Le limoud du jour</h4><p>Paracha, daf yomi, Rambam quotidien : tous les cycles.</p><span class="ex"><a href="/daily">Voir la page du jour</a></span></div>
+<section class="invite">
+  <h2 class="fr rv">Une URL à coller dans claude.ai, et l'étude <strong>change de nature</strong>.</h2>
+  <div class="acts rv d1">
+    <a class="lnk" href="/install">Installer maintenant</a>
+    <a class="lnk" href="https://github.com/JonathanB555/torah-mcp">Code source — MIT</a>
   </div>
+  <p class="note rv d2">Gratuit, sans compte, sans collecte de données. S'accorde avec le MCP officiel de Sefaria — installez les deux : l'officiel pour la profondeur de la bibliothèque, Torah MCP pour la discipline de citation, la havrouta et HebrewBooks.</p>
 </section>
-
-<section id="duo">
-  <div class="duo">
-    <span class="kicker">06 / Complémentaire</span>
-    <h2>Le duo idéal avec le MCP officiel de Sefaria</h2>
-    <p>Sefaria publie son propre serveur MCP — excellent pour l'accès en profondeur à la bibliothèque (14 outils : dictionnaires, manuscrits, recherche par livre). Installez les deux : l'officiel pour la profondeur, Torah MCP pour la discipline de citation, la méthode, la havrouta et HebrewBooks.</p>
-    <span class="url">https://mcp.sefaria.org/sse</span>
-    <p style="font-size:.85rem"><a href="https://developers.sefaria.org/docs/the-sefaria-mcp">Documentation du MCP officiel Sefaria</a></p>
-  </div>
-</section>
-
-<div class="final">
-  <h2>Gratuit. Sans compte. Sans collecte de données.</h2>
-  <p style="color:var(--muted);margin-bottom:1.2rem">Une URL à coller dans claude.ai, et l'étude change de nature.</p>
-  <div class="btns" style="justify-content:center">
-    <a class="btn primary" href="/install">Installer maintenant</a>
-    <a class="btn ghost" href="https://github.com/JonathanB555/torah-mcp">Code source (MIT)</a>
-  </div>
-</div>
 
 <footer>
-  <div class="links"><a href="/daf">Le daf en ligne</a> · <a href="/outils">Outils en ligne</a> · <a href="/install">Installation et guide technique</a> · <a href="/daily">Le limoud du jour</a> · <a href="/he">עברית</a> · <a href="/privacy">Confidentialité</a> · <a href="https://github.com/JonathanB555/torah-mcp">GitHub</a></div>
-  <p><a href="https://www.sefaria.org" aria-label="Powered by Sefaria"><img src="https://files.readme.io/dcee0a8-image.png" alt="Powered by Sefaria" width="116" height="60" style="display:block;margin-bottom:.6rem"></a>
-  Textes servis par l'API publique de Sefaria — licences indiquées dans chaque réponse. Vocalisation par le nakdan de Dicta, calendriers Hebcal. Ce projet est indépendant de Sefaria et de hebrewbooks.org.</p>
+  <div class="row">
+    <a href="/daf">Le daf en ligne</a><a href="/outils">Outils</a><a href="/install">Installation</a><a href="/daily">Limoud du jour</a><a href="/he">עברית</a><a href="/privacy">Confidentialité</a><a href="https://github.com/JonathanB555/torah-mcp">GitHub</a>
+  </div>
+  <p><a href="https://www.sefaria.org" aria-label="Powered by Sefaria"><img src="https://files.readme.io/dcee0a8-image.png" alt="Powered by Sefaria" width="104" height="54" style="display:block;margin-bottom:.7rem"></a>
+  Textes servis par l'API publique de Sefaria — licences indiquées dans chaque réponse. Vocalisation par le nakdan de Dicta, calendriers Hebcal. Projet indépendant de Sefaria et de hebrewbooks.org.</p>
 </footer>
-</main>
+
+<script>
+(function () {
+  // Révélations au défilement
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll(".rv").forEach(function (el) { io.observe(el); });
+
+  // Le daf vivant : une glose éclaire sa phrase, une phrase éclaire sa glose
+  function link(sel, other) {
+    document.querySelectorAll(sel).forEach(function (el) {
+      var ref = el.getAttribute("data-ref");
+      el.addEventListener("mouseenter", function () {
+        document.querySelectorAll(other + '[data-ref="' + ref + '"], ' + sel + '[data-ref="' + ref + '"]').forEach(function (m) { m.classList.add("on"); });
+      });
+      el.addEventListener("mouseleave", function () {
+        document.querySelectorAll('[data-ref="' + ref + '"]').forEach(function (m) { m.classList.remove("on"); });
+      });
+    });
+  }
+  link(".glose", ".guf mark");
+  link(".guf mark", ".glose");
+})();
+</script>
 </body>
 </html>`;
 
