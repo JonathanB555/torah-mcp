@@ -22,7 +22,7 @@ export const hebrewbooksTools: ToolDefinition[] = [
   {
     name: "hebrewbooks_skill",
     title: "Méthode d'étude des sources juives",
-    annotations: { readOnlyHint: true },
+    annotations: { title: "Méthode d'étude des sources juives", readOnlyHint: true },
     description:
       "Charge le skill d'étude des sources juives : méthode pour répondre aux questions " +
       "religieuses (halakha, Talmud, Tanakh, responsa, hassidout, moussar) depuis les " +

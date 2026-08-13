@@ -14,7 +14,7 @@ export interface Env {
 export interface ToolDefinition {
   name: string;
   title?: string;
-  annotations?: { readOnlyHint?: boolean; destructiveHint?: boolean };
+  annotations?: { title?: string; readOnlyHint?: boolean; destructiveHint?: boolean };
   description?: string;
   inputSchema: any;
 }
@@ -47,7 +47,7 @@ export const sefariaTools: ToolDefinition[] = [
   {
     name: "sefaria_text",
     title: "Sefaria — texte d'une référence",
-    annotations: { readOnlyHint: true },
+    annotations: { title: "Sefaria — texte d'une référence", readOnlyHint: true },
     description:
       "Texte d'une référence Sefaria (hébreu + traduction anglaise si disponible). " +
       'Réfs : "Genesis 1:1", "Berakhot 2a", "Shulchan Arukh, Orach Chayim 1:1", ' +
@@ -64,7 +64,7 @@ export const sefariaTools: ToolDefinition[] = [
   {
     name: "sefaria_links",
     title: "Sefaria — commentaires liés",
-    annotations: { readOnlyHint: true },
+    annotations: { title: "Sefaria — commentaires liés", readOnlyHint: true },
     description:
       "Commentaires et textes liés à une référence (Rachi, Tossafot, midrachim, " +
       "halakha, responsa…). Renvoie les réfs liées par catégorie — charger ensuite " +
@@ -84,7 +84,7 @@ export const sefariaTools: ToolDefinition[] = [
   {
     name: "sefaria_search",
     title: "Sefaria — recherche",
-    annotations: { readOnlyHint: true },
+    annotations: { title: "Sefaria — recherche", readOnlyHint: true },
     description:
       "Recherche plein texte dans toute la bibliothèque Sefaria (hébreu ou anglais). " +
       "Utile pour retrouver une source dont on connaît les mots mais pas la référence.",
@@ -100,7 +100,7 @@ export const sefariaTools: ToolDefinition[] = [
   {
     name: "sefaria_calendar",
     title: "Sefaria — calendriers d'étude",
-    annotations: { readOnlyHint: true },
+    annotations: { title: "Sefaria — calendriers d'étude", readOnlyHint: true },
     description:
       "Calendriers d'étude du jour : parachat hachavoua, haftara, daf yomi, " +
       "Rambam quotidien, halakha quotidienne… Sans argument : aujourd'hui.",
