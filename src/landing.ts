@@ -69,7 +69,8 @@ export const LANDING_HTML = `<!doctype html>
   </section>
 
   <footer>
-    <p>Textes servis par l'API publique de <a href="https://www.sefaria.org">Sefaria</a> — licences indiquées dans chaque réponse. Code source : <a href="https://github.com/JonathanB555/torah-mcp">github.com/JonathanB555/torah-mcp</a> (MIT).</p>
+    <p><a href="https://www.sefaria.org" aria-label="Powered by Sefaria"><img src="https://files.readme.io/dcee0a8-image.png" alt="Powered by Sefaria" width="139" height="72" style="display:block;margin-bottom:.7rem"></a>
+    Textes servis par l'API publique de <a href="https://www.sefaria.org">Sefaria</a> — licences indiquées dans chaque réponse. Ce projet est indépendant de Sefaria. Code source : <a href="https://github.com/JonathanB555/torah-mcp">github.com/JonathanB555/torah-mcp</a> (MIT).</p>
   </footer>
 </main>
 </body>

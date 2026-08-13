@@ -63,6 +63,8 @@ list) to switch from public access to invitation-only — each guest then uses
 - Text licenses are returned with every response. Data by the wonderful
   [Sefaria](https://www.sefaria.org/developers) — support them.
 
+[![Powered by Sefaria](https://files.readme.io/dcee0a8-image.png)](https://www.sefaria.org)
+
 ## License
 
 MIT — see [LICENSE](LICENSE). The bundled study-method skill and this server
