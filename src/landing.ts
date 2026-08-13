@@ -3,6 +3,40 @@
  * ce que c'est, comment l'installer, crédits Sefaria.
  */
 
+export const PRIVACY_HTML = `<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Torah MCP — Confidentialité / Privacy</title>
+<style>
+  body { font:16px/1.65 -apple-system, "Segoe UI", Roboto, sans-serif; color:#1f2430; background:#faf9f6; padding:3rem 1.25rem; }
+  main { max-width:680px; margin:0 auto; }
+  h1 { font-size:1.6rem; margin-bottom:1rem; } h2 { font-size:1.1rem; margin:1.6rem 0 .5rem; }
+  a { color:#0f5c8c; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Confidentialité — Torah MCP</h1>
+  <p>Ce serveur ne collecte, ne stocke et ne partage aucune donnée personnelle.
+  Il ne demande aucun compte, ne dépose aucun cookie, et ne conserve aucun
+  historique des questions posées. Les requêtes transitent vers l'API publique
+  de <a href="https://www.sefaria.org">Sefaria</a> pour récupérer les textes
+  demandés, et l'infrastructure Cloudflare produit des journaux techniques
+  opérationnels de courte durée (adresse IP, horodatage) utilisés uniquement
+  pour la sécurité et la limitation de débit.</p>
+  <h2>Privacy — English</h2>
+  <p>This server collects, stores and shares no personal data. No account, no
+  cookies, no history of queries. Requests are forwarded to the public
+  <a href="https://www.sefaria.org">Sefaria</a> API to fetch the requested
+  texts; Cloudflare's infrastructure produces short-lived operational logs
+  (IP address, timestamp) used solely for security and rate limiting.</p>
+  <p>Contact : <a href="https://github.com/JonathanB555/torah-mcp/issues">github.com/JonathanB555/torah-mcp/issues</a></p>
+</main>
+</body>
+</html>`;
+
 export const LANDING_HTML = `<!doctype html>
 <html lang="fr">
 <head>

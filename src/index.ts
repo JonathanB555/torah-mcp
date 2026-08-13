@@ -19,7 +19,15 @@ import {
   listHebrewbooksPrompts,
   getHebrewbooksPrompt,
 } from "./hebrewbooks";
-import { LANDING_HTML } from "./landing";
+import { LANDING_HTML, PRIVACY_HTML } from "./landing";
+
+// Origines navigateur autorisées à interroger /mcp (protection DNS rebinding).
+// Les clients MCP serveur-à-serveur n'envoient pas d'Origin et passent.
+const ALLOWED_ORIGINS = new Set([
+  "https://claude.ai",
+  "https://claude.com",
+  "https://app.claude.com",
+]);
 
 // ----------------------------------------------------------------------------
 // Garde-fou anti-abus — limiteur par IP, par isolate (best effort : chaque
@@ -181,6 +189,12 @@ export default {
       });
     }
 
+    if (request.method === "GET" && url.pathname === "/privacy") {
+      return new Response(PRIVACY_HTML, {
+        headers: { "Content-Type": "text/html; charset=utf-8", ...CORS_HEADERS },
+      });
+    }
+
     if (request.method === "GET" && url.pathname === "/health") {
       return jsonResponse({
         status: "ok",
@@ -200,6 +214,12 @@ export default {
     }
 
     if (pathname === "/mcp" || pathname === "/sse") {
+      // Validation de l'Origin (exigence sécurité MCP : anti DNS rebinding)
+      const origin = request.headers.get("Origin");
+      if (origin && !ALLOWED_ORIGINS.has(origin)) {
+        return jsonResponse({ error: "Origin non autorisée" }, 403);
+      }
+
       const authError = checkAuth(request, env, urlToken);
       if (authError) {
         return jsonResponse({ error: authError }, 401, {
