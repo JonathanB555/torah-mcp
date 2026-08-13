@@ -20,6 +20,7 @@ import {
   getHebrewbooksPrompt,
 } from "./hebrewbooks";
 import { LANDING_HTML, PRIVACY_HTML } from "./landing";
+import { ICON_PNG_BASE64 } from "./icon";
 
 // Origines navigateur autorisées à interroger /mcp (protection DNS rebinding).
 // Les clients MCP serveur-à-serveur n'envoient pas d'Origin et passent.
@@ -186,6 +187,13 @@ export default {
     if (request.method === "GET" && url.pathname === "/") {
       return new Response(LANDING_HTML, {
         headers: { "Content-Type": "text/html; charset=utf-8", ...CORS_HEADERS },
+      });
+    }
+
+    if (request.method === "GET" && (url.pathname === "/icon.png" || url.pathname === "/favicon.ico")) {
+      const bytes = Uint8Array.from(atob(ICON_PNG_BASE64), (c) => c.charCodeAt(0));
+      return new Response(bytes, {
+        headers: { "Content-Type": "image/png", "Cache-Control": "public, max-age=86400" },
       });
     }
 
