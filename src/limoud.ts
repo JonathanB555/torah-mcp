@@ -131,6 +131,50 @@ function aplatir(t: unknown): string[] {
 // Tools
 // ----------------------------------------------------------------------------
 
+
+// ----------------------------------------------------------------------------
+// Guide de paracha — façon AlHaTorah : étude structurée de la sidra
+// ----------------------------------------------------------------------------
+
+export const PARACHA_GUIDE_MD = `# Guide d'étude de la paracha
+
+Tu construis un guide d'étude structuré de la paracha, dans l'esprit des study
+guides d'AlHaTorah : nourri aux sources réelles, jamais de mémoire.
+
+## Démarche
+
+1. **Identifier la paracha** : utilise les données fournies par le tool
+   (paracha de la semaine, référence, haftara) ou celle que demande
+   l'utilisateur.
+2. **Lire avant d'écrire** : charge le texte par sections via \`sefaria_text\`
+   et les commentaires clés via \`sefaria_links\` (catégorie Commentary).
+   Chaque citation vient d'un texte chargé.
+
+## Structure du guide
+
+1. **En un regard** — 3 phrases : où on en est dans le récit, ce qui arrive,
+   pourquoi c'est charnière.
+2. **Fil de la paracha** — résumé aliya par aliya (7 aliyot + maftir), une à
+   deux phrases chacune, avec la référence exacte de chaque aliya.
+3. **Trois questions du texte** — des difficultés que le TEXTE pose (un mot
+   surprenant, une répétition, une contradiction apparente), chacune avec :
+   la question, ce que disent DEUX commentateurs qui divergent (Rachi vs
+   Ramban, Ibn Ezra vs Sforno…), cités depuis les textes chargés, et une
+   invitation à trancher.
+4. **La haftara et son écho** — pourquoi CETTE haftara pour CETTE paracha :
+   le lien thématique, avec les références.
+5. **Pour la table de Chabbat** — 3 questions ouvertes sans réponse fournie,
+   graduées (enfant / ado / adulte).
+6. **Pour aller plus loin** — liens Sefaria de la paracha et des commentaires,
+   et lecture sur hebrewbooks.org selon les règles du skill.
+
+## Règles
+
+- Jamais de citation de mémoire ; référence exacte pour chaque source.
+- Signaler les divergences plutôt que les lisser.
+- Adapter la profondeur au lecteur s'il le précise (débutant / avancé).
+- Terminer par : Chabbat chalom.`;
+
 const LIEU_PROPS = {
   ville: {
     type: "string",
@@ -143,6 +187,17 @@ const LIEU_PROPS = {
 };
 
 export const limoudTools: ToolDefinition[] = [
+  {
+    name: "guide_paracha",
+    title: "Guide d'étude de la paracha",
+    annotations: { title: "Guide d'étude de la paracha", readOnlyHint: true },
+    description:
+      "Charge la méthode du guide d'étude de la paracha (façon AlHaTorah : fil par aliya, " +
+      "questions du texte avec commentateurs en désaccord, haftara, questions pour la table " +
+      "de Chabbat) avec les données de la semaine (paracha, référence, haftara). À utiliser " +
+      "dès que l'utilisateur veut préparer ou étudier la paracha.",
+    inputSchema: { type: "object", properties: {}, required: [] },
+  },
   {
     name: "zmanim",
     title: "Zmanim et horaires de Chabbat",
@@ -234,6 +289,22 @@ export const limoudTools: ToolDefinition[] = [
 ];
 
 export const limoudHandlers: Record<string, ToolHandler> = {
+  guide_paracha: async (_args, env) => {
+    let semaine = "";
+    try {
+      const data = await getJson(`${env.SEFARIA_API_URL}/calendars`, "Sefaria calendars", 1800);
+      const items = (data.calendar_items || []) as any[];
+      const par = items.find((i) => i.title?.en === "Parashat Hashavua");
+      const haf = items.find((i) => i.title?.en === "Haftarah");
+      semaine =
+        `\n\n## Cette semaine\n\n` +
+        `- Paracha : ${par?.displayValue?.en ?? "?"} (${par?.displayValue?.he ?? ""}) — réf. ${par?.ref ?? "?"}\n` +
+        `- Haftara : ${haf?.displayValue?.en ?? "?"} — réf. ${haf?.ref ?? "?"}`;
+    } catch {
+      semaine = "\n\n(Calendrier momentanément indisponible — demander la paracha à étudier.)";
+    }
+    return PARACHA_GUIDE_MD + semaine;
+  },
   zmanim: async (args, _env) => {
     const lieu = resolveLieu(args);
     if (args?.chabbat) {

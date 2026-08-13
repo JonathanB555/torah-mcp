@@ -6,9 +6,9 @@
 import type { Env } from "./sefaria";
 
 const STYLE = `
-  :root { --ink:#1f2430; --muted:#5b6272; --accent:#0f5c8c; --paper:#faf9f6; --card:#ffffff; --line:#e5e2da; }
+  :root { --ink:#0a1c4d; --muted:#54648f; --accent:#0038b8; --paper:#f6f8fd; --card:#ffffff; --line:#d9e2f5; }
   * { box-sizing:border-box; margin:0; }
-  body { font:16px/1.65 -apple-system, "Segoe UI", Roboto, sans-serif; color:var(--ink); background:var(--paper); padding:3rem 1.25rem 4rem; }
+  body { font:16px/1.65 -apple-system, "Segoe UI", Roboto, sans-serif; color:var(--ink); background:var(--paper); padding:3rem 1.25rem 4rem; border-top:10px solid var(--accent); }
   main { max-width:680px; margin:0 auto; }
   h1 { font-size:2rem; line-height:1.2; margin-bottom:.5rem; }
   h2 { font-size:1.15rem; margin:2.2rem 0 .7rem; }
@@ -162,9 +162,9 @@ export const OUTILS_HTML = `<!doctype html>
 <title>Outils — Torah MCP</title>
 <meta name="description" content="Zmanim, dates hébraïques, guematria, nikoud et fiches sources — utilisables directement, sans installation.">
 <style>
-  :root { --paper:#faf7f0; --card:#ffffff; --ink:#221f1a; --muted:#6d675c; --line:#e6dfd0; --accent:#7a1f1f; --gold:#9a7b3f; }
+  :root { --paper:#f6f8fd; --card:#ffffff; --ink:#0a1c4d; --muted:#54648f; --line:#d9e2f5; --accent:#0038b8; --gold:#0038b8; }
   * { box-sizing:border-box; margin:0; }
-  body { font:16px/1.65 -apple-system, "Segoe UI", Roboto, sans-serif; color:var(--ink); background:var(--paper); padding:0 1.25rem 4rem; }
+  body { font:16px/1.65 -apple-system, "Segoe UI", Roboto, sans-serif; color:var(--ink); background:var(--paper); padding:0 1.25rem 4rem; border-top:10px solid var(--accent); }
   main { max-width:760px; margin:0 auto; }
   h1 { font-family:Georgia, serif; font-size:2rem; margin:2.4rem 0 .3rem; }
   .muted { color:var(--muted); }
@@ -172,12 +172,12 @@ export const OUTILS_HTML = `<!doctype html>
   .tool h2 { font-family:Georgia, serif; font-size:1.25rem; margin-bottom:.2rem; }
   .tool p.d { color:var(--muted); font-size:.9rem; margin-bottom:.8rem; }
   form { display:flex; gap:.6rem; flex-wrap:wrap; align-items:center; }
-  input, select, textarea { padding:.5rem .8rem; border:1px solid var(--line); border-radius:8px; font-size:.95rem; background:#fdfcf9; color:var(--ink); }
+  input, select, textarea { padding:.5rem .8rem; border:1px solid var(--line); border-radius:8px; font-size:.95rem; background:#fbfcff; color:var(--ink); }
   textarea { width:100%; min-height:70px; direction:rtl; font-family:Georgia, serif; font-size:1.1rem; }
   input[type=text] { flex:1; min-width:180px; }
   button { padding:.5rem 1.1rem; border:0; border-radius:8px; background:var(--accent); color:#fff; font-weight:600; cursor:pointer; }
   button.copy { background:transparent; border:1px solid var(--line); color:var(--ink); font-weight:400; font-size:.82rem; }
-  .out { margin-top:.9rem; font-size:.92rem; white-space:pre-wrap; background:#fbf9f4; border:1px dashed var(--line); border-radius:10px; padding:.8rem 1rem; display:none; }
+  .out { margin-top:.9rem; font-size:.92rem; white-space:pre-wrap; background:#f0f4ff; border:1px dashed var(--line); border-radius:10px; padding:.8rem 1rem; display:none; }
   .out.he { direction:rtl; font-family:Georgia, serif; font-size:1.15rem; white-space:normal; }
   .out table { border-collapse:collapse; width:100%; font-size:.88rem; }
   .out td, .out th { border-bottom:1px solid var(--line); padding:.3rem .5rem; text-align:left; }

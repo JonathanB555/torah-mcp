@@ -164,6 +164,12 @@ export function listHebrewbooksPrompts() {
       arguments: [],
     },
     {
+      name: "paracha",
+      description:
+        "Guide d'étude de la paracha de la semaine : fil par aliya, questions du texte avec commentateurs, haftara, questions pour la table de Chabbat.",
+      arguments: [],
+    },
+    {
       name: "havrouta",
       description:
         "Mode havrouta : Claude devient partenaire d'étude — il questionne, fait défendre les positions opposées, ne donne pas les réponses.",
@@ -177,6 +183,12 @@ export function getHebrewbooksPrompt(name: string) {
     return {
       description: "Méthode d'étude des sources juives.",
       messages: [{ role: "user", content: { type: "text", text: SKILL_MD } }],
+    };
+  }
+  if (name === "paracha") {
+    return {
+      description: "Guide d'étude de la paracha.",
+      messages: [{ role: "user", content: { type: "text", text: "Utilise le tool guide_paracha pour charger la méthode et les données de la semaine, puis construis le guide complet en suivant sa structure." } }],
     };
   }
   if (name === "havrouta") {

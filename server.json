@@ -6,7 +6,7 @@
     "url": "https://github.com/JonathanB555/torah-mcp",
     "source": "github"
   },
-  "version": "1.5.0",
+  "version": "1.7.0",
   "remotes": [
     {
       "type": "streamable-http",
