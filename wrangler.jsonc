@@ -1,0 +1,30 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "torah-mcp",
+	"main": "src/index.ts",
+	"compatibility_date": "2026-05-07",
+	"compatibility_flags": ["nodejs_compat"],
+	"observability": { "enabled": true },
+	"upload_source_maps": true,
+
+	// Servi sur torah-mcp.<compte>.workers.dev (pas de domaine custom)
+	"workers_dev": true,
+
+	// Bundle du SKILL.md hebrewbooks en import texte
+	"rules": [
+		{ "type": "Text", "globs": ["**/*.md"], "fallthrough": true }
+	],
+
+	"vars": {
+		"SERVER_NAME": "torah-mcp",
+		"SERVER_VERSION": "1.0.0",
+		"SEFARIA_API_URL": "https://www.sefaria.org/api"
+	}
+
+	// Secret optionnel :
+	//   BEARER_TOKENS — liste de tokens séparés par des virgules. Absent = accès
+	//   public (le serveur ne proxifie que des API publiques, sans clé).
+	//   Le poser transforme le serveur en accès sur invitation :
+	//   un token par ami, URL https://…workers.dev/<token>/mcp, révocation en
+	//   retirant le token de la liste.
+}
