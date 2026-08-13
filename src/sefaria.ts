@@ -9,6 +9,9 @@ export interface Env {
   SERVER_VERSION: string;
   SEFARIA_API_URL: string;
   BEARER_TOKENS?: string;
+  /** Clé API HebrewBooks (accordée sur demande à developers@hebrewbooks.org). */
+  HEBREWBOOKS_API_KEY?: string;
+  HEBREWBOOKS_API_URL?: string;
 }
 
 export interface ToolDefinition {

@@ -1,10 +1,16 @@
 # Torah MCP
 
-**The Sefaria library inside Claude** — Tanakh, Talmud, Mishneh Torah, Shulchan
-Arukh, responsa, and daily study calendars, served over the
-[Model Context Protocol](https://modelcontextprotocol.io). Answers to halachic
-and textual questions get grounded in the actual sources — exact quotes,
-verifiable references, linked commentaries — instead of model memory.
+**A source discipline for Claude** — never quote Torah from model memory.
+Before answering any religious question, Claude loads a bundled study method
+that forces it to read the actual texts (Sefaria API), quote exactly, flag
+divergent opinions, and point to [hebrewbooks.org](https://hebrewbooks.org)
+for further study — never fabricating a reference. A HebrewBooks catalog
+search (~65,000 seforim) completes the loop.
+
+Pairs ideally with [Sefaria's official MCP](https://developers.sefaria.org/docs/the-sefaria-mcp)
+(`https://mcp.sefaria.org/sse`) — install both: the official server for deep
+library access (14 tools), Torah MCP for the citation discipline, the study
+method and HebrewBooks.
 
 Free, no account, no data collected. Hosted instance:
 
@@ -29,11 +35,12 @@ claude mcp add --transport http torah https://torah-mcp.com/mcp
 
 | Tool | Purpose |
 |---|---|
+| `hebrewbooks_skill` | **The core**: the study method loaded before answering any religious question — sources actually read, exact quotes, [hebrewbooks.org](https://hebrewbooks.org) reading links |
+| `hebrewbooks_search` | HebrewBooks catalog search (~65,000 scanned seforim) by title/author via their official API — requires a `HEBREWBOOKS_API_KEY` (granted on request: developers@hebrewbooks.org) |
 | `sefaria_text` | Text of any reference (Hebrew + translation): `Berakhot 2a`, `Shulchan Arukh, Orach Chayim 1:1`… |
 | `sefaria_links` | Linked commentaries and sources (Rashi, Tosafot, midrash, halakhah…), filterable by category |
 | `sefaria_search` | Full-text search across the whole library (Hebrew or English) |
 | `sefaria_calendar` | Parashat hashavua, haftarah, daf yomi, daily Rambam… |
-| `hebrewbooks_skill` | The study method: answer religious questions from texts actually read (never from memory), with [hebrewbooks.org](https://hebrewbooks.org) links for further reading |
 
 The server also ships an `instructions` block (loaded by MCP clients at
 initialize) telling the model to load the skill before answering any religious

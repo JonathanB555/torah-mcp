@@ -1,12 +1,12 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
   "name": "io.github.JonathanB555/torah-mcp",
-  "description": "Sefaria in Claude: Tanakh, Talmud, halacha, responsa - answers grounded in the actual texts",
+  "description": "Source discipline for Torah study in Claude: read the real texts, quote exactly, never fabricate",
   "repository": {
     "url": "https://github.com/JonathanB555/torah-mcp",
     "source": "github"
   },
-  "version": "1.2.0",
+  "version": "1.3.0",
   "remotes": [
     {
       "type": "streamable-http",

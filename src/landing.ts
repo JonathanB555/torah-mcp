@@ -66,10 +66,17 @@ export const LANDING_HTML = `<!doctype html>
 <body>
 <main>
   <h1>Torah MCP</h1>
-  <p class="muted">La bibliothèque Sefaria — Tanakh, Talmud, Michné Torah, Choulhan Aroukh, responsa — directement dans Claude. Gratuit, sans compte, sans collecte de données.</p>
+  <p class="muted">La discipline des sources pour Claude : jamais de citation de mémoire. Textes lus via Sefaria, catalogue HebrewBooks, et une méthode d'étude embarquée. Gratuit, sans compte, sans collecte de données.</p>
 
   <h2>Ce que ça change</h2>
-  <p>Quand vous posez une question de halakha ou de limoud, Claude va <em>lire les textes réels</em> (via l'API publique de Sefaria) au lieu de répondre de mémoire : citation exacte, référence vérifiable, commentaires liés (Rachi, Tossafot…), et liens <a href="https://hebrewbooks.org">hebrewbooks.org</a> pour étudier sur la page.</p>
+  <p>Les assistants IA répondent aux questions de halakha « de mémoire » — avec le risque de citations approximatives ou inventées. Torah MCP impose une <strong>méthode</strong> : avant toute réponse religieuse, Claude charge une discipline d'étude qui l'oblige à lire le texte réel (via l'API publique de Sefaria), à citer exactement, à signaler les divergences (rishonim/aharonim, ashkénaze/séfarade), et à donner les liens <a href="https://hebrewbooks.org">hebrewbooks.org</a> pour étudier sur la page — sans jamais fabriquer une référence.</p>
+
+  <h2>Le duo idéal : avec le MCP officiel de Sefaria</h2>
+  <div class="card">
+    <p>Sefaria publie son propre serveur MCP, excellent pour l'accès en profondeur à la bibliothèque (14 outils : dictionnaires, manuscrits, recherche par livre…). Installez les deux — l'officiel pour la profondeur, Torah MCP pour la discipline de citation, la méthode et HebrewBooks :</p>
+    <span class="url">https://mcp.sefaria.org/sse</span>
+    <p class="muted"><a href="https://developers.sefaria.org/docs/the-sefaria-mcp">Documentation du MCP officiel Sefaria</a></p>
+  </div>
 
   <h2>Installation — claude.ai (2 minutes)</h2>
   <div class="card">
@@ -89,16 +96,17 @@ export const LANDING_HTML = `<!doctype html>
 
   <h2>Les outils</h2>
   <ul>
+    <li><code>hebrewbooks_skill</code> — <strong>le cœur</strong> : la méthode d'étude, chargée avant toute réponse religieuse</li>
+    <li><code>hebrewbooks_search</code> — recherche dans le catalogue HebrewBooks (~65 000 seforim), liens de lecture vérifiés</li>
     <li><code>sefaria_text</code> — le texte d'une référence, hébreu et traduction</li>
     <li><code>sefaria_links</code> — commentaires et textes liés, par catégorie</li>
     <li><code>sefaria_search</code> — recherche dans toute la bibliothèque</li>
     <li><code>sefaria_calendar</code> — paracha, daf yomi, Rambam quotidien</li>
-    <li><code>hebrewbooks_skill</code> — la méthode : répondre depuis les sources lues, jamais de mémoire</li>
   </ul>
 
   <section class="en">
     <h2>English</h2>
-    <p>Free MCP server that puts the Sefaria library (Tanakh, Talmud, Shulchan Arukh, responsa, study calendars) inside Claude. Answers get grounded in the actual texts — exact quotes, verifiable references, linked commentaries — instead of model memory.</p>
+    <p>Torah MCP gives Claude a source discipline: before answering any religious question it loads a study method that forces reading the actual texts (Sefaria API), quoting exactly, flagging divergent opinions, and pointing to hebrewbooks.org for further study — never fabricating a reference. Pairs ideally with <a href="https://developers.sefaria.org/docs/the-sefaria-mcp">Sefaria's official MCP</a> for deep library access.</p>
     <p><strong>Install:</strong> claude.ai → Settings → Connectors → Add custom connector → paste the URL above. No account, no data collected.</p>
   </section>
 
