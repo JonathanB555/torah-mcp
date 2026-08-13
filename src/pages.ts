@@ -59,6 +59,14 @@ export async function renderDaily(env: Env): Promise<string> {
 <title>Le limoud du jour — Torah MCP</title>
 <meta name="description" content="Paracha, daf yomi, Rambam quotidien et tous les cycles d'étude du jour, avec liens directs vers les textes.">
 <style>${STYLE}</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NG6P5HPH9K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NG6P5HPH9K');
+</script>
 </head>
 <body>
 <main>
@@ -88,6 +96,14 @@ export const LANDING_HE = `<!doctype html>
 <title>Torah MCP — לימוד עם מקורות אמיתיים ב-Claude</title>
 <meta name="description" content="שרת MCP חינמי: משמעת מקורות ל-Claude — קריאת הטקסטים האמיתיים דרך ספריא, קטלוג HebrewBooks, זמנים וגימטריה. בלי חשבון, בלי איסוף נתונים.">
 <style>${STYLE}</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NG6P5HPH9K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NG6P5HPH9K');
+</script>
 </head>
 <body>
 <main>
@@ -169,6 +185,14 @@ export const OUTILS_HTML = `<!doctype html>
   .back { display:inline-block; margin-top:1.6rem; color:var(--muted); text-decoration:none; font-size:.9rem; }
   nav.top { padding:1rem 0 0; font-size:.9rem; }
 </style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NG6P5HPH9K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NG6P5HPH9K');
+</script>
 </head>
 <body>
 <main>

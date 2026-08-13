@@ -15,11 +15,19 @@ export const PRIVACY_HTML = `<!doctype html>
   h1 { font-size:1.6rem; margin-bottom:1rem; } h2 { font-size:1.1rem; margin:1.6rem 0 .5rem; }
   a { color:#0f5c8c; }
 </style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NG6P5HPH9K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NG6P5HPH9K');
+</script>
 </head>
 <body>
 <main>
   <h1>Confidentialité — Torah MCP</h1>
-  <p>Ce serveur ne collecte, ne stocke et ne partage aucune donnée personnelle.
+  <p>Le service MCP ne collecte, ne stocke et ne partage aucune donnée personnelle.
   Il ne demande aucun compte, ne dépose aucun cookie, et ne conserve aucun
   historique des questions posées. Les requêtes transitent vers l'API publique
   de <a href="https://www.sefaria.org">Sefaria</a> pour récupérer les textes
@@ -32,6 +40,21 @@ export const PRIVACY_HTML = `<!doctype html>
   <a href="https://www.sefaria.org">Sefaria</a> API to fetch the requested
   texts; Cloudflare's infrastructure produces short-lived operational logs
   (IP address, timestamp) used solely for security and rate limiting.</p>
+  <h2>Mesure d'audience du site web</h2>
+  <p>Les pages de ce site (torah-mcp.com) utilisent Google Analytics 4 pour
+  mesurer la fréquentation de façon agrégée (pages vues, provenance). Cela
+  concerne uniquement la consultation du site dans un navigateur.
+  <strong>Le connecteur MCP lui-même n'envoie rien à Google Analytics</strong> :
+  aucune donnée d'usage dans Claude ou tout autre assistant n'est mesurée, et
+  le visualiseur de daf intégré à Claude ne charge aucun traceur.
+  Voir les <a href="https://policies.google.com/privacy">règles de
+  confidentialité de Google</a>.</p>
+  <h2>Website analytics — English</h2>
+  <p>The website pages (torah-mcp.com) use Google Analytics 4 for aggregate
+  traffic measurement (page views, referrers) — browser visits only.
+  <strong>The MCP connector itself sends nothing to Google Analytics</strong>:
+  no usage inside Claude or any assistant is measured, and the in-Claude daf
+  viewer loads no tracker.</p>
   <p>Contact : <a href="https://github.com/JonathanB555/torah-mcp/issues">github.com/JonathanB555/torah-mcp/issues</a></p>
 </main>
 </body>
@@ -112,6 +135,14 @@ export const LANDING_HTML = `<!doctype html>
   footer { border-top:1px solid var(--line); margin-top:3rem; padding-top:1.4rem; font-size:.85rem; color:var(--muted); }
   footer .links { margin-bottom:.8rem; }
 </style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NG6P5HPH9K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NG6P5HPH9K');
+</script>
 </head>
 <body>
 <nav><div class="in">
@@ -284,6 +315,14 @@ export const INSTALL_HTML = `<!doctype html>
   a { color:var(--accent); }
   .back { display:inline-block; margin-top:1.6rem; color:var(--muted); text-decoration:none; font-size:.9rem; }
 </style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NG6P5HPH9K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NG6P5HPH9K');
+</script>
 </head>
 <body>
 <main>

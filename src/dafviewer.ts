@@ -276,6 +276,15 @@ export const DAF_VIEWER_HTML = `<!doctype html>
   });
   var standalone = (window.parent === window);
   if (standalone) {
+    // Mesure d'audience uniquement sur le site web — jamais dans un hôte MCP.
+    var ga = document.createElement("script");
+    ga.async = true;
+    ga.src = "https://www.googletagmanager.com/gtag/js?id=G-NG6P5HPH9K";
+    document.head.appendChild(ga);
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag("js", new Date());
+    gtag("config", "G-NG6P5HPH9K");
     // Mode web : la page est servie sur torah-mcp.com/daf — on interroge l'API.
     document.getElementById("topbar").style.display = "block";
     if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) applyTheme("dark");
