@@ -66,7 +66,7 @@ export const LANDING_HTML = `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Torah MCP — la discipline des sources pour Claude</title>
-<meta name="description" content="Claude ne citera plus jamais la Torah de mémoire. Méthode d'étude, havrouta, guide de paracha, page de Vilna interactive, Sefaria, HebrewBooks, zmanim, guematria. Gratuit, sans compte.">
+<meta name="description" content="Claude cite la Torah depuis les textes, plus jamais de mémoire. Méthode d'étude, havrouta, guide de paracha, page de Vilna interactive, Sefaria, HebrewBooks, zmanim, guematria. Gratuit, sans compte.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Frank+Ruhl+Libre:wght@300;400;700&display=swap" rel="stylesheet">
@@ -202,7 +202,7 @@ export const LANDING_HTML = `<!doctype html>
 
 <header class="cover">
   <div class="he-giant" aria-hidden="true">מקור</div>
-  <h1 class="fr rv">Claude ne citera <strong>plus jamais</strong> la Torah <span class="no">de&nbsp;mémoire</span>.</h1>
+  <h1 class="fr rv">Claude cite la Torah <span class="no">de&nbsp;mémoire</span> <strong>depuis les textes</strong>.</h1>
   <p class="deck rv d1">Torah MCP impose une discipline des sources à votre assistant : chaque réponse de halakha ou de limoud est lue dans le texte réel, citée exactement, reliée à ses commentateurs.</p>
   <div class="acts rv d2">
     <a class="lnk" href="/install">Installer — 2 minutes</a>
