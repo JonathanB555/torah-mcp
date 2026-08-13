@@ -9,7 +9,7 @@ verifiable references, linked commentaries — instead of model memory.
 Free, no account, no data collected. Hosted instance:
 
 ```
-https://torah-mcp.jonathan-ef2.workers.dev/mcp
+https://torah-mcp.com/mcp
 ```
 
 ## Install
@@ -20,7 +20,7 @@ above. Works on mobile too once added.
 **Claude Code**
 
 ```bash
-claude mcp add --transport http torah https://torah-mcp.jonathan-ef2.workers.dev/mcp
+claude mcp add --transport http torah https://torah-mcp.com/mcp
 ```
 
 **Any MCP client** — streamable HTTP transport at the same URL.

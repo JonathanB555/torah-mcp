@@ -7,8 +7,14 @@
 	"observability": { "enabled": true },
 	"upload_source_maps": true,
 
-	// Servi sur torah-mcp.<compte>.workers.dev (pas de domaine custom)
+	// URL canonique : torah-mcp.com (domaine custom Cloudflare). L'adresse
+	// torah-mcp.<compte>.workers.dev reste active en alias — des connecteurs
+	// installés pointent dessus, ne pas la couper.
 	"workers_dev": true,
+	"routes": [
+		{ "pattern": "torah-mcp.com", "custom_domain": true },
+		{ "pattern": "www.torah-mcp.com", "custom_domain": true }
+	],
 
 	// Bundle du SKILL.md hebrewbooks en import texte
 	"rules": [
@@ -17,7 +23,7 @@
 
 	"vars": {
 		"SERVER_NAME": "torah-mcp",
-		"SERVER_VERSION": "1.1.0",
+		"SERVER_VERSION": "1.2.0",
 		"SEFARIA_API_URL": "https://www.sefaria.org/api"
 	}
 

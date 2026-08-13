@@ -78,13 +78,13 @@ export const LANDING_HTML = `<!doctype html>
       <li>Cliquez sur <strong>Add custom connector</strong></li>
       <li>Collez cette URL :</li>
     </ol>
-    <span class="url">https://torah-mcp.jonathan-ef2.workers.dev/mcp</span>
+    <span class="url">https://torah-mcp.com/mcp</span>
     <p class="muted">Nommez-le « Torah », validez. Fonctionne ensuite aussi dans l'app mobile.</p>
   </div>
 
   <h2>Installation — Claude Code</h2>
   <div class="card">
-    <span class="url">claude mcp add --transport http torah https://torah-mcp.jonathan-ef2.workers.dev/mcp</span>
+    <span class="url">claude mcp add --transport http torah https://torah-mcp.com/mcp</span>
   </div>
 
   <h2>Les outils</h2>

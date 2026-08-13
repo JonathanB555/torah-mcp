@@ -6,11 +6,11 @@
     "url": "https://github.com/JonathanB555/torah-mcp",
     "source": "github"
   },
-  "version": "1.1.0",
+  "version": "1.2.0",
   "remotes": [
     {
       "type": "streamable-http",
-      "url": "https://torah-mcp.jonathan-ef2.workers.dev/mcp"
+      "url": "https://torah-mcp.com/mcp"
     }
   ]
 }
