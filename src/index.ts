@@ -20,6 +20,8 @@ import {
   getHebrewbooksPrompt,
 } from "./hebrewbooks";
 import { LANDING_HTML, PRIVACY_HTML } from "./landing";
+import { limoudTools, limoudHandlers } from "./limoud";
+import { renderDaily, LANDING_HE } from "./pages";
 import { ICON_PNG_BASE64 } from "./icon";
 
 // Origines navigateur autorisées à interroger /mcp (protection DNS rebinding).
@@ -59,8 +61,8 @@ interface JsonRpcRequest {
   params?: any;
 }
 
-const allTools = [...sefariaTools, ...hebrewbooksTools];
-const allHandlers = { ...sefariaHandlers, ...hebrewbooksHandlers };
+const allTools = [...sefariaTools, ...hebrewbooksTools, ...limoudTools];
+const allHandlers = { ...sefariaHandlers, ...hebrewbooksHandlers, ...limoudHandlers };
 
 const CORS_HEADERS: Record<string, string> = {
   "Access-Control-Allow-Origin": "*",
@@ -118,7 +120,18 @@ function checkAuth(request: Request, env: Env, urlToken?: string): string | null
   return "Accès sur invitation : token requis (Authorization: Bearer … ou /<token>/mcp).";
 }
 
-const SERVER_INSTRUCTIONS = HEBREWBOOKS_INSTRUCTIONS;
+const SERVER_INSTRUCTIONS = `${HEBREWBOOKS_INSTRUCTIONS}
+
+# Limoud au quotidien
+
+- \`havrouta_mode\` : quand l'utilisateur veut ÉTUDIER un texte (pas juste une
+  réponse), charger ce mode — Claude questionne et fait défendre les positions.
+- \`zmanim\` (zmanim du jour, horaires de Chabbat), \`date_hebraique\`
+  (conversion civile/hébraïque) : toujours utiliser ces tools plutôt que la
+  mémoire pour tout horaire ou date.
+- \`gematria\` (calcul local exact), \`nikoud\` (vocalisation Dicta),
+  \`fiche_source\` (fiche partageable WhatsApp d'une référence lue via Sefaria),
+  \`hebrewbooks_search\` (catalogue ~65k seforim).`;
 
 async function handleRpc(req: JsonRpcRequest, env: Env) {
   const id = req.id ?? null;
@@ -194,6 +207,18 @@ export default {
       const bytes = Uint8Array.from(atob(ICON_PNG_BASE64), (c) => c.charCodeAt(0));
       return new Response(bytes, {
         headers: { "Content-Type": "image/png", "Cache-Control": "public, max-age=86400" },
+      });
+    }
+
+    if (request.method === "GET" && url.pathname === "/he") {
+      return new Response(LANDING_HE, {
+        headers: { "Content-Type": "text/html; charset=utf-8", ...CORS_HEADERS },
+      });
+    }
+
+    if (request.method === "GET" && url.pathname === "/daily") {
+      return new Response(await renderDaily(env), {
+        headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=900", ...CORS_HEADERS },
       });
     }
 

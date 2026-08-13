@@ -101,7 +101,10 @@ export const LANDING_HTML = `<!doctype html>
     <li><code>sefaria_text</code> — le texte d'une référence, hébreu et traduction</li>
     <li><code>sefaria_links</code> — commentaires et textes liés, par catégorie</li>
     <li><code>sefaria_search</code> — recherche dans toute la bibliothèque</li>
-    <li><code>sefaria_calendar</code> — paracha, daf yomi, Rambam quotidien</li>
+    <li><code>sefaria_calendar</code> — paracha, daf yomi, Rambam quotidien — voir aussi <a href="/daily">le limoud du jour</a></li>
+    <li><code>havrouta_mode</code> — Claude devient partenaire d'étude : il questionne et fait défendre les positions, au lieu de répondre</li>
+    <li><code>zmanim</code>, <code>date_hebraique</code> — zmanim, horaires de Chabbat, dates hébraïques (Hebcal)</li>
+    <li><code>gematria</code>, <code>nikoud</code>, <code>fiche_source</code> — guematria exacte, vocalisation (Dicta), fiche source prête à partager</li>
   </ul>
 
   <section class="en">
@@ -112,7 +115,7 @@ export const LANDING_HTML = `<!doctype html>
 
   <footer>
     <p><a href="https://www.sefaria.org" aria-label="Powered by Sefaria"><img src="https://files.readme.io/dcee0a8-image.png" alt="Powered by Sefaria" width="139" height="72" style="display:block;margin-bottom:.7rem"></a>
-    Textes servis par l'API publique de <a href="https://www.sefaria.org">Sefaria</a> — licences indiquées dans chaque réponse. Ce projet est indépendant de Sefaria. Code source : <a href="https://github.com/JonathanB555/torah-mcp">github.com/JonathanB555/torah-mcp</a> (MIT).</p>
+    <a href="/daily">Le limoud du jour</a> · <a href="/he">עברית</a><br>Textes servis par l'API publique de <a href="https://www.sefaria.org">Sefaria</a> — licences indiquées dans chaque réponse. Ce projet est indépendant de Sefaria. Code source : <a href="https://github.com/JonathanB555/torah-mcp">github.com/JonathanB555/torah-mcp</a> (MIT).</p>
   </footer>
 </main>
 </body>

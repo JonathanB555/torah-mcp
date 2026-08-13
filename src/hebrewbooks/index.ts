@@ -94,6 +94,17 @@ export const hebrewbooksTools: ToolDefinition[] = [
     inputSchema: { type: "object", properties: {}, required: [] },
   },
   {
+    name: "havrouta_mode",
+    title: "Mode havrouta",
+    annotations: { title: "Mode havrouta", readOnlyHint: true },
+    description:
+      "Charge le mode havrouta : Claude devient partenaire d'étude actif — il pose les " +
+      "questions du texte, fait défendre les positions opposées (Rachi vs Tossafot…), " +
+      "aide à formuler les kouchiot, au lieu de donner les réponses. À charger quand " +
+      "l'utilisateur veut ÉTUDIER un texte, pas juste obtenir une réponse.",
+    inputSchema: { type: "object", properties: {}, required: [] },
+  },
+  {
     name: "hebrewbooks_search",
     title: "HebrewBooks — recherche catalogue",
     annotations: { title: "HebrewBooks — recherche catalogue", readOnlyHint: true },
@@ -116,7 +127,33 @@ export const hebrewbooksTools: ToolDefinition[] = [
 export const hebrewbooksHandlers: Record<string, ToolHandler> = {
   hebrewbooks_skill: async () => SKILL_MD,
   hebrewbooks_search: async (args, env) => hebrewbooksSearch(env, args),
+  havrouta_mode: async () => HAVROUTA_MD,
 };
+
+export const HAVROUTA_MD = `# Mode havrouta
+
+Tu es un partenaire de havrouta, pas un professeur qui donne les réponses.
+L'utilisateur veut étudier un texte AVEC toi. Discipline :
+
+1. **Le texte d'abord.** Charge le passage étudié via \`sefaria_text\` (et les
+   commentaires via \`sefaria_links\`). Cite toujours depuis le texte lu.
+2. **Questionne avant d'expliquer.** À chaque étape, pose UNE question qui
+   force la lecture attentive : « Pourquoi la michna dit-elle X et pas Y ? »,
+   « Quel mot du passouk gêne Rachi ici ? ». Attends la réponse.
+3. **Fais défendre les positions.** Quand deux avis s'opposent (Rachi/Tossafot,
+   Abaye/Rava, mahloket richonim), demande à l'utilisateur d'en défendre un,
+   puis attaque sa position avec les arguments de l'autre — sourcés.
+4. **Kouchiot bienvenues.** Si l'utilisateur soulève une difficulté, ne la
+   dissous pas trop vite : aide-le à la formuler précisément, cherche si un
+   commentateur la pose (\`sefaria_links\`), et compare sa réponse à la sienne.
+5. **Rythme.** Un segment à la fois. Résume ce qui est acquis avant d'avancer.
+   En fin de session, propose un récapitulatif structuré des chidouchim.
+6. **Règles du skill hebrewbooks-source** : jamais de citation de mémoire,
+   jamais de référence fabriquée, liens hebrewbooks.org pour l'étude sur la
+   page, et pour toute conclusion halakhique pratique : consulter un Rav.
+
+Commence par demander quel texte étudier (ou utilise \`sefaria_calendar\` pour
+proposer le daf du jour), charge-le, puis pose ta première question.`;
 
 export function listHebrewbooksPrompts() {
   return [
@@ -126,13 +163,27 @@ export function listHebrewbooksPrompts() {
         "Méthode d'étude des sources juives : réponses fondées sur les textes primaires (Sefaria + hebrewbooks.org).",
       arguments: [],
     },
+    {
+      name: "havrouta",
+      description:
+        "Mode havrouta : Claude devient partenaire d'étude — il questionne, fait défendre les positions opposées, ne donne pas les réponses.",
+      arguments: [],
+    },
   ];
 }
 
 export function getHebrewbooksPrompt(name: string) {
-  if (name !== "hebrewbooks") throw new Error(`Prompt inconnu : "${name}".`);
-  return {
-    description: "Méthode d'étude des sources juives.",
-    messages: [{ role: "user", content: { type: "text", text: SKILL_MD } }],
-  };
+  if (name === "hebrewbooks") {
+    return {
+      description: "Méthode d'étude des sources juives.",
+      messages: [{ role: "user", content: { type: "text", text: SKILL_MD } }],
+    };
+  }
+  if (name === "havrouta") {
+    return {
+      description: "Mode havrouta — partenaire d'étude.",
+      messages: [{ role: "user", content: { type: "text", text: HAVROUTA_MD } }],
+    };
+  }
+  throw new Error(`Prompt inconnu : "${name}".`);
 }
