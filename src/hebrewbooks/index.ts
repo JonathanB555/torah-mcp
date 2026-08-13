@@ -21,6 +21,8 @@ hebrewbooks.org pour la lecture des sources, comme le skill l'indique.`;
 export const hebrewbooksTools: ToolDefinition[] = [
   {
     name: "hebrewbooks_skill",
+    title: "Méthode d'étude des sources juives",
+    annotations: { readOnlyHint: true },
     description:
       "Charge le skill d'étude des sources juives : méthode pour répondre aux questions " +
       "religieuses (halakha, Talmud, Tanakh, responsa, hassidout, moussar) depuis les " +
