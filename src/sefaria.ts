@@ -19,8 +19,18 @@ export interface ToolDefinition {
 
 export type ToolHandler = (args: any, env: Env) => Promise<any>;
 
-async function getJson(url: string, label: string): Promise<any> {
-  const resp = await fetch(url, { headers: { Accept: "application/json" } });
+const USER_AGENT = "torah-mcp/1.0 (+https://github.com/JonathanB555/torah-mcp)";
+
+/**
+ * GET JSON avec cache edge Cloudflare — un même daf demandé cent fois ne
+ * coûte qu'un appel à Sefaria. TTL par type de ressource (les textes sont
+ * quasi immuables, les calendriers changent chaque jour).
+ */
+async function getJson(url: string, label: string, cacheTtl = 86400): Promise<any> {
+  const resp = await fetch(url, {
+    headers: { Accept: "application/json", "User-Agent": USER_AGENT },
+    cf: { cacheTtl, cacheEverything: true },
+  } as RequestInit);
   const text = await resp.text();
   if (!resp.ok) throw new Error(`${label} ${resp.status}: ${text.slice(0, 300)}`);
   return JSON.parse(text);
@@ -142,7 +152,7 @@ export const sefariaHandlers: Record<string, ToolHandler> = {
     const size = Math.min(Math.max(Number(args?.size) || 8, 1), 20);
     const resp = await fetch(`${env.SEFARIA_API_URL}/search-wrapper`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "User-Agent": USER_AGENT },
       body: JSON.stringify({ query, type: "text", size }),
     });
     const text = await resp.text();
@@ -164,7 +174,7 @@ export const sefariaHandlers: Record<string, ToolHandler> = {
           return `?year=${y}&month=${Number(m)}&day=${Number(d)}`;
         })()
       : "";
-    const data = await getJson(`${env.SEFARIA_API_URL}/calendars${params}`, "Sefaria calendars");
+    const data = await getJson(`${env.SEFARIA_API_URL}/calendars${params}`, "Sefaria calendars", 3600);
     return {
       date: data.date,
       items: (data.calendar_items || []).map((i: any) => ({

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
+  "name": "io.github.JonathanB555/torah-mcp",
+  "description": "Sefaria library in Claude: Tanakh, Talmud, Shulchan Arukh, responsa, study calendars - answers grounded in the actual texts",
+  "repository": {
+    "url": "https://github.com/JonathanB555/torah-mcp",
+    "source": "github"
+  },
+  "version": "1.1.0",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://torah-mcp.jonathan-ef2.workers.dev/mcp"
+    }
+  ]
+}

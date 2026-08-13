@@ -19,6 +19,29 @@ import {
   listHebrewbooksPrompts,
   getHebrewbooksPrompt,
 } from "./hebrewbooks";
+import { LANDING_HTML } from "./landing";
+
+// ----------------------------------------------------------------------------
+// Garde-fou anti-abus — limiteur par IP, par isolate (best effort : chaque
+// isolate a son compteur, mais un scraper mono-POP est efficacement freiné).
+// Le cache edge sur Sefaria fait le reste.
+// ----------------------------------------------------------------------------
+
+const RATE_LIMIT_PER_MINUTE = 60;
+const rateBuckets = new Map<string, { count: number; windowStart: number }>();
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const bucket = rateBuckets.get(ip);
+  if (!bucket || now - bucket.windowStart > 60_000) {
+    // Purge opportuniste pour borner la mémoire
+    if (rateBuckets.size > 10_000) rateBuckets.clear();
+    rateBuckets.set(ip, { count: 1, windowStart: now });
+    return false;
+  }
+  bucket.count += 1;
+  return bucket.count > RATE_LIMIT_PER_MINUTE;
+}
 
 interface JsonRpcRequest {
   jsonrpc: "2.0";
@@ -151,7 +174,14 @@ export default {
       return new Response(null, { status: 204, headers: CORS_HEADERS });
     }
 
-    if (request.method === "GET" && (url.pathname === "/" || url.pathname === "/health")) {
+    // Page d'accueil auto-suffisante (le lien partagé explique l'installation)
+    if (request.method === "GET" && url.pathname === "/") {
+      return new Response(LANDING_HTML, {
+        headers: { "Content-Type": "text/html; charset=utf-8", ...CORS_HEADERS },
+      });
+    }
+
+    if (request.method === "GET" && url.pathname === "/health") {
       return jsonResponse({
         status: "ok",
         server: { name: env.SERVER_NAME, version: env.SERVER_VERSION },
@@ -178,6 +208,14 @@ export default {
       }
 
       if (request.method === "POST") {
+        const ip = request.headers.get("CF-Connecting-IP") || "unknown";
+        if (isRateLimited(ip)) {
+          return jsonResponse(
+            { error: "Rate limit: 60 requêtes/minute. Réessayez dans un instant." },
+            429,
+            { "Retry-After": "30" }
+          );
+        }
         let body: JsonRpcRequest;
         try {
           body = await request.json();
