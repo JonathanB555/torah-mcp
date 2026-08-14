@@ -345,26 +345,11 @@ export const LANDING_HTML = `<!doctype html>
   Textes servis par l'API publique de Sefaria — licences indiquées dans chaque réponse. Vocalisation par le nakdan de Dicta, calendriers Hebcal. Projet indépendant de Sefaria et de hebrewbooks.org.</p>
 </footer>
 
-<script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
 <script>
 (function () {
   // Chorégraphie d'entrée (après chargement des polices)
   function go(){ document.body.classList.add("ready"); }
   if (document.fonts && document.fonts.ready) { document.fonts.ready.then(go); setTimeout(go, 900); } else { setTimeout(go, 120); }
-
-  // Défilement custom (Lenis) — sauf préférence de mouvement réduit
-  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (!reduced && window.Lenis) {
-    var lenis = new Lenis({ lerp: 0.16, wheelMultiplier: 1.35 });
-    function raf(t){ lenis.raf(t); requestAnimationFrame(raf); }
-    requestAnimationFrame(raf);
-    document.querySelectorAll('a[href^="#"]').forEach(function(a){
-      a.addEventListener("click", function(e){
-        var el = document.querySelector(a.getAttribute("href"));
-        if (el) { e.preventDefault(); lenis.scrollTo(el, { offset: -20 }); }
-      });
-    });
-  }
 
   // Révélations au défilement
   var io = new IntersectionObserver(function (es) {
