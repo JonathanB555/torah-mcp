@@ -348,7 +348,7 @@ export const LANDING_HTML = `<!doctype html>
     <a href="/daf">Le daf en ligne</a><a href="/outils">Outils</a><a href="/install">Installation</a><a href="/daily">Limoud du jour</a><a href="/he">עברית</a><a href="/privacy">Confidentialité</a><a href="https://github.com/JonathanB555/torah-mcp">GitHub</a>
   </div>
   <p><a href="https://www.sefaria.org" aria-label="Powered by Sefaria"><img src="https://files.readme.io/dcee0a8-image.png" alt="Powered by Sefaria" width="104" height="54" style="display:block;margin-bottom:.7rem"></a>
-  Textes servis par l'API publique de Sefaria — licences indiquées dans chaque réponse. Vocalisation par le nakdan de Dicta, calendriers Hebcal. Projet indépendant de Sefaria et de hebrewbooks.org.</p>
+  Textes servis par l'API publique de Sefaria — licences indiquées dans chaque réponse. Vocalisation par le nakdan de Dicta, calendriers Hebcal. Un projet personnel de Jonathan Bensaid — indépendant de Sefaria et de hebrewbooks.org.</p>
 </footer>
 
 <script>
@@ -467,6 +467,7 @@ export const INSTALL_HTML = `<!doctype html>
   </ul>
 
   <p style="margin-top:3rem"><a class="lnk" href="/">Retour à l'accueil</a></p>
+  <footer style="margin-top:2.5rem;font-size:.88rem;opacity:.65"><p>Un projet personnel de Jonathan Bensaid.</p></footer>
 </main>
 </body>
 </html>`;

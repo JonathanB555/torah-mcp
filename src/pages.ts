@@ -86,7 +86,7 @@ export async function renderDaily(env: Env): Promise<string> {
     <p>Ajoutez Torah MCP à claude.ai (Settings → Connectors → Add custom connector) et demandez « le daf du jour en havrouta » :</p>
     <span class="url">https://torah-mcp.com/mcp</span>
   </div>
-  <footer><p><a href="/">Accueil</a> · <a href="/he">עברית</a> · <a href="/privacy">Confidentialité</a></p></footer>
+  <footer><p><a href="/">Accueil</a> · <a href="/he">עברית</a> · <a href="/privacy">Confidentialité</a></p><p>Un projet personnel de Jonathan Bensaid.</p></footer>
 </main>
 </body>
 </html>`;
@@ -156,7 +156,7 @@ export const LANDING_HE = `<!doctype html>
 
   <footer>
     <p><a href="https://www.sefaria.org" aria-label="Powered by Sefaria"><img src="https://files.readme.io/dcee0a8-image.png" alt="Powered by Sefaria" width="139" height="72" style="display:block;margin-bottom:.7rem"></a>
-    הטקסטים מוגשים דרך ה-API הציבורי של ספריא — הרישיונות מצוינים בכל תשובה. הפרויקט עצמאי ואינו קשור לספריא. קוד מקור: <a href="https://github.com/JonathanB555/torah-mcp" dir="ltr">github.com/JonathanB555/torah-mcp</a> (MIT).</p>
+    הטקסטים מוגשים דרך ה-API הציבורי של ספריא — הרישיונות מצוינים בכל תשובה. נעשה בידי יונתן בן־סעיד. הפרויקט עצמאי ואינו קשור לספריא. קוד מקור: <a href="https://github.com/JonathanB555/torah-mcp" dir="ltr">github.com/JonathanB555/torah-mcp</a> (MIT).</p>
     <p><a href="/">Français</a> · <a href="/daily">הלימוד היומי</a> · <a href="/privacy">פרטיות</a></p>
   </footer>
 </main>
@@ -285,6 +285,7 @@ export const OUTILS_HTML = `<!doctype html>
   </div>
 
   <a class="back" href="/">← Retour à l'accueil</a>
+  <footer><p><a href="/">Accueil</a> · <a href="/he">עברית</a> · <a href="/privacy">Confidentialité</a></p><p>Un projet personnel de Jonathan Bensaid.</p></footer>
 </main>
 <script>
 (function () {
