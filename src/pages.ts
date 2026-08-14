@@ -61,6 +61,12 @@ export async function renderDaily(env: Env): Promise<string> {
 <title>Le limoud du jour — Torah MCP</title>
 <meta name="description" content="Paracha, daf yomi, Rambam quotidien et tous les cycles d'étude du jour, avec liens directs vers les textes.">
 <style>${STYLE}</style>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Torah MCP — la discipline des sources pour Claude">
+<meta property="og:description" content="Claude cite la Torah depuis les textes, plus jamais de mémoire. Méthode, havrouta, guide de paracha, daf interactif, zmanim, guematria. Gratuit.">
+<meta property="og:image" content="https://torah-mcp.com/og.png">
+<meta property="og:url" content="https://torah-mcp.com/">
+<meta name="twitter:card" content="summary_large_image">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-NG6P5HPH9K"></script>
 <script>
@@ -98,6 +104,12 @@ export const LANDING_HE = `<!doctype html>
 <title>Torah MCP — לימוד עם מקורות אמיתיים ב-Claude</title>
 <meta name="description" content="שרת MCP חינמי: משמעת מקורות ל-Claude — קריאת הטקסטים האמיתיים דרך ספריא, קטלוג HebrewBooks, זמנים וגימטריה. בלי חשבון, בלי איסוף נתונים.">
 <style>${STYLE}</style>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Torah MCP — la discipline des sources pour Claude">
+<meta property="og:description" content="Claude cite la Torah depuis les textes, plus jamais de mémoire. Méthode, havrouta, guide de paracha, daf interactif, zmanim, guematria. Gratuit.">
+<meta property="og:image" content="https://torah-mcp.com/og.png">
+<meta property="og:url" content="https://torah-mcp.com/">
+<meta name="twitter:card" content="summary_large_image">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-NG6P5HPH9K"></script>
 <script>
@@ -192,6 +204,12 @@ export const OUTILS_HTML = `<!doctype html>
   .back { display:inline-block; margin-top:1.6rem; color:var(--muted); text-decoration:none; font-size:.9rem; }
   nav.top { padding:1rem 0 0; font-size:.9rem; }
 </style>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Torah MCP — la discipline des sources pour Claude">
+<meta property="og:description" content="Claude cite la Torah depuis les textes, plus jamais de mémoire. Méthode, havrouta, guide de paracha, daf interactif, zmanim, guematria. Gratuit.">
+<meta property="og:image" content="https://torah-mcp.com/og.png">
+<meta property="og:url" content="https://torah-mcp.com/">
+<meta name="twitter:card" content="summary_large_image">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-NG6P5HPH9K"></script>
 <script>

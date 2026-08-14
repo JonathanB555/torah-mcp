@@ -15,6 +15,12 @@ export const PRIVACY_HTML = `<!doctype html>
   h1 { font-size:1.6rem; margin-bottom:1rem; } h2 { font-size:1.1rem; margin:1.6rem 0 .5rem; }
   a { color:#0038b8; }
 </style>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Torah MCP — la discipline des sources pour Claude">
+<meta property="og:description" content="Claude cite la Torah depuis les textes, plus jamais de mémoire. Méthode, havrouta, guide de paracha, daf interactif, zmanim, guematria. Gratuit.">
+<meta property="og:image" content="https://torah-mcp.com/og.png">
+<meta property="og:url" content="https://torah-mcp.com/">
+<meta name="twitter:card" content="summary_large_image">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-NG6P5HPH9K"></script>
 <script>
@@ -70,6 +76,12 @@ export const LANDING_HTML = `<!doctype html>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Frank+Ruhl+Libre:wght@300;400;700&display=swap" rel="stylesheet">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Torah MCP — la discipline des sources pour Claude">
+<meta property="og:description" content="Claude cite la Torah depuis les textes, plus jamais de mémoire. Méthode, havrouta, guide de paracha, daf interactif, zmanim, guematria. Gratuit.">
+<meta property="og:image" content="https://torah-mcp.com/og.png">
+<meta property="og:url" content="https://torah-mcp.com/">
+<meta name="twitter:card" content="summary_large_image">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-NG6P5HPH9K"></script>
 <script>
@@ -101,7 +113,8 @@ export const LANDING_HTML = `<!doctype html>
   /* ---- nav : une ligne, rien d'autre ---- */
   nav { position:fixed; top:0; left:0; right:0; z-index:20; display:flex; justify-content:space-between; align-items:baseline;
         padding:1.1rem 4vw; mix-blend-mode:multiply; }
-  nav .wm { font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.05rem; text-decoration:none; letter-spacing:.01em; }
+  nav .wm { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:1.05rem; text-decoration:none; letter-spacing:.01em; }
+  nav .wm b { font-weight:600; border-bottom:3px solid var(--ink); padding-bottom:1px; }
   nav .r { display:flex; gap:1.6rem; font-size:.92rem; }
   nav .r a { text-decoration:none; }
   nav .r a:hover { text-decoration:underline; }
@@ -214,7 +227,7 @@ export const LANDING_HTML = `<!doctype html>
 <body>
 
 <nav>
-  <a class="wm" href="/">Torah&nbsp;MCP</a>
+  <a class="wm" href="/"><b>Torah</b>&nbsp;MCP</a>
   <div class="r">
     <a href="#daf-a" class="hide-m">Le manifeste</a>
     <a href="#mafteah" class="hide-m">L'index</a>
@@ -342,7 +355,7 @@ export const LANDING_HTML = `<!doctype html>
   // Défilement custom (Lenis) — sauf préférence de mouvement réduit
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (!reduced && window.Lenis) {
-    var lenis = new Lenis({ lerp: 0.09, wheelMultiplier: 1.0 });
+    var lenis = new Lenis({ lerp: 0.16, wheelMultiplier: 1.35 });
     function raf(t){ lenis.raf(t); requestAnimationFrame(raf); }
     requestAnimationFrame(raf);
     document.querySelectorAll('a[href^="#"]').forEach(function(a){
@@ -388,6 +401,12 @@ export const INSTALL_HTML = `<!doctype html>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Frank+Ruhl+Libre:wght@400;700&display=swap" rel="stylesheet">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Torah MCP — la discipline des sources pour Claude">
+<meta property="og:description" content="Claude cite la Torah depuis les textes, plus jamais de mémoire. Méthode, havrouta, guide de paracha, daf interactif, zmanim, guematria. Gratuit.">
+<meta property="og:image" content="https://torah-mcp.com/og.png">
+<meta property="og:url" content="https://torah-mcp.com/">
+<meta name="twitter:card" content="summary_large_image">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-NG6P5HPH9K"></script>
 <script>
@@ -404,7 +423,8 @@ export const INSTALL_HTML = `<!doctype html>
   main { max-width:820px; margin:0 auto; }
   a { color:var(--ink); }
   nav { display:flex; justify-content:space-between; align-items:baseline; padding:1.1rem 0; }
-  nav .wm { font-family:"Fraunces", Georgia, serif; font-weight:600; text-decoration:none; }
+  nav .wm { font-family:"Fraunces", Georgia, serif; font-weight:300; text-decoration:none; }
+  nav .wm b { font-weight:600; border-bottom:3px solid var(--ink); padding-bottom:1px; }
   nav a.b { text-decoration:none; } nav a.b:hover { text-decoration:underline; }
   h1 { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(2.2rem,5vw,3.6rem); line-height:1.05; letter-spacing:-.02em; margin:3.5rem 0 .8rem; }
   .amud-head { display:flex; align-items:baseline; gap:1.2rem; margin:3.2rem 0 1.2rem; }
@@ -423,7 +443,7 @@ export const INSTALL_HTML = `<!doctype html>
 </head>
 <body>
 <main>
-  <nav><a class="wm" href="/">Torah&nbsp;MCP</a><a class="b" href="/">← l'accueil</a></nav>
+  <nav><a class="wm" href="/"><b>Torah</b>&nbsp;MCP</a><a class="b" href="/">← l'accueil</a></nav>
   <h1>L'installation, en deux minutes.</h1>
   <p class="muted">Torah MCP est un serveur MCP distant (HTTP streamable). Gratuit, sans compte, sans collecte de données.</p>
 
