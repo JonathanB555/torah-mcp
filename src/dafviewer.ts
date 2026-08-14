@@ -181,14 +181,22 @@ export const DAF_VIEWER_HTML = `<!doctype html>
   footer { margin-top:12px; font-size:.72rem; color:var(--muted); display:flex; justify-content:space-between; direction:ltr; }
   #loading { color:var(--muted); font-size:.95rem; padding:20px 0; text-align:center; }
   .hint { font-size:.72rem; color:var(--muted); margin:4px 0 8px; }
+  #topbar form { display:flex; gap:8px 18px; flex-wrap:wrap; align-items:baseline; direction:ltr; }
+  #refinput { flex:1; min-width:200px; padding:.45rem .1rem; border:0; border-bottom:1.5px solid var(--line); border-radius:0; background:transparent; color:var(--ink); font-size:.95rem; font-family:inherit; }
+  #refinput:focus { outline:none; border-bottom-color:var(--ink); }
+  #refinput::placeholder { color:var(--muted); opacity:.8; }
+  .bk { padding:.35rem 0; border:0; border-radius:0; background:transparent; color:var(--ink); font-weight:700; cursor:pointer; font-family:inherit; font-size:.95rem; }
+  .bk::before { content:"[ "; color:var(--muted); } .bk::after { content:" ]"; color:var(--muted); }
+  .bk:hover::before { content:"[ → "; }
+  .bk.sec { font-weight:400; }
 </style>
 </head>
 <body>
   <div id="topbar" style="display:none; margin-bottom:12px;">
-    <form id="refform" style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
-      <input id="refinput" dir="ltr" placeholder="Berakhot 2a, Bava Metzia 21a…" style="flex:1; min-width:200px; padding:.5rem .8rem; border:1px solid var(--line); border-radius:8px; background:var(--panel); color:var(--ink); font-size:.95rem;">
-      <button type="submit" style="padding:.5rem 1rem; border:0; border-radius:8px; background:var(--accent); color:#fff; font-weight:600; cursor:pointer;">Ouvrir</button>
-      <button type="button" id="today" style="padding:.5rem 1rem; border:1px solid var(--line); border-radius:8px; background:transparent; color:var(--ink); cursor:pointer;">Daf du jour</button>
+    <form id="refform">
+      <input id="refinput" dir="ltr" placeholder="Berakhot 2a, Bava Metzia 21a…">
+      <button type="submit" class="bk">Ouvrir</button>
+      <button type="button" id="today" class="bk sec">Daf du jour</button>
       <a href="/" style="font-size:.8rem; color:var(--muted); text-decoration:none;">← torah-mcp.com</a>
     </form>
   </div>
