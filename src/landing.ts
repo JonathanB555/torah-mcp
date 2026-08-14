@@ -115,7 +115,9 @@ export const LANDING_HTML = `<!doctype html>
         padding:1.1rem 4vw; mix-blend-mode:multiply; }
   nav .wm { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:1.05rem; text-decoration:none; letter-spacing:.01em; }
   nav .wm b { font-weight:600; border-bottom:3px solid var(--ink); padding-bottom:1px; }
-  nav .r { display:flex; gap:1.6rem; font-size:.92rem; }
+  nav .r { display:flex; gap:1.1rem; font-size:.92rem; align-items:baseline; }
+  nav .grp { font-size:.66rem; letter-spacing:.16em; text-transform:uppercase; opacity:.5; }
+  nav .sep { width:1px; height:.9rem; background:var(--ink-15); align-self:center; }
   nav .r a { text-decoration:none; }
   nav .r a:hover { text-decoration:underline; }
   @media (max-width:720px) { nav .r a.hide-m { display:none; } }
@@ -229,21 +231,25 @@ export const LANDING_HTML = `<!doctype html>
 <nav>
   <a class="wm" href="/"><b>Torah</b>&nbsp;MCP</a>
   <div class="r">
-    <a href="#daf-a" class="hide-m">Le manifeste</a>
-    <a href="#mafteah" class="hide-m">L'index</a>
-    <a href="/daf">Le daf en ligne</a>
+    <span class="grp hide-m">Sur le site</span>
+    <a href="/daf">Le daf</a>
+    <a href="/outils">Outils</a>
+    <a href="/daily" class="hide-m">Limoud du jour</a>
+    <span class="sep hide-m"></span>
+    <span class="grp hide-m">Dans Claude</span>
+    <a href="/install"><strong>Installer le MCP</strong></a>
+    <span class="sep hide-m"></span>
     <a href="/he">עברית</a>
-    <a href="/install"><strong>Installer</strong></a>
   </div>
 </nav>
 
 <header class="cover">
   <div class="he-giant" aria-hidden="true">מקור</div>
   <h1 class="fr chor c1">Claude cite la Torah <span class="no">de&nbsp;mémoire</span> <strong>depuis les textes</strong>.</h1>
-  <p class="deck chor c2">Torah MCP impose une discipline des sources à votre assistant : chaque réponse de halakha ou de limoud est lue dans le texte réel, citée exactement, reliée à ses commentateurs.</p>
+  <p class="deck chor c2">Un serveur MCP gratuit qui impose une discipline des sources à Claude : chaque réponse de halakha ou de limoud est lue dans le texte réel, citée exactement, reliée à ses commentateurs. Et chaque outil existe aussi en version web — utilisable ici même, sans Claude.</p>
   <div class="acts chor c3">
-    <a class="lnk" href="/install">Installer — 2 minutes</a>
-    <a class="lnk" href="/daf">Essayer sans installer</a>
+    <a class="lnk" href="/install">Installer dans Claude — 2 min</a>
+    <a class="lnk" href="/outils">Utiliser sur le site — sans Claude</a>
   </div>
   <span class="hint chor c4" style="opacity:0">Gratuit · sans compte · sans collecte — défilez</span>
 </header>
