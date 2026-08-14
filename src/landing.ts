@@ -113,7 +113,30 @@ export const LANDING_HTML = `<!doctype html>
     font-size:clamp(11rem, 34vw, 30rem); line-height:1; color:transparent; -webkit-text-stroke:1.5px var(--ink-15); pointer-events:none; user-select:none; direction:rtl; }
   .cover h1 { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(2.6rem, 7.2vw, 6.2rem); line-height:1.02; letter-spacing:-.02em; max-width:11em; position:relative; }
   .cover h1 strong { font-weight:600; }
-  .cover h1 .no { text-decoration:line-through; text-decoration-thickness:.06em; text-decoration-color:var(--ink); }
+  .cover h1 .no { position:relative; white-space:nowrap; }
+  .cover h1 .no::after { content:""; position:absolute; left:-.04em; right:-.04em; top:.56em; height:.055em; background:var(--ink);
+    transform:scaleX(0); transform-origin:left center; }
+  .cover h1 strong { opacity:0; }
+  body.ready .cover h1 .no::after { animation:strike .55s var(--ease) 1.15s forwards; }
+  body.ready .cover h1 strong { animation:affirm .7s var(--ease) 1.6s forwards; }
+  @keyframes strike { to { transform:scaleX(1); } }
+  @keyframes affirm { from { opacity:0; transform:translateY(.15em); } to { opacity:1; transform:none; } }
+
+  /* chorégraphie d'entrée */
+  .chor { opacity:0; transform:translateY(34px); }
+  body.ready .chor { animation:rise .9s var(--ease) forwards; }
+  body.ready .chor.c1 { animation-delay:.05s } body.ready .chor.c2 { animation-delay:.55s }
+  body.ready .chor.c3 { animation-delay:.75s } body.ready .chor.c4 { animation-delay:1.9s }
+  @keyframes rise { to { opacity:1; transform:none; } }
+  .he-giant { opacity:0; }
+  body.ready .he-giant { animation:emerge 1.6s var(--ease) .2s forwards; }
+  @keyframes emerge { from { opacity:0; transform:translateY(-54%) scale(1.04); } to { opacity:1; transform:translateY(-54%) scale(1); } }
+  nav { opacity:0; }
+  body.ready nav { animation:rise .8s var(--ease) .9s forwards; transform:none; }
+  @media (prefers-reduced-motion: reduce) {
+    .chor, .he-giant, nav, .cover h1 strong { opacity:1 !important; animation:none !important; transform:none !important; }
+    .cover h1 .no::after { transform:scaleX(1); animation:none !important; }
+  }
   .cover p.deck { margin-top:2rem; max-width:34rem; font-size:1.12rem; color:var(--ink); opacity:.85; position:relative; }
   .cover .acts { margin-top:2.6rem; display:flex; gap:2.4rem; flex-wrap:wrap; font-size:1.1rem; position:relative; }
   .cover .hint { position:absolute; bottom:2rem; left:4vw; font-size:.8rem; letter-spacing:.18em; text-transform:uppercase; opacity:.5; }
@@ -186,6 +209,7 @@ export const LANDING_HTML = `<!doctype html>
   footer .row a { text-decoration:none; opacity:.8; } footer .row a:hover { text-decoration:underline; opacity:1; }
   footer p { opacity:.65; max-width:52rem; }
 </style>
+<noscript><style>.chor,.he-giant,nav,.cover h1 strong{opacity:1 !important;transform:none !important}.cover h1 .no::after{transform:scaleX(1)}</style></noscript>
 </head>
 <body>
 
@@ -202,13 +226,13 @@ export const LANDING_HTML = `<!doctype html>
 
 <header class="cover">
   <div class="he-giant" aria-hidden="true">מקור</div>
-  <h1 class="fr rv">Claude cite la Torah <span class="no">de&nbsp;mémoire</span> <strong>depuis les textes</strong>.</h1>
-  <p class="deck rv d1">Torah MCP impose une discipline des sources à votre assistant : chaque réponse de halakha ou de limoud est lue dans le texte réel, citée exactement, reliée à ses commentateurs.</p>
-  <div class="acts rv d2">
+  <h1 class="fr chor c1">Claude cite la Torah <span class="no">de&nbsp;mémoire</span> <strong>depuis les textes</strong>.</h1>
+  <p class="deck chor c2">Torah MCP impose une discipline des sources à votre assistant : chaque réponse de halakha ou de limoud est lue dans le texte réel, citée exactement, reliée à ses commentateurs.</p>
+  <div class="acts chor c3">
     <a class="lnk" href="/install">Installer — 2 minutes</a>
     <a class="lnk" href="/daf">Essayer sans installer</a>
   </div>
-  <span class="hint">Gratuit · sans compte · sans collecte — défilez</span>
+  <span class="hint chor c4" style="opacity:0">Gratuit · sans compte · sans collecte — défilez</span>
 </header>
 
 <section class="amud" id="daf-a">
@@ -308,8 +332,27 @@ export const LANDING_HTML = `<!doctype html>
   Textes servis par l'API publique de Sefaria — licences indiquées dans chaque réponse. Vocalisation par le nakdan de Dicta, calendriers Hebcal. Projet indépendant de Sefaria et de hebrewbooks.org.</p>
 </footer>
 
+<script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
 <script>
 (function () {
+  // Chorégraphie d'entrée (après chargement des polices)
+  function go(){ document.body.classList.add("ready"); }
+  if (document.fonts && document.fonts.ready) { document.fonts.ready.then(go); setTimeout(go, 900); } else { setTimeout(go, 120); }
+
+  // Défilement custom (Lenis) — sauf préférence de mouvement réduit
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!reduced && window.Lenis) {
+    var lenis = new Lenis({ lerp: 0.09, wheelMultiplier: 1.0 });
+    function raf(t){ lenis.raf(t); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+    document.querySelectorAll('a[href^="#"]').forEach(function(a){
+      a.addEventListener("click", function(e){
+        var el = document.querySelector(a.getAttribute("href"));
+        if (el) { e.preventDefault(); lenis.scrollTo(el, { offset: -20 }); }
+      });
+    });
+  }
+
   // Révélations au défilement
   var io = new IntersectionObserver(function (es) {
     es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
@@ -342,21 +385,9 @@ export const INSTALL_HTML = `<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Installation — Torah MCP</title>
 <meta name="description" content="Installer Torah MCP dans claude.ai, Claude Code ou tout client MCP : le guide technique complet.">
-<style>
-  :root { --paper:#f6f8fd; --card:#ffffff; --ink:#0a1c4d; --muted:#54648f; --line:#d9e2f5; --accent:#0038b8; }
-  * { box-sizing:border-box; margin:0; }
-  body { font:16px/1.65 -apple-system, "Segoe UI", Roboto, sans-serif; color:var(--ink); background:var(--paper); padding:0 1.25rem 4rem; }
-  main { max-width:680px; margin:0 auto; }
-  h1 { font-family:Georgia, serif; font-size:2rem; margin:2.6rem 0 .5rem; }
-  h2 { font-family:Georgia, serif; font-size:1.2rem; margin:2rem 0 .6rem; }
-  .muted { color:var(--muted); }
-  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:1.1rem 1.3rem; margin:.9rem 0; }
-  code { background:#e7eeff; border-radius:5px; padding:.15em .45em; font-size:.92em; word-break:break-all; }
-  .url { display:block; background:#10304a; color:#eaf3fa; border-radius:8px; padding:.8rem 1rem; font-family:ui-monospace, Menlo, monospace; font-size:.95rem; margin:.6rem 0; word-break:break-all; }
-  ol, ul { padding-left:1.3rem; } li { margin:.3rem 0; }
-  a { color:var(--accent); }
-  .back { display:inline-block; margin-top:1.6rem; color:var(--muted); text-decoration:none; font-size:.9rem; }
-</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Frank+Ruhl+Libre:wght@400;700&display=swap" rel="stylesheet">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-NG6P5HPH9K"></script>
 <script>
@@ -365,56 +396,66 @@ export const INSTALL_HTML = `<!doctype html>
   gtag('js', new Date());
   gtag('config', 'G-NG6P5HPH9K');
 </script>
+<style>
+  :root { --paper:#f7f6f1; --ink:#082a99; --ink-40:rgba(8,42,153,.4); --ink-15:rgba(8,42,153,.14); --ease:cubic-bezier(0.16,1,0.3,1); }
+  * { box-sizing:border-box; margin:0; }
+  body { background:var(--paper); color:var(--ink); font:17px/1.7 "Frank Ruhl Libre", Georgia, serif; padding:0 4vw 5rem; }
+  ::selection { background:var(--ink); color:var(--paper); }
+  main { max-width:820px; margin:0 auto; }
+  a { color:var(--ink); }
+  nav { display:flex; justify-content:space-between; align-items:baseline; padding:1.1rem 0; }
+  nav .wm { font-family:"Fraunces", Georgia, serif; font-weight:600; text-decoration:none; }
+  nav a.b { text-decoration:none; } nav a.b:hover { text-decoration:underline; }
+  h1 { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(2.2rem,5vw,3.6rem); line-height:1.05; letter-spacing:-.02em; margin:3.5rem 0 .8rem; }
+  .amud-head { display:flex; align-items:baseline; gap:1.2rem; margin:3.2rem 0 1.2rem; }
+  .amud-head .ot { font-size:1.5rem; font-weight:700; direction:rtl; }
+  .amud-head .rule { flex:1; height:1px; background:var(--ink-15); }
+  .amud-head .lbl { font-size:.76rem; letter-spacing:.2em; text-transform:uppercase; opacity:.55; }
+  p.muted { opacity:.75; max-width:38rem; }
+  ol, ul { padding-left:1.3rem; } li { margin:.35rem 0; }
+  .url { display:block; background:var(--ink); color:var(--paper); padding:.85rem 1.1rem; font-family:ui-monospace, Menlo, monospace; font-size:.92rem; margin:1rem 0; word-break:break-all; }
+  .url::selection { background:var(--paper); color:var(--ink); }
+  code { border-bottom:1px dotted var(--ink-40); font-family:ui-monospace, Menlo, monospace; font-size:.9em; }
+  .lnk { font-family:"Fraunces", Georgia, serif; font-weight:600; text-decoration:none; }
+  .lnk::before { content:"[ "; color:var(--ink-40); } .lnk::after { content:" ]"; color:var(--ink-40); }
+  .lnk:hover::before { content:"[ → "; }
+</style>
 </head>
 <body>
 <main>
-  <a class="back" href="/">← Retour à l'accueil</a>
-  <h1>Installation et guide technique</h1>
-  <p class="muted">Torah MCP est un serveur MCP distant (transport HTTP streamable). Gratuit, sans compte, sans collecte de données.</p>
+  <nav><a class="wm" href="/">Torah&nbsp;MCP</a><a class="b" href="/">← l'accueil</a></nav>
+  <h1>L'installation, en deux minutes.</h1>
+  <p class="muted">Torah MCP est un serveur MCP distant (HTTP streamable). Gratuit, sans compte, sans collecte de données.</p>
 
-  <h2>claude.ai (2 minutes)</h2>
-  <div class="card">
-    <ol>
-      <li>Ouvrez <a href="https://claude.ai/settings/connectors">claude.ai → Settings → Connectors</a></li>
-      <li>Cliquez sur <strong>Add custom connector</strong></li>
-      <li>Collez cette URL :</li>
-    </ol>
-    <span class="url">https://torah-mcp.com/mcp</span>
-    <p class="muted">Nommez-le « Torah », validez. Fonctionne ensuite aussi dans l'app mobile.</p>
-  </div>
+  <div class="amud-head"><span class="ot">א</span><span class="rule"></span><span class="lbl">claude.ai</span></div>
+  <ol>
+    <li>Ouvrez <a href="https://claude.ai/settings/connectors">claude.ai → Settings → Connectors</a></li>
+    <li>Cliquez sur <strong>Add custom connector</strong></li>
+    <li>Collez cette URL, nommez-le « Torah », validez — l'app mobile suit toute seule :</li>
+  </ol>
+  <span class="url">https://torah-mcp.com/mcp</span>
 
-  <h2>Claude Code</h2>
-  <div class="card">
-    <span class="url">claude mcp add --transport http torah https://torah-mcp.com/mcp</span>
-  </div>
+  <div class="amud-head"><span class="ot">ב</span><span class="rule"></span><span class="lbl">Claude Code</span></div>
+  <span class="url">claude mcp add --transport http torah https://torah-mcp.com/mcp</span>
 
-  <h2>Autres clients MCP</h2>
-  <div class="card">
-    <p>Tout client compatible MCP (transport HTTP streamable) fonctionne avec la même URL <code>https://torah-mcp.com/mcp</code>. Le serveur expose 13 outils en lecture seule, 2 prompts (<code>hebrewbooks</code>, <code>havrouta</code>) et une ressource MCP App (le visualiseur de daf).</p>
-  </div>
+  <div class="amud-head"><span class="ot">ג</span><span class="rule"></span><span class="lbl">Autres clients MCP</span></div>
+  <p>Tout client compatible (transport HTTP streamable) fonctionne avec la même URL. Le serveur expose 14 outils en lecture seule, 3 prompts (<code>hebrewbooks</code>, <code>havrouta</code>, <code>paracha</code>) et une MCP App — le visualiseur de daf.</p>
 
-  <h2>Accès sur invitation (optionnel)</h2>
-  <div class="card">
-    <p>Par défaut le serveur est public. Pour un accès sur invitation, l'hébergeur pose le secret <code>BEARER_TOKENS</code> (liste de tokens séparés par des virgules — un par invité) ; chacun utilise alors <code>https://…/&lt;token&gt;/mcp</code>, et on révoque en retirant le token.</p>
-  </div>
+  <div class="amud-head"><span class="ot">ד</span><span class="rule"></span><span class="lbl">Accès sur invitation — optionnel</span></div>
+  <p>Par défaut le serveur est public. Pour un accès sur invitation, l'hébergeur pose le secret <code>BEARER_TOKENS</code> (un token par invité, séparés par des virgules) ; chacun utilise alors <code>https://…/&lt;token&gt;/mcp</code>, et l'on révoque en retirant le token.</p>
 
-  <h2>Héberger votre propre instance</h2>
-  <div class="card">
-    <p>Le code est libre (MIT). Un clic déploie votre propre copie sur Cloudflare Workers :</p>
-    <p><a href="https://deploy.workers.cloudflare.com/?url=https://github.com/JonathanB555/torah-mcp">Deploy to Cloudflare</a> · <a href="https://github.com/JonathanB555/torah-mcp">Code source sur GitHub</a></p>
-    <p class="muted">Aucun secret requis. Optionnels : <code>HEBREWBOOKS_API_KEY</code> (recherche catalogue — clé sur demande à developers@hebrewbooks.org), <code>BEARER_TOKENS</code>.</p>
-  </div>
+  <div class="amud-head"><span class="ot">ה</span><span class="rule"></span><span class="lbl">Héberger votre propre instance</span></div>
+  <p>Le code est libre (MIT), sans aucun secret requis. Optionnels : <code>HEBREWBOOKS_API_KEY</code> (recherche catalogue — clé sur demande à developers@hebrewbooks.org), <code>BEARER_TOKENS</code>.</p>
+  <p style="margin-top:1rem"><a class="lnk" href="https://deploy.workers.cloudflare.com/?url=https://github.com/JonathanB555/torah-mcp">Deploy to Cloudflare</a>&nbsp;&nbsp;&nbsp;<a class="lnk" href="https://github.com/JonathanB555/torah-mcp">Code source</a></p>
 
-  <h2>Bon voisinage</h2>
-  <div class="card">
-    <ul>
-      <li>Requêtes vers Sefaria : User-Agent identifiant + cache edge (24 h textes, 1 h calendriers)</li>
-      <li>Limite de débit : 60 requêtes/minute/IP</li>
-      <li>Licences des textes restituées dans chaque réponse</li>
-    </ul>
-  </div>
+  <div class="amud-head"><span class="ot">ו</span><span class="rule"></span><span class="lbl">Bon voisinage</span></div>
+  <ul>
+    <li>Requêtes vers Sefaria : User-Agent identifiant + cache edge (24 h textes, 1 h calendriers)</li>
+    <li>Limite de débit : 60 requêtes/minute/IP</li>
+    <li>Licences des textes restituées dans chaque réponse</li>
+  </ul>
 
-  <a class="back" href="/">← Retour à l'accueil</a>
+  <p style="margin-top:3rem"><a class="lnk" href="/">Retour à l'accueil</a></p>
 </main>
 </body>
 </html>`;

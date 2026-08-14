@@ -6,15 +6,17 @@
 import type { Env } from "./sefaria";
 
 const STYLE = `
-  :root { --ink:#0a1c4d; --muted:#54648f; --accent:#0038b8; --paper:#f6f8fd; --card:#ffffff; --line:#d9e2f5; }
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Frank+Ruhl+Libre:wght@400;700&display=swap');
+  :root { --ink:#082a99; --muted:rgba(8,42,153,.65); --accent:#082a99; --paper:#f7f6f1; --card:#ffffff; --line:rgba(8,42,153,.14); }
   * { box-sizing:border-box; margin:0; }
-  body { font:16px/1.65 -apple-system, "Segoe UI", Roboto, sans-serif; color:var(--ink); background:var(--paper); padding:3rem 1.25rem 4rem; }
+  body { font:17px/1.7 "Frank Ruhl Libre", Georgia, serif; color:var(--ink); background:var(--paper); padding:3rem 1.25rem 4rem; }
+  ::selection { background:var(--ink); color:var(--paper); }
   main { max-width:680px; margin:0 auto; }
-  h1 { font-size:2rem; line-height:1.2; margin-bottom:.5rem; }
-  h2 { font-size:1.15rem; margin:2.2rem 0 .7rem; }
+  h1 { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(2rem,4.5vw,3rem); line-height:1.08; letter-spacing:-.02em; margin-bottom:.5rem; }
+  h2 { font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.2rem; margin:2.2rem 0 .7rem; }
   .muted { color:var(--muted); }
-  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:1.1rem 1.3rem; margin:.9rem 0; }
-  .url { display:block; background:#10304a; color:#eaf3fa; border-radius:8px; padding:.8rem 1rem; font-family:ui-monospace, Menlo, monospace; font-size:.95rem; margin:.6rem 0; word-break:break-all; }
+  .card { background:transparent; border:0; border-top:1px solid var(--line); border-radius:0; padding:1rem 0; margin:0; }
+  .url { display:block; background:var(--ink); color:var(--paper); border-radius:0; padding:.85rem 1.1rem; font-family:ui-monospace, Menlo, monospace; font-size:.92rem; margin:.6rem 0; word-break:break-all; }
   a { color:var(--accent); }
   ul { padding-left:1.3rem; } li { margin:.3rem 0; }
   [dir="rtl"] ul { padding-left:0; padding-right:1.3rem; }
@@ -162,22 +164,27 @@ export const OUTILS_HTML = `<!doctype html>
 <title>Outils — Torah MCP</title>
 <meta name="description" content="Zmanim, dates hébraïques, guematria, nikoud et fiches sources — utilisables directement, sans installation.">
 <style>
-  :root { --paper:#f6f8fd; --card:#ffffff; --ink:#0a1c4d; --muted:#54648f; --line:#d9e2f5; --accent:#0038b8; --gold:#0038b8; }
+  :root { --paper:#f7f6f1; --card:#ffffff; --ink:#082a99; --muted:rgba(8,42,153,.65); --line:rgba(8,42,153,.18); --accent:#082a99; --gold:rgba(8,42,153,.55); }
   * { box-sizing:border-box; margin:0; }
-  body { font:16px/1.65 -apple-system, "Segoe UI", Roboto, sans-serif; color:var(--ink); background:var(--paper); padding:0 1.25rem 4rem; }
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Frank+Ruhl+Libre:wght@400;700&display=swap');
+  body { font:17px/1.7 "Frank Ruhl Libre", Georgia, serif; color:var(--ink); background:var(--paper); padding:0 1.25rem 4rem; }
+  ::selection { background:var(--ink); color:var(--paper); }
   main { max-width:760px; margin:0 auto; }
-  h1 { font-family:Georgia, serif; font-size:2rem; margin:2.4rem 0 .3rem; }
+  h1 { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(2.2rem,5vw,3.4rem); letter-spacing:-.02em; margin:2.6rem 0 .3rem; }
   .muted { color:var(--muted); }
-  .tool { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:1.3rem 1.4rem; margin:1.1rem 0; }
-  .tool h2 { font-family:Georgia, serif; font-size:1.25rem; margin-bottom:.2rem; }
+  .tool { background:transparent; border:0; border-top:1px solid var(--line); border-radius:0; padding:1.6rem 0; margin:0; }
+  .tool h2 { font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.35rem; margin-bottom:.2rem; }
   .tool p.d { color:var(--muted); font-size:.9rem; margin-bottom:.8rem; }
   form { display:flex; gap:.6rem; flex-wrap:wrap; align-items:center; }
-  input, select, textarea { padding:.5rem .8rem; border:1px solid var(--line); border-radius:8px; font-size:.95rem; background:#fbfcff; color:var(--ink); }
+  input, select, textarea { padding:.45rem .2rem; border:0; border-bottom:1.5px solid var(--line); border-radius:0; font-size:1rem; background:transparent; color:var(--ink); font-family:inherit; }
+  input:focus, select:focus, textarea:focus { outline:none; border-bottom-color:var(--ink); }
   textarea { width:100%; min-height:70px; direction:rtl; font-family:Georgia, serif; font-size:1.1rem; }
   input[type=text] { flex:1; min-width:180px; }
-  button { padding:.5rem 1.1rem; border:0; border-radius:8px; background:var(--accent); color:#fff; font-weight:600; cursor:pointer; }
-  button.copy { background:transparent; border:1px solid var(--line); color:var(--ink); font-weight:400; font-size:.82rem; }
-  .out { margin-top:.9rem; font-size:.92rem; white-space:pre-wrap; background:#f0f4ff; border:1px dashed var(--line); border-radius:10px; padding:.8rem 1rem; display:none; }
+  button { padding:.4rem .2rem; border:0; border-radius:0; background:transparent; color:var(--ink); font-weight:600; cursor:pointer; font-family:"Fraunces", Georgia, serif; font-size:1rem; }
+  button::before { content:"[ "; color:var(--gold); } button::after { content:" ]"; color:var(--gold); }
+  button:hover::before { content:"[ → "; }
+  button.copy { font-size:.85rem; font-weight:400; }
+  .out { margin-top:.9rem; font-size:.92rem; white-space:pre-wrap; background:transparent; border:0; border-inline-start:2px solid var(--ink); border-radius:0; padding:.4rem 1rem; display:none; }
   .out.he { direction:rtl; font-family:Georgia, serif; font-size:1.15rem; white-space:normal; }
   .out table { border-collapse:collapse; width:100%; font-size:.88rem; }
   .out td, .out th { border-bottom:1px solid var(--line); padding:.3rem .5rem; text-align:left; }
