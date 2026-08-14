@@ -97,7 +97,7 @@ export const LANDING_HTML = `<!doctype html>
     --ease:cubic-bezier(0.16, 1, 0.3, 1);
   }
   * { box-sizing:border-box; margin:0; }
-  html { scroll-behavior:smooth; }
+  html { scroll-behavior:smooth; overflow-x:clip; }
   body { background:var(--paper); color:var(--ink); font:17px/1.7 "Frank Ruhl Libre", Georgia, serif; }
   ::selection { background:var(--ink); color:var(--paper); }
   a { color:var(--ink); text-decoration-thickness:1px; text-underline-offset:3px; }
@@ -120,12 +120,16 @@ export const LANDING_HTML = `<!doctype html>
   nav .sep { width:1px; height:.9rem; background:var(--ink-15); align-self:center; }
   nav .r a { text-decoration:none; }
   nav .r a:hover { text-decoration:underline; }
-  @media (max-width:720px) { nav .r a.hide-m { display:none; } }
+  @media (max-width:720px) {
+    nav { padding:.9rem 4vw; }
+    nav .r { gap:.8rem; font-size:.84rem; }
+    nav .r .hide-m { display:none; }
+  }
 
   /* ---- ouverture plein écran ---- */
   .cover { min-height:100svh; position:relative; display:flex; flex-direction:column; justify-content:center; padding:0 4vw; overflow:hidden; }
   .cover .he-giant { position:absolute; inset-inline-end:-2vw; top:50%; transform:translateY(-54%); font-weight:700;
-    font-size:clamp(11rem, 34vw, 30rem); line-height:1; color:transparent; -webkit-text-stroke:1.5px var(--ink-15); pointer-events:none; user-select:none; direction:rtl; }
+    font-size:clamp(7rem, 34vw, 30rem); line-height:1; color:transparent; -webkit-text-stroke:1.5px var(--ink-15); pointer-events:none; user-select:none; direction:rtl; }
   .cover h1 { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(2.6rem, 7.2vw, 6.2rem); line-height:1.02; letter-spacing:-.02em; max-width:11em; position:relative; }
   .cover h1 strong { font-weight:600; }
   .cover h1 .no { position:relative; white-space:nowrap; }
@@ -204,7 +208,7 @@ export const LANDING_HTML = `<!doctype html>
   @media (max-width:900px) { .band .in { grid-template-columns:1fr; } }
   .band h2 { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(2rem, 4.4vw, 3.4rem); line-height:1.06; letter-spacing:-.015em; margin-bottom:1.2rem; }
   .band p { max-width:30rem; opacity:.85; }
-  .band .acts { margin-top:2rem; font-size:1.05rem; display:flex; gap:2.2rem; }
+  .band .acts { margin-top:2rem; font-size:1.05rem; display:flex; gap:1.2rem 2.2rem; flex-wrap:wrap; }
   .band .lnk::before, .band .lnk::after { color:rgba(34,32,27,.4); }
   .band a { color:#22201b; }
   .vilna { background:#faf5e6; border:1px solid #d9d0bb; padding:1.4rem 1.6rem; direction:rtl; box-shadow:0 30px 60px rgba(34,32,27,.14); }
@@ -223,6 +227,22 @@ export const LANDING_HTML = `<!doctype html>
   footer .row { display:flex; flex-wrap:wrap; gap:1.6rem; margin-bottom:1.2rem; }
   footer .row a { text-decoration:none; opacity:.8; } footer .row a:hover { text-decoration:underline; opacity:1; }
   footer p { opacity:.65; max-width:52rem; }
+
+  @media (max-width:720px) {
+    body { font-size:16px; }
+    .amud { padding:5.5rem 5vw 3.5rem; }
+    .amud-head { margin-bottom:2.2rem; }
+    .mafteah { padding:2.5rem 5vw 4rem; }
+    .band { padding:3.5rem 5vw; }
+    .band .in { gap:2.4rem; }
+    .invite { padding:5rem 5vw 4.5rem; }
+    .invite .acts { gap:1.4rem 2rem; font-size:1.1rem; }
+    .cover .acts { gap:1.2rem 2rem; font-size:1.02rem; }
+    .cover p.deck { font-size:1.05rem; }
+    .toc .t { white-space:normal; }
+    .toc a { gap:.6rem; }
+    .guf { line-height:1.8; }
+  }
 </style>
 <noscript><style>.chor,.he-giant,nav,.cover h1 strong{opacity:1 !important;transform:none !important}.cover h1 .no::after{transform:scaleX(1)}</style></noscript>
 </head>
