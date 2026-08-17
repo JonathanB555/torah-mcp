@@ -41,13 +41,23 @@ export const QUESTION_HTML = `<!doctype html>
   h1 { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(2.2rem,5vw,3.6rem); line-height:1.05; letter-spacing:-.02em; margin:3rem 0 .8rem; }
   h1 strong { font-weight:600; }
   p.muted { color:var(--muted); max-width:40rem; }
-  .modes { display:flex; gap:1.6rem; flex-wrap:wrap; margin:2.2rem 0 1rem; font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.02rem; }
-  .modes label { cursor:pointer; opacity:.55; transition:opacity .3s var(--ease); }
-  .modes label::before { content:"[ "; color:var(--ink-40); } .modes label::after { content:" ]"; color:var(--ink-40); }
-  .modes label:has(input:checked) { opacity:1; }
-  .modes label:has(input:checked)::before { content:"[ → "; }
+  /* Étape 1 — le niveau, en évidence */
+  .step { display:flex; align-items:baseline; gap:1rem; margin:2.6rem 0 1rem; }
+  .step .n { font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.6rem; }
+  .step .t { font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.25rem; }
+  .step .rule { flex:1; height:1px; background:var(--ink-15); }
+  .step .s { font-size:.78rem; letter-spacing:.18em; text-transform:uppercase; opacity:.55; }
+  .modes { display:grid; grid-template-columns:repeat(3, 1fr); gap:1rem; margin:0 0 .6rem; }
+  .modes label { display:block; cursor:pointer; border:1.5px solid var(--ink-15); padding:1rem 1.1rem 1.1rem; transition:border-color .3s var(--ease), background .3s var(--ease); position:relative; }
+  .modes label:hover { border-color:var(--ink-40); }
+  .modes label:has(input:checked) { border-color:var(--ink); background:var(--hl); }
+  .modes label:has(input:checked)::after { content:"→ choisi"; position:absolute; top:.6rem; right:.9rem; font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; opacity:.7; }
+  .modes .h { font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.25rem; display:block; }
+  .modes .w { display:block; font-size:.78rem; letter-spacing:.12em; text-transform:uppercase; opacity:.55; margin:.1rem 0 .5rem; }
+  .modes .d { display:block; font-size:.9rem; line-height:1.5; opacity:.85; }
   .modes input { position:absolute; opacity:0; pointer-events:none; }
-  .modehelp { font-size:.9rem; color:var(--muted); min-height:1.6em; margin-bottom:1.6rem; }
+  .modehelp { display:none; }
+  @media (max-width:720px) { .modes { grid-template-columns:1fr; } }
   textarea { width:100%; min-height:110px; padding:.6rem .1rem; border:0; border-bottom:1.5px solid var(--ink-15); border-radius:0; background:transparent; color:var(--ink); font:inherit; font-size:1.15rem; resize:vertical; }
   textarea:focus { outline:none; border-bottom-color:var(--ink); }
   textarea::placeholder { color:var(--ink-40); }
@@ -77,7 +87,7 @@ export const QUESTION_HTML = `<!doctype html>
   .err { color:#7a1f1f; margin-top:1.4rem; }
   .again { margin-top:1.4rem; }
   footer { margin-top:4rem; font-size:.88rem; color:var(--muted); border-top:1px solid var(--ink-15); padding-top:1.4rem; }
-  @media (max-width:720px) { .modes { gap:1rem; font-size:.95rem; } h1 { margin-top:2rem; } }
+  @media (max-width:720px) { h1 { margin-top:2rem; } .step { flex-wrap:wrap; } .step .s { display:none; } }
 </style>
 </head>
 <body>
@@ -91,12 +101,14 @@ export const QUESTION_HTML = `<!doctype html>
   <p class="muted">En français, comme elle vous vient. La réponse est lue dans les textes réels — Bible, Talmud, commentateurs, via Sefaria — et citée exactement, avec ses sources. Rien à installer.</p>
 
   <form id="f" autocomplete="off">
-    <div class="modes" role="radiogroup" aria-label="Mode">
-      <label><input type="radio" name="mode" value="debutant" checked>Débutant</label>
-      <label><input type="radio" name="mode" value="classique">Classique</label>
-      <label><input type="radio" name="mode" value="avance">Avancé</label>
+    <div class="step"><span class="n">1</span><span class="t">Choisissez votre niveau</span><span class="rule"></span><span class="s">on commence par là</span></div>
+    <div class="modes" role="radiogroup" aria-label="Niveau">
+      <label><input type="radio" name="mode" value="debutant" checked><span class="h">Débutant</span><span class="w">Je débute, ou je ne lis pas l'hébreu</span><span class="d">Tout en français, chaque terme expliqué, le contexte avant la réponse.</span></label>
+      <label><input type="radio" name="mode" value="classique"><span class="h">Classique</span><span class="w">J'ai les bases</span><span class="d">La source puis sa traduction ; les termes usuels sont supposés connus.</span></label>
+      <label><input type="radio" name="mode" value="avance"><span class="h">Avancé</span><span class="w">Beit midrash</span><span class="d">Langue originale, terminologie sans glose, mahloket et lomdus.</span></label>
     </div>
     <div class="modehelp" id="mh"></div>
+    <div class="step"><span class="n">2</span><span class="t">Posez votre question</span><span class="rule"></span></div>
     <textarea id="q" maxlength="600" placeholder="Par exemple : pourquoi allume-t-on deux bougies le vendredi soir ?" required></textarea>
     <input type="text" name="site" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
     <div class="row">

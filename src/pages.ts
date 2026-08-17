@@ -203,12 +203,22 @@ export const OUTILS_HTML = `<!doctype html>
   a { color:var(--accent); }
   .back { display:inline-block; margin-top:1.6rem; color:var(--muted); text-decoration:none; font-size:.9rem; }
   nav.top { padding:1rem 0 0; font-size:.9rem; }
-  .modes { display:flex; gap:1.4rem; flex-wrap:wrap; margin:1.6rem 0 .3rem; font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1rem; }
-  .modes label { cursor:pointer; opacity:.5; }
-  .modes label::before { content:"[ "; color:var(--gold); } .modes label::after { content:" ]"; color:var(--gold); }
-  .modes label:has(input:checked) { opacity:1; } .modes label:has(input:checked)::before { content:"[ → "; }
+  .step { display:flex; align-items:baseline; gap:1rem; margin:2.2rem 0 .9rem; }
+  .step .n { font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.5rem; }
+  .step .t { font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.2rem; }
+  .step .rule { flex:1; height:1px; background:var(--line); }
+  .step .s { font-size:.76rem; letter-spacing:.18em; text-transform:uppercase; opacity:.55; }
+  .modes { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin:0 0 .4rem; }
+  .modes label { display:block; cursor:pointer; border:1.5px solid var(--line); padding:.9rem 1rem 1rem; position:relative; transition:border-color .3s, background .3s; }
+  .modes label:hover { border-color:var(--gold); }
+  .modes label:has(input:checked) { border-color:var(--ink); background:#dbe3ff; }
+  .modes label:has(input:checked)::after { content:"→ choisi"; position:absolute; top:.55rem; right:.8rem; font-size:.68rem; letter-spacing:.14em; text-transform:uppercase; opacity:.7; }
+  .modes .h { font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.2rem; display:block; }
+  .modes .w { display:block; font-size:.76rem; letter-spacing:.12em; text-transform:uppercase; opacity:.55; margin:.1rem 0 .4rem; }
+  .modes .d { display:block; font-size:.88rem; line-height:1.5; opacity:.85; }
   .modes input { position:absolute; opacity:0; pointer-events:none; }
-  .modehelp { font-size:.88rem; color:var(--muted); margin-bottom:.4rem; }
+  .modehelp { display:none; }
+  @media (max-width:640px) { .modes { grid-template-columns:1fr; } .step .s { display:none; } }
   .beg { display:none; } body.mode-debutant .beg { display:block; }
   .beg.inl { display:none; } body.mode-debutant .beg.inl { display:inline; }
   p.beg { font-size:.92rem; color:var(--muted); margin:.2rem 0 .8rem; }
@@ -222,7 +232,7 @@ export const OUTILS_HTML = `<!doctype html>
   .refb { display:flex; gap:.6rem; flex-wrap:wrap; align-items:center; margin:.4rem 0 .6rem; }
   .refb input[type=number] { width:5.5rem; }
   .expl td:last-child { color:var(--muted); font-size:.85rem; }
-  .ask { border-top:1px solid var(--line); margin-top:1.4rem; padding-top:1rem; font-size:.95rem; }
+  .ask { margin:0 0 .4rem; font-size:.95rem; color:var(--muted); }
 </style>
 <meta property="og:type" content="website">
 <meta property="og:title" content="Torah MCP — la discipline des sources pour Claude">
@@ -244,11 +254,13 @@ export const OUTILS_HTML = `<!doctype html>
   <nav class="top"><a href="/" style="text-decoration:none;color:var(--muted)">← torah-mcp.com</a> · <a href="/daf" style="color:var(--accent)">Ouvrir le daf du jour</a> · <a href="/daily" style="color:var(--accent)">Le limoud du jour</a></nav>
   <h1>Les outils, sans installation</h1>
   <p class="muted">Les mêmes fonctions que le connecteur Claude, utilisables ici même. Aucune donnée conservée.</p>
-  <div class="modes" role="radiogroup" aria-label="Mode">
-    <label><input type="radio" name="tmode" value="debutant" checked>Débutant</label>
-    <label><input type="radio" name="tmode" value="classique">Classique</label>
+  <div class="step"><span class="n">1</span><span class="t">Choisissez votre niveau</span><span class="rule"></span><span class="s">on commence par là</span></div>
+  <div class="modes" role="radiogroup" aria-label="Niveau">
+    <label><input type="radio" name="tmode" value="debutant" checked><span class="h">Débutant</span><span class="w">Je débute, ou je ne lis pas l'hébreu</span><span class="d">Chaque outil expliqué, clavier hébreu à l'écran, livres en français.</span></label>
+    <label><input type="radio" name="tmode" value="classique"><span class="h">Classique</span><span class="w">J'ai les bases</span><span class="d">Les outils nus, sans explications.</span></label>
   </div>
   <p class="modehelp" id="mh"></p>
+  <div class="step"><span class="n">2</span><span class="t">Choisissez un outil</span><span class="rule"></span></div>
   <p class="ask">Une question plutôt qu'un outil ? <a href="/question">Posez-la en français</a> — la réponse est lue dans les textes.</p>
 
   <div class="tool">
