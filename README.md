@@ -37,14 +37,19 @@ claude mcp add --transport http torah https://torah-mcp.com/mcp
 |---|---|
 | `hebrewbooks_skill` | **The core**: the study method loaded before answering any religious question — sources actually read, exact quotes, [hebrewbooks.org](https://hebrewbooks.org) reading links |
 | `hebrewbooks_search` | HebrewBooks catalog search (~65,000 scanned seforim) by title/author via their official API — requires a `HEBREWBOOKS_API_KEY` (granted on request: developers@hebrewbooks.org) |
-| `sefaria_text` | Text of any reference (Hebrew + translation): `Berakhot 2a`, `Shulchan Arukh, Orach Chayim 1:1`… |
+| `mode_etude` | Study register — `debutant` (all in French, every term explained, for readers with no background or no Hebrew), `classique` (bilingual, default), `avance` (beit midrash: original text, no glosses, mahloket, girsaot, lomdus). Same source discipline in all three |
+| `havrouta_mode` | Study-partner mode: Claude asks the questions, makes you defend Rashi against Tosafot, never hands out answers |
+| `guide_paracha` | AlHaTorah-style weekly study guide: aliyot, three textual questions with diverging commentators, haftarah echo, Shabbat-table questions |
+| `daf_viewer` | MCP App: an interactive Vilna page in the conversation (Gemara, Rashi, Tosafot, click-to-translate). Also at `/daf` |
+| `zmanim` · `date_hebraique` · `gematria` · `nikoud` · `fiche_source` | Daily-life tools: Hebcal times, Hebrew dates, 5-method gematria, Dicta vocalization, WhatsApp-ready source cards |
+| `sefaria_text` | Text of any reference (Hebrew + translation — **French first when Sefaria has it**, e.g. Bible du Rabbinat for Tanakh, else English): `Berakhot 2a`, `Shulchan Arukh, Orach Chayim 1:1`… |
 | `sefaria_links` | Linked commentaries and sources (Rashi, Tosafot, midrash, halakhah…), filterable by category |
 | `sefaria_search` | Full-text search across the whole library (Hebrew or English) |
 | `sefaria_calendar` | Parashat hashavua, haftarah, daf yomi, daily Rambam… |
 
 The server also ships an `instructions` block (loaded by MCP clients at
 initialize) telling the model to load the skill before answering any religious
-question, and an MCP prompt (`/mcp__torah-mcp__hebrewbooks`).
+question, and five MCP prompts (`hebrewbooks`, `havrouta`, `paracha`, `debutant`, `avance`).
 
 ## Deploy your own
 

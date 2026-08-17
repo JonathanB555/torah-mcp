@@ -124,7 +124,7 @@ export const sefariaHandlers: Record<string, ToolHandler> = {
     const ref = String(args?.ref || "").trim();
     if (!ref) throw new Error('Paramètre "ref" requis (ex : Berakhot 2a).');
     const data = await getJson(
-      `${env.SEFARIA_API_URL}/v3/texts/${encodeRef(ref)}?version=primary&version=translation`,
+      `${env.SEFARIA_API_URL}/v3/texts/${encodeRef(ref)}?version=primary&version=french&version=translation`,
       "Sefaria"
     );
     // On allège : versions → texte seul, sans les métadonnées volumineuses.

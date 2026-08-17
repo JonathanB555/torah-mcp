@@ -171,8 +171,13 @@ guides d'AlHaTorah : nourri aux sources réelles, jamais de mémoire.
 ## Règles
 
 - Jamais de citation de mémoire ; référence exacte pour chaque source.
+- Citer les versets en français : \`sefaria_text\` renvoie pour le Tanakh la
+  version française (Bible du Rabbinat) à côté de l'hébreu — l'utiliser de
+  préférence à l'anglais. Pour les commentateurs (hébreu seul), traduire en
+  français en le signalant comme ta traduction.
 - Signaler les divergences plutôt que les lisser.
-- Adapter la profondeur au lecteur s'il le précise (débutant / avancé).
+- Adapter la profondeur au mode d'étude actif (débutant / classique / avancé —
+  voir \`mode_etude\`) ou à ce que précise le lecteur.
 - Terminer par : Chabbat chalom.`;
 
 const LIEU_PROPS = {
@@ -385,12 +390,15 @@ export const limoudHandlers: Record<string, ToolHandler> = {
     const maxSeg = Math.min(Math.max(Number(args?.segments) || 3, 1), 10);
     const encoded = encodeURIComponent(ref.replace(/ /g, "_"));
     const data = await getJson(
-      `${env.SEFARIA_API_URL}/v3/texts/${encoded}?version=primary&version=translation`,
+      `${env.SEFARIA_API_URL}/v3/texts/${encoded}?version=primary&version=french&version=translation`,
       "Sefaria",
       86400
     );
     const he = (data.versions || []).find((v: any) => (v.actualLanguage || v.language) === "he");
-    const en = (data.versions || []).find((v: any) => (v.actualLanguage || v.language) === "en");
+    // Français d'abord (Bible du Rabbinat pour le Tanakh), sinon la traduction par défaut.
+    const en =
+      (data.versions || []).find((v: any) => (v.actualLanguage || v.language) === "fr") ||
+      (data.versions || []).find((v: any) => (v.actualLanguage || v.language) === "en");
     const heSegs = aplatir(he?.text).map(stripHtml).filter(Boolean).slice(0, maxSeg);
     const enSegs = aplatir(en?.text).map(stripHtml).filter(Boolean).slice(0, maxSeg);
     if (heSegs.length === 0 && enSegs.length === 0) {
@@ -408,7 +416,8 @@ export const limoudHandlers: Record<string, ToolHandler> = {
     return {
       fiche: lignes.join("\n"),
       licence_he: he?.license,
-      licence_en: en?.license,
+      traduction: en ? `${en.actualLanguage || en.language} — ${en.versionTitle}` : "",
+      licence_traduction: en?.license,
       note: "Prêt à coller dans WhatsApp (le *gras* et l'_italique_ y sont interprétés). Texte lu depuis Sefaria.",
     };
   },

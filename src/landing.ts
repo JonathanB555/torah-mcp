@@ -202,6 +202,18 @@ export const LANDING_HTML = `<!doctype html>
   .toc .he { direction:rtl; font-weight:700; white-space:nowrap; }
   @media (max-width:720px) { .toc .d { display:none; } }
 
+  /* ---- trois modes : trois colonnes typographiques ---- */
+  .modes { max-width:1200px; margin:0 auto; padding:2rem 4vw 6rem; }
+  .modes .cols { display:grid; grid-template-columns:repeat(3, 1fr); gap:3rem; }
+  .modes .col { border-top:2px solid var(--ink); padding-top:1.2rem; }
+  .modes .col h3 { font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:clamp(1.5rem, 2.4vw, 2rem); letter-spacing:-.01em; margin-bottom:.2rem; }
+  .modes .who { font-size:.8rem; letter-spacing:.14em; text-transform:uppercase; opacity:.55; margin-bottom:1rem; }
+  .modes .col p { line-height:1.65; }
+  .modes .try { display:block; margin-top:1rem; font-style:italic; opacity:.85; }
+  .modes .note { margin-top:3rem; max-width:44rem; opacity:.7; font-size:.95rem; }
+  @media (max-width:900px) { .modes .cols { grid-template-columns:1fr; gap:2.2rem; } }
+  @media (max-width:720px) { .modes { padding:1rem 5vw 4rem; } }
+
   /* ---- bande daf viewer, pleine largeur, parchemin ---- */
   .band { background:#f4ecd7; color:#22201b; padding:6rem 4vw; }
   .band .in { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1.1fr .9fr; gap:4rem; align-items:center; }
@@ -266,7 +278,7 @@ export const LANDING_HTML = `<!doctype html>
 <header class="cover">
   <div class="he-giant" aria-hidden="true">מקור</div>
   <h1 class="fr chor c1">Claude cite la Torah <span class="no">de&nbsp;mémoire</span> <strong>depuis les textes</strong>.</h1>
-  <p class="deck chor c2">Un serveur MCP gratuit qui impose une discipline des sources à Claude : chaque réponse de halakha ou de limoud est lue dans le texte réel, citée exactement, reliée à ses commentateurs. Et chaque outil existe aussi en version web — utilisable ici même, sans Claude.</p>
+  <p class="deck chor c2">Un serveur MCP gratuit qui impose une discipline des sources à Claude : chaque réponse de halakha ou de limoud est lue dans le texte réel, citée exactement, reliée à ses commentateurs. En français, à votre niveau — du débutant qui ne lit pas l'hébreu au talmid hakham. Et chaque outil existe aussi en version web, ici même, sans Claude.</p>
   <div class="acts chor c3">
     <a class="lnk" href="/install">Installer dans Claude — 2 min</a>
     <a class="lnk" href="/outils">Utiliser sur le site — sans Claude</a>
@@ -298,6 +310,7 @@ export const LANDING_HTML = `<!doctype html>
       <p>Les assistants répondent aux questions de Torah <mark data-ref="memoire">de mémoire</mark> — avec l'assurance de celui qui n'a pas ouvert le livre. Torah MCP renverse le geste : avant toute réponse, votre assistant charge <mark data-ref="methode">une méthode d'étude</mark> qui l'oblige à lire le texte, à le citer tel qu'il est écrit, et à dire où l'étudier.</p>
       <p>Parce qu'on n'apprend pas seul, il sait aussi devenir <mark data-ref="havrouta">partenaire de havrouta</mark> — celui qui pose les questions plutôt que d'y répondre — et préparer <mark data-ref="paracha">la paracha de la semaine</mark> comme un chantier : aliya par aliya, machloket comprises.</p>
       <p>Et parce que l'étude vit dans une journée juive, il porte <mark data-ref="quotidien">les outils du quotidien</mark> — zmanim, dates, guematria, nikoud, fiches à partager — et <mark data-ref="sources">toute la bibliothèque</mark> : Sefaria pour lire et relier, HebrewBooks pour étudier sur la page scannée.</p>
+      <p>Et parce que la Torah n'appartient pas aux seuls savants, il parle <mark data-ref="modes">à chacun selon son niveau</mark> : tout en français et chaque mot expliqué pour qui débute, la source en langue originale et le lomdus pour qui la maîtrise.</p>
     </div>
     <aside class="margin rv d2" aria-label="Commentaires — colonne extérieure">
       <div class="glose" data-ref="memoire">
@@ -309,6 +322,11 @@ export const LANDING_HTML = `<!doctype html>
         <p>Zmanim et horaires de Chabbat, dates hébraïques, guematria exacte, nikoud (Dicta), fiche source prête pour WhatsApp.</p>
         <a href="/outils">Utilisables en ligne, sans installation</a>
       </div>
+      <div class="glose" data-ref="modes">
+        <h3>Trois modes</h3>
+        <p>Débutant, classique, avancé — le registre change, la discipline des sources jamais. Claude devine votre niveau à votre question, et vous changez de mode d'un mot.</p>
+        <span class="try">« Je n'y connais rien, explique-moi simplement. »</span>
+      </div>
       <div class="glose" data-ref="sources">
         <h3>Les sources</h3>
         <p>Textes, commentateurs et recherche Sefaria — licences affichées — et le catalogue HebrewBooks (~65 000 seforim).</p>
@@ -316,6 +334,31 @@ export const LANDING_HTML = `<!doctype html>
       </div>
     </aside>
   </div>
+</section>
+
+<section class="modes" id="modes">
+  <div class="amud-head rv"><span class="otiot">ב</span><span class="rule"></span><span class="lbl">Trois modes — à chacun selon son niveau</span></div>
+  <div class="cols">
+    <div class="col rv d1">
+      <h3>Débutant</h3>
+      <p class="who">Pas de culture religieuse, ou pas d'hébreu.</p>
+      <p>Tout en français. Aucun mot hébreu sans sa traduction, le contexte avant la réponse, une idée à la fois — et jamais de question jugée naïve.</p>
+      <span class="try">« C'est quoi, la halakha ? »</span>
+    </div>
+    <div class="col rv d2">
+      <h3>Classique</h3>
+      <p class="who">Culture de base, hébreu avec traduction.</p>
+      <p>Bilingue : la source, puis sa traduction — française pour la Bible. Termes usuels supposés connus, références standard, mahloket signalées. Le mode par défaut.</p>
+      <span class="try">« Que dit Rachi sur ce verset ? »</span>
+    </div>
+    <div class="col rv d3">
+      <h3>Avancé</h3>
+      <p class="who">Le beit midrash.</p>
+      <p>Source en langue originale, terminologie sans glose, richonim et poskim, girsaot quand elles pèsent, nafka mina, lomdus. Densité maximale, rien de lissé.</p>
+      <span class="try">« Chitat ha-Rambam contre Tossafot ici ? »</span>
+    </div>
+  </div>
+  <p class="note rv">Un même moteur, une même rigueur : les textes sont toujours réellement lus et cités exactement. Seul le registre s'adapte — et vous en changez d'un mot.</p>
 </section>
 
 <section class="band" id="daf-viewer">
@@ -337,9 +380,10 @@ export const LANDING_HTML = `<!doctype html>
 </section>
 
 <section class="mafteah" id="mafteah">
-  <div class="amud-head rv"><span class="otiot">ב</span><span class="rule"></span><span class="lbl">Mafteah — l'index des quatorze outils</span></div>
+  <div class="amud-head rv"><span class="otiot">ג</span><span class="rule"></span><span class="lbl">Mafteah — l'index des quinze outils</span></div>
   <div class="toc rv d1">
     <a href="/install"><span class="t">La méthode d'étude</span><span class="dots"></span><span class="d">chargée avant toute réponse religieuse</span></a>
+    <a href="#modes"><span class="t">Trois modes d'étude</span><span class="dots"></span><span class="d">débutant · classique · avancé</span></a>
     <a href="/install"><span class="t">Havrouta</span><span class="dots"></span><span class="d">le partenaire qui questionne</span></a>
     <a href="/install"><span class="t">Guide de paracha</span><span class="dots"></span><span class="d">aliyot, mahloket, table de Chabbat</span></a>
     <a href="/daf"><span class="t">Le daf — page de Vilna</span><span class="dots"></span><span class="d">MCP App interactive, aussi en ligne</span></a>
@@ -470,16 +514,19 @@ export const INSTALL_HTML = `<!doctype html>
   <span class="url">claude mcp add --transport http torah https://torah-mcp.com/mcp</span>
 
   <div class="amud-head"><span class="ot">ג</span><span class="rule"></span><span class="lbl">Autres clients MCP</span></div>
-  <p>Tout client compatible (transport HTTP streamable) fonctionne avec la même URL. Le serveur expose 14 outils en lecture seule, 3 prompts (<code>hebrewbooks</code>, <code>havrouta</code>, <code>paracha</code>) et une MCP App — le visualiseur de daf.</p>
+  <p>Tout client compatible (transport HTTP streamable) fonctionne avec la même URL. Le serveur expose 15 outils en lecture seule, 5 prompts (<code>hebrewbooks</code>, <code>havrouta</code>, <code>paracha</code>, <code>debutant</code>, <code>avance</code>) et une MCP App — le visualiseur de daf.</p>
 
-  <div class="amud-head"><span class="ot">ד</span><span class="rule"></span><span class="lbl">Accès sur invitation — optionnel</span></div>
+  <div class="amud-head"><span class="ot">ד</span><span class="rule"></span><span class="lbl">Votre niveau</span></div>
+  <p>Dites-le simplement au début de la conversation — « je débute, je ne lis pas l'hébreu » ou « mode avancé » — ou laissez Claude le déduire de votre question. Le tool <code>mode_etude</code> règle le registre (débutant / classique / avancé) sans rien changer à la discipline des sources ; vous en changez à tout moment.</p>
+
+  <div class="amud-head"><span class="ot">ה</span><span class="rule"></span><span class="lbl">Accès sur invitation — optionnel</span></div>
   <p>Par défaut le serveur est public. Pour un accès sur invitation, l'hébergeur pose le secret <code>BEARER_TOKENS</code> (un token par invité, séparés par des virgules) ; chacun utilise alors <code>https://…/&lt;token&gt;/mcp</code>, et l'on révoque en retirant le token.</p>
 
-  <div class="amud-head"><span class="ot">ה</span><span class="rule"></span><span class="lbl">Héberger votre propre instance</span></div>
+  <div class="amud-head"><span class="ot">ו</span><span class="rule"></span><span class="lbl">Héberger votre propre instance</span></div>
   <p>Le code est libre (MIT), sans aucun secret requis. Optionnels : <code>HEBREWBOOKS_API_KEY</code> (recherche catalogue — clé sur demande à developers@hebrewbooks.org), <code>BEARER_TOKENS</code>.</p>
   <p style="margin-top:1rem"><a class="lnk" href="https://deploy.workers.cloudflare.com/?url=https://github.com/JonathanB555/torah-mcp">Deploy to Cloudflare</a>&nbsp;&nbsp;&nbsp;<a class="lnk" href="https://github.com/JonathanB555/torah-mcp">Code source</a></p>
 
-  <div class="amud-head"><span class="ot">ו</span><span class="rule"></span><span class="lbl">Bon voisinage</span></div>
+  <div class="amud-head"><span class="ot">ז</span><span class="rule"></span><span class="lbl">Bon voisinage</span></div>
   <ul>
     <li>Requêtes vers Sefaria : User-Agent identifiant + cache edge (24 h textes, 1 h calendriers)</li>
     <li>Limite de débit : 60 requêtes/minute/IP</li>

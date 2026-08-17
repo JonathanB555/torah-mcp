@@ -102,11 +102,14 @@ export const dafViewerHandlers: Record<string, ToolHandler> = {
     }
 
     const encoded = encodeURIComponent(ref.replace(/ /g, "_"));
-    const main = await sefariaJson(env, `/v3/texts/${encoded}?version=primary&version=translation`);
+    // Français en priorité quand Sefaria en a une (Tanakh : Bible du Rabbinat) ; sinon la traduction par défaut (anglais).
+    const main = await sefariaJson(env, `/v3/texts/${encoded}?version=primary&version=french&version=translation`);
     const heV = (main.versions || []).find((v: any) => (v.actualLanguage || v.language) === "he");
+    const frV = (main.versions || []).find((v: any) => (v.actualLanguage || v.language) === "fr");
     const enV = (main.versions || []).find((v: any) => (v.actualLanguage || v.language) === "en");
+    const trV = frV || enV;
     const he = flatten(heV?.text).map(stripHtml);
-    const en = flatten(enV?.text).map(stripHtml);
+    const en = flatten(trV?.text).map(stripHtml);
     if (he.length === 0) {
       throw new Error(`Texte introuvable pour "${ref}" — vérifier la référence (ex : Berakhot 2a).`);
     }
@@ -125,7 +128,8 @@ export const dafViewerHandlers: Record<string, ToolHandler> = {
       segments: cap(he, 60).map((h, i) => ({ he: h, en: en[i] || "" })),
       rashi: cap(rashi, 60),
       tosafot: cap(tosafot, 60),
-      licences: { texte: heV?.license || "", traduction: enV?.license || "" },
+      traduction: { langue: frV ? "fr" : enV ? "en" : "", version: trV?.versionTitle || "" },
+      licences: { texte: heV?.license || "", traduction: trV?.license || "" },
     };
 
     const resume =
@@ -197,13 +201,14 @@ export const DAF_VIEWER_HTML = `<!doctype html>
       <input id="refinput" dir="ltr" placeholder="Berakhot 2a, Bava Metzia 21a…">
       <button type="submit" class="bk">Ouvrir</button>
       <button type="button" id="today" class="bk sec">Daf du jour</button>
+      <button type="button" id="all" class="bk sec">Tout traduire</button>
       <a href="/" style="font-size:.8rem; color:var(--muted); text-decoration:none;">← torah-mcp.com</a>
     </form>
   </div>
   <div id="loading">טוען את הדף…</div>
   <div id="app" style="display:none">
     <header><span class="he" id="heref"></span><span class="en" id="enref"></span></header>
-    <p class="hint">לחיצה על קטע — תרגום. Un clic sur un segment affiche la traduction.</p>
+    <p class="hint">לחיצה על קטע — תרגום. Un clic sur un segment affiche sa traduction. <span id="trlang"></span></p>
     <div id="gemara"></div>
     <details id="rashi-box"><summary>רש״י</summary><div class="comm" id="rashi"></div></details>
     <details id="tosafot-box"><summary>תוספות</summary><div class="comm" id="tosafot"></div></details>
@@ -239,24 +244,43 @@ export const DAF_VIEWER_HTML = `<!doctype html>
     document.getElementById("enref").textContent = d.ref;
     var g = document.getElementById("gemara");
     g.innerHTML = "";
+    var segs = [];
+    function openTr(o) {
+      if (o.tr || !o.s.en) return;
+      o.tr = document.createElement("span");
+      o.tr.className = "tr";
+      o.tr.textContent = o.s.en;
+      o.sp.after(o.tr);
+      o.sp.classList.add("open");
+    }
+    function closeTr(o) {
+      if (!o.tr) return;
+      o.tr.remove(); o.tr = null; o.sp.classList.remove("open");
+    }
     (d.segments || []).forEach(function (s, i) {
       var sp = document.createElement("span");
       sp.className = "seg";
       sp.textContent = s.he + " ";
-      var tr = null;
+      var o = { s: s, sp: sp, tr: null };
+      segs.push(o);
       sp.addEventListener("click", function () {
-        if (tr) { tr.remove(); tr = null; sp.classList.remove("open"); }
-        else if (s.en) {
-          tr = document.createElement("span");
-          tr.className = "tr";
-          tr.textContent = s.en;
-          sp.after(tr);
-          sp.classList.add("open");
-        }
+        if (o.tr) closeTr(o); else openTr(o);
         reportSize();
       });
       g.appendChild(sp);
     });
+    var allBtn = document.getElementById("all");
+    if (allBtn) {
+      allBtn.onclick = function () {
+        var anyClosed = segs.some(function (o) { return o.s.en && !o.tr; });
+        segs.forEach(anyClosed ? openTr : closeTr);
+        allBtn.textContent = anyClosed ? "Masquer les traductions" : "Tout traduire";
+        reportSize();
+      };
+      allBtn.textContent = "Tout traduire";
+    }
+    var trl = document.getElementById("trlang");
+    if (trl) trl.textContent = d.traduction && d.traduction.langue === "fr" ? "Traduction française (Bible du Rabbinat)." : d.traduction && d.traduction.langue === "en" ? "Traduction anglaise (pas de version française de ce texte sur Sefaria)." : "";
     function fill(id, arr) {
       var box = document.getElementById(id + "-box");
       var el = document.getElementById(id);

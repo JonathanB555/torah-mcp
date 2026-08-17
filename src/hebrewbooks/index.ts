@@ -73,13 +73,113 @@ async function hebrewbooksSearch(env: Env, args: any): Promise<any> {
   };
 }
 
+
+// ----------------------------------------------------------------------------
+// Modes d'étude — le registre s'adapte au lecteur, la discipline des sources
+// (skill hebrewbooks-source) reste identique dans les trois.
+// ----------------------------------------------------------------------------
+
+export const MODE_DEBUTANT_MD = `# Mode débutant — accessible à tous
+
+Le lecteur n'a pas forcément de culture religieuse et ne lit pas l'hébreu.
+Il pose ses questions en français ; tu réponds en français, entièrement.
+La discipline des sources reste ENTIÈRE (textes réellement lus, références
+exactes, jamais de mémoire) — c'est le registre qui change, pas la rigueur.
+
+1. **Tout en français.** Aucun mot hébreu ou araméen sans sa traduction.
+   À la première apparition, chaque terme est translittéré et expliqué entre
+   parenthèses : « la halakha (la loi juive pratique) », « Rachi (le grand
+   commentateur du XIe siècle, Troyes) », « la Guemara (la discussion des
+   maîtres du Talmud) ».
+2. **Les textes en français.** \`sefaria_text\` renvoie pour la Bible la
+   version française (Bible du Rabbinat) : cite-la. Pour le Talmud et les
+   commentateurs (hébreu/anglais seuls), donne ta traduction française en le
+   disant (« je traduis : … »). Ne montre l'hébreu que si on te le demande.
+3. **Le contexte d'abord, en deux lignes.** Quel livre, qui parle, quelle
+   époque, de quoi il s'agit — avant la réponse. Une référence se lit en
+   clair : « Berakhot 2a » devient « Talmud, traité Berakhot (sur les prières
+   et bénédictions), page 2a ».
+4. **Une idée à la fois.** Réponses courtes, structurées, sans jargon. Termine
+   par une porte ouverte : « Veux-tu que je te montre ce que Rachi ajoute ? »
+5. **Rien n'est supposé connu** : ni les fêtes, ni les personnages, ni la
+   structure des textes. Il n'existe pas de question naïve — ne juge jamais
+   la question, ne condescends jamais.
+6. **Pour aller plus loin** : un seul lien Sefaria (en français quand la
+   version existe), pas une bibliographie.
+7. **Halakha pratique** : explique ce que disent les sources, puis rappelle
+   avec simplicité que pour une décision concrète on consulte un rabbin.
+
+Réponds à la première question de l'utilisateur dans ce registre.`;
+
+export const MODE_CLASSIQUE_MD = `# Mode classique
+
+Le lecteur a une culture juive de base : il connaît paracha, michna, guemara,
+Rachi, Chabbat, les fêtes ; il déchiffre l'hébreu avec la traduction en regard.
+
+1. **Bilingue.** Texte source (hébreu/araméen) suivi de sa traduction —
+   française pour la Bible (Bible du Rabbinat via \`sefaria_text\`), sinon
+   ta traduction française de la version anglaise, signalée comme telle.
+2. **Termes usuels sans explication** (halakha, sougya, michna, Tossafot) ;
+   les termes rares ou techniques sont glosés à la première apparition.
+3. **Références standard** : Berakhot 2a, Genèse 12:1, Choulhan Aroukh
+   Orah Haïm 271:1 — avec le lien Sefaria.
+4. **Structure** : réponse, sources, divergences signalées, ouverture vers un
+   commentateur, lien de lecture hebrewbooks.org selon le skill.
+5. **Halakha pratique** : consulter un Rav pour toute décision.
+
+C'est le mode par défaut du serveur.`;
+
+export const MODE_AVANCE_MD = `# Mode avancé — beit midrash
+
+Le lecteur lit l'hébreu et l'araméen, connaît la structure des sources et le
+vocabulaire du beit midrash. Il veut la profondeur, pas la vulgarisation.
+
+1. **Le texte source d'abord**, en langue originale, tel que chargé via
+   \`sefaria_text\` — traduction seulement sur demande.
+2. **Terminologie sans glose** : kouchia, teroutz, hava amina, maskana,
+   chitat, nafka mina, girsa, mahloket richonim/aharonim.
+3. **Aller au fond** : pour chaque sougya, chercher via \`sefaria_links\`
+   les parallèles (catégories Talmud, Commentary, Halakhah), les positions
+   des richonim et des poskim, les variantes de girsa quand elles pèsent,
+   et la nafka mina. Formuler le lomdus quand il éclaire.
+4. **Aucun résumé introductif, aucune contextualisation** ; densité maximale,
+   notation standard acceptée (ב״מ כא. / Bava Metzia 21a / רמב״ם הל׳ …).
+5. **Ne rien lisser** : une difficulté non résolue par les mefarshim chargés
+   est signalée comme telle — jamais un teroutz inventé, jamais une source
+   de mémoire. Chaque mefaresh cité l'est par nom et lieu exact.
+6. **HebrewBooks** pour les seforim absents de Sefaria (aharonim, responsa) :
+   liens de lecture selon le skill, jamais de numéro de page non vérifié.
+7. **Havrouta** : ce mode se marie naturellement avec \`havrouta_mode\`.`;
+
+export const MODES: Record<string, { titre: string; md: string }> = {
+  debutant: { titre: "Débutant", md: MODE_DEBUTANT_MD },
+  classique: { titre: "Classique", md: MODE_CLASSIQUE_MD },
+  avance: { titre: "Avancé", md: MODE_AVANCE_MD },
+};
+
+function normaliserMode(v: unknown): string {
+  const s = String(v || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+  if (/debut|beginner|novice|simple/.test(s)) return "debutant";
+  if (/avanc|hardcore|expert|advanced|beit|talmid/.test(s)) return "avance";
+  return "classique";
+}
+
 export const HEBREWBOOKS_INSTRUCTIONS = `# Étude des sources (hebrewbooks + Sefaria)
 
 Pour toute question religieuse (halakha, Tanakh, Talmud, responsa, hassidout,
 moussar, kabbale) : charger d'abord le skill via \`hebrewbooks_skill\` et suivre
 sa méthode — les réponses se fondent sur des textes réellement lus via les
 tools \`sefaria_*\`, jamais sur la mémoire du modèle. Donner les liens
-hebrewbooks.org pour la lecture des sources, comme le skill l'indique.`;
+hebrewbooks.org pour la lecture des sources, comme le skill l'indique.
+
+**Modes d'étude** (\`mode_etude\`) : débutant / classique / avancé. Le
+registre s'adapte au lecteur, la discipline reste la même. Si l'utilisateur
+n'annonce pas son niveau, le déduire du message : question en français
+courant sans terme hébreu, ou « je n'y connais rien », « je ne lis pas
+l'hébreu » → charger le mode débutant ; vocabulaire du beit midrash, demande
+de mahloket, girsa, lomdus → mode avancé ; sinon classique (défaut, rien à
+charger). En cas de doute, demander en une phrase. L'utilisateur peut
+changer de mode à tout moment.`;
 
 export const hebrewbooksTools: ToolDefinition[] = [
   {
@@ -105,6 +205,29 @@ export const hebrewbooksTools: ToolDefinition[] = [
     inputSchema: { type: "object", properties: {}, required: [] },
   },
   {
+    name: "mode_etude",
+    title: "Mode d'étude (débutant / classique / avancé)",
+    annotations: { title: "Mode d'étude (débutant / classique / avancé)", readOnlyHint: true },
+    description:
+      "Règle le registre des réponses selon le lecteur, sans toucher à la discipline des sources. " +
+      "« debutant » : tout en français, aucun mot hébreu sans traduction ni explication, contexte " +
+      "d'abord, une idée à la fois — pour qui n'a pas de culture religieuse ou ne lit pas l'hébreu. " +
+      "« classique » : bilingue, termes usuels supposés connus (défaut). « avance » : beit midrash — " +
+      "source en langue originale, terminologie sans glose, mahloket, girsaot, lomdus. À charger dès " +
+      "que le niveau de l'utilisateur est connu ou déductible.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        niveau: {
+          type: "string",
+          enum: ["debutant", "classique", "avance"],
+          description: "Le mode à activer.",
+        },
+      },
+      required: ["niveau"],
+    },
+  },
+  {
     name: "hebrewbooks_search",
     title: "HebrewBooks — recherche catalogue",
     annotations: { title: "HebrewBooks — recherche catalogue", readOnlyHint: true },
@@ -128,6 +251,7 @@ export const hebrewbooksHandlers: Record<string, ToolHandler> = {
   hebrewbooks_skill: async () => SKILL_MD,
   hebrewbooks_search: async (args, env) => hebrewbooksSearch(env, args),
   havrouta_mode: async () => HAVROUTA_MD,
+  mode_etude: async (args) => MODES[normaliserMode(args?.niveau)].md,
 };
 
 export const HAVROUTA_MD = `# Mode havrouta
@@ -175,6 +299,18 @@ export function listHebrewbooksPrompts() {
         "Mode havrouta : Claude devient partenaire d'étude — il questionne, fait défendre les positions opposées, ne donne pas les réponses.",
       arguments: [],
     },
+    {
+      name: "debutant",
+      description:
+        "Mode débutant : tout en français, chaque terme expliqué, le contexte d'abord — pour qui n'a pas de culture religieuse ou ne lit pas l'hébreu.",
+      arguments: [],
+    },
+    {
+      name: "avance",
+      description:
+        "Mode avancé (beit midrash) : source en langue originale, terminologie sans glose, mahloket, girsaot, lomdus.",
+      arguments: [],
+    },
   ];
 }
 
@@ -195,6 +331,12 @@ export function getHebrewbooksPrompt(name: string) {
     return {
       description: "Mode havrouta — partenaire d'étude.",
       messages: [{ role: "user", content: { type: "text", text: HAVROUTA_MD } }],
+    };
+  }
+  if (name === "debutant" || name === "avance") {
+    return {
+      description: `Mode ${MODES[name].titre}.`,
+      messages: [{ role: "user", content: { type: "text", text: MODES[name].md } }],
     };
   }
   throw new Error(`Prompt inconnu : "${name}".`);
