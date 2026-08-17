@@ -28,7 +28,7 @@ const QUESTION_TOOLS = [
   "date_hebraique",
   "gematria",
 ];
-const MAX_ROUNDS = 6;
+const MAX_ROUNDS = 8;
 const MAX_TOOL_RESULT_CHARS = 7000;
 const MAX_QUESTION_CHARS = 600;
 const MAX_OUTPUT_TOKENS = 1600;
@@ -105,7 +105,9 @@ export async function repondreQuestion(
   input: { question: unknown; mode?: unknown },
   ip: string
 ): Promise<{ status: number; body: any }> {
-  if (!env.ANTHROPIC_API_KEY) {
+  // Repli temporaire : secret posé sous un mauvais nom lors de l'installation.
+  const apiKey = env.ANTHROPIC_API_KEY || (env as any)["torah-mcp"];
+  if (!apiKey) {
     return {
       status: 503,
       body: { error: "La question en ligne n'est pas encore activée sur ce serveur (clé API absente). Installez Torah MCP dans Claude : torah-mcp.com/install" },
@@ -135,7 +137,7 @@ export async function repondreQuestion(
       method: "POST",
       headers: {
         "content-type": "application/json",
-        "x-api-key": env.ANTHROPIC_API_KEY,
+        "x-api-key": apiKey,
         "anthropic-version": ANTHROPIC_VERSION,
       },
       body: JSON.stringify({
@@ -188,16 +190,18 @@ export async function repondreQuestion(
   }
 
   if (!final) {
-    // Synthèse de secours : un dernier appel sans tools.
+    // Synthèse de secours, sans tools : la consigne s'ajoute au DERNIER message
+    // (qui est déjà un message user de tool_results) — l'API refuse deux
+    // messages user consécutifs.
+    const consigne = { type: "text", text: "Le budget de lecture est épuisé. Rédige maintenant la réponse finale à partir de tout ce qui a été lu ci-dessus, avec la section Sources." };
+    const last = messages[messages.length - 1];
+    const finalMessages = last && last.role === "user"
+      ? [...messages.slice(0, -1), { role: "user", content: Array.isArray(last.content) ? [...last.content, consigne] : [{ type: "text", text: String(last.content) }, consigne] }]
+      : [...messages, { role: "user", content: [consigne] }];
     const resp = await fetch(ANTHROPIC_URL, {
       method: "POST",
-      headers: { "content-type": "application/json", "x-api-key": env.ANTHROPIC_API_KEY, "anthropic-version": ANTHROPIC_VERSION },
-      body: JSON.stringify({
-        model,
-        max_tokens: MAX_OUTPUT_TOKENS,
-        system,
-        messages: [...messages, { role: "user", content: "Rédige maintenant la réponse finale à partir de ce qui a été lu, avec la section Sources." }],
-      }),
+      headers: { "content-type": "application/json", "x-api-key": apiKey, "anthropic-version": ANTHROPIC_VERSION },
+      body: JSON.stringify({ model, max_tokens: MAX_OUTPUT_TOKENS, system, messages: finalMessages }),
     });
     const data: any = resp.ok ? await resp.json() : { content: [] };
     final = (data.content || []).filter((b: any) => b.type === "text").map((b: any) => b.text).join("\n").trim();
