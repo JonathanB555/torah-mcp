@@ -12,6 +12,10 @@ export interface Env {
   /** Clé API HebrewBooks (accordée sur demande à developers@hebrewbooks.org). */
   HEBREWBOOKS_API_KEY?: string;
   HEBREWBOOKS_API_URL?: string;
+  /** Question en français sur le site : clé API Anthropic (secret) — sans elle, /api/question répond 503. */
+  ANTHROPIC_API_KEY?: string;
+  ANTHROPIC_MODEL?: string;
+  QUESTION_DAILY_CAP?: string;
 }
 
 export interface ToolDefinition {

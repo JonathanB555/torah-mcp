@@ -8,7 +8,7 @@ import skillMd from "./SKILL.md";
 
 import type { Env, ToolDefinition, ToolHandler } from "../sefaria";
 
-const SKILL_MD = skillMd as unknown as string;
+export const SKILL_MD = skillMd as unknown as string;
 
 // ----------------------------------------------------------------------------
 // Recherche catalogue HebrewBooks — via leur API officielle sur clé

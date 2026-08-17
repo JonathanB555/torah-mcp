@@ -20,6 +20,8 @@ import {
   getHebrewbooksPrompt,
 } from "./hebrewbooks";
 import { LANDING_HTML, PRIVACY_HTML, INSTALL_HTML } from "./landing";
+import { repondreQuestion } from "./question";
+import { QUESTION_HTML } from "./question-page";
 import { limoudTools, limoudHandlers } from "./limoud";
 import { renderDaily, LANDING_HE, OUTILS_HTML } from "./pages";
 import { dafViewerTools, dafViewerHandlers, DAF_VIEWER_URI, DAF_VIEWER_HTML, MCP_APP_MIME } from "./dafviewer";
@@ -234,6 +236,17 @@ export default {
     // API web publique : les mêmes fonctions que les tools MCP, en JSON,
     // pour les pages du site (/daf, /outils). Même limiteur de débit.
     // ------------------------------------------------------------------
+    // Question en français (Claude côté serveur, mêmes tools, même méthode).
+    if (url.pathname === "/api/question") {
+      if (request.method !== "POST") return jsonResponse({ error: "POST attendu" }, 405);
+      const ip = request.headers.get("CF-Connecting-IP") || "unknown";
+      let body: any = {};
+      try { body = await request.json(); } catch { return jsonResponse({ error: "JSON invalide" }, 400); }
+      if (body?.site) return jsonResponse({ error: "Requête rejetée." }, 400); // pot de miel
+      const r = await repondreQuestion(env, allTools, allHandlers as any, body, ip);
+      return jsonResponse(r.body, r.status);
+    }
+
     if (url.pathname.startsWith("/api/")) {
       const toolMap: Record<string, string> = {
         daf: "daf_viewer",
@@ -288,6 +301,12 @@ export default {
       const bytes = Uint8Array.from(atob(ICON_PNG_BASE64), (c) => c.charCodeAt(0));
       return new Response(bytes, {
         headers: { "Content-Type": "image/png", "Cache-Control": "public, max-age=86400" },
+      });
+    }
+
+    if (request.method === "GET" && url.pathname === "/question") {
+      return new Response(QUESTION_HTML, {
+        headers: { "Content-Type": "text/html; charset=utf-8", ...CORS_HEADERS },
       });
     }
 

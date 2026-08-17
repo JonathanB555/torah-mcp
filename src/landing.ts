@@ -40,6 +40,9 @@ export const PRIVACY_HTML = `<!doctype html>
   demandés, et l'infrastructure Cloudflare produit des journaux techniques
   opérationnels de courte durée (adresse IP, horodatage) utilisés uniquement
   pour la sécurité et la limitation de débit.</p>
+  <h2>« Poser une question » sur le site</h2>
+  <p>La page <a href="/question">/question</a> envoie votre question, telle que vous l'avez écrite, à l'API d'Anthropic (Claude) pour rédiger la réponse à partir des textes lus sur Sefaria. Nous ne conservons ni la question ni la réponse ; l'adresse IP sert uniquement au limiteur de débit, en mémoire, sans journal. Le traitement par Anthropic relève de sa <a href="https://www.anthropic.com/legal/privacy">politique de confidentialité</a> (données d'API non utilisées pour l'entraînement). N'y écrivez pas d'informations personnelles.</p>
+
   <h2>Privacy — English</h2>
   <p>This server collects, stores and shares no personal data. No account, no
   cookies, no history of queries. Requests are forwarded to the public
@@ -55,6 +58,9 @@ export const PRIVACY_HTML = `<!doctype html>
   le visualiseur de daf intégré à Claude ne charge aucun traceur.
   Voir les <a href="https://policies.google.com/privacy">règles de
   confidentialité de Google</a>.</p>
+  <h2>"Ask a question" on the website — English</h2>
+  <p>The <a href="/question">/question</a> page sends your question, as written, to Anthropic's API (Claude) to draft an answer from texts read on Sefaria. We store neither the question nor the answer; the IP address is only used by the in-memory rate limiter, without logs. Anthropic's processing is governed by its <a href="https://www.anthropic.com/legal/privacy">privacy policy</a> (API data is not used for training). Do not include personal information.</p>
+
   <h2>Website analytics — English</h2>
   <p>The website pages (torah-mcp.com) use Google Analytics 4 for aggregate
   traffic measurement (page views, referrers) — browser visits only.
@@ -264,8 +270,9 @@ export const LANDING_HTML = `<!doctype html>
   <a class="wm" href="/"><b>Torah</b>&nbsp;MCP</a>
   <div class="r">
     <span class="grp hide-m">Sur le site</span>
+    <a href="/question">Une question</a>
     <a href="/daf">Le daf</a>
-    <a href="/outils">Outils</a>
+    <a href="/outils" class="hide-m">Outils</a>
     <a href="/daily" class="hide-m">Limoud du jour</a>
     <span class="sep hide-m"></span>
     <span class="grp hide-m">Dans Claude</span>
@@ -281,7 +288,7 @@ export const LANDING_HTML = `<!doctype html>
   <p class="deck chor c2">Un serveur MCP gratuit qui impose une discipline des sources à Claude : chaque réponse de halakha ou de limoud est lue dans le texte réel, citée exactement, reliée à ses commentateurs. En français, à votre niveau — du débutant qui ne lit pas l'hébreu au talmid hakham. Et chaque outil existe aussi en version web, ici même, sans Claude.</p>
   <div class="acts chor c3">
     <a class="lnk" href="/install">Installer dans Claude — 2 min</a>
-    <a class="lnk" href="/outils">Utiliser sur le site — sans Claude</a>
+    <a class="lnk" href="/question">Poser une question — sans Claude</a>
   </div>
   <span class="hint chor c4" style="opacity:0">Gratuit · sans compte · sans collecte — défilez</span>
 </header>
@@ -326,6 +333,7 @@ export const LANDING_HTML = `<!doctype html>
         <h3>Trois modes</h3>
         <p>Débutant, classique, avancé — le registre change, la discipline des sources jamais. Claude devine votre niveau à votre question, et vous changez de mode d'un mot.</p>
         <span class="try">« Je n'y connais rien, explique-moi simplement. »</span>
+        <a href="/question">Poser une question sur le site, sans Claude</a>
       </div>
       <div class="glose" data-ref="sources">
         <h3>Les sources</h3>
@@ -358,7 +366,7 @@ export const LANDING_HTML = `<!doctype html>
       <span class="try">« Chitat ha-Rambam contre Tossafot ici ? »</span>
     </div>
   </div>
-  <p class="note rv">Un même moteur, une même rigueur : les textes sont toujours réellement lus et cités exactement. Seul le registre s'adapte — et vous en changez d'un mot.</p>
+  <p class="note rv">Un même moteur, une même rigueur : les textes sont toujours réellement lus et cités exactement. Seul le registre s'adapte — et vous en changez d'un mot. Pas de Claude ? <a href="/question">Posez votre question ici même</a>, en français : la réponse est lue dans les textes, avec ses sources.</p>
 </section>
 
 <section class="band" id="daf-viewer">
@@ -383,6 +391,7 @@ export const LANDING_HTML = `<!doctype html>
   <div class="amud-head rv"><span class="otiot">ג</span><span class="rule"></span><span class="lbl">Mafteah — l'index des quinze outils</span></div>
   <div class="toc rv d1">
     <a href="/install"><span class="t">La méthode d'étude</span><span class="dots"></span><span class="d">chargée avant toute réponse religieuse</span></a>
+    <a href="/question"><span class="t">Une question, en français</span><span class="dots"></span><span class="d">sur le site, sans Claude — réponse lue dans les textes</span></a>
     <a href="#modes"><span class="t">Trois modes d'étude</span><span class="dots"></span><span class="d">débutant · classique · avancé</span></a>
     <a href="/install"><span class="t">Havrouta</span><span class="dots"></span><span class="d">le partenaire qui questionne</span></a>
     <a href="/install"><span class="t">Guide de paracha</span><span class="dots"></span><span class="d">aliyot, mahloket, table de Chabbat</span></a>
