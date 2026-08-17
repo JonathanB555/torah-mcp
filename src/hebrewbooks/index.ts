@@ -79,6 +79,40 @@ async function hebrewbooksSearch(env: Env, args: any): Promise<any> {
 // (skill hebrewbooks-source) reste identique dans les trois.
 // ----------------------------------------------------------------------------
 
+
+// ----------------------------------------------------------------------------
+// Convention de translittération — française, séfarade, une seule pour tous
+// les modes (Jonathan : « uniformise en séfarade »).
+// ----------------------------------------------------------------------------
+
+export const TRANSLIT_MD = `## Convention de translittération (obligatoire)
+
+Toujours la prononciation **séfarade**, en graphie **française** — jamais de
+mélange avec les formes ashkénazes ou anglaises.
+
+- ש = **ch** (Chabbat, Chema, Choulhan Aroukh, Roch Hachana, Michna, Moché) —
+  jamais « sh », jamais « Shabbos ».
+- ת = **t** toujours (Chabbat, Souccot, mitsva, Tossafot, berakhot) — jamais « s ».
+- ח = **h** (halakha, Hanoukka, hamets, Orah Haïm, Yits'hak) ; כ sans daguech
+  = **kh** (berakha, melakha, Mordekhaï, Michna Beroura → « Beroura »).
+- צ = **ts** (mitsva, tsitsit, Yits'hak, tsedaka, matsa) — jamais « tz ».
+- ק = **k** (Kiddouch, kacher, Kohen) ; ו consonne = **v** (mitsvot, Vayikra).
+- Voyelles : ou pour וּ (Kiddouch, Souccot, sougya, Kippour), é/è selon
+  l'oreille française (Pessah, Guemara, tefila), pas de « oo » ni de « ee ».
+- Formes de référence : Chabbat, Pessah, Chavouot, Souccot, Roch Hachana, Yom
+  Kippour, Hanoukka, Pourim, Guemara, Michna, Tossafot, Rachi, Rambam, Ramban,
+  Behag, Choulhan Aroukh, Orah Haïm, Yoré Déa, Hochen Michpat, Even Haézer,
+  Michna Beroura, Biour Halakha, Rama, Beit Yossef, Kitsour, sougya, mahloket,
+  kouchia, terouts, halakha, berakha, mitsva, tefila, Kiddouch, Havdala,
+  Birkat Hamazon, minha, arvit, chaharit, chkia, tset hakokhavim, alot
+  hachahar, Vayikra, Bemidbar, Devarim, Chemot, Berechit.
+- Noms propres : Moché, Aharon, Avraham, Yits'hak, Ya'akov, Yossef, David,
+  Chelomo, Eliyahou, Rabbi Yossef Caro, Rabbénou Tam, le Roch, le Ran, le Rif.
+- Ne translittère pas ce qui a une forme française consacrée : Genèse, Exode,
+  Lévitique, Nombres, Deutéronome, Psaumes, Proverbes, Talmud, Torah, Bible,
+  rabbin, synagogue — sauf en mode avancé, où Berechit/Chemot… sont acceptés.
+- L'hébreu lui-même (lettres hébraïques) reste bien sûr tel quel.`;
+
 export const MODE_DEBUTANT_MD = `# Mode débutant — accessible à tous
 
 Le lecteur n'a pas forcément de culture religieuse et ne lit pas l'hébreu.
@@ -109,7 +143,9 @@ exactes, jamais de mémoire) — c'est le registre qui change, pas la rigueur.
 7. **Halakha pratique** : explique ce que disent les sources, puis rappelle
    avec simplicité que pour une décision concrète on consulte un rabbin.
 
-Réponds à la première question de l'utilisateur dans ce registre.`;
+Réponds à la première question de l'utilisateur dans ce registre.
+
+${TRANSLIT_MD}`;
 
 export const MODE_CLASSIQUE_MD = `# Mode classique
 
@@ -127,7 +163,9 @@ Rachi, Chabbat, les fêtes ; il déchiffre l'hébreu avec la traduction en regar
    commentateur, lien de lecture hebrewbooks.org selon le skill.
 5. **Halakha pratique** : consulter un Rav pour toute décision.
 
-C'est le mode par défaut du serveur.`;
+C'est le mode par défaut du serveur.
+
+${TRANSLIT_MD}`;
 
 export const MODE_AVANCE_MD = `# Mode avancé — beit midrash
 
@@ -149,7 +187,9 @@ vocabulaire du beit midrash. Il veut la profondeur, pas la vulgarisation.
    de mémoire. Chaque mefaresh cité l'est par nom et lieu exact.
 6. **HebrewBooks** pour les seforim absents de Sefaria (aharonim, responsa) :
    liens de lecture selon le skill, jamais de numéro de page non vérifié.
-7. **Havrouta** : ce mode se marie naturellement avec \`havrouta_mode\`.`;
+7. **Havrouta** : ce mode se marie naturellement avec \`havrouta_mode\`.
+
+${TRANSLIT_MD}`;
 
 export const MODES: Record<string, { titre: string; md: string }> = {
   debutant: { titre: "Débutant", md: MODE_DEBUTANT_MD },
@@ -179,7 +219,9 @@ courant sans terme hébreu, ou « je n'y connais rien », « je ne lis pas
 l'hébreu » → charger le mode débutant ; vocabulaire du beit midrash, demande
 de mahloket, girsa, lomdus → mode avancé ; sinon classique (défaut, rien à
 charger). En cas de doute, demander en une phrase. L'utilisateur peut
-changer de mode à tout moment.`;
+changer de mode à tout moment. Translittération : toujours française et
+séfarade (Chabbat, halakha, mitsva, Choulhan Aroukh, Michna Beroura — jamais
+sh/tz/os) ; le tool \`mode_etude\` donne la table complète.`;
 
 export const hebrewbooksTools: ToolDefinition[] = [
   {
@@ -275,6 +317,8 @@ L'utilisateur veut étudier un texte AVEC toi. Discipline :
 6. **Règles du skill hebrewbooks-source** : jamais de citation de mémoire,
    jamais de référence fabriquée, liens hebrewbooks.org pour l'étude sur la
    page, et pour toute conclusion halakhique pratique : consulter un Rav.
+7. **Translittération** française séfarade partout (Rachi, Tossafot,
+   kouchia, terouts, sougya, Guemara — jamais sh/tz/os).
 
 Commence par demander quel texte étudier (ou utilise \`sefaria_calendar\` pour
 proposer le daf du jour), charge-le, puis pose ta première question.`;

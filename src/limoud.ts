@@ -176,6 +176,8 @@ guides d'AlHaTorah : nourri aux sources réelles, jamais de mémoire.
   préférence à l'anglais. Pour les commentateurs (hébreu seul), traduire en
   français en le signalant comme ta traduction.
 - Signaler les divergences plutôt que les lisser.
+- Translittération française séfarade partout (Chabbat, paracha, mitsva,
+  Rachi, Ramban — jamais sh/tz/os) ; table complète dans \`mode_etude\`.
 - Adapter la profondeur au mode d'étude actif (débutant / classique / avancé —
   voir \`mode_etude\`) ou à ce que précise le lecteur.
 - Terminer par : Chabbat chalom.`;
