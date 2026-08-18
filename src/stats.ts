@@ -31,8 +31,8 @@ export async function journaliser(env: Env, e: JournalEntry): Promise<void> {
   const statut = ok ? "ok" : e.status === 429 ? "refus" : "erreur";
   try {
     await env.STATS_DB.prepare(
-      `INSERT INTO questions (ts, mode, question, statut, cause, duree_ms, nb_sources, tours, tokens_in, tokens_out, modele, pays, reponse_len)
-       VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13)`
+      `INSERT INTO questions (ts, mode, question, statut, cause, duree_ms, nb_sources, tours, tokens_in, tokens_out, modele, pays, reponse_len, lang)
+       VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14)`
     )
       .bind(
         new Date().toISOString(),
@@ -47,7 +47,8 @@ export async function journaliser(env: Env, e: JournalEntry): Promise<void> {
         e.meta.tokens_out,
         e.modele,
         e.pays,
-        ok ? String(e.body?.reponse || "").length : null
+        ok ? String(e.body?.reponse || "").length : null,
+        e.meta.lang || "fr"
       )
       .run();
   } catch (err) {
@@ -106,7 +107,7 @@ async function totaux(db: D1Database, depuisISO: string | null): Promise<Totaux>
   return { n: r?.n || 0, ok: r?.ok || 0, refus: r?.refus || 0, erreur: r?.erreur || 0, duree: r?.duree ?? null, tin: r?.tin || 0, tout: r?.tout || 0, sources: r?.sources ?? null };
 }
 
-async function repartition(db: D1Database, col: "mode" | "pays" | "cause", depuisISO: string, limite = 12): Promise<{ k: string; n: number }[]> {
+async function repartition(db: D1Database, col: "mode" | "pays" | "cause" | "lang", depuisISO: string, limite = 12): Promise<{ k: string; n: number }[]> {
   const extra = col === "cause" ? "AND statut <> 'ok'" : "";
   const { results } = await db
     .prepare(`SELECT COALESCE(${col},'—') AS k, COUNT(*) AS n FROM questions WHERE ts >= ?1 ${extra} GROUP BY k ORDER BY n DESC LIMIT ${limite}`)
@@ -181,7 +182,7 @@ export async function pageStats(request: Request, env: Env): Promise<Response> {
   const db = env.STATS_DB;
   const now = Date.now();
   const iso = (ms: number) => new Date(now - ms).toISOString();
-  const [tout, j30, j7, j1, modes, pays, causes, jours, recentes] = await Promise.all([
+  const [tout, j30, j7, j1, modes, pays, causes, langs, jours, recentes] = await Promise.all([
     totaux(db, null),
     totaux(db, iso(30 * 86_400_000)),
     totaux(db, iso(7 * 86_400_000)),
@@ -189,6 +190,7 @@ export async function pageStats(request: Request, env: Env): Promise<Response> {
     repartition(db, "mode", iso(30 * 86_400_000)),
     repartition(db, "pays", iso(30 * 86_400_000)),
     repartition(db, "cause", iso(30 * 86_400_000)),
+    repartition(db, "lang", iso(30 * 86_400_000)),
     parJour(db, 30),
     dernieres(db, 200),
   ]);
@@ -235,7 +237,7 @@ export async function pageStats(request: Request, env: Env): Promise<Response> {
   <h1>Les <strong>questions</strong> posées.</h1>
   <p class="muted">Journal privé de <code>/question</code> — sans adresse IP ni identifiant. Heures de Paris. Coût indicatif aux prix publics Sonnet.</p>
   <div class="ks">${bloc("Depuis le début", tout)}${bloc("30 jours", j30)}${bloc("7 jours", j7)}${bloc("24 heures", j1)}</div>
-  <div class="grid">${liste("Niveau — 30 j", modes, j30.n, (k) => NIV[k] || k)}${liste("Pays — 30 j", pays, j30.n)}${liste("Échecs — 30 j", causes, 0)}</div>
+  <div class="grid">${liste("Niveau — 30 j", modes, j30.n, (k) => NIV[k] || k)}${liste("Pays — 30 j", pays, j30.n)}${liste("Échecs — 30 j", causes, 0)}${liste("Langue — 30 j", langs, j30.n)}</div>
   ${courbe(jours)}
   <h2>Les 200 dernières</h2>
   <table><tbody>${lignes || '<tr><td colspan="5">Aucune question enregistrée pour l’instant.</td></tr>'}</tbody></table>
@@ -249,7 +251,7 @@ export async function csvStats(request: Request, env: Env): Promise<Response> {
   if (!env.STATS_PASSWORD || !env.STATS_DB) return new Response("Introuvable", { status: 404 });
   if (!autorise(request, env)) return demanderAuth();
   const { results } = await env.STATS_DB.prepare(`SELECT * FROM questions ORDER BY id`).all<any>();
-  const cols = ["id", "ts", "mode", "question", "statut", "cause", "duree_ms", "nb_sources", "tours", "tokens_in", "tokens_out", "modele", "pays", "reponse_len"];
+  const cols = ["id", "ts", "mode", "lang", "question", "statut", "cause", "duree_ms", "nb_sources", "tours", "tokens_in", "tokens_out", "modele", "pays", "reponse_len"];
   const cell = (v: unknown) => {
     const s = v == null ? "" : String(v);
     return /[",\n;]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;

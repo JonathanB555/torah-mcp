@@ -51,6 +51,24 @@ The server also ships an `instructions` block (loaded by MCP clients at
 initialize) telling the model to load the skill before answering any religious
 question, and five MCP prompts (`hebrewbooks`, `havrouta`, `paracha`, `debutant`, `avance`).
 
+## The website
+
+Everything the MCP does also exists on the web, no install needed, in three
+languages: French at the root ([torah-mcp.com](https://torah-mcp.com)),
+English under [/en](https://torah-mcp.com/en), Hebrew (RTL) under
+[/he](https://torah-mcp.com/he) — same slugs everywhere (`/question`, `/daf`,
+`/outils`, `/install`, `/daily`, `/privacy`), a FR · EN · עב switcher on
+every page, `hreflang` links for search engines.
+
+- `/question` — ask in plain language; Claude runs server-side with the same
+  tools and method and answers **in the language of the page**, with the
+  sources it actually read (copy / share / local history).
+- `/daf` — the Vilna-style daf viewer; `/outils` — zmanim, Hebrew date,
+  gematria, nikkud, source sheets; `/daily` — today's study cycles.
+
+Optional secrets for the site: `ANTHROPIC_API_KEY` (enables `/question`),
+`STATS_PASSWORD` (private `/stats` page over the D1 question log — no IPs).
+
 ## Deploy your own
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/JonathanB555/torah-mcp)

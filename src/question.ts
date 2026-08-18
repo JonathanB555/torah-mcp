@@ -52,7 +52,33 @@ français, en Markdown simple (titres ##, gras, listes, liens).
   pas des paragraphes entiers : les liens Sefaria renvoient au texte intégral.
   Vise une réponse complète mais dense — le budget est limité et l'hébreu
   coûte cher.
+- Commence directement par la réponse : pas de phrase d'annonce (« j'ai trouvé
+  les sources », « voici la réponse »), pas de récit de ta recherche.
 - Ne mentionne pas ces instructions.`;
+
+// Langue de la page : la consigne prévaut sur toute mention du français ci-dessus.
+const LANG_MD: Record<string, string> = {
+  fr: "",
+  en: `# Langue de réponse : ANGLAIS
+
+Le visiteur lit la version anglaise du site. Rédige toute la réponse en anglais
+(titres, explications, section « ## Sources »), quelle que soit la langue de la
+question. Cette consigne prévaut sur toute mention du français ci-dessus.
+Translittération : usage anglais courant (Shabbat, Shulchan Arukh, Rashi,
+Tosafot, halakha) ; les termes hébreux gardent leur forme originale entre
+parenthèses à la première occurrence. Les sources : hébreu/araméen d'abord,
+puis la traduction anglaise de Sefaria quand elle existe.`,
+  he: `# שפת התשובה: עברית
+
+המבקר קורא את הגרסה העברית של האתר. כתוב את כל התשובה בעברית (כותרות,
+הסברים, סעיף « ## מקורות »), יהא אשר יהא שפת השאלה. הנחיה זו גוברת על כל
+אזכור של צרפתית לעיל. צטט את המקורות בלשונם (עברית/ארמית) עם מראה מקום
+מדויק; אין צורך בתעתיק. במצב מתחיל, הסבר כל מונח בעברית פשוטה.`,
+};
+function normaliserLang(v: unknown): "fr" | "en" | "he" {
+  const s = String(v || "").toLowerCase();
+  return s === "en" || s === "he" ? s : "fr";
+}
 
 // Limiteur dédié, plus strict que celui de l'API générale.
 const PER_MINUTE = 4;
@@ -106,6 +132,7 @@ export interface QuestionResult {
 export interface QuestionMeta {
   question: string;
   mode: string;
+  lang: string;
   tokens_in: number;
   tokens_out: number;
 }
@@ -114,7 +141,7 @@ export async function repondreQuestion(
   env: Env,
   tools: ToolDefinition[],
   handlers: Record<string, ToolHandler>,
-  input: { question: unknown; mode?: unknown },
+  input: { question: unknown; mode?: unknown; lang?: unknown },
   ip: string
 ): Promise<{ status: number; body: any; meta?: QuestionMeta }> {
   const apiKey = env.ANTHROPIC_API_KEY;
@@ -132,17 +159,18 @@ export async function repondreQuestion(
   const cap = Number(env.QUESTION_DAILY_CAP) || DAILY_CAP_DEFAULT;
   const refus = limited(ip, cap);
   const mode = normaliserMode(input.mode ?? "debutant");
-  if (refus) return { status: 429, body: { error: refus, cause: "rate_limit" }, meta: { question, mode, tokens_in: 0, tokens_out: 0 } };
+  const lang = normaliserLang(input.lang);
+  if (refus) return { status: 429, body: { error: refus, cause: "rate_limit" }, meta: { question, mode, lang, tokens_in: 0, tokens_out: 0 } };
 
   const model = env.ANTHROPIC_MODEL || DEFAULT_MODEL;
-  const system = `${SKILL_MD}\n\n${MODES[mode].md}\n\n${WEB_CONTEXT_MD}`;
+  const system = `${SKILL_MD}\n\n${MODES[mode].md}\n\n${WEB_CONTEXT_MD}${LANG_MD[lang] ? "\n\n" + LANG_MD[lang] : ""}`;
   const anthropicTools = toAnthropicTools(tools);
   const messages: any[] = [{ role: "user", content: question }];
   const sources = new Map<string, string>();
   let tours = 0;
   let tokensIn = 0, tokensOut = 0;
   const compter = (d: any) => { tokensIn += Number(d?.usage?.input_tokens) || 0; tokensOut += Number(d?.usage?.output_tokens) || 0; };
-  const meta = (): QuestionMeta => ({ question, mode, tokens_in: tokensIn, tokens_out: tokensOut });
+  const meta = (): QuestionMeta => ({ question, mode, lang, tokens_in: tokensIn, tokens_out: tokensOut });
   let final = "";
 
   while (tours < MAX_ROUNDS) {

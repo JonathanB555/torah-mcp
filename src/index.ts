@@ -19,13 +19,14 @@ import {
   listHebrewbooksPrompts,
   getHebrewbooksPrompt,
 } from "./hebrewbooks";
-import { LANDING_HTML, PRIVACY_HTML, INSTALL_HTML } from "./landing";
+import { landingHtml, privacyHtml, installHtml } from "./landing";
 import { repondreQuestion } from "./question";
-import { QUESTION_HTML } from "./question-page";
+import { questionHtml } from "./question-page";
+import { parseLang } from "./i18n";
 import { journaliser, pageStats, csvStats } from "./stats";
 import { limoudTools, limoudHandlers } from "./limoud";
-import { renderDaily, LANDING_HE, OUTILS_HTML } from "./pages";
-import { dafViewerTools, dafViewerHandlers, DAF_VIEWER_URI, DAF_VIEWER_HTML, MCP_APP_MIME } from "./dafviewer";
+import { renderDaily, outilsHtml } from "./pages";
+import { dafViewerTools, dafViewerHandlers, DAF_VIEWER_URI, DAF_VIEWER_HTML, dafViewerHtml, MCP_APP_MIME } from "./dafviewer";
 import { ICON_PNG_BASE64, OG_PNG_BASE64 } from "./icon";
 
 // Origines navigateur autorisées à interroger /mcp (protection DNS rebinding).
@@ -297,67 +298,30 @@ export default {
       }
     }
 
-    // Page d'accueil auto-suffisante (le lien partagé explique l'installation)
-    if (request.method === "GET" && url.pathname === "/") {
-      return new Response(LANDING_HTML, {
-        headers: { "Content-Type": "text/html; charset=utf-8", ...CORS_HEADERS },
-      });
-    }
-
-    if (request.method === "GET" && url.pathname === "/og.png") {
-      const bytes = Uint8Array.from(atob(OG_PNG_BASE64), (c) => c.charCodeAt(0));
-      return new Response(bytes, {
-        headers: { "Content-Type": "image/png", "Cache-Control": "public, max-age=86400" },
-      });
-    }
-
-    if (request.method === "GET" && (url.pathname === "/icon.png" || url.pathname === "/favicon.ico")) {
-      const bytes = Uint8Array.from(atob(ICON_PNG_BASE64), (c) => c.charCodeAt(0));
-      return new Response(bytes, {
-        headers: { "Content-Type": "image/png", "Cache-Control": "public, max-age=86400" },
-      });
-    }
-
-    if (request.method === "GET" && url.pathname === "/question") {
-      return new Response(QUESTION_HTML, {
-        headers: { "Content-Type": "text/html; charset=utf-8", ...CORS_HEADERS },
-      });
-    }
-
-    if (request.method === "GET" && url.pathname === "/daf") {
-      return new Response(DAF_VIEWER_HTML, {
-        headers: { "Content-Type": "text/html; charset=utf-8", ...CORS_HEADERS },
-      });
-    }
-
-    if (request.method === "GET" && url.pathname === "/outils") {
-      return new Response(OUTILS_HTML, {
-        headers: { "Content-Type": "text/html; charset=utf-8", ...CORS_HEADERS },
-      });
-    }
-
-    if (request.method === "GET" && url.pathname === "/install") {
-      return new Response(INSTALL_HTML, {
-        headers: { "Content-Type": "text/html; charset=utf-8", ...CORS_HEADERS },
-      });
-    }
-
-    if (request.method === "GET" && url.pathname === "/he") {
-      return new Response(LANDING_HE, {
-        headers: { "Content-Type": "text/html; charset=utf-8", ...CORS_HEADERS },
-      });
-    }
-
-    if (request.method === "GET" && url.pathname === "/daily") {
-      return new Response(await renderDaily(env), {
-        headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=900", ...CORS_HEADERS },
-      });
-    }
-
-    if (request.method === "GET" && url.pathname === "/privacy") {
-      return new Response(PRIVACY_HTML, {
-        headers: { "Content-Type": "text/html; charset=utf-8", ...CORS_HEADERS },
-      });
+    // ------------------------------------------------------------------
+    // Pages du site, en trois langues : FR à la racine, /en/…, /he/….
+    // ------------------------------------------------------------------
+    if (request.method === "GET") {
+      const { lang, path } = parseLang(url.pathname);
+      const html = (body: string, extra: Record<string, string> = {}) =>
+        new Response(body, { headers: { "Content-Type": "text/html; charset=utf-8", "Content-Language": lang, ...extra, ...CORS_HEADERS } });
+      switch (path) {
+        case "/": return html(landingHtml(lang));
+        case "/question": return html(questionHtml(lang));
+        case "/daf": return html(dafViewerHtml(lang));
+        case "/outils": return html(outilsHtml(lang));
+        case "/install": return html(installHtml(lang));
+        case "/privacy": return html(privacyHtml(lang));
+        case "/daily": return html(await renderDaily(env, lang), { "Cache-Control": "public, max-age=900" });
+      }
+      if (url.pathname === "/og.png") {
+        const bytes = Uint8Array.from(atob(OG_PNG_BASE64), (c) => c.charCodeAt(0));
+        return new Response(bytes, { headers: { "Content-Type": "image/png", "Cache-Control": "public, max-age=86400" } });
+      }
+      if (url.pathname === "/icon.png" || url.pathname === "/favicon.ico") {
+        const bytes = Uint8Array.from(atob(ICON_PNG_BASE64), (c) => c.charCodeAt(0));
+        return new Response(bytes, { headers: { "Content-Type": "image/png", "Cache-Control": "public, max-age=86400" } });
+      }
     }
 
     if (request.method === "GET" && url.pathname === "/health") {
