@@ -41,7 +41,7 @@ export const PRIVACY_HTML = `<!doctype html>
   opérationnels de courte durée (adresse IP, horodatage) utilisés uniquement
   pour la sécurité et la limitation de débit.</p>
   <h2>« Poser une question » sur le site</h2>
-  <p>La page <a href="/question">/question</a> envoie votre question, telle que vous l'avez écrite, à l'API d'Anthropic (Claude) pour rédiger la réponse à partir des textes lus sur Sefaria. Nous ne conservons ni la question ni la réponse ; l'adresse IP sert uniquement au limiteur de débit, en mémoire, sans journal. Le traitement par Anthropic relève de sa <a href="https://www.anthropic.com/legal/privacy">politique de confidentialité</a> (données d'API non utilisées pour l'entraînement). N'y écrivez pas d'informations personnelles.</p>
+  <p>La page <a href="/question">/question</a> envoie votre question, telle que vous l'avez écrite, à l'API d'Anthropic (Claude) pour rédiger la réponse à partir des textes lus sur Sefaria. La réponse n'est pas conservée. Nous gardons en revanche un <strong>journal statistique privé</strong> de chaque question : son texte, le niveau choisi, la date, la durée du traitement, le nombre de sources lues, le volume de tokens et le pays d'origine (agrégat Cloudflare) — <strong>jamais l'adresse IP ni aucun identifiant</strong>, donc sans possibilité de relier une question à une personne. Ce journal sert uniquement à comprendre l'usage du service et à en suivre le coût ; il n'est ni publié ni partagé. L'adresse IP sert uniquement au limiteur de débit, en mémoire, sans journal. Le traitement par Anthropic relève de sa <a href="https://www.anthropic.com/legal/privacy">politique de confidentialité</a> (données d'API non utilisées pour l'entraînement). N'y écrivez pas d'informations personnelles.</p>
 
   <h2>Privacy — English</h2>
   <p>This server collects, stores and shares no personal data. No account, no
@@ -59,7 +59,7 @@ export const PRIVACY_HTML = `<!doctype html>
   Voir les <a href="https://policies.google.com/privacy">règles de
   confidentialité de Google</a>.</p>
   <h2>"Ask a question" on the website — English</h2>
-  <p>The <a href="/question">/question</a> page sends your question, as written, to Anthropic's API (Claude) to draft an answer from texts read on Sefaria. We store neither the question nor the answer; the IP address is only used by the in-memory rate limiter, without logs. Anthropic's processing is governed by its <a href="https://www.anthropic.com/legal/privacy">privacy policy</a> (API data is not used for training). Do not include personal information.</p>
+  <p>The <a href="/question">/question</a> page sends your question, as written, to Anthropic's API (Claude) to draft an answer from texts read on Sefaria. The answer is not stored. We do keep a <strong>private statistical log</strong> of each question: its text, the chosen level, date, processing time, number of sources read, token volume and country of origin (Cloudflare aggregate) — <strong>never the IP address nor any identifier</strong>, so a question cannot be linked to a person. This log is used only to understand usage and track cost; it is neither published nor shared. The IP address is only used by the in-memory rate limiter, without logs. Anthropic's processing is governed by its <a href="https://www.anthropic.com/legal/privacy">privacy policy</a> (API data is not used for training). Do not include personal information.</p>
 
   <h2>Website analytics — English</h2>
   <p>The website pages (torah-mcp.com) use Google Analytics 4 for aggregate

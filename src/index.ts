@@ -22,6 +22,7 @@ import {
 import { LANDING_HTML, PRIVACY_HTML, INSTALL_HTML } from "./landing";
 import { repondreQuestion } from "./question";
 import { QUESTION_HTML } from "./question-page";
+import { journaliser, pageStats, csvStats } from "./stats";
 import { limoudTools, limoudHandlers } from "./limoud";
 import { renderDaily, LANDING_HE, OUTILS_HTML } from "./pages";
 import { dafViewerTools, dafViewerHandlers, DAF_VIEWER_URI, DAF_VIEWER_HTML, MCP_APP_MIME } from "./dafviewer";
@@ -225,7 +226,7 @@ async function handleRpc(req: JsonRpcRequest, env: Env) {
 }
 
 export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
 
     if (request.method === "OPTIONS") {
@@ -243,9 +244,22 @@ export default {
       let body: any = {};
       try { body = await request.json(); } catch { return jsonResponse({ error: "JSON invalide" }, 400); }
       if (body?.site) return jsonResponse({ error: "Requête rejetée." }, 400); // pot de miel
+      const debut = Date.now();
       const r = await repondreQuestion(env, allTools, allHandlers as any, body, ip);
+      if (r.meta) {
+        // Journal statistique privé (D1), hors du chemin de réponse — jamais l'IP.
+        ctx.waitUntil(journaliser(env, {
+          meta: r.meta, status: r.status, body: r.body, duree_ms: Date.now() - debut,
+          modele: env.ANTHROPIC_MODEL || "claude-sonnet-5",
+          pays: request.headers.get("CF-IPCountry") || null,
+        }));
+      }
       return jsonResponse(r.body, r.status);
     }
+
+    // Statistiques privées des questions (Basic auth, secret STATS_PASSWORD).
+    if (request.method === "GET" && url.pathname === "/stats") return pageStats(request, env);
+    if (request.method === "GET" && url.pathname === "/stats.csv") return csvStats(request, env);
 
     if (url.pathname.startsWith("/api/")) {
       const toolMap: Record<string, string> = {
