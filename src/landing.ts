@@ -174,6 +174,19 @@ export const LANDING_HTML = `<!doctype html>
 
   /* ---- section daf : le manifeste commenté ---- */
   .amud { padding:9rem 4vw 5rem; max-width:1200px; margin:0 auto; }
+  /* En deux mots — chiffres + face-à-face */
+  .kez { max-width:1200px; margin:0 auto; padding:5rem 4vw 2rem; }
+  .kez .figs { display:grid; grid-template-columns:repeat(3,1fr); gap:2.5rem 3rem; border-top:2px solid var(--ink); border-bottom:1px solid var(--ink-15); padding:2.4rem 0 2.2rem; }
+  .kez .fig b { display:block; font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(2.6rem, 5vw, 4.2rem); line-height:1; letter-spacing:-.03em; font-variant-numeric:tabular-nums; }
+  .kez .fig b small { font-size:.42em; font-weight:600; letter-spacing:0; margin-left:.25em; vertical-align:.35em; }
+  .kez .fig span { display:block; margin-top:.7rem; font-size:.95rem; line-height:1.55; opacity:.85; max-width:22rem; }
+  .kez .vs { display:grid; grid-template-columns:1fr 1fr; gap:3rem; margin-top:2.6rem; }
+  .kez .vs h3 { font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.15rem; margin-bottom:.5rem; }
+  .kez .vs h3 em { font-style:italic; font-weight:300; opacity:.7; }
+  .kez .vs p { line-height:1.7; }
+  .kez .vs .non h3 { text-decoration:line-through; text-decoration-thickness:1.5px; text-decoration-color:var(--ink-40); }
+  .kez .vs .non p { opacity:.7; }
+  @media (max-width:900px) { .kez { padding-top:3rem; } .kez .figs { grid-template-columns:1fr; gap:1.8rem; } .kez .vs { grid-template-columns:1fr; gap:1.8rem; } }
   .amud-head { display:flex; align-items:baseline; gap:1.4rem; margin-bottom:3.5rem; }
   .amud-head .otiot { font-size:2rem; font-weight:700; direction:rtl; }
   .amud-head .rule { flex:1; height:1px; background:var(--ink-15); }
@@ -292,6 +305,18 @@ export const LANDING_HTML = `<!doctype html>
   </div>
   <span class="hint chor c4" style="opacity:0">Gratuit · sans compte · sans collecte — défilez</span>
 </header>
+
+<section class="kez" id="en-deux-mots" aria-label="En deux mots">
+  <div class="figs">
+    <div class="fig rv"><b>6 600<small>titres</small></b><span>La bibliothèque Sefaria, lue en direct au moment de la question : Tanakh, Michna, Talmud, Midrach, Rambam, Choulhan Aroukh, responsa, hassidout — et leurs commentateurs.</span></div>
+    <div class="fig rv d1"><b>65 000<small>seforim</small></b><span>Le catalogue HebrewBooks, pour étudier sur la page scannée quand le texte n'existe pas ailleurs.</span></div>
+    <div class="fig rv d2"><b>0<small>référence inventée</small></b><span>La règle est simple : ce qui n'a pas été lu n'est pas cité — et chaque citation vient avec le lien pour la vérifier.</span></div>
+  </div>
+  <div class="vs">
+    <div class="non rv"><h3>Une IA ordinaire <em>— répond de mémoire</em></h3><p>Elle a croisé ces textes une fois, à l'entraînement, et les reconstitue : références approximatives, citations recomposées, parfois inventées de toutes pièces — avec la même assurance dans les deux cas, et sans jamais dire ce qu'elle n'a pas ouvert.</p></div>
+    <div class="rv d1"><h3>Torah MCP <em>— ouvre le livre</em></h3><p>La question déclenche une lecture : le texte est ouvert dans l'édition Sefaria, cité tel qu'il est écrit, avec sa référence exacte, relié à ses commentateurs et aux textes qui en dépendent. Une précision vérifiable, à un clic — et, quand une source manque, la réponse le dit.</p></div>
+  </div>
+</section>
 
 <section class="amud" id="daf-a">
   <div class="amud-head rv"><span class="otiot">א</span><span class="rule"></span><span class="lbl">Le manifeste, commenté en marge</span></div>
