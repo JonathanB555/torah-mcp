@@ -23,6 +23,16 @@ const STYLE = `
   .he { font-size:1.15em; }
   footer { margin-top:2.5rem; font-size:.88rem; color:var(--muted); }
   .item-title { font-weight:600; }
+  .kez { border-top:2px solid var(--ink); border-bottom:1px solid var(--line); padding:1.6rem 0 1.4rem; margin:2rem 0 .5rem; }
+  .kez .figs { display:grid; grid-template-columns:repeat(3,1fr); gap:1.4rem; }
+  .kez .fig b { display:block; font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(2rem,4.5vw,3rem); line-height:1; letter-spacing:-.02em; direction:ltr; }
+  .kez .fig b small { font-family:"Frank Ruhl Libre", Georgia, serif; font-size:.5em; font-weight:700; letter-spacing:0; margin:0 .3em; vertical-align:.3em; }
+  .kez .fig span { display:block; margin-top:.5rem; font-size:.92rem; line-height:1.55; opacity:.85; }
+  .kez .vs { display:grid; grid-template-columns:1fr 1fr; gap:1.6rem; margin-top:1.6rem; padding-top:1.4rem; border-top:1px solid var(--line); }
+  .kez .vs h3 { font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.05rem; margin-bottom:.3rem; }
+  .kez .vs .non h3 { text-decoration:line-through; text-decoration-color:rgba(8,42,153,.4); }
+  .kez .vs .non p { opacity:.7; } .kez .vs p { font-size:.95rem; }
+  @media (max-width:640px) { .kez .figs, .kez .vs { grid-template-columns:1fr; } }
 `;
 
 // ----------------------------------------------------------------------------
@@ -123,6 +133,18 @@ export const LANDING_HE = `<!doctype html>
 <main>
   <h1>Torah MCP</h1>
   <p class="muted">משמעת מקורות ל-Claude: אף ציטוט מהזיכרון. קריאת הטקסטים דרך ספריא, קטלוג HebrewBooks, שיטת לימוד מובנית, זמנים וגימטריה. חינם, בלי חשבון, בלי איסוף נתונים.</p>
+
+  <section class="kez" aria-label="בשתי מילים">
+    <div class="figs">
+      <div class="fig"><b>6,600<small>כותרים</small></b><span>ספריית ספריא, נקראת בזמן אמת ברגע השאלה: תנ"ך, משנה, תלמוד, מדרש, רמב"ם, שולחן ערוך, שו"ת, חסידות — ומפרשיהם.</span></div>
+      <div class="fig"><b>65,000<small>ספרים</small></b><span>קטלוג HebrewBooks, ללימוד מן הדף הסרוק כשהטקסט אינו זמין במקום אחר.</span></div>
+      <div class="fig"><b>0<small>מקורות בדויים</small></b><span>הכלל פשוט: מה שלא נקרא — לא מצוטט. וכל ציטוט מגיע עם קישור לבדיקה.</span></div>
+    </div>
+    <div class="vs">
+      <div class="non"><h3>AI רגיל — עונה מהזיכרון</h3><p>הוא נתקל בטקסטים האלה פעם אחת, באימון, ומשחזר אותם: מראי מקומות משוערים, ציטוטים מורכבים מחדש ולעתים בדויים לגמרי — באותה בטחון בשני המקרים, ובלי לומר לעולם מה לא פתח.</p></div>
+      <div><h3>Torah MCP — פותח את הספר</h3><p>השאלה מפעילה קריאה: הטקסט נפתח במהדורת ספריא, מצוטט כלשונו, עם מראה מקום מדויק, מקושר למפרשיו ולטקסטים התלויים בו. דיוק שאפשר לבדוק בלחיצה — וכשמקור חסר, התשובה אומרת זאת.</p></div>
+    </div>
+  </section>
 
   <h2>מה זה משנה</h2>
   <p>עוזרי AI עונים על שאלות בהלכה «מהזיכרון» — עם סיכון לציטוטים משובשים או בדויים. Torah MCP כופה שיטה: לפני כל תשובה בענייני תורה, Claude טוען משמעת לימוד המחייבת אותו לקרוא את הטקסט האמיתי (דרך ה-API של <a href="https://www.sefaria.org">ספריא</a>), לצטט במדויק, לציין מחלוקות, ולתת קישורי <a href="https://hebrewbooks.org">hebrewbooks.org</a> ללימוד מן הדף — בלי לבדות מקור לעולם.</p>
