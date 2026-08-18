@@ -71,6 +71,14 @@ export const QUESTION_HTML = `<!doctype html>
   .ex span { display:block; font-size:.78rem; letter-spacing:.16em; text-transform:uppercase; opacity:.55; margin-bottom:.4rem; }
   .ex a { display:inline-block; margin:0 1.2rem .4rem 0; font-style:italic; text-decoration:none; border-bottom:1px dotted var(--ink-40); }
   .ex a:hover { border-bottom-style:solid; }
+  .hist { margin-top:2.4rem; font-size:.95rem; }
+  .hist .lab { display:block; font-size:.78rem; letter-spacing:.16em; text-transform:uppercase; opacity:.55; margin-bottom:.5rem; }
+  .hist .lab em { text-transform:none; letter-spacing:0; font-style:italic; }
+  .hist ol { list-style:none; padding:0; margin:0; }
+  .hist li { display:flex; gap:.9rem; align-items:baseline; padding:.35rem 0; border-bottom:1px dotted var(--ink-15); }
+  .hist li a { text-decoration:none; flex:1; } .hist li a:hover { text-decoration:underline; }
+  .hist li .m { font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; opacity:.5; white-space:nowrap; }
+  .hist .clr { display:inline-block; margin-top:.6rem; font-size:.82rem; color:var(--muted); }
   #wait { display:none; margin-top:2.6rem; font-style:italic; color:var(--muted); }
   #wait .dot { display:inline-block; width:.45em; height:.45em; background:var(--ink); border-radius:50%; margin-right:.6rem; animation:pulse 1.2s ease-in-out infinite; }
   @keyframes pulse { 0%,100% { opacity:.25 } 50% { opacity:1 } }
@@ -86,6 +94,9 @@ export const QUESTION_HTML = `<!doctype html>
   .disc { margin-top:2rem; font-size:.82rem; color:var(--muted); max-width:44rem; }
   .err { color:#7a1f1f; margin-top:1.4rem; }
   .again { margin-top:1.4rem; }
+  .acts { margin-top:1.6rem; display:flex; gap:1.6rem; flex-wrap:wrap; align-items:baseline; font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.05rem; }
+  .acts a { text-decoration:none; } .acts a::before { content:"[ "; color:var(--ink-40); } .acts a::after { content:" ]"; color:var(--ink-40); } .acts a:hover::before { content:"[ → "; }
+  .acts .fb { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:400; font-size:.85rem; font-style:italic; color:var(--muted); min-height:1em; }
   footer { margin-top:4rem; font-size:.88rem; color:var(--muted); border-top:1px solid var(--ink-15); padding-top:1.4rem; }
   @media (max-width:720px) { h1 { margin-top:2rem; } .step { flex-wrap:wrap; } .step .s { display:none; } }
 </style>
@@ -126,12 +137,19 @@ export const QUESTION_HTML = `<!doctype html>
     <a href="#" data-q="Que dit Rachi sur le premier verset de la Genèse ?">Que dit Rachi sur Genèse 1:1 ?</a>
   </div>
 
+  <div class="hist" id="hist" hidden>
+    <span class="lab">Vos questions <em>— gardées sur cet appareil seulement</em></span>
+    <ol id="hl"></ol>
+    <a href="#" class="clr" id="hclr">Effacer l'historique</a>
+  </div>
+
   <div id="wait"><span class="dot"></span><span id="wtxt">Lecture des sources…</span></div>
   <div class="err" id="err"></div>
 
   <section id="out" aria-live="polite">
     <div id="ans"></div>
     <div class="srcs" id="srcs"></div>
+    <div class="acts"><a href="#" id="copy">Copier la réponse</a><a href="#" id="share">Partager</a><span class="fb" id="fb"></span></div>
     <p class="disc">Réponse rédigée par Claude à partir des textes lus sur Sefaria, selon la méthode Torah MCP — vérifiez toujours les sources citées. Pour une décision de halakha pratique, consultez un rabbin.</p>
     <p class="again"><a href="#" id="again">Poser une autre question</a> · <a href="/install">Installer Torah MCP dans Claude pour aller plus loin</a></p>
   </section>
@@ -190,22 +208,99 @@ export const QUESTION_HTML = `<!doctype html>
     return html;
   }
 
+  /* ---- Affichage d'une réponse (fraîche ou rouverte depuis l'historique) ---- */
+  var cur = null; // { q, mode, reponse, sources, t }
+  function show(entry) {
+    cur = entry;
+    ans.innerHTML = md(entry.reponse || "");
+    srcs.innerHTML = (entry.sources && entry.sources.length) ? "<strong>Textes lus :</strong> " + entry.sources.map(function (s) { return '<a href="' + esc(s.url) + '" target="_blank" rel="noopener">' + esc(s.ref) + '</a>'; }).join("") : "";
+    fb.textContent = "";
+    out.style.display = "block";
+    out.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  /* ---- Copier / partager ---- */
+  var fb = document.getElementById("fb");
+  function plain(src) {
+    return String(src)
+      .replace(/^\\s*#{1,3}\\s+/gm, "").replace(/^\\s*>\\s?/gm, "  ")
+      .replace(/\\*\\*(.+?)\\*\\*/g, "$1").replace(/(^|[^\\*])\\*([^\\*]+?)\\*/g, "$1$2").replace(/\\x60/g, "")
+      .replace(/\\[([^\\]]+?)\\]\\((https?:[^\\s)]+)\\)/g, "$1 ($2)").trim();
+  }
+  function lien(entry) { return location.origin + "/question?q=" + encodeURIComponent(entry.q) + "&mode=" + encodeURIComponent(entry.mode); }
+  function texte(entry) {
+    var t = "Question : " + entry.q + "\\n\\n" + plain(entry.reponse);
+    if (entry.sources && entry.sources.length) t += "\\n\\nTextes lus : " + entry.sources.map(function (s) { return s.ref + " — " + s.url; }).join(" · ");
+    return t + "\\n\\n— Torah MCP, " + lien(entry);
+  }
+  function feedback(msg) { fb.textContent = msg; setTimeout(function () { if (fb.textContent === msg) fb.textContent = ""; }, 2500); }
+  function copier(t) {
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(t);
+    return new Promise(function (res, rej) { var ta = document.createElement("textarea"); ta.value = t; ta.style.position = "fixed"; ta.style.opacity = "0"; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy") ? res() : rej(); } catch (e) { rej(e); } document.body.removeChild(ta); });
+  }
+  document.getElementById("copy").addEventListener("click", function (e) {
+    e.preventDefault(); if (!cur) return;
+    copier(texte(cur)).then(function () { feedback("Copié — réponse, sources et lien."); }, function () { feedback("Copie impossible ici — sélectionnez le texte à la main."); });
+  });
+  document.getElementById("share").addEventListener("click", function (e) {
+    e.preventDefault(); if (!cur) return;
+    var t = texte(cur);
+    if (navigator.share) {
+      navigator.share({ title: "Torah MCP — " + cur.q, text: t }).then(function () { feedback("Partagé."); }, function (er) { if (!er || er.name !== "AbortError") feedback("Partage annulé."); });
+    } else {
+      window.open("https://wa.me/?text=" + encodeURIComponent(t.length > 3500 ? t.slice(0, 3400) + "…\\n\\nLire la suite : " + lien(cur) : t), "_blank", "noopener");
+    }
+  });
+
+  /* ---- Historique local (cet appareil seulement) ---- */
+  var HKEY = "tm_hist", HMAX = 30;
+  var hist = document.getElementById("hist"), hl = document.getElementById("hl");
+  function lireHist() { try { var v = JSON.parse(localStorage.getItem(HKEY) || "[]"); return Array.isArray(v) ? v : []; } catch (e) { return []; } }
+  function ecrireHist(h) { try { localStorage.setItem(HKEY, JSON.stringify(h)); } catch (e) {} }
+  var NIV = { debutant: "débutant", classique: "classique", avance: "avancé" };
+  function dateCourte(t) { var d = new Date(t); return d.toLocaleDateString("fr-FR", { day: "numeric", month: "short" }); }
+  function rendreHist() {
+    var h = lireHist();
+    if (!h.length) { hist.hidden = true; return; }
+    hl.innerHTML = h.map(function (en, i) { return '<li><a href="#" data-i="' + i + '">' + esc(en.q) + '</a><span class="m">' + esc(NIV[en.mode] || en.mode) + " · " + esc(dateCourte(en.t)) + "</span></li>"; }).join("");
+    hist.hidden = false;
+  }
+  hl.addEventListener("click", function (e) {
+    var a = e.target.closest("a[data-i]"); if (!a) return; e.preventDefault();
+    var en = lireHist()[Number(a.getAttribute("data-i"))]; if (!en) return;
+    q.value = en.q; cnt.textContent = en.q.length + " / 600"; err.textContent = "";
+    show(en);
+  });
+  document.getElementById("hclr").addEventListener("click", function (e) { e.preventDefault(); ecrireHist([]); rendreHist(); });
+  function ajouterHist(entry) {
+    var h = lireHist().filter(function (en) { return !(en.q === entry.q && en.mode === entry.mode); });
+    h.unshift(entry); ecrireHist(h.slice(0, HMAX)); rendreHist();
+  }
+  rendreHist();
+
+  /* ---- Préremplissage depuis un lien partagé (/question?q=…&mode=…) ---- */
+  try {
+    var sp = new URLSearchParams(location.search);
+    if (sp.get("q")) { q.value = sp.get("q").slice(0, 600); cnt.textContent = q.value.length + " / 600"; }
+    if (sp.get("mode") && HELP[sp.get("mode")]) { radios.forEach(function (r) { r.checked = r.value === sp.get("mode"); }); mh.textContent = HELP[sp.get("mode")]; }
+  } catch (e) {}
+
   var steps = ["Lecture des sources…", "Ouverture des textes sur Sefaria…", "Lecture des commentateurs…", "Rédaction de la réponse…"];
   f.addEventListener("submit", function (e) {
     e.preventDefault();
     var question = q.value.trim(); if (!question) return;
+    var m = mode();
     err.textContent = ""; out.style.display = "none"; wait.style.display = "block"; go.disabled = true;
     var i = 0; wtxt.textContent = steps[0];
     var tick = setInterval(function () { i = Math.min(i + 1, steps.length - 1); wtxt.textContent = steps[i]; }, 5000);
-    fetch("/api/question", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ question: question, mode: mode() }) })
+    fetch("/api/question", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ question: question, mode: m }) })
       .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
       .then(function (x) {
         clearInterval(tick); wait.style.display = "none"; go.disabled = false;
         if (!x.ok || x.d.error) { err.textContent = x.d.error || "Erreur — réessayez."; return; }
-        ans.innerHTML = md(x.d.reponse || "");
-        srcs.innerHTML = (x.d.sources && x.d.sources.length) ? "<strong>Textes lus :</strong> " + x.d.sources.map(function (s) { return '<a href="' + esc(s.url) + '" target="_blank" rel="noopener">' + esc(s.ref) + '</a>'; }).join("") : "";
-        out.style.display = "block";
-        out.scrollIntoView({ behavior: "smooth", block: "start" });
+        var entry = { q: question, mode: m, reponse: x.d.reponse || "", sources: x.d.sources || [], t: Date.now() };
+        ajouterHist(entry);
+        show(entry);
       })
       .catch(function () { clearInterval(tick); wait.style.display = "none"; go.disabled = false; err.textContent = "Erreur réseau — réessayez."; });
   });

@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "torah-mcp-dev",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["wrangler", "dev", "--port", "8797"],
+      "port": 8797
+    }
+  ]
+}
