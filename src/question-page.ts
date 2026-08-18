@@ -48,7 +48,7 @@ export const QUESTION_HTML = `<!doctype html>
   .step .rule { flex:1; height:1px; background:var(--ink-15); }
   .step .s { font-size:.78rem; letter-spacing:.18em; text-transform:uppercase; opacity:.55; }
   .modes { display:grid; grid-template-columns:repeat(3, 1fr); gap:1rem; margin:0 0 .6rem; }
-  .modes label { display:block; cursor:pointer; border:1.5px solid var(--ink-15); padding:1rem 1.1rem 1.1rem; transition:border-color .3s var(--ease), background .3s var(--ease); position:relative; }
+  .modes label { display:grid; grid-template-columns:4rem 1fr; column-gap:.9rem; align-content:start; cursor:pointer; border:1.5px solid var(--ink-15); padding:1rem 1.1rem 1.1rem; transition:border-color .3s var(--ease), background .3s var(--ease); position:relative; }
   .modes label:hover { border-color:var(--ink-40); }
   .modes label:has(input:checked) { border-color:var(--ink); background:var(--hl); }
   .modes label:has(input:checked)::after { content:"→ choisi"; position:absolute; top:.6rem; right:.9rem; font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; opacity:.7; }
@@ -56,6 +56,9 @@ export const QUESTION_HTML = `<!doctype html>
   .modes .w { display:block; font-size:.78rem; letter-spacing:.12em; text-transform:uppercase; opacity:.55; margin:.1rem 0 .5rem; }
   .modes .d { display:block; font-size:.9rem; line-height:1.5; opacity:.85; }
   .modes input { position:absolute; opacity:0; pointer-events:none; }
+  .modes svg { grid-row:1 / span 3; width:4rem; height:4rem; margin-top:0; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; transition:transform .5s var(--ease); }
+  .modes label:hover svg { transform:rotate(-4deg) translateY(-2px); }
+  .modes .h, .modes .w, .modes .d { grid-column:2; }
   .modehelp { display:none; }
   @media (max-width:720px) { .modes { grid-template-columns:1fr; } }
   textarea { width:100%; min-height:110px; padding:.6rem .1rem; border:0; border-bottom:1.5px solid var(--ink-15); border-radius:0; background:transparent; color:var(--ink); font:inherit; font-size:1.15rem; resize:vertical; }
@@ -114,9 +117,9 @@ export const QUESTION_HTML = `<!doctype html>
   <form id="f" autocomplete="off">
     <div class="step"><span class="n">1</span><span class="t">Choisissez votre niveau</span><span class="rule"></span><span class="s">on commence par là</span></div>
     <div class="modes" role="radiogroup" aria-label="Niveau">
-      <label><input type="radio" name="mode" value="debutant" checked><span class="h">Débutant</span><span class="w">Je débute, ou je ne lis pas l'hébreu</span><span class="d">Tout en français, chaque terme expliqué, le contexte avant la réponse.</span></label>
-      <label><input type="radio" name="mode" value="classique"><span class="h">Classique</span><span class="w">J'ai les bases</span><span class="d">La source puis sa traduction ; les termes usuels sont supposés connus.</span></label>
-      <label><input type="radio" name="mode" value="avance"><span class="h">Avancé</span><span class="w">Beit midrash</span><span class="d">Langue originale, terminologie sans glose, mahloket et lomdus.</span></label>
+      <label><input type="radio" name="mode" value="debutant" checked><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="31" r="16"/><path d="M16.5 30c-3 0-3.5 5 0 5.5M47.5 30c3 0 3.5 5 0 5.5"/><path d="M20 24c2-9 9-12 16-10 5 1 8 4 9 8"/><path d="M29 14.5c1-4 4-6 8-5"/><path d="M24.5 27.5c1.5-1.5 4-1.5 5.5 0M34.5 27.5c1.5-1.5 4-1.5 5.5 0"/><circle cx="27" cy="31" r=".9" fill="currentColor"/><circle cx="37.5" cy="31" r=".9" fill="currentColor"/><path d="M25.5 37c3 5 10 5 13 0"/><path d="M27 37.5c2.5 1.5 7.5 1.5 10 0"/></svg><span class="h">Débutant</span><span class="w">Je débute, ou je ne lis pas l'hébreu</span><span class="d">Tout en français, chaque terme expliqué, le contexte avant la réponse.</span></label>
+      <label><input type="radio" name="mode" value="classique"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="31" r="16"/><path d="M16.5 30c-3 0-3.5 5 0 5.5M47.5 30c3 0 3.5 5 0 5.5"/><path d="M23 18.5c4-6 14-6 18 0M23 18.5c5 2 13 2 18 0"/><path d="M25 27.5c1.5-1.2 3.5-1.2 5 0M34 27.5c1.5-1.2 3.5-1.2 5 0"/><circle cx="27.5" cy="31" r=".9" fill="currentColor"/><circle cx="36.5" cy="31" r=".9" fill="currentColor"/><path d="M19 34c-1.5 10 3.5 20 13 20s14.5-10 13-20"/><path d="M22 41.5c1.5 4 3.5 5.5 5.5 5M42 41.5c-1.5 4-3.5 5.5-5.5 5"/><path d="M26.5 37.5c3.5-2.5 7.5-2.5 11 0"/><path d="M28.5 40.5c2 2 5 2 7 0"/></svg><span class="h">Classique</span><span class="w">J'ai les bases</span><span class="d">La source puis sa traduction ; les termes usuels sont supposés connus.</span></label>
+      <label><input type="radio" name="mode" value="avance"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="31" r="16"/><path d="M16.5 30c-3 0-3.5 5 0 5.5M47.5 30c3 0 3.5 5 0 5.5"/><path d="M23 18.5c4-6 14-6 18 0M23 18.5c5 2 13 2 18 0"/><path d="M17.5 32c-3 3-3 6.5 0 8.5-3 2.5-3 6 0 8M46.5 32c3 3 3 6.5 0 8.5 3 2.5 3 6 0 8"/><circle cx="27" cy="31" r="4.2"/><circle cx="37.5" cy="31" r="4.2"/><path d="M31.2 30.5h2.1"/><path d="M24 26c1.5-1.5 4-1.5 6 0M34.5 26c2-1.5 4.5-1.5 6 0"/><circle cx="27" cy="31.5" r=".9" fill="currentColor"/><circle cx="37.5" cy="31.5" r=".9" fill="currentColor"/><path d="M19 34c-2 13 3 26 13 27s15-14 13-27"/><path d="M22 42c1 6 3.5 10 6 12M42 42c-1 6-3.5 10-6 12"/><path d="M26.5 37.5c3.5-2.5 7.5-2.5 11 0"/><path d="M29 40.5c1.5 1.5 4.5 1.5 6 0"/></svg><span class="h">Avancé</span><span class="w">Beit midrash</span><span class="d">Langue originale, terminologie sans glose, mahloket et lomdus.</span></label>
     </div>
     <div class="modehelp" id="mh"></div>
     <div class="step"><span class="n">2</span><span class="t">Posez votre question</span><span class="rule"></span></div>
