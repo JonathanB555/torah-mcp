@@ -154,7 +154,17 @@ export async function repondreQuestion(
     });
     if (!resp.ok) {
       const txt = await resp.text();
-      return { status: 502, body: { error: `Le service de réponse est momentanément indisponible (${resp.status}).`, detail: txt.slice(0, 200) } };
+      const credit = /credit balance|billing/i.test(txt);
+      const auth = resp.status === 401;
+      const overload = resp.status === 429 || resp.status === 529;
+      const error = credit
+        ? "Le service de questions est en pause : le quota du serveur est épuisé. Les outils, le daf et l'installation dans Claude restent disponibles — réessayez plus tard."
+        : auth
+        ? "Le service de questions est mal configuré côté serveur (clé API refusée). Les autres fonctions du site restent disponibles."
+        : overload
+        ? "Le service de réponse est saturé pour l'instant — réessayez dans une minute."
+        : `Le service de réponse est momentanément indisponible (${resp.status}).`;
+      return { status: credit || auth ? 503 : 502, body: { error, cause: credit ? "credit_epuise" : auth ? "cle_refusee" : overload ? "saturation" : "api_" + resp.status } };
     }
     const data: any = await resp.json();
     const content: any[] = data.content || [];
