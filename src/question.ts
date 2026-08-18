@@ -110,7 +110,7 @@ export async function repondreQuestion(
   ip: string
 ): Promise<{ status: number; body: any }> {
   // Repli temporaire : secret posé sous un mauvais nom lors de l'installation.
-  const apiKey = env.ANTHROPIC_API_KEY || (env as any)["torah-mcp"];
+  const apiKey = env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     return {
       status: 503,
