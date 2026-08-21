@@ -24,6 +24,7 @@ import { repondreQuestion } from "./question";
 import { questionHtml } from "./question-page";
 import { parseLang } from "./i18n";
 import { journaliser, pageStats, csvStats } from "./stats";
+import { genererChabbat, chabbatPage } from "./chabbat";
 import { limoudTools, limoudHandlers } from "./limoud";
 import { renderDaily, outilsHtml } from "./pages";
 import { dafViewerTools, dafViewerHandlers, DAF_VIEWER_URI, DAF_VIEWER_HTML, dafViewerHtml, MCP_APP_MIME } from "./dafviewer";
@@ -227,6 +228,11 @@ async function handleRpc(req: JsonRpcRequest, env: Env) {
 }
 
 export default {
+  // Cron du vendredi matin : composer le WhatsApp de Chabbat de la semaine.
+  async scheduled(_controller: ScheduledController, env: Env, ctx: ExecutionContext): Promise<void> {
+    ctx.waitUntil(genererChabbat(env).then((r) => console.log("chabbat:", JSON.stringify(r))));
+  },
+
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
 
@@ -261,6 +267,12 @@ export default {
     // Statistiques privées des questions (Basic auth, secret STATS_PASSWORD).
     if (request.method === "GET" && url.pathname === "/stats") return pageStats(request, env);
     if (request.method === "GET" && url.pathname === "/stats.csv") return csvStats(request, env);
+    // Régénération manuelle du message de Chabbat (même Basic auth que /stats).
+    if (request.method === "POST" && url.pathname === "/chabbat/generer") {
+      const page = await pageStats(request, env);
+      if (page.status !== 200) return page; // 404 sans secret, 401 sans mot de passe
+      return jsonResponse(await genererChabbat(env));
+    }
 
     if (url.pathname.startsWith("/api/")) {
       const toolMap: Record<string, string> = {
@@ -313,6 +325,7 @@ export default {
         case "/install": return html(installHtml(lang));
         case "/privacy": return html(privacyHtml(lang));
         case "/daily": return html(await renderDaily(env, lang), { "Cache-Control": "public, max-age=900" });
+        case "/chabbat": return html(await chabbatPage(env, lang));
       }
       if (url.pathname === "/og.png") {
         const bytes = Uint8Array.from(atob(OG_PNG_BASE64), (c) => c.charCodeAt(0));

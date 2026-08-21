@@ -5,6 +5,10 @@
 	"compatibility_date": "2026-05-07",
 	"compatibility_flags": ["nodejs_compat"],
 	"observability": { "enabled": true },
+
+	// Le WhatsApp de Chabbat : composé chaque vendredi à 05:00 UTC (07:00 Paris
+	// l'été, 06:00 l'hiver), publié sur /chabbat.
+	"triggers": { "crons": ["0 5 * * 5"] },
 	"upload_source_maps": true,
 
 	// URL canonique : torah-mcp.com (domaine custom Cloudflare). L'adresse
