@@ -136,12 +136,21 @@ export async function genererChabbat(env: Env): Promise<{ vendredi: string; ok: 
 Conserve la structure, les *gras* WhatsApp et les émojis. Réponds par les deux blocs seuls.`,
     [{ role: "user", content: fr }],
     undefined,
-    3500
+    6000
   );
   const trText = (trData.content || []).filter((b: any) => b.type === "text").map((b: any) => b.text).join("\n");
-  const en = trText.match(/<EN>([\s\S]*?)<\/EN>/)?.[1]?.trim() || "";
-  const he = trText.match(/<HE>([\s\S]*?)<\/HE>/)?.[1]?.trim() || "";
-  if (!en || !he) return { vendredi, ok: false, detail: "traductions invalides" };
+  // Analyse tolérante : si une balise fermante manque (réponse tronquée), on
+  // prend jusqu'à la balise suivante ou la fin — le message doit rester valide
+  // (présence du « Chabbat chalom » final de chaque langue).
+  const extraire = (tag: string): string => {
+    const m = trText.match(new RegExp(`<${tag}>([\\s\\S]*?)(?:</${tag}>|<(?:EN|HE)>|$)`));
+    return m?.[1]?.trim() || "";
+  };
+  const en = extraire("EN");
+  const he = extraire("HE");
+  if (!en.includes("Shabbat shalom") || !he.includes("שבת שלום")) {
+    return { vendredi, ok: false, detail: `traductions invalides (stop: ${trData.stop_reason}, en: ${en.length}, he: ${he.length})` };
+  }
 
   await env.STATS_DB.prepare(`INSERT OR REPLACE INTO chabbat (vendredi, fr, en, he, ts) VALUES (?1, ?2, ?3, ?4, ?5)`)
     .bind(vendredi, fr, en, he, new Date().toISOString())
