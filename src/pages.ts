@@ -284,6 +284,26 @@ export const OUTILS_HTML = `<!doctype html>
   </div>
 
   <div class="tool">
+    <h2>Le mot de Chabbat</h2>
+    <p class="d">Le petit mot de la semaine, prêt à envoyer : paracha, verset en français, horaires d'allumage de votre ville.</p>
+    <p class="beg">Chaque vendredi, envoyez à vos proches un mot qui donne le nom de la paracha (la section de la Torah lue cette semaine), son premier verset traduit, et l'heure des bougies. Composez, puis « Envoyer sur WhatsApp » ouvre directement l'application.</p>
+    <form data-api="chabbat">
+      <select name="ville">
+        <option value="paris">Paris</option><option value="marseille">Marseille</option>
+        <option value="lyon">Lyon</option><option value="nice">Nice</option>
+        <option value="strasbourg">Strasbourg</option><option value="geneve">Genève</option>
+        <option value="bruxelles">Bruxelles</option><option value="jerusalem">Jérusalem</option>
+        <option value="tel-aviv">Tel-Aviv</option><option value="new-york">New York</option>
+        <option value="londres">Londres</option><option value="montreal">Montréal</option>
+        <option value="casablanca">Casablanca</option>
+        <option value="">Sans horaires</option>
+      </select>
+      <button>Composer</button>
+    </form>
+    <div class="out" data-render="chabbat"></div>
+  </div>
+
+  <div class="tool">
     <h2>Date hébraïque</h2>
     <p class="d">Convertit une date civile — avec les événements du jour (fêtes, paracha, Rosh Hodesh).</p>
     <p class="beg">Le calendrier hébraïque compte les années depuis la Création (2026 correspond à 5786–5787) et ses mois suivent la lune. Attention : le jour hébraïque commence la veille au soir.</p>
@@ -381,6 +401,14 @@ export const OUTILS_HTML = `<!doctype html>
     },
     nikoud: function (d) {
       return esc(d.vocalise || "") + "<p style='margin-top:.5rem;color:#6d675c;font-size:.72rem;direction:ltr'>" + esc(d.credit||"") + "</p>";
+    },
+    chabbat: function (d) {
+      var id = "c" + Date.now();
+      return "<div id='" + id + "' style='white-space:pre-wrap'>" + esc(d.mot||"") + "</div>" +
+        "<div style='margin-top:.6rem'>" +
+        "<a href='" + esc(d.partage_whatsapp||"#") + "' target='_blank' rel='noopener' style='font-family:Fraunces,Georgia,serif;font-weight:600;text-decoration:none'>[ Envoyer sur WhatsApp ]</a>&nbsp;&nbsp;" +
+        "<button class='copy' onclick=\"navigator.clipboard.writeText(document.getElementById('" + id + "').innerText).then(()=>{this.textContent='Copié !'})\">Copier</button>" +
+        "</div>";
     },
     fiche: function (d) {
       var id = "f" + Date.now();

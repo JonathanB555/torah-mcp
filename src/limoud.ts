@@ -277,6 +277,24 @@ export const limoudTools: ToolDefinition[] = [
     },
   },
   {
+    name: "mot_chabbat",
+    title: "Le mot de Chabbat — à partager",
+    annotations: { title: "Le mot de Chabbat — à partager", readOnlyHint: true },
+    description:
+      "Compose le petit mot de Chabbat de la semaine, prêt à envoyer sur WhatsApp : paracha de la " +
+      "semaine (nom, hébreu, référence), verset d'ouverture cité en français depuis la Bible du " +
+      "Rabbinat (réellement lu via Sefaria), horaires d'allumage et de sortie de Chabbat pour la " +
+      "ville donnée (Hebcal), lien d'étude. Sans ville, le mot est composé sans les horaires. " +
+      "L'utilisateur peut ensuite demander de personnaliser (ajouter un vœu, une pensée de la paracha…).",
+    inputSchema: {
+      type: "object",
+      properties: {
+        ...LIEU_PROPS,
+      },
+      required: [],
+    },
+  },
+  {
     name: "fiche_source",
     title: "Fiche source partageable",
     annotations: { title: "Fiche source partageable", readOnlyHint: true },
@@ -383,6 +401,98 @@ export const limoudHandlers: Record<string, ToolHandler> = {
       vocalise,
       mots_ambigus: ambigus.slice(0, 30),
       credit: "Vocalisation : nakdan de Dicta (dicta.org.il).",
+    };
+  },
+
+  mot_chabbat: async (args, env) => {
+    const LIVRES_FR: Record<string, string> = {
+      Genesis: "Genèse", Exodus: "Exode", Leviticus: "Lévitique",
+      Numbers: "Nombres", Deuteronomy: "Deutéronome",
+    };
+    const refFr = (ref: string) => {
+      for (const [en, fr] of Object.entries(LIVRES_FR)) if (ref.startsWith(en)) return ref.replace(en, fr).replace(/-/, " – ");
+      return ref;
+    };
+    const heure = (iso: string) => (iso && iso.length >= 16 ? iso.slice(11, 16).replace(":", "h") : "");
+    const VILLES_FR: Record<string, string> = {
+      paris: "Paris", marseille: "Marseille", lyon: "Lyon", nice: "Nice",
+      strasbourg: "Strasbourg", geneve: "Genève", bruxelles: "Bruxelles",
+      anvers: "Anvers", londres: "Londres", jerusalem: "Jérusalem",
+      "tel-aviv": "Tel-Aviv", haifa: "Haïfa", "new-york": "New York",
+      montreal: "Montréal", miami: "Miami", "los-angeles": "Los Angeles",
+      casablanca: "Casablanca",
+    };
+
+    // 1. La paracha de la semaine (calendrier de la diaspora par défaut)
+    const cal = await getJson(`${env.SEFARIA_API_URL}/calendars`, "Sefaria calendars", 1800);
+    const par = (cal.calendar_items || []).find((i: any) => i.title?.en === "Parashat Hashavua");
+    if (!par?.ref) throw new Error("Paracha de la semaine introuvable — réessayer dans un instant.");
+    const nom = par.displayValue?.en || "";
+    const nomHe = par.displayValue?.he || "";
+    const ref = String(par.ref);
+    const lien = `https://www.sefaria.org/${encodeURIComponent(ref.replace(/ /g, "_"))}`;
+
+    // 2. Le verset d'ouverture, en français (Bible du Rabbinat)
+    let verset = "";
+    let versetRef = "";
+    try {
+      versetRef = ref.split("-")[0];
+      const t = await getJson(
+        `${env.SEFARIA_API_URL}/v3/texts/${encodeURIComponent(versetRef.replace(/ /g, "_"))}?version=french&version=translation`,
+        "Sefaria",
+        86400
+      );
+      const v =
+        (t.versions || []).find((x: any) => (x.actualLanguage || x.language) === "fr") ||
+        (t.versions || []).find((x: any) => (x.actualLanguage || x.language) === "en");
+      verset = (aplatir(v?.text).map(stripHtml).filter(Boolean)[0] || "").replace(/^["«\s]+|["»\s]+$/g, "");
+      if (verset.length > 220) verset = verset.slice(0, 217).replace(/\s+\S*$/, "") + "…";
+    } catch {
+      // Le mot reste valable sans le verset.
+    }
+
+    // 3. Les horaires, si une ville est donnée
+    let horaires = "";
+    let allumage = "";
+    let havdala = "";
+    let lieuTitre = "";
+    try {
+      const lieu = resolveLieu(args);
+      const data = await getJson(`${HEBCAL_URL}/shabbat?cfg=json&${lieu}&M=on`, "Hebcal shabbat", 1800);
+      const villeDemandee = String(args?.ville || "").trim().toLowerCase().replace(/\s+/g, "-");
+      lieuTitre = VILLES_FR[villeDemandee] || String(data.location?.title || "").split(",")[0];
+      const items = (data.items || []) as any[];
+      const bougies = items.find((i) => i.category === "candles");
+      const sortie = [...items].reverse().find((i) => i.category === "havdalah");
+      allumage = heure(bougies?.date || "");
+      havdala = heure(sortie?.date || "");
+      if (allumage) {
+        horaires = `🕯 *${lieuTitre}* — allumage des bougies : *${allumage}*` + (havdala ? `, sortie de Chabbat : *${havdala}*` : "");
+      }
+    } catch {
+      // Sans ville valable, le mot part sans horaires.
+    }
+
+    const lignes = [
+      `🕯 *Chabbat Chalom !*`,
+      ``,
+      `Cette semaine nous lisons la paracha *${nom}*${nomHe ? ` (${nomHe})` : ""} — ${refFr(ref)}.`,
+      ...(verset ? [``, `_« ${verset} »_`, `(${refFr(versetRef)}, Bible du Rabbinat)`] : []),
+      ...(horaires ? ["", horaires] : []),
+      ``,
+      `Étudier la paracha : ${lien}`,
+      ``,
+      `— torah-mcp.com`,
+    ];
+    const mot = lignes.filter((x, i, a) => !(x === "" && a[i - 1] === "")).join("\n");
+
+    return {
+      mot,
+      paracha: { nom, hebreu: nomHe, ref, ref_fr: refFr(ref) },
+      ...(allumage ? { lieu: lieuTitre, allumage, havdala } : {}),
+      lien_etude: lien,
+      partage_whatsapp: `https://wa.me/?text=${encodeURIComponent(mot)}`,
+      note: "Prêt à coller dans WhatsApp (*gras* et _italique_ y sont interprétés). Verset lu via Sefaria. Personnalisable sur demande.",
     };
   },
 

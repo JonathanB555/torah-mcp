@@ -388,7 +388,7 @@ export const LANDING_HTML = `<!doctype html>
 </section>
 
 <section class="mafteah" id="mafteah">
-  <div class="amud-head rv"><span class="otiot">ג</span><span class="rule"></span><span class="lbl">Mafteah — l'index des quinze outils</span></div>
+  <div class="amud-head rv"><span class="otiot">ג</span><span class="rule"></span><span class="lbl">Mafteah — l'index des seize outils</span></div>
   <div class="toc rv d1">
     <a href="/install"><span class="t">La méthode d'étude</span><span class="dots"></span><span class="d">chargée avant toute réponse religieuse</span></a>
     <a href="/question"><span class="t">Une question, en français</span><span class="dots"></span><span class="d">sur le site, sans Claude — réponse lue dans les textes</span></a>
@@ -402,6 +402,7 @@ export const LANDING_HTML = `<!doctype html>
     <a href="/outils"><span class="t">Dates hébraïques</span><span class="dots"></span><span class="d">conversion, fêtes, Rosh Hodesh</span></a>
     <a href="/outils"><span class="t">Guematria</span><span class="dots"></span><span class="d">cinq méthodes, calcul exact</span></a>
     <a href="/outils"><span class="t">Nikoud</span><span class="dots"></span><span class="d">vocalisation par le nakdan de Dicta</span></a>
+    <a href="/outils"><span class="t">Le mot de Chabbat</span><span class="dots"></span><span class="d">paracha, verset, allumage — pour WhatsApp</span></a>
     <a href="/outils"><span class="t">Fiche source</span><span class="dots"></span><span class="d">hébreu, traduction, lien — pour WhatsApp</span></a>
     <a href="/daily"><span class="t">Le limoud du jour</span><span class="dots"></span><span class="d">paracha, daf yomi, Rambam quotidien</span></a>
   </div>
@@ -523,7 +524,7 @@ export const INSTALL_HTML = `<!doctype html>
   <span class="url">claude mcp add --transport http torah https://torah-mcp.com/mcp</span>
 
   <div class="amud-head"><span class="ot">ג</span><span class="rule"></span><span class="lbl">Autres clients MCP</span></div>
-  <p>Tout client compatible (transport HTTP streamable) fonctionne avec la même URL. Le serveur expose 15 outils en lecture seule, 5 prompts (<code>hebrewbooks</code>, <code>havrouta</code>, <code>paracha</code>, <code>debutant</code>, <code>avance</code>) et une MCP App — le visualiseur de daf.</p>
+  <p>Tout client compatible (transport HTTP streamable) fonctionne avec la même URL. Le serveur expose 16 outils en lecture seule, 5 prompts (<code>hebrewbooks</code>, <code>havrouta</code>, <code>paracha</code>, <code>debutant</code>, <code>avance</code>) et une MCP App — le visualiseur de daf.</p>
 
   <div class="amud-head"><span class="ot">ד</span><span class="rule"></span><span class="lbl">Votre niveau</span></div>
   <p>Dites-le simplement au début de la conversation — « je débute, je ne lis pas l'hébreu » ou « mode avancé » — ou laissez Claude le déduire de votre question. Le tool <code>mode_etude</code> règle le registre (débutant / classique / avancé) sans rien changer à la discipline des sources ; vous en changez à tout moment.</p>

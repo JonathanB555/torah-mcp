@@ -134,6 +134,9 @@ const SERVER_INSTRUCTIONS = `${HEBREWBOOKS_INSTRUCTIONS}
   mémoire pour tout horaire ou date.
 - \`gematria\` (calcul local exact), \`nikoud\` (vocalisation Dicta),
   \`fiche_source\` (fiche partageable WhatsApp d'une référence lue via Sefaria),
+  \`mot_chabbat\` (le petit mot de Chabbat de la semaine, prêt pour WhatsApp —
+  paracha, verset en français, horaires d'allumage ; à proposer chaque fin de
+  semaine, personnalisable),
   \`hebrewbooks_search\` (catalogue ~65k seforim).`;
 
 async function handleRpc(req: JsonRpcRequest, env: Env) {
@@ -255,6 +258,7 @@ export default {
         gematria: "gematria",
         nikoud: "nikoud",
         fiche: "fiche_source",
+        chabbat: "mot_chabbat",
         calendrier: "sefaria_calendar",
       };
       const key = url.pathname.slice("/api/".length);

@@ -23,7 +23,7 @@
 
 	"vars": {
 		"SERVER_NAME": "torah-mcp",
-		"SERVER_VERSION": "1.9.0",
+		"SERVER_VERSION": "1.10.0",
 		"SEFARIA_API_URL": "https://www.sefaria.org/api"
 	}
 
