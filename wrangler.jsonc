@@ -5,6 +5,10 @@
 	"compatibility_date": "2026-05-07",
 	"compatibility_flags": ["nodejs_compat"],
 	"observability": { "enabled": true },
+
+	// Le WhatsApp de Chabbat : composé chaque vendredi à 05:00 UTC (07:00 Paris
+	// l'été, 06:00 l'hiver), publié sur /chabbat.
+	"triggers": { "crons": ["0 5 * * 5"] },
 	"upload_source_maps": true,
 
 	// URL canonique : torah-mcp.com (domaine custom Cloudflare). L'adresse
@@ -19,6 +23,18 @@
 	// Bundle du SKILL.md hebrewbooks en import texte
 	"rules": [
 		{ "type": "Text", "globs": ["**/*.md"], "fallthrough": true }
+	],
+
+	// Journal statistique des questions du site (/question) — privé, sans IP.
+	// Consultation : GET /stats (Basic auth, secret STATS_PASSWORD) ou
+	// `npx wrangler d1 execute torah-mcp-stats --remote --command "..."`.
+	"d1_databases": [
+		{
+			"binding": "STATS_DB",
+			"database_name": "torah-mcp-stats",
+			"database_id": "924948d9-b2fb-42d9-a375-7c811a678a22",
+			"migrations_dir": "migrations"
+		}
 	],
 
 	"vars": {

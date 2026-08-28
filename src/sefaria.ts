@@ -16,6 +16,10 @@ export interface Env {
   ANTHROPIC_API_KEY?: string;
   ANTHROPIC_MODEL?: string;
   QUESTION_DAILY_CAP?: string;
+  /** Journal statistique privé des questions (D1). Absent = pas de journal. */
+  STATS_DB?: D1Database;
+  /** Mot de passe de la page privée /stats (Basic auth, utilisateur libre). Absent = page désactivée. */
+  STATS_PASSWORD?: string;
 }
 
 export interface ToolDefinition {
