@@ -258,6 +258,7 @@ const T = {
     gifOk: "GIF téléchargé — joignez-le à votre message.",
     gifErr: "GIF momentanément indisponible.",
     gifCredit: "GIF via Tenor.",
+    colle: "Message copié — collez-le dans la conversation (Cmd+V ou Ctrl+V).",
     vide: "Le premier message sera composé vendredi matin — revenez alors, ou recevez-le en installant Torah MCP dans Claude.",
     genere: "Composé le",
     nav: { question: "Une question", daf: "Le daf", outils: "Outils", install: "Installer le MCP" },
@@ -278,6 +279,7 @@ const T = {
     gifOk: "GIF downloaded — attach it to your message.",
     gifErr: "GIF temporarily unavailable.",
     gifCredit: "GIFs via Tenor.",
+    colle: "Message copied — paste it into the conversation (Cmd+V or Ctrl+V).",
     vide: "The first message will be composed on Friday morning — come back then, or get it by installing Torah MCP in Claude.",
     genere: "Composed on",
     nav: { question: "Ask a question", daf: "The daf", outils: "Tools", install: "Install the MCP" },
@@ -298,6 +300,7 @@ const T = {
     gifOk: "הגיף ירד — צרפו אותו להודעה.",
     gifErr: "הגיף אינו זמין כרגע.",
     gifCredit: "גיפים דרך Tenor.",
+    colle: "ההודעה הועתקה — הדביקו אותה בשיחה (Cmd+V או Ctrl+V).",
     vide: "המסר הראשון יחובר ביום שישי בבוקר — חזרו אז, או קבלו אותו בהתקנת Torah MCP ב-Claude.",
     genere: "חובר בתאריך",
     nav: { question: "שאלה", daf: "הדף", outils: "כלים", install: "התקנת ה-MCP" },
@@ -395,7 +398,7 @@ ${altLinks(lang, "/chabbat")}
   <p class="muted">${s.chapeau}</p>
   ${texte ? `<div class="msg" id="msg">${esc(texte).replace(/\*([^*\n]+)\*/g, "<strong>$1</strong>")}</div>
   <p class="meta">${s.genere} ${esc(dateGen)}.</p>
-  <div class="acts"><a href="#" id="copy">${s.copier}</a><a href="https://wa.me/?text=" id="share" target="_blank" rel="noopener">${s.partager}</a><span class="fb" id="fb"></span></div>` : `<div class="msg">${s.vide}</div>`}
+  <div class="acts"><a href="#" id="copy">${s.copier}</a><a href="#" id="share" role="button">${s.partager}</a><span class="fb" id="fb"></span></div>` : `<div class="msg">${s.vide}</div>`}
   <div class="gifs">
     <span class="lab">${s.gifLab}</span>
     <p class="note">${s.gifNote}</p>
@@ -437,7 +440,19 @@ ${altLinks(lang, "/chabbat")}
   var texte = ${JSON.stringify(texte)};
   var fb = document.getElementById("fb");
   function feedback(m) { fb.textContent = m; setTimeout(function () { if (fb.textContent === m) fb.textContent = ""; }, 2500); }
-  document.getElementById("share").href = "https://wa.me/?text=" + encodeURIComponent(texte);
+  // Jamais le texte dans l'URL : WhatsApp desktop (macOS) y corrompt les émojis.
+  // Partage natif quand il existe ; sinon copie + WhatsApp ouvert vide, à coller.
+  document.getElementById("share").addEventListener("click", function (e) {
+    e.preventDefault();
+    if (navigator.share) {
+      navigator.share({ text: texte }).catch(function (er) { if (er && er.name !== "AbortError") feedback("${s.copieErr}"); });
+      return;
+    }
+    copier(texte).then(function () {
+      feedback("${s.colle}");
+      window.open("https://web.whatsapp.com/", "_blank", "noopener");
+    }, function () { feedback("${s.copieErr}"); });
+  });
   document.getElementById("copy").addEventListener("click", function (e) {
     e.preventDefault();
     (navigator.clipboard && navigator.clipboard.writeText ? navigator.clipboard.writeText(texte) : Promise.reject())
