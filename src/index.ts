@@ -24,7 +24,7 @@ import { repondreQuestion } from "./question";
 import { questionHtml } from "./question-page";
 import { parseLang } from "./i18n";
 import { journaliser, pageStats, csvStats } from "./stats";
-import { genererChabbat, chabbatPage } from "./chabbat";
+import { genererChabbat, chabbatPage, servirGif } from "./chabbat";
 import { chiourimPage } from "./chiourim";
 import { limoudTools, limoudHandlers } from "./limoud";
 import { renderDaily, outilsHtml } from "./pages";
@@ -277,6 +277,9 @@ export default {
       if (page.status !== 200) return page; // 404 sans secret, 401 sans mot de passe
       return jsonResponse(await genererChabbat(env));
     }
+
+    // GIF de Chabbat : sélection servie par le Worker (index borné).
+    if (request.method === "GET" && url.pathname === "/api/gif") return servirGif(request);
 
     if (url.pathname.startsWith("/api/")) {
       const toolMap: Record<string, string> = {

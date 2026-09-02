@@ -158,6 +158,58 @@ Conserve la structure, les *gras* WhatsApp et les émojis. Réponds par les deux
   return { vendredi, ok: true };
 }
 
+
+// ---------------------------------------------------------------------------
+// Les GIF de Chabbat — une sélection kitsch assumée (via Tenor), servie par
+// le Worker (/api/gif?i=N, cache edge 24 h) : le navigateur du visiteur ne
+// contacte jamais Tenor, et le partage direct du fichier devient possible.
+// Trois GIF par semaine, rotation déterministe sur la sélection.
+// ---------------------------------------------------------------------------
+
+const GIFS: readonly string[] = [
+  "https://media1.tenor.com/m/zhtvR8BnewIAAAAC/candle-glass.gif",
+  "https://media1.tenor.com/m/A453qfWBo98AAAAC/good-shabbos-shabbat-shalom.gif",
+  "https://media1.tenor.com/m/6z1Txw1PbcwAAAAC/love.gif",
+  "https://media1.tenor.com/m/LbkRG11g_GcAAAAC/love-you.gif",
+  "https://media1.tenor.com/m/JJ27lMtXCGUAAAAC/para-ti.gif",
+  "https://media1.tenor.com/m/gYnFoDaQEJ8AAAAC/rose-butterfly.gif",
+  "https://media1.tenor.com/m/SkApr6JhiNAAAAAC/shabat-shalom.gif",
+  "https://media1.tenor.com/m/of1kTodcFIYAAAAC/shabat-shalom1.gif",
+  "https://media1.tenor.com/m/lVLU2M5nQ4IAAAAC/shabbat.gif",
+  "https://media1.tenor.com/m/RAM5_8G_k4QAAAAC/shabbat.gif",
+  "https://media1.tenor.com/m/dvseeJAVWIIAAAAC/shabbat-hug-friends.gif",
+  "https://media1.tenor.com/m/lfzQKaMWV98AAAAC/shabbat-shalom.gif",
+  "https://media1.tenor.com/m/f0x8fThoK_4AAAAC/shabbat-shalom.gif",
+  "https://media1.tenor.com/m/5uwXiTfDUyQAAAAC/shabbat-shalom.gif",
+  "https://media1.tenor.com/m/y-sfn6iYjWkAAAAC/shabbat-shalom.gif",
+  "https://media1.tenor.com/m/8lEJTQVpwO4AAAAC/shabbat-shalom.gif",
+];
+
+/** Les indices des trois GIF de la semaine (rotation complète sur 16 semaines). */
+export function gifsDeLaSemaine(vendredi: string): number[] {
+  const semaine = Math.floor(Date.parse(vendredi) / 86_400_000 / 7);
+  return [0, 1, 2].map((k) => (semaine * 3 + k) % GIFS.length);
+}
+
+/** GET /api/gif?i=N — sert un GIF de la sélection (index borné, jamais d'URL libre). */
+export async function servirGif(request: Request): Promise<Response> {
+  const i = Number(new URL(request.url).searchParams.get("i"));
+  if (!Number.isInteger(i) || i < 0 || i >= GIFS.length) return new Response("Introuvable", { status: 404 });
+  const resp = await fetch(GIFS[i], {
+    headers: { "User-Agent": "torah-mcp/1.10 (+https://torah-mcp.com)" },
+    cf: { cacheTtl: 86_400, cacheEverything: true },
+  } as RequestInit);
+  if (!resp.ok) return new Response("GIF momentanément indisponible", { status: 502 });
+  return new Response(resp.body, {
+    headers: {
+      "Content-Type": "image/gif",
+      "Cache-Control": "public, max-age=86400",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Disposition": 'inline; filename="chabbat-chalom.gif"',
+    },
+  });
+}
+
 // ---------------------------------------------------------------------------
 // La page /chabbat
 // ---------------------------------------------------------------------------
@@ -172,6 +224,12 @@ const T = {
     partager: "Partager sur WhatsApp",
     copie: "Copié.",
     copieErr: "Copie impossible ici — sélectionnez le texte à la main.",
+    gifLab: "Le GIF qui va avec",
+    gifNote: "Trois au choix — ils changent chaque vendredi. Sur téléphone, le bouton l'envoie directement ; sinon il le télécharge, à joindre dans WhatsApp.",
+    gifGo: "Envoyer le GIF",
+    gifOk: "GIF téléchargé — joignez-le à votre message.",
+    gifErr: "GIF momentanément indisponible.",
+    gifCredit: "GIF via Tenor.",
     vide: "Le premier message sera composé vendredi matin — revenez alors, ou recevez-le en installant Torah MCP dans Claude.",
     genere: "Composé le",
     nav: { question: "Une question", daf: "Le daf", outils: "Outils", install: "Installer le MCP" },
@@ -186,6 +244,12 @@ const T = {
     partager: "Share on WhatsApp",
     copie: "Copied.",
     copieErr: "Copying failed here — select the text by hand.",
+    gifLab: "The GIF to go with it",
+    gifNote: "Three to choose from — they change every Friday. On a phone the button shares it directly; otherwise it downloads it, to attach in WhatsApp.",
+    gifGo: "Send the GIF",
+    gifOk: "GIF downloaded — attach it to your message.",
+    gifErr: "GIF temporarily unavailable.",
+    gifCredit: "GIFs via Tenor.",
     vide: "The first message will be composed on Friday morning — come back then, or get it by installing Torah MCP in Claude.",
     genere: "Composed on",
     nav: { question: "Ask a question", daf: "The daf", outils: "Tools", install: "Install the MCP" },
@@ -200,6 +264,12 @@ const T = {
     partager: "שיתוף בוואטסאפ",
     copie: "הועתק.",
     copieErr: "ההעתקה נכשלה — סמנו את הטקסט ידנית.",
+    gifLab: "הגיף שמתלווה",
+    gifNote: "שלושה לבחירה — הם מתחלפים בכל יום שישי. בטלפון הכפתור משתף ישירות; אחרת הוא מוריד את הקובץ, לצירוף בוואטסאפ.",
+    gifGo: "שליחת הגיף",
+    gifOk: "הגיף ירד — צרפו אותו להודעה.",
+    gifErr: "הגיף אינו זמין כרגע.",
+    gifCredit: "גיפים דרך Tenor.",
     vide: "המסר הראשון יחובר ביום שישי בבוקר — חזרו אז, או קבלו אותו בהתקנת Torah MCP ב-Claude.",
     genere: "חובר בתאריך",
     nav: { question: "שאלה", daf: "הדף", outils: "כלים", install: "התקנת ה-MCP" },
@@ -218,6 +288,7 @@ export async function chabbatPage(env: Env, lang: Lang): Promise<string> {
       : null;
   } catch {}
   const texte: string = row ? row[lang] || row.fr : "";
+  const indices = gifsDeLaSemaine(row?.vendredi || vendrediCourant());
   const dateGen = row
     ? new Date(row.ts).toLocaleDateString(t(lang, { fr: "fr-FR", en: "en-GB", he: "he-IL" }), { day: "numeric", month: "long", year: "numeric" })
     : "";
@@ -269,6 +340,20 @@ ${altLinks(lang, "/chabbat")}
   .acts a { text-decoration:none; } .acts a::before { content:"[ "; color:var(--ink-40); } .acts a::after { content:" ]"; color:var(--ink-40); } .acts a:hover::before { content:"[ → "; }
   [dir="rtl"] .acts a:hover::before { content:"[ ← "; }
   .acts .fb { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:400; font-size:.85rem; font-style:italic; color:var(--muted); min-height:1em; }
+  .gifs { margin-top:2.6rem; border-top:1px dotted var(--ink-40); padding-top:1.4rem; }
+  .gifs .lab { display:block; font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.15rem; margin-bottom:.2rem; }
+  [dir="rtl"] .gifs .lab { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:700; }
+  .gifs .note { font-size:.88rem; color:var(--muted); margin-bottom:1rem; max-width:44rem; }
+  .gifs .row { display:grid; grid-template-columns:repeat(3,1fr); gap:1.2rem; }
+  .gifs figure { margin:0; }
+  .gifs img { width:100%; aspect-ratio:1; object-fit:cover; border:1.5px solid var(--ink-15); display:block; background:var(--ink-15); }
+  .gifs figure:hover img { border-color:var(--ink); }
+  .gifs .snd { display:inline-block; margin-top:.5rem; font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:.98rem; text-decoration:none; cursor:pointer; }
+  [dir="rtl"] .gifs .snd { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:700; }
+  .gifs .snd::before { content:"[ "; color:var(--ink-40); } .gifs .snd::after { content:" ]"; color:var(--ink-40); } .gifs .snd:hover::before { content:"[ → "; }
+  [dir="rtl"] .gifs .snd:hover::before { content:"[ ← "; }
+  .gifs .credit { margin-top:.9rem; font-size:.78rem; color:var(--muted); }
+  @media (max-width:640px) { .gifs .row { grid-template-columns:1fr 1fr; } }
   footer { margin-top:4rem; font-size:.88rem; color:var(--muted); border-top:1px solid var(--ink-15); padding-top:1.4rem; }
 </style>
 </head>
@@ -283,10 +368,43 @@ ${altLinks(lang, "/chabbat")}
   ${texte ? `<div class="msg" id="msg">${esc(texte)}</div>
   <p class="meta">${s.genere} ${esc(dateGen)}.</p>
   <div class="acts"><a href="#" id="copy">${s.copier}</a><a href="https://wa.me/?text=" id="share" target="_blank" rel="noopener">${s.partager}</a><span class="fb" id="fb"></span></div>` : `<div class="msg">${s.vide}</div>`}
+  <div class="gifs">
+    <span class="lab">${s.gifLab}</span>
+    <p class="note">${s.gifNote}</p>
+    <div class="row">
+      ${indices.map((i) => `<figure><img src="/api/gif?i=${i}" alt="Chabbat chalom" loading="lazy"><a class="snd" data-i="${i}" role="button" tabindex="0">${s.gifGo}</a></figure>`).join("\n      ")}
+    </div>
+    <p class="credit">${s.gifCredit}</p>
+  </div>
   <footer><p><a href="${href(lang, "/")}">${s.foot.accueil}</a> · <a href="${href(lang, "/daily")}">${s.foot.daily}</a> · <a href="${href(lang, "/privacy")}">${s.foot.privacy}</a> · ${langSwitcher(lang, "/chabbat")}</p><p>${colophon(lang)}</p></footer>
 </main>
 <script>
 (function () {
+  var GIF_OK = "${s.gifOk}";
+  var GIF_ERR = "${s.gifErr}";
+  document.querySelectorAll(".gifs .snd").forEach(function (btn) {
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      var i = btn.getAttribute("data-i");
+      fetch("/api/gif?i=" + i)
+        .then(function (r) { if (!r.ok) throw 0; return r.blob(); })
+        .then(function (b) {
+          var file = new File([b], "chabbat-chalom.gif", { type: "image/gif" });
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            return navigator.share({ files: [file] }).catch(function (er) { if (er && er.name === "AbortError") return; throw er; });
+          }
+          var url = URL.createObjectURL(b);
+          var a = document.createElement("a");
+          a.href = url; a.download = "chabbat-chalom.gif";
+          document.body.appendChild(a); a.click(); a.remove();
+          setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+          btn.textContent = GIF_OK;
+          setTimeout(function () { btn.textContent = "${s.gifGo}"; }, 3000);
+        })
+        .catch(function () { btn.textContent = GIF_ERR; setTimeout(function () { btn.textContent = "${s.gifGo}"; }, 3000); });
+    });
+  });
+
   var msg = document.getElementById("msg"); if (!msg) return;
   var texte = msg.textContent;
   var fb = document.getElementById("fb");
