@@ -68,6 +68,8 @@ const PRIVACY_T: Record<Lang, PrivacyStrings> = {
   le visualiseur de daf intégré à Claude ne charge aucun traceur.
   Voir les <a href="https://policies.google.com/privacy">règles de
   confidentialité de Google</a>.</p>
+  <h2>Les chiourim en vidéo</h2>
+  <p>La page <a href="/chiourim">/chiourim</a> présente des vidéos hébergées par YouTube. Aucune ressource YouTube n'est chargée avant l'affichage de la page (les vignettes proviennent des serveurs de YouTube) et le lecteur ne se lance qu'au clic, via youtube-nocookie.com — le mode « confidentialité avancée » de YouTube, sans cookies avant la lecture. La consultation des vidéos relève des <a href="https://policies.google.com/privacy">règles de confidentialité de Google</a>.</p>
   <h2>"Ask a question" on the website — English</h2>
   <p>The <a href="{Q}">/question</a> page sends your question, as written, to Anthropic's API (Claude) to draft an answer from texts read on Sefaria. The answer is not stored. We do keep a <strong>private statistical log</strong> of each question: its text, the chosen level, date, processing time, number of sources read, token volume and country of origin (Cloudflare aggregate) — <strong>never the IP address nor any identifier</strong>, so a question cannot be linked to a person. This log is used only to understand usage and track cost; it is neither published nor shared. The IP address is only used by the in-memory rate limiter, without logs. Anthropic's processing is governed by its <a href="https://www.anthropic.com/legal/privacy">privacy policy</a> (API data is not used for training). Do not include personal information.</p>
 
@@ -89,6 +91,8 @@ const PRIVACY_T: Record<Lang, PrivacyStrings> = {
   (IP address, timestamp) used solely for security and rate limiting.</p>
   <h2>“Ask a question” on the website</h2>
   <p>The <a href="{Q}">/question</a> page sends your question, as written, to Anthropic's API (Claude) to draft an answer from texts read on Sefaria. The answer is not stored. We do keep a <strong>private statistical log</strong> of each question: its text, the chosen level, date, processing time, number of sources read, token volume and country of origin (Cloudflare aggregate) — <strong>never the IP address nor any identifier</strong>, so a question cannot be linked to a person. This log is used only to understand usage and track cost; it is neither published nor shared. The IP address is only used by the in-memory rate limiter, without logs. Anthropic's processing is governed by its <a href="https://www.anthropic.com/legal/privacy">privacy policy</a> (API data is not used for training). Do not include personal information.</p>
+  <h2>Video shiurim</h2>
+  <p>The <a href="/en/chiourim">/chiourim</a> page presents videos hosted by YouTube. Thumbnails are served from YouTube's servers, and the player only loads when you click, via youtube-nocookie.com — YouTube's enhanced-privacy mode, with no cookies before playback. Watching the videos is governed by <a href="https://policies.google.com/privacy">Google's privacy policy</a>.</p>
   <h2>Website analytics</h2>
   <p>The website pages (torah-mcp.com) use Google Analytics 4 for aggregate
   traffic measurement (page views, referrers) — browser visits only.
@@ -103,6 +107,8 @@ const PRIVACY_T: Record<Lang, PrivacyStrings> = {
     body: `<p>שירות ה-MCP אינו אוסף, אינו שומר ואינו משתף שום מידע אישי. הוא אינו דורש חשבון, אינו מציב עוגיות, ואינו שומר היסטוריה של השאלות שנשאלו. הבקשות עוברות ל-API הציבורי של <a href="https://www.sefaria.org">ספריא</a> כדי לאחזר את הטקסטים המבוקשים, ותשתית Cloudflare מפיקה יומנים טכניים תפעוליים קצרי מועד (כתובת IP, חותמת זמן) המשמשים אך ורק לאבטחה ולהגבלת קצב.</p>
   <h2>«שאלה» באתר</h2>
   <p>העמוד <a href="{Q}" dir="ltr">/question</a> שולח את שאלתכם, כפי שכתבתם אותה, ל-API של Anthropic (Claude) כדי לנסח את התשובה מתוך הטקסטים שנקראו בספריא. התשובה אינה נשמרת. לעומת זאת, אנו שומרים <strong>יומן סטטיסטי פרטי</strong> של כל שאלה: הטקסט שלה, הרמה שנבחרה, התאריך, משך העיבוד, מספר המקורות שנקראו, נפח הטוקנים וארץ המוצא (נתון מצרפי של Cloudflare) — <strong>לעולם לא כתובת ה-IP ולא שום מזהה</strong>, כך שאי אפשר לקשר שאלה לאדם. היומן משמש אך ורק להבנת השימוש בשירות ולמעקב אחר עלותו; הוא אינו מתפרסם ואינו משותף. כתובת ה-IP משמשת רק את מגביל הקצב, בזיכרון, בלי יומן. העיבוד בידי Anthropic כפוף ל<a href="https://www.anthropic.com/legal/privacy">מדיניות הפרטיות</a> שלה (נתוני API אינם משמשים לאימון). אל תכתבו שם מידע אישי.</p>
+  <h2>שיעורים בווידאו</h2>
+  <p>העמוד <a href="/he/chiourim" dir="ltr">/chiourim</a> מציג סרטונים המתארחים ביוטיוב. התמונות הממוזערות מוגשות משרתי יוטיוב, והנגן נטען רק בלחיצה, דרך youtube-nocookie.com — מצב הפרטיות המורחבת של יוטיוב, ללא עוגיות לפני הניגון. צפייה בסרטונים כפופה ל<a href="https://policies.google.com/privacy">מדיניות הפרטיות של Google</a>.</p>
   <h2>מדידת קהל באתר</h2>
   <p>עמודי האתר (torah-mcp.com) משתמשים ב-Google Analytics 4 למדידת התנועה באופן מצרפי (צפיות בעמודים, מקור ההגעה). הדבר נוגע רק לגלישה באתר בדפדפן. <strong>מחבר ה-MCP עצמו אינו שולח דבר ל-Google Analytics</strong>: שום נתון שימוש ב-Claude או בכל עוזר אחר אינו נמדד, ומציג הדף המשולב ב-Claude אינו טוען שום כלי מעקב. ראו את <a href="https://policies.google.com/privacy">מדיניות הפרטיות של Google</a>.</p>`,
   },
@@ -154,7 +160,7 @@ type Mode = { h: string; who: string; p: string; try: string };
 
 type LandingStrings = {
   title: string; desc: string;
-  grpSite: string; navQuestion: string; navDaf: string; navOutils: string; navDaily: string; grpClaude: string; navInstall: string;
+  grpSite: string; navQuestion: string; navDaf: string; navOutils: string; navDaily: string; navChiourim: string; grpClaude: string; navInstall: string;
   h1: string; deck: string; act1: string; act2: string; hint: string;
   kezAria: string; kezId: string;
   fig1n: string; fig1u: string; fig1t: string; fig2n: string; fig2u: string; fig2t: string; fig3n: string; fig3u: string; fig3t: string;
@@ -173,7 +179,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
   fr: {
     title: "Torah MCP — la discipline des sources pour Claude",
     desc: "Claude cite la Torah depuis les textes, plus jamais de mémoire. Méthode d'étude, havrouta, guide de paracha, page de Vilna interactive, Sefaria, HebrewBooks, zmanim, guematria. Gratuit, sans compte.",
-    grpSite: "Sur le site", navQuestion: "Une question", navDaf: "Le daf", navOutils: "Outils", navDaily: "Limoud du jour", grpClaude: "Dans Claude", navInstall: "Installer le MCP",
+    grpSite: "Sur le site", navQuestion: "Une question", navDaf: "Le daf", navOutils: "Outils", navDaily: "Limoud du jour", navChiourim: "Chiourim", grpClaude: "Dans Claude", navInstall: "Installer le MCP",
     h1: `Claude cite la Torah <span class="no">de&nbsp;mémoire</span> <strong>depuis les textes</strong>.`,
     deck: "Un serveur MCP gratuit qui impose une discipline des sources à Claude : chaque réponse de halakha ou de limoud est lue dans le texte réel, citée exactement, reliée à ses commentateurs. En français, à votre niveau — du débutant qui ne lit pas l'hébreu au talmid hakham. Et chaque outil existe aussi en version web, ici même, sans Claude.",
     act1: "Installer dans Claude — 2 min", act2: "Poser une question — sans Claude",
@@ -224,6 +230,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
       { to: "/chabbat", t: "Le mot de Chabbat", d: "le WhatsApp de la semaine — personnalisable dans les outils" },
       { to: "/outils", t: "Fiche source", d: "hébreu, traduction, lien — pour WhatsApp" },
       { to: "/daily", t: "Le limoud du jour", d: "paracha, daf yomi, Rambam quotidien" },
+      { to: "/chiourim", t: "Les chiourim du rav Attal", d: "les cours en vidéo, classés par thèmes" },
     ],
     inviteH2: "Une URL à coller dans claude.ai, et l'étude <strong>change de nature</strong>.",
     inviteAct1: "Installer maintenant", inviteAct2: "Code source — MIT",
@@ -235,7 +242,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
   en: {
     title: "Torah MCP — source discipline for Claude",
     desc: "Claude quotes the Torah from the texts, never again from memory. Study method, chavruta, parashah guide, interactive Vilna page, Sefaria, HebrewBooks, zmanim, gematria. Free, no account.",
-    grpSite: "On the site", navQuestion: "Ask a question", navDaf: "The daf", navOutils: "Tools", navDaily: "Today's learning", grpClaude: "In Claude", navInstall: "Install the MCP",
+    grpSite: "On the site", navQuestion: "Ask a question", navDaf: "The daf", navOutils: "Tools", navDaily: "Today's learning", navChiourim: "Shiurim", grpClaude: "In Claude", navInstall: "Install the MCP",
     h1: `Claude quotes the Torah <span class="no">from&nbsp;memory</span> <strong>from the texts</strong>.`,
     deck: "A free MCP server that imposes source discipline on Claude: every answer on halakha or limud is read in the actual text, quoted exactly, linked to its commentators. In English, at your level — from the beginner who reads no Hebrew to the talmid chakham. And every tool also exists as a web version, right here, without Claude.",
     act1: "Install in Claude — 2 min", act2: "Ask a question — without Claude",
@@ -286,6 +293,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
       { to: "/chabbat", t: "The Shabbat note", d: "the weekly WhatsApp — personalizable in the tools" },
       { to: "/outils", t: "Source sheet", d: "Hebrew, translation, link — for WhatsApp" },
       { to: "/daily", t: "Today's learning", d: "parashah, daf yomi, daily Rambam" },
+      { to: "/chiourim", t: "Rav Attal's shiurim", d: "video classes (in French), by theme" },
     ],
     inviteH2: "One URL to paste into claude.ai, and study <strong>changes in nature</strong>.",
     inviteAct1: "Install now", inviteAct2: "Source code — MIT",
@@ -297,7 +305,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
   he: {
     title: "Torah MCP — משמעת מקורות ל-Claude",
     desc: "Claude מצטט את התורה מתוך הטקסטים, לעולם לא מהזיכרון. שיטת לימוד, חברותא, מדריך לפרשה, דף וילנא אינטראקטיבי, ספריא, HebrewBooks, זמנים, גימטריה. חינם, בלי חשבון.",
-    grpSite: "באתר", navQuestion: "שאלה", navDaf: "הדף", navOutils: "כלים", navDaily: "הלימוד היומי", grpClaude: "ב-Claude", navInstall: "התקנת ה-MCP",
+    grpSite: "באתר", navQuestion: "שאלה", navDaf: "הדף", navOutils: "כלים", navDaily: "הלימוד היומי", navChiourim: "שיעורים", grpClaude: "ב-Claude", navInstall: "התקנת ה-MCP",
     h1: `Claude מצטט את התורה <span class="no">מהזיכרון</span> <strong>מתוך הטקסטים</strong>.`,
     deck: "שרת MCP חינמי שכופה על Claude משמעת מקורות: כל תשובה בהלכה או בלימוד נקראת מתוך הטקסט האמיתי, מצוטטת במדויק, מקושרת למפרשיה. בעברית, ברמה שלכם — מהמתחיל שאין לו רקע ועד תלמיד חכם. וכל כלי קיים גם בגרסת אינטרנט, כאן ממש, בלי Claude.",
     act1: "התקנה ב-Claude — 2 דקות", act2: "לשאול שאלה — בלי Claude",
@@ -348,6 +356,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
       { to: "/chabbat", t: "מילה לשבת", d: "הוואטסאפ השבועי — ניתן להתאמה בכלים" },
       { to: "/outils", t: "דף מקורות", d: "עברית, תרגום, קישור — לוואטסאפ" },
       { to: "/daily", t: "הלימוד היומי", d: "פרשה, דף יומי, רמב\"ם יומי" },
+      { to: "/chiourim", t: "השיעורים של הרב אטל", d: "שיעורי וידאו (בצרפתית), לפי נושאים" },
     ],
     inviteH2: "כתובת אחת להדביק ב-claude.ai, והלימוד <strong>משנה את טבעו</strong>.",
     inviteAct1: "להתקין עכשיו", inviteAct2: "קוד מקור — MIT",
@@ -596,6 +605,7 @@ ${GA}
     <a href="${href(lang, "/daf")}">${s.navDaf}</a>
     <a href="${href(lang, "/outils")}" class="hide-m">${s.navOutils}</a>
     <a href="${href(lang, "/daily")}" class="hide-m">${s.navDaily}</a>
+    <a href="${href(lang, "/chiourim")}" class="hide-m">${s.navChiourim}</a>
     <span class="sep hide-m"></span>
     <span class="grp hide-m">${s.grpClaude}</span>
     <a href="${href(lang, "/install")}"><strong>${s.navInstall}</strong></a>
