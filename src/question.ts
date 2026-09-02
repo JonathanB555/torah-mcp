@@ -141,7 +141,7 @@ export async function repondreQuestion(
   env: Env,
   tools: ToolDefinition[],
   handlers: Record<string, ToolHandler>,
-  input: { question: unknown; mode?: unknown; lang?: unknown },
+  input: { question: unknown; mode?: unknown; lang?: unknown; precedent?: unknown },
   ip: string
 ): Promise<{ status: number; body: any; meta?: QuestionMeta }> {
   const apiKey = env.ANTHROPIC_API_KEY;
@@ -163,14 +163,29 @@ export async function repondreQuestion(
   if (refus) return { status: 429, body: { error: refus, cause: "rate_limit" }, meta: { question, mode, lang, tokens_in: 0, tokens_out: 0 } };
 
   const model = env.ANTHROPIC_MODEL || DEFAULT_MODEL;
-  const system = `${SKILL_MD}\n\n${MODES[mode].md}\n\n${WEB_CONTEXT_MD}${LANG_MD[lang] ? "\n\n" + LANG_MD[lang] : ""}`;
+
+  // Question de suite : le site renvoie l'échange précédent pour que la
+  // nouvelle réponse s'appuie dessus (un seul niveau, tailles bornées).
+  const prec = input.precedent as { question?: unknown; reponse?: unknown } | undefined;
+  const precQ = String(prec?.question || "").trim().slice(0, MAX_QUESTION_CHARS);
+  const precR = String(prec?.reponse || "").trim().slice(0, 12000);
+  const enSuite = Boolean(precQ && precR);
+  const SUITE_MD = `# Question de suite
+
+La question actuelle fait suite à l'échange précédent, fourni dans l'historique.
+Appuie-toi dessus sans répéter ce qui a déjà été dit : complète, précise,
+approfondis. Relis un texte si la précision demandée l'exige.`;
+
+  const system = `${SKILL_MD}\n\n${MODES[mode].md}\n\n${WEB_CONTEXT_MD}${LANG_MD[lang] ? "\n\n" + LANG_MD[lang] : ""}${enSuite ? "\n\n" + SUITE_MD : ""}`;
   const anthropicTools = toAnthropicTools(tools);
-  const messages: any[] = [{ role: "user", content: question }];
+  const messages: any[] = enSuite
+    ? [{ role: "user", content: precQ }, { role: "assistant", content: precR }, { role: "user", content: question }]
+    : [{ role: "user", content: question }];
   const sources = new Map<string, string>();
   let tours = 0;
   let tokensIn = 0, tokensOut = 0;
   const compter = (d: any) => { tokensIn += Number(d?.usage?.input_tokens) || 0; tokensOut += Number(d?.usage?.output_tokens) || 0; };
-  const meta = (): QuestionMeta => ({ question, mode, lang, tokens_in: tokensIn, tokens_out: tokensOut });
+  const meta = (): QuestionMeta => ({ question: (enSuite ? "↳ " : "") + question, mode, lang, tokens_in: tokensIn, tokens_out: tokensOut });
   let final = "";
 
   while (tours < MAX_ROUNDS) {

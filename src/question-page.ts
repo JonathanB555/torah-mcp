@@ -63,6 +63,11 @@ interface Strings {
   errGeneric: string;
   errCause: Record<string, string>;
   locale: string;
+  waitNote: string;
+  btnWait: string;
+  suiteLab: string;
+  suitePh: string;
+  suiteGo: string;
 }
 
 const T: Record<Lang, Strings> = {
@@ -131,6 +136,11 @@ const T: Record<Lang, Strings> = {
       api_5xx: "Le service de réponse est momentanément indisponible — réessayez.",
     },
     locale: "fr-FR",
+    waitNote: "La réponse demande en général 30 à 90 secondes : Claude lit réellement les textes — Bible, Talmud, commentateurs — avant de répondre. C'est le principe de la maison ; la page reste ouverte, la réponse arrive.",
+    btnWait: "Lecture en cours…",
+    suiteLab: "Continuer sur cette réponse",
+    suitePh: "Une question de suite — elle s'appuiera sur la réponse ci-dessus.",
+    suiteGo: "Demander la suite",
   },
   en: {
     title: "Ask a question — Torah MCP",
@@ -197,6 +207,11 @@ const T: Record<Lang, Strings> = {
       api_5xx: "The answering service is temporarily unavailable — please try again.",
     },
     locale: "en-GB",
+    waitNote: "The answer usually takes 30 to 90 seconds: Claude actually reads the texts — Bible, Talmud, commentators — before answering. That is the whole point; keep the page open, the answer is coming.",
+    btnWait: "Reading…",
+    suiteLab: "Follow up on this answer",
+    suitePh: "A follow-up question — it will build on the answer above.",
+    suiteGo: "Ask the follow-up",
   },
   he: {
     title: "שאלה — Torah MCP",
@@ -263,6 +278,11 @@ const T: Record<Lang, Strings> = {
       api_5xx: "שירות המענה אינו זמין כרגע — נסו שוב.",
     },
     locale: "he-IL",
+    waitNote: "התשובה אורכת בדרך כלל 30 עד 90 שניות: קלוד קורא באמת את הטקסטים — תנ\"ך, תלמוד, מפרשים — לפני שהוא עונה. זה כל העניין; השאירו את העמוד פתוח, התשובה בדרך.",
+    btnWait: "קוראים…",
+    suiteLab: "להמשיך על התשובה הזו",
+    suitePh: "שאלת המשך — היא תתבסס על התשובה שלמעלה.",
+    suiteGo: "לשאול את ההמשך",
   },
 };
 
@@ -305,6 +325,9 @@ export function questionHtml(lang: Lang): string {
     errGeneric: s.errGeneric,
     errCause: s.errCause,
     locale: s.locale,
+    btnWait: s.btnWait,
+    go: s.go,
+    suiteGo: s.suiteGo,
   };
   return `<!doctype html>
 <html ${htmlAttrs(lang)}>
@@ -387,8 +410,19 @@ ${altLinks(lang, PATH)}
   .hist li a { text-decoration:none; flex:1; } .hist li a:hover { text-decoration:underline; }
   .hist li .m { font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; opacity:.5; white-space:nowrap; }
   .hist .clr { display:inline-block; margin-top:.6rem; font-size:.82rem; color:var(--muted); }
-  #wait { display:none; margin-top:2.6rem; font-style:italic; color:var(--muted); }
-  #wait .dot { display:inline-block; width:.45em; height:.45em; background:var(--ink); border-radius:50%; margin-inline-end:.6rem; animation:pulse 1.2s ease-in-out infinite; }
+  #wait { display:none; margin-top:2.6rem; border:1.5px solid var(--ink); padding:1.4rem 1.6rem 1.2rem; }
+  #wait .wt { display:flex; align-items:baseline; gap:.8rem; font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.25rem; }
+  [dir="rtl"] #wait .wt { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:700; }
+  #wait .dot { display:inline-block; width:.5em; height:.5em; background:var(--ink); border-radius:50%; animation:pulse 1.2s ease-in-out infinite; flex:none; align-self:center; }
+  #wait .sec { margin-inline-start:auto; font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:400; font-size:.85rem; color:var(--muted); font-variant-numeric:tabular-nums; direction:ltr; }
+  #wait .wbar { height:3px; background:var(--ink-15); margin:.9rem 0 .8rem; overflow:hidden; }
+  #wait .wbar i { display:block; height:100%; width:0; background:var(--ink); }
+  #wait.on .wbar i { animation:wgrow 80s cubic-bezier(.25,.6,.45,1) forwards; }
+  @keyframes wgrow { from { width:0 } to { width:94% } }
+  #wait .wnote { font-size:.9rem; color:var(--muted); max-width:44rem; margin:0; }
+  .suite { margin-top:2rem; border-top:1px dotted var(--ink-40); padding-top:1.2rem; }
+  .suite .lab { display:block; font-size:.78rem; letter-spacing:.16em; text-transform:uppercase; opacity:.55; margin-bottom:.2rem; }
+  .suite textarea { min-height:70px; }
   @keyframes pulse { 0%,100% { opacity:.25 } 50% { opacity:1 } }
   #out { display:none; margin-top:2.6rem; border-top:2px solid var(--ink); padding-top:1.4rem; }
   #out h2 { font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.25rem; margin:1.6rem 0 .5rem; }
@@ -451,13 +485,18 @@ ${altLinks(lang, PATH)}
     <a href="#" class="clr" id="hclr">${s.hclr}</a>
   </div>
 
-  <div id="wait"><span class="dot"></span><span id="wtxt">${s.steps[0]}</span></div>
+  <div id="wait" role="status"><div class="wt"><span class="dot"></span><span id="wtxt">${s.steps[0]}</span><span class="sec" id="wsec"></span></div><div class="wbar"><i></i></div><p class="wnote">${s.waitNote}</p></div>
   <div class="err" id="err"></div>
 
   <section id="out" aria-live="polite">
     <div id="ans"></div>
     <div class="srcs" id="srcs"></div>
     <div class="acts"><a href="#" id="copy">${s.copy}</a><a href="#" id="share">${s.share}</a><span class="fb" id="fb"></span></div>
+    <div class="suite">
+      <span class="lab">${s.suiteLab}</span>
+      <textarea id="sq" maxlength="600" placeholder="${attr(s.suitePh)}"></textarea>
+      <div class="row"><button type="button" id="sgo">${s.suiteGo}</button><span class="count" id="scnt">0 / 600</span></div>
+    </div>
     <p class="disc">${s.disc}</p>
     <p class="again"><a href="#" id="again">${s.again}</a> · <a href="${href(lang, "/install")}">${s.againInstall}</a></p>
   </section>
@@ -598,23 +637,52 @@ ${altLinks(lang, PATH)}
   }
 
   var steps = S.steps;
-  f.addEventListener("submit", function (e) {
-    e.preventDefault();
-    var question = q.value.trim(); if (!question) return;
-    var m = mode();
-    err.textContent = ""; out.style.display = "none"; wait.style.display = "block"; go.disabled = true;
+  var sq = document.getElementById("sq"), sgo = document.getElementById("sgo"), scnt = document.getElementById("scnt");
+  var wsec = document.getElementById("wsec");
+
+  function demander(question, m, precedent) {
+    err.textContent = ""; out.style.display = "none";
+    wait.style.display = "block"; wait.classList.remove("on");
+    void wait.offsetWidth; wait.classList.add("on");
+    go.disabled = true; sgo.disabled = true;
+    go.textContent = S.btnWait;
     var i = 0; wtxt.textContent = steps[0];
-    var tick = setInterval(function () { i = Math.min(i + 1, steps.length - 1); wtxt.textContent = steps[i]; }, 5000);
-    fetch("/api/question", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ question: question, mode: m, lang: S.lang }) })
+    var t0 = Date.now(); wsec.textContent = "0 s";
+    var tick = setInterval(function () {
+      var sec = Math.round((Date.now() - t0) / 1000);
+      wsec.textContent = sec + " s";
+      var j = Math.min(Math.floor(sec / 8), steps.length - 1);
+      if (j !== i) { i = j; wtxt.textContent = steps[i]; }
+    }, 1000);
+    wait.scrollIntoView({ behavior: "smooth", block: "center" });
+    function fin() { clearInterval(tick); wait.style.display = "none"; go.disabled = false; sgo.disabled = false; go.textContent = S.go; }
+    var corps = { question: question, mode: m, lang: S.lang };
+    if (precedent) corps.precedent = precedent;
+    fetch("/api/question", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(corps) })
       .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
       .then(function (x) {
-        clearInterval(tick); wait.style.display = "none"; go.disabled = false;
+        fin();
         if (!x.ok || x.d.error) { err.textContent = messageErreur(x.d || {}); return; }
         var entry = { q: question, mode: m, reponse: x.d.reponse || "", sources: x.d.sources || [], t: Date.now(), lang: S.lang };
         ajouterHist(entry);
         show(entry);
+        sq.value = ""; scnt.textContent = "0 / 600";
       })
-      .catch(function () { clearInterval(tick); wait.style.display = "none"; go.disabled = false; err.textContent = S.errNet; });
+      .catch(function () { fin(); err.textContent = S.errNet; });
+  }
+
+  f.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var question = q.value.trim(); if (!question) return;
+    demander(question, mode(), null);
+  });
+
+  /* ---- La question de suite : s'appuie sur la réponse affichée ---- */
+  sq.addEventListener("input", function () { scnt.textContent = sq.value.length + " / 600"; });
+  sq.addEventListener("keydown", function (e) { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sgo.click(); } });
+  sgo.addEventListener("click", function () {
+    var question = sq.value.trim(); if (!question || !cur) return;
+    demander(question, mode(), { question: cur.q, reponse: cur.reponse });
   });
 })();
 </script>
