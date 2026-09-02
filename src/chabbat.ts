@@ -20,28 +20,30 @@ const ANTHROPIC_VERSION = "2023-06-01";
 const DEFAULT_MODEL = "claude-sonnet-5";
 const VILLES = ["paris", "marseille", "geneve"] as const;
 
-const GABARIT = `🕯️ CHABBAT KI TÉTSÉ — כי תצא
-15 Eloul 5786 · 21-22 août
+const GABARIT = `🕯️ *Chabbat Ki Tétsé* · כי תצא
+📅 8 Eloul 5786 · 21-22 août
 
-Entrée · sortie :
-Paris 20 h 36 · 21 h 44
-Marseille 20 h 14 · 21 h 16
-Genève 20 h 16 · 21 h 20
+🌇 Entrée · ✨ Sortie
+📍 *Paris* 20h36 · 21h44
+📍 *Marseille* 20h14 · 21h16
+📍 *Genève* 20h16 · 21h20
 
-Devarim 21, 10 – 25, 19
+📖 *Devarim 21, 10 – 25, 19*
 
-Ki Tétsé est la paracha la plus riche de la Torah en mitsvot — et regardez lesquelles : rendre un objet perdu, relever l'âne qui plie sous sa charge, poser une rambarde sur son toit, renvoyer la mère avant de prendre les œufs, payer l'ouvrier le jour même, garder des poids justes dans son sac.
+La paracha la plus riche de la Torah en mitsvot. Et regardez lesquelles : rendre un objet perdu, relever l'âne qui plie, poser une rambarde sur son toit, payer l'ouvrier le jour même.
 
-Pas une seule ne se passe à la synagogue. Toutes se passent sur la route, sur le chantier, au marché — là où personne ne regarde.
+Pas une seule ne se passe à la synagogue. Toutes se passent sur la route, au chantier, au marché — là où personne ne regarde.
 
-C'est le message de ce Chabbat : « la grandeur ne se joue pas dans les grands moments, elle se construit dans les petits. » On ne devient pas quelqu'un de bien en pensant de belles choses ; on le devient en posant une rambarde pour que l'autre ne tombe pas.
+💡 *La grandeur ne se joue pas dans les grands moments — elle se construit dans les petits.*
 
-Le daf yomi de ce jour tombe à propos : Houlin 113, la sougya de la viande et du lait — la Torah jusque dans la cuisine. Et la haftara (Isaïe 54) répond en écho : les montagnes peuvent chanceler, l'attachement de D.ieu, lui, ne bouge pas. À nous les détails, à Lui la constance.
+On ne devient pas quelqu'un de bien en pensant de belles choses. On le devient en posant une rambarde pour que l'autre ne tombe pas.
 
-Tous les cycles du jour, avec les textes : torah-mcp.com/daily
-Une question sur la paracha ? torah-mcp.com/question
+Et la haftara (Isaïe 54) murmure la même chose : les montagnes peuvent chanceler — Son attachement, lui, ne bouge pas.
 
-Chabbat chalom !`;
+📚 Le limoud du jour : torah-mcp.com/daily
+💬 Une question ? torah-mcp.com/question
+
+*Chabbat chalom !* ✨`;
 
 const CONSIGNES = `Tu rédiges le message WhatsApp de Chabbat du site torah-mcp.com, en français.
 
@@ -55,14 +57,20 @@ Règles absolues :
 - Un seul fil et une vraie morale : choisis UNE idée de la paracha, développe-la,
   et fais servir la haftara (et le daf yomi seulement si le lien est réel et
   naturel — sinon ne le mentionne pas) à cette même idée. Pas de catalogue.
-- TEXTE BRUT, présentable partout : AUCUN astérisque ni mise en forme
-  (pas de *gras*, pas de ##, pas de liens []()). Un seul émoji : 🕯️ en tête.
-  L'accent se porte par la typographie : titre en CAPITALES, phrase-clé de la
-  morale entre guillemets « … », tirets cadratins.
+- PENSÉ POUR UN TÉLÉPHONE : message court (nettement plus court qu'un article),
+  paragraphes de 2-3 phrases brèves maximum, une ligne vide entre chaque bloc.
+  Première phrase du corps = une accroche qui donne envie de lire.
+- Gras WhatsApp *…* (un seul astérisque de chaque côté) UNIQUEMENT pour : le nom
+  de la paracha, les noms de villes, et la phrase-clé de la morale. Pas de ##,
+  pas de liens [](), pas de _italique_.
+- Émojis : SEULEMENT en tête de ligne, comme repères, et seulement ceux-ci :
+  🕯️ (titre), 📅 (date), 🌇/✨ (entrée/sortie), 📍 (ville), 📖 (référence),
+  💡 (la morale, sur sa propre ligne), 📚 et 💬 (les deux liens), ✨ (final).
+  Jamais d'émoji au milieu d'une phrase.
 - Reprends EXACTEMENT la structure du gabarit ci-dessous : en-tête (nom de la
   paracha translittéré + nom hébreu), date hébraïque et dates civiles, horaires
   des trois villes, corps (référence de la paracha puis le développement),
-  les deux liens du site, « Chabbat chalom ! » final.
+  les deux liens du site, « *Chabbat chalom !* ✨ » final.
 - Longueur totale : proche du gabarit (ni plus courte de moitié, ni double).
 - Réponds par le message seul, sans préambule ni commentaire.`;
 
@@ -77,12 +85,17 @@ async function appelClaude(env: Env, system: string, messages: any[], tools?: an
 }
 
 
-/** Texte brut présentable partout : ni astérisques, ni émojis parasites (seul 🕯️ survit). */
+/** Garde la mise en forme WhatsApp utile, retire le reste (Markdown, émojis hors charte). */
+const EMOJIS_CHARTE = new Set(["🕯", "📅", "🌇", "✨", "📍", "📖", "💡", "📚", "💬"]);
 function nettoyerWhatsApp(t: string): string {
+  // Tout préambule avant la ligne-titre 🕯️ saute (« Voici le message : »…).
+  const debut = t.indexOf("🕯");
+  if (debut > 0) t = t.slice(debut);
   return t
-    .replace(/\*+/g, "")
-    .replace(/[#_~]{2,}/g, "")
-    .replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]\uFE0F?\s?/gu, (m) => (m.startsWith("🕯") ? m : ""))
+    .replace(/\*\*+/g, "*")
+    .replace(/^#+\s*/gm, "")
+    .replace(/\[([^\]]+)\]\((https?:[^\s)]+)\)/g, "$1 — $2")
+    .replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]\uFE0F?/gu, (m) => (EMOJIS_CHARTE.has(m.replace(/\uFE0F/g, "")) ? m : ""))
     .replace(/[ \t]+\n/g, "\n")
     .replace(/\n{3,}/g, "\n\n")
     .trim();
@@ -146,9 +159,9 @@ export async function genererChabbat(env: Env): Promise<{ vendredi: string; ok: 
   const trData = await appelClaude(
     env,
     `Tu traduis un message WhatsApp de Chabbat. Rends deux versions complètes du message fourni :
-- entre <EN> et </EN> : anglais naturel, translittération anglaise usuelle (Shabbat, parashah, Rashi…), liens torah-mcp.com/en/daily et torah-mcp.com/en/question, « Shabbat shalom! » final (texte brut, sans astérisques) ;
-- entre <HE> et </HE> : hébreu israélien soigné (pas de calque), les versets cités le sont dans leur texte original, liens torah-mcp.com/he/daily et torah-mcp.com/he/question, « שבת שלום! » final (texte brut, sans astérisques).
-Conserve la structure ; texte brut, aucun astérisque, seul l'émoji 🕯️ de tête est conservé. Réponds par les deux blocs seuls.`,
+- entre <EN> et </EN> : anglais naturel, translittération anglaise usuelle (Shabbat, parashah, Rashi…), liens torah-mcp.com/en/daily et torah-mcp.com/en/question, « *Shabbat shalom!* ✨ » final ;
+- entre <HE> et </HE> : hébreu israélien soigné (pas de calque), les versets cités le sont dans leur texte original, liens torah-mcp.com/he/daily et torah-mcp.com/he/question, « *שבת שלום!* ✨ » final.
+Conserve la structure, les *gras* WhatsApp et les émojis-repères de début de ligne. Réponds par les deux blocs seuls.`,
     [{ role: "user", content: fr }],
     undefined,
     6000
@@ -349,7 +362,6 @@ ${altLinks(lang, "/chabbat")}
   [dir="rtl"] h1 { font-family:"Frank Ruhl Libre", Georgia, serif; letter-spacing:0; }
   p.muted { color:var(--muted); max-width:40rem; }
   .msg { margin-top:2.4rem; border:1.5px solid var(--ink-15); padding:1.6rem 1.8rem; white-space:pre-wrap; font-size:1.02rem; line-height:1.65; }
-  .msg::first-line { font-weight:700; }
   .meta { margin-top:.7rem; font-size:.82rem; color:var(--muted); }
   .acts { margin-top:1.6rem; display:flex; gap:1.6rem; flex-wrap:wrap; align-items:baseline; font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.05rem; }
   [dir="rtl"] .acts { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:700; }
@@ -381,7 +393,7 @@ ${altLinks(lang, "/chabbat")}
   </nav>
   <h1>${s.h1}</h1>
   <p class="muted">${s.chapeau}</p>
-  ${texte ? `<div class="msg" id="msg">${esc(texte)}</div>
+  ${texte ? `<div class="msg" id="msg">${esc(texte).replace(/\*([^*\n]+)\*/g, "<strong>$1</strong>")}</div>
   <p class="meta">${s.genere} ${esc(dateGen)}.</p>
   <div class="acts"><a href="#" id="copy">${s.copier}</a><a href="https://wa.me/?text=" id="share" target="_blank" rel="noopener">${s.partager}</a><span class="fb" id="fb"></span></div>` : `<div class="msg">${s.vide}</div>`}
   <div class="gifs">
@@ -422,7 +434,7 @@ ${altLinks(lang, "/chabbat")}
   });
 
   var msg = document.getElementById("msg"); if (!msg) return;
-  var texte = msg.textContent;
+  var texte = ${JSON.stringify(texte)};
   var fb = document.getElementById("fb");
   function feedback(m) { fb.textContent = m; setTimeout(function () { if (fb.textContent === m) fb.textContent = ""; }, 2500); }
   document.getElementById("share").href = "https://wa.me/?text=" + encodeURIComponent(texte);

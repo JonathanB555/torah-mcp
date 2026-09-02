@@ -467,20 +467,20 @@ export const limoudHandlers: Record<string, ToolHandler> = {
       allumage = heure(bougies?.date || "");
       havdala = heure(sortie?.date || "");
       if (allumage) {
-        horaires = `🕯 *${lieuTitre}* — allumage des bougies : *${allumage}*` + (havdala ? `, sortie de Chabbat : *${havdala}*` : "");
+        horaires = `📍 *${lieuTitre}* — allumage ${allumage}` + (havdala ? ` · sortie ${havdala}` : "");
       }
     } catch {
       // Sans ville valable, le mot part sans horaires.
     }
 
     const lignes = [
-      `🕯 *Chabbat Chalom !*`,
+      `🕯️ *Chabbat chalom !*`,
       ``,
-      `Cette semaine nous lisons la paracha *${nom}*${nomHe ? ` (${nomHe})` : ""} — ${refFr(ref)}.`,
-      ...(verset ? [``, `_« ${verset} »_`, `(${refFr(versetRef)}, Bible du Rabbinat)`] : []),
+      `📖 Cette semaine : *${nom}*${nomHe ? ` · ${nomHe}` : ""} — ${refFr(ref)}.`,
+      ...(verset ? [``, `✨ « ${verset} »`, `(${refFr(versetRef)}, Bible du Rabbinat)`] : []),
       ...(horaires ? ["", horaires] : []),
       ``,
-      `Étudier la paracha : ${lien}`,
+      `📚 Étudier la paracha : ${lien}`,
       ``,
       `— torah-mcp.com`,
     ];
@@ -492,7 +492,7 @@ export const limoudHandlers: Record<string, ToolHandler> = {
       ...(allumage ? { lieu: lieuTitre, allumage, havdala } : {}),
       lien_etude: lien,
       partage_whatsapp: `https://wa.me/?text=${encodeURIComponent(mot)}`,
-      note: "Prêt à coller dans WhatsApp (*gras* et _italique_ y sont interprétés). Verset lu via Sefaria. Personnalisable sur demande.",
+      note: "Prêt à coller dans WhatsApp (le *gras* y devient du vrai gras à l'envoi). Verset lu via Sefaria. Personnalisable sur demande.",
     };
   },
 
