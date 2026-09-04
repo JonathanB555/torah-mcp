@@ -24,6 +24,9 @@
 		{ "pattern": "www.torah-mcp.com", "custom_domain": true }
 	],
 
+	// Fichiers statiques (vidéo du 770, affiches…) servis avant le Worker
+	"assets": { "directory": "public" },
+
 	// Bundle du SKILL.md hebrewbooks en import texte
 	"rules": [
 		{ "type": "Text", "globs": ["**/*.md"], "fallthrough": true }

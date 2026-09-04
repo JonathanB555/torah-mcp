@@ -164,6 +164,7 @@ type LandingStrings = {
   h1: string; deck: string; act1: string; act2: string; debloque: string;
   demos: { q: string; a: string; src: string }[]; demoSrcLab: string; demoTag: string;
   tuiles: { to: string; t: string; d: string }[];
+  maisonLab: string; maisonT: string; maisonD: string;
   kezAria: string; kezId: string;
   fig1n: string; fig1u: string; fig1t: string; fig2n: string; fig2u: string; fig2t: string; fig3n: string; fig3u: string; fig3t: string;
   vsNonH: string; vsNonP: string; vsYesH: string; vsYesP: string;
@@ -182,6 +183,9 @@ const LANDING_T: Record<Lang, LandingStrings> = {
   fr: {
     title: "Mamash IA — la discipline des sources pour Claude",
     desc: "Claude cite la Torah depuis les textes, plus jamais de mémoire. Méthode d'étude, havrouta, guide de paracha, page de Vilna interactive, Sefaria, HebrewBooks, zmanim, guematria. Gratuit, sans compte.",
+    maisonLab: "770 Eastern Parkway · Brooklyn — photographie réelle",
+    maisonT: "La maison d'où vient le cri.",
+    maisonD: "C'est de cette maison de briques — le 770, la maison d'étude du Rabbi — qu'est parti le mot d'ordre que ce site reprend : la Torah avec chacun, vraiment, <strong>ממש</strong>. La photo est réelle. La discipline des sources aussi.",
     grpSite: "Sur le site", navQuestion: "Une question", navDaf: "Le daf", navOutils: "Outils", navDaily: "Limoud du jour", navChabbat: "Chabbat", navChiourim: "Chiourim", grpClaude: "Dans Claude", navInstall: "Installer le MCP",
     h1: `La Torah <span class="no">de&nbsp;mémoire</span> — <strong>lue dans les textes</strong>.`,
     deck: "Des réponses de halakha et de limoud citées depuis la Bible, le Talmud et leurs commentateurs — sur le site en trois langues, sur WhatsApp chaque vendredi, en vidéo avec le rav Attal, et dans Claude avec la bibliothèque entière. Gratuit, sans compte, sans collecte.",
@@ -270,6 +274,9 @@ const LANDING_T: Record<Lang, LandingStrings> = {
   en: {
     title: "Mamash IA — source discipline for Claude",
     desc: "Claude quotes the Torah from the texts, never again from memory. Study method, chavruta, parashah guide, interactive Vilna page, Sefaria, HebrewBooks, zmanim, gematria. Free, no account.",
+    maisonLab: "770 Eastern Parkway · Brooklyn — a real photograph",
+    maisonT: "The house the cry comes from.",
+    maisonD: "From this brick house — 770, the Rebbe's study hall — came the watchword this site takes up: Torah with everyone, truly, <strong>ממש</strong>. The photograph is real. So is the discipline of sources.",
     grpSite: "On the site", navQuestion: "Ask a question", navDaf: "The daf", navOutils: "Tools", navDaily: "Today's learning", navChabbat: "Shabbat", navChiourim: "Shiurim", grpClaude: "In Claude", navInstall: "Install the MCP",
     h1: `Torah <span class="no">from&nbsp;memory</span> — <strong>read in the texts</strong>.`,
     deck: "Halakha and limud answers quoted from the Bible, the Talmud and their commentators — on the site in three languages, on WhatsApp every Friday, on video with Rav Attal, and in Claude with the whole library. Free, no account, no data collection.",
@@ -358,6 +365,9 @@ const LANDING_T: Record<Lang, LandingStrings> = {
   he: {
     title: "Mamash IA — משמעת מקורות ל-Claude",
     desc: "Claude מצטט את התורה מתוך הטקסטים, לעולם לא מהזיכרון. שיטת לימוד, חברותא, מדריך לפרשה, דף וילנא אינטראקטיבי, ספריא, HebrewBooks, זמנים, גימטריה. חינם, בלי חשבון.",
+    maisonLab: "איסטרן פארקוויי 770 · ברוקלין — צילום אמיתי",
+    maisonT: "הבית שממנו בא הקול.",
+    maisonD: "מהבית הזה — 770, בית מדרשו של הרבי — יצאה הקריאה שהאתר נושא: תורה עם כל אחד, באמת, <strong>ממש</strong>. הצילום אמיתי. וכך גם משמעת המקורות.",
     grpSite: "באתר", navQuestion: "שאלה", navDaf: "הדף", navOutils: "כלים", navDaily: "הלימוד היומי", navChabbat: "שבת", navChiourim: "שיעורים", grpClaude: "ב-Claude", navInstall: "התקנת ה-MCP",
     h1: `תורה <span class="no">מהזיכרון</span> — <strong>נקראת מתוך הטקסטים</strong>.`,
     deck: "תשובות בהלכה ובלימוד, מצוטטות מהתנ\"ך, מהתלמוד וממפרשיהם — באתר בשלוש שפות, בוואטסאפ בכל יום שישי, בווידאו עם הרב אטל, וב-Claude עם הספרייה כולה. חינם, בלי חשבון, בלי איסוף נתונים.",
@@ -567,6 +577,18 @@ ${GA}
   .tuile b { display:block; font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.02rem; }
   [dir="rtl"] .tuile b { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:700; }
   .tuile span { display:block; margin-top:.15rem; font-size:.82rem; color:rgba(247,246,241,.65); line-height:1.45; }
+  /* ---- la maison du cri : le 770, photographie réelle animée ---- */
+  .maison { display:grid; grid-template-columns:1.15fr .85fr; gap:3rem; align-items:center; padding:4.5rem 4vw; max-width:1200px; margin:0 auto; }
+  .maison .mvid { margin:0; transform:rotate(-1.4deg); }
+  [dir="rtl"] .maison .mvid { transform:rotate(1.4deg); }
+  .maison video { display:block; width:100%; height:auto; border:6px solid #fff; box-shadow:0 18px 44px rgba(8,42,153,.18); background:var(--ink); }
+  .maison figcaption { margin-top:.6rem; font-size:.68rem; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); }
+  [dir="rtl"] .maison figcaption { letter-spacing:.04em; }
+  .maison .mtxt h2 { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(1.8rem, 3.4vw, 2.7rem); line-height:1.08; letter-spacing:-.015em; }
+  [dir="rtl"] .maison .mtxt h2 { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:700; letter-spacing:0; }
+  .maison .mtxt p { margin-top:1rem; font-size:1.02rem; line-height:1.75; color:var(--muted); max-width:30rem; }
+  .maison .mtxt strong { font-weight:700; color:var(--ink); background:linear-gradient(transparent 60%, var(--pop) 60% 92%, transparent 92%); padding:0 .1em; }
+  @media (max-width:900px) { .maison { grid-template-columns:1fr; gap:1.6rem; padding:3rem 4vw; } .maison .mvid { transform:rotate(-1deg); } }
   /* Écran peu haut (MacBook 13") : tout le héros tient sans défiler */
   @media (min-width:901px) and (max-height:940px) {
     .cover { padding:5.4rem 4vw 1.6rem; }
@@ -805,6 +827,17 @@ ${GA}
   </div>
 </header>
 
+<section class="maison rv" aria-label="770 Eastern Parkway">
+  <figure class="mvid">
+    <video src="/770.mp4" poster="/770-poster.jpg" autoplay muted loop playsinline preload="metadata" width="960" height="540"></video>
+    <figcaption>${s.maisonLab}</figcaption>
+  </figure>
+  <div class="mtxt">
+    <h2>${s.maisonT}</h2>
+    <p>${s.maisonD}</p>
+  </div>
+</section>
+
 <section class="kez" id="${s.kezId}" aria-label="${s.kezAria}">
   <div class="figs">
     <div class="fig rv"><b>${s.fig1n}<small>${s.fig1u}</small></b><span>${s.fig1t}</span></div>
@@ -918,6 +951,11 @@ ${GA}
   }
   link(".glose", ".guf mark");
   link(".guf mark", ".glose");
+
+  // Animations réduites : la vidéo du 770 reste sur son affiche
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.querySelectorAll("video[autoplay]").forEach(function (v) { v.removeAttribute("autoplay"); v.pause(); });
+  }
 
   // La carte-démo tourne : une vraie question chasse l'autre, en fondu
   var demos = ${JSON.stringify(s.demos).replace(/</g, "\\u003c")};
