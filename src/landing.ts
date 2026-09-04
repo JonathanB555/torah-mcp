@@ -404,14 +404,14 @@ ${OG_IMAGE}
 ${GA}
 <style>
   :root {
-    --paper:#f7f6f1; --ink:#082a99; --ink-deep:#041a66; --ink-40:rgba(8,42,153,.4); --ink-15:rgba(8,42,153,.14);
+    --paper:#f7f6f1; --ink:#082a99; --pop:#ffd23f; --ink-deep:#041a66; --ink-40:rgba(8,42,153,.4); --ink-15:rgba(8,42,153,.14);
     --hl:#dbe3ff;
     --ease:cubic-bezier(0.16, 1, 0.3, 1);
   }
   * { box-sizing:border-box; margin:0; }
   html { scroll-behavior:smooth; overflow-x:clip; }
   body { background:var(--paper); color:var(--ink); font:17px/1.7 "Frank Ruhl Libre", Georgia, serif; }
-  ::selection { background:var(--ink); color:var(--paper); }
+  ::selection { background:var(--pop); color:var(--ink); }
   a { color:var(--ink); text-decoration-thickness:1px; text-underline-offset:3px; }
   a:hover { text-decoration-thickness:2px; }
   .fr { font-family:"Fraunces", Georgia, serif; }
@@ -428,12 +428,15 @@ ${GA}
   nav { position:fixed; top:0; left:0; right:0; z-index:20; display:flex; justify-content:space-between; align-items:baseline;
         padding:1.1rem 4vw; mix-blend-mode:multiply; }
   nav .wm { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:1.05rem; text-decoration:none; letter-spacing:.01em; }
-  nav .wm b { font-weight:600; border-bottom:3px solid var(--ink); padding-bottom:1px; }
+  nav .wm b { font-weight:600; border-bottom:3px solid var(--pop); padding-bottom:1px; }
   nav .wm img { width:26px; height:26px; border-radius:50%; vertical-align:-7px; margin-inline-end:.5rem; }
   nav .r { display:flex; gap:1.1rem; font-size:.92rem; align-items:baseline; }
   nav .grp { font-size:.66rem; letter-spacing:.16em; text-transform:uppercase; opacity:.5; }
   nav .sep { width:1px; height:.9rem; background:var(--ink-15); align-self:center; }
   nav .r a { text-decoration:none; }
+  nav .r a strong { background:var(--pop); color:var(--ink); padding:.14rem .55rem .18rem; font-weight:700; transition:background .3s var(--ease), color .3s var(--ease); }
+  nav .r a:hover strong { background:var(--ink); color:var(--pop); }
+  nav .r a:has(strong):hover { text-decoration:none; }
   nav .r a:hover { text-decoration:underline; }
   @media (max-width:720px) {
     nav { padding:.9rem 4vw; }
@@ -487,7 +490,7 @@ ${GA}
   /* En deux mots — chiffres + face-à-face */
   .kez { max-width:1200px; margin:0 auto; padding:5rem 4vw 2rem; }
   .kez .figs { display:grid; grid-template-columns:repeat(3,1fr); gap:2.5rem 3rem; border-top:2px solid var(--ink); border-bottom:1px solid var(--ink-15); padding:2.4rem 0 2.2rem; }
-  .kez .fig b { display:block; font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(2.6rem, 5vw, 4.2rem); line-height:1; letter-spacing:-.03em; font-variant-numeric:tabular-nums; }
+  .kez .fig b { display:inline-block; background:linear-gradient(transparent 68%, var(--pop) 68% 94%, transparent 94%); padding:0 .12em; font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(2.6rem, 5vw, 4.2rem); line-height:1; letter-spacing:-.03em; font-variant-numeric:tabular-nums; }
   .kez .fig b small { font-size:.42em; font-weight:600; letter-spacing:0; margin-inline-start:.25em; vertical-align:.35em; }
   .kez .fig span { display:block; margin-top:.7rem; font-size:.95rem; line-height:1.55; opacity:.85; max-width:22rem; }
   .kez .vs { display:grid; grid-template-columns:1fr 1fr; gap:3rem; margin-top:2.6rem; }
@@ -498,7 +501,7 @@ ${GA}
   .kez .vs .non p { opacity:.7; }
   @media (max-width:900px) { .kez { padding-top:3rem; } .kez .figs { grid-template-columns:1fr; gap:1.8rem; } .kez .vs { grid-template-columns:1fr; gap:1.8rem; } }
   .amud-head { display:flex; align-items:baseline; gap:1.4rem; margin-bottom:3.5rem; }
-  .amud-head .otiot { font-size:2rem; font-weight:700; direction:rtl; }
+  .amud-head .otiot { font-size:1.6rem; font-weight:700; direction:rtl; background:var(--pop); padding:.05em .35em .1em; line-height:1.2; }
   .amud-head .rule { flex:1; height:1px; background:var(--ink-15); }
   .amud-head .lbl { font-size:.8rem; letter-spacing:.22em; text-transform:uppercase; opacity:.55; }
 
@@ -506,7 +509,7 @@ ${GA}
   .guf { font-size:clamp(1.25rem, 1.9vw, 1.6rem); line-height:1.85; font-weight:400; }
   .guf p + p { margin-top:1.4em; }
   .guf mark { background:transparent; color:inherit; border-bottom:2px solid var(--ink-40); cursor:default; transition:background .35s var(--ease); padding:0 .08em; }
-  .guf mark.on, .guf mark:hover { background:var(--hl); border-bottom-color:var(--ink); }
+  .guf mark.on, .guf mark:hover { background:var(--pop); border-bottom-color:var(--ink); }
   .margin { font-size:.86rem; line-height:1.6; display:flex; flex-direction:column; gap:2.2rem; position:sticky; top:7rem; }
   .glose { border-inline-start:2px solid var(--ink-15); padding-inline-start:1rem; transition:border-color .35s var(--ease); }
   .glose.on, .glose:hover { border-color:var(--ink); }
@@ -855,15 +858,15 @@ ${OG_IMAGE}
 <meta property="og:url" content="${SITE}${href(lang, path)}">
 ${GA}
 <style>
-  :root { --paper:#f7f6f1; --ink:#082a99; --ink-40:rgba(8,42,153,.4); --ink-15:rgba(8,42,153,.14); --ease:cubic-bezier(0.16,1,0.3,1); }
+  :root { --paper:#f7f6f1; --ink:#082a99; --pop:#ffd23f; --ink-40:rgba(8,42,153,.4); --ink-15:rgba(8,42,153,.14); --ease:cubic-bezier(0.16,1,0.3,1); }
   * { box-sizing:border-box; margin:0; }
   body { background:var(--paper); color:var(--ink); font:17px/1.7 "Frank Ruhl Libre", Georgia, serif; padding:0 4vw 5rem; }
-  ::selection { background:var(--ink); color:var(--paper); }
+  ::selection { background:var(--pop); color:var(--ink); }
   main { max-width:820px; margin:0 auto; }
   a { color:var(--ink); }
   nav { display:flex; justify-content:space-between; align-items:baseline; padding:1.1rem 0; }
   nav .wm { font-family:"Fraunces", Georgia, serif; font-weight:300; text-decoration:none; }
-  nav .wm b { font-weight:600; border-bottom:3px solid var(--ink); padding-bottom:1px; }
+  nav .wm b { font-weight:600; border-bottom:3px solid var(--pop); padding-bottom:1px; }
   nav .wm img { width:26px; height:26px; border-radius:50%; vertical-align:-7px; margin-inline-end:.5rem; }
   nav .r { display:flex; gap:1.4rem; align-items:baseline; }
   nav a.b { text-decoration:none; } nav a.b:hover { text-decoration:underline; }

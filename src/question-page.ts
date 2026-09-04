@@ -354,17 +354,20 @@ ${altLinks(lang, PATH)}
 </script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Frank+Ruhl+Libre:wght@400;700&display=swap');
-  :root { --paper:#f7f6f1; --ink:#082a99; --ink-40:rgba(8,42,153,.4); --ink-15:rgba(8,42,153,.14); --muted:rgba(8,42,153,.65); --hl:#dbe3ff; --ease:cubic-bezier(0.16,1,0.3,1); }
+  :root { --paper:#f7f6f1; --ink:#082a99; --pop:#ffd23f; --ink-40:rgba(8,42,153,.4); --ink-15:rgba(8,42,153,.14); --muted:rgba(8,42,153,.65); --hl:#ffeeb2; --ease:cubic-bezier(0.16,1,0.3,1); }
   * { box-sizing:border-box; margin:0; }
   body { background:var(--paper); color:var(--ink); font:17px/1.7 "Frank Ruhl Libre", Georgia, serif; padding:0 4vw 5rem; }
-  ::selection { background:var(--ink); color:var(--paper); }
+  ::selection { background:var(--pop); color:var(--ink); }
   main { max-width:820px; margin:0 auto; }
   a { color:var(--ink); }
   nav { display:flex; justify-content:space-between; align-items:baseline; padding:1.1rem 0; font-size:.92rem; }
   nav .wm { font-family:"Fraunces", Georgia, serif; font-weight:300; text-decoration:none; font-size:1.05rem; }
-  nav .wm b { font-weight:600; border-bottom:3px solid var(--ink); padding-bottom:1px; }
+  nav .wm b { font-weight:600; border-bottom:3px solid var(--pop); padding-bottom:1px; }
   nav .wm img { width:26px; height:26px; border-radius:50%; vertical-align:-7px; margin-inline-end:.5rem; }
   nav .r a { text-decoration:none; margin-inline-start:1.1rem; } nav .r a:hover { text-decoration:underline; }
+  nav .r a strong { background:var(--pop); color:var(--ink); padding:.14rem .55rem .18rem; font-weight:700; transition:background .3s var(--ease), color .3s var(--ease); }
+  nav .r a:hover strong { background:var(--ink); color:var(--pop); }
+  nav .r a:has(strong):hover { text-decoration:none; }
   nav .r .lang { margin-inline-start:1.1rem; } nav .r .lang a { margin:0; }
   .lang { font-size:.82rem; letter-spacing:.08em; } .lang a { text-decoration:none; opacity:.6; } .lang a:hover { opacity:1; text-decoration:underline; } .lang .cur { font-weight:700; } .lang .dot { opacity:.35; margin:0 .45em; }
   h1 { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(2.2rem,5vw,3.6rem); line-height:1.05; letter-spacing:-.02em; margin:3rem 0 .8rem; }

@@ -23,10 +23,10 @@ const I18N_STYLE = `
 
 const STYLE = `
   @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Frank+Ruhl+Libre:wght@400;700&display=swap');
-  :root { --ink:#082a99; --muted:rgba(8,42,153,.65); --accent:#082a99; --paper:#f7f6f1; --card:#ffffff; --line:rgba(8,42,153,.14); }
+  :root { --ink:#082a99; --pop:#ffd23f; --muted:rgba(8,42,153,.65); --accent:#082a99; --paper:#f7f6f1; --card:#ffffff; --line:rgba(8,42,153,.14); }
   * { box-sizing:border-box; margin:0; }
   body { font:17px/1.7 "Frank Ruhl Libre", Georgia, serif; color:var(--ink); background:var(--paper); padding:3rem 1.25rem 4rem; }
-  ::selection { background:var(--ink); color:var(--paper); }
+  ::selection { background:var(--pop); color:var(--ink); }
   main { max-width:680px; margin:0 auto; }
   h1 { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(2rem,4.5vw,3rem); line-height:1.08; letter-spacing:-.02em; margin-bottom:.5rem; }
   h2 { font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.2rem; margin:2.2rem 0 .7rem; }
@@ -432,11 +432,11 @@ export function outilsHtml(lang: Lang): string {
 <meta name="description" content="${s.desc}">
 ${altLinks(lang, path)}
 <style>
-  :root { --paper:#f7f6f1; --card:#ffffff; --ink:#082a99; --muted:rgba(8,42,153,.65); --line:rgba(8,42,153,.18); --accent:#082a99; --gold:rgba(8,42,153,.55); }
+  :root { --paper:#f7f6f1; --card:#ffffff; --ink:#082a99; --pop:#ffd23f; --muted:rgba(8,42,153,.65); --line:rgba(8,42,153,.18); --accent:#082a99; --gold:rgba(8,42,153,.55); }
   * { box-sizing:border-box; margin:0; }
   @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Frank+Ruhl+Libre:wght@400;700&display=swap');
   body { font:17px/1.7 "Frank Ruhl Libre", Georgia, serif; color:var(--ink); background:var(--paper); padding:0 1.25rem 4rem; }
-  ::selection { background:var(--ink); color:var(--paper); }
+  ::selection { background:var(--pop); color:var(--ink); }
   main { max-width:760px; margin:0 auto; }
   h1 { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(2.2rem,5vw,3.4rem); letter-spacing:-.02em; margin:2.6rem 0 .3rem; }
   .muted { color:var(--muted); }
@@ -467,7 +467,7 @@ ${altLinks(lang, path)}
   .modes { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin:0 0 .4rem; }
   .modes label { display:block; cursor:pointer; border:1.5px solid var(--line); padding:.9rem 1rem 1rem; position:relative; transition:border-color .3s, background .3s; }
   .modes label:hover { border-color:var(--gold); }
-  .modes label:has(input:checked) { border-color:var(--ink); background:#dbe3ff; }
+  .modes label:has(input:checked) { border-color:var(--ink); background:#ffeeb2; }
   .modes label:has(input:checked)::after { content:"${s.chosen}"; position:absolute; top:.55rem; inset-inline-end:.8rem; font-size:.68rem; letter-spacing:.14em; text-transform:uppercase; opacity:.7; }
   .modes .h { font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.2rem; display:block; }
   .modes .w { display:block; font-size:.76rem; letter-spacing:.12em; text-transform:uppercase; opacity:.55; margin:.1rem 0 .4rem; }
