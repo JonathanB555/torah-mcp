@@ -29,7 +29,7 @@ import { chiourimPage } from "./chiourim";
 import { limoudTools, limoudHandlers } from "./limoud";
 import { renderDaily, outilsHtml } from "./pages";
 import { dafViewerTools, dafViewerHandlers, DAF_VIEWER_URI, DAF_VIEWER_HTML, dafViewerHtml, MCP_APP_MIME } from "./dafviewer";
-import { ICON_PNG_BASE64, OG_PNG_BASE64 } from "./icon";
+import { ICON_PNG_BASE64, OG_JPEG_BASE64 } from "./icon";
 
 // Origines navigateur autorisées à interroger /mcp (protection DNS rebinding).
 // Les clients MCP serveur-à-serveur n'envoient pas d'Origin et passent.
@@ -357,8 +357,8 @@ export default {
         case "/chiourim": return html(await chiourimPage(env, lang), { "Cache-Control": "public, max-age=3600" });
       }
       if (url.pathname === "/og.png") {
-        const bytes = Uint8Array.from(atob(OG_PNG_BASE64), (c) => c.charCodeAt(0));
-        return new Response(bytes, { headers: { "Content-Type": "image/png", "Cache-Control": "public, max-age=86400" } });
+        const bytes = Uint8Array.from(atob(OG_JPEG_BASE64), (c) => c.charCodeAt(0));
+        return new Response(bytes, { headers: { "Content-Type": "image/jpeg", "Cache-Control": "public, max-age=86400" } });
       }
       if (url.pathname === "/icon.png" || url.pathname === "/favicon.ico") {
         const bytes = Uint8Array.from(atob(ICON_PNG_BASE64), (c) => c.charCodeAt(0));
