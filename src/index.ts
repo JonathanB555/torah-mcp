@@ -30,6 +30,7 @@ import { limoudTools, limoudHandlers } from "./limoud";
 import { renderDaily, outilsHtml } from "./pages";
 import { dafViewerTools, dafViewerHandlers, DAF_VIEWER_URI, DAF_VIEWER_HTML, dafViewerHtml, MCP_APP_MIME } from "./dafviewer";
 import { ICON_PNG_BASE64, OG_JPEG_BASE64 } from "./icon";
+import { PICTOS_PNG_BASE64 } from "./pictos";
 
 // Origines navigateur autorisées à interroger /mcp (protection DNS rebinding).
 // Les clients MCP serveur-à-serveur n'envoient pas d'Origin et passent.
@@ -369,6 +370,11 @@ export default {
       }
       if (url.pathname === "/icon.png" || url.pathname === "/favicon.ico") {
         const bytes = Uint8Array.from(atob(ICON_PNG_BASE64), (c) => c.charCodeAt(0));
+        return new Response(bytes, { headers: { "Content-Type": "image/png", "Cache-Control": "public, max-age=86400" } });
+      }
+      const picto = url.pathname.match(/^\/picto-(debutant|classique|avance)\.png$/);
+      if (picto) {
+        const bytes = Uint8Array.from(atob(PICTOS_PNG_BASE64[picto[1] as "debutant" | "classique" | "avance"]), (c) => c.charCodeAt(0));
         return new Response(bytes, { headers: { "Content-Type": "image/png", "Cache-Control": "public, max-age=86400" } });
       }
     }

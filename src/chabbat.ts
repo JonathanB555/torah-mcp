@@ -362,7 +362,8 @@ ${altLinks(lang, "/chabbat")}
   nav .wm { font-family:"Rubik", "Arial Black", sans-serif; font-weight:900; font-size:.92rem; text-transform:uppercase; letter-spacing:.05em; text-decoration:none; direction:ltr; }
   nav .wm b { font-weight:inherit; border-bottom:3px solid var(--pop); padding-bottom:1px; }
   nav .wm img { width:34px; height:34px; border-radius:50%; vertical-align:-11px; margin-inline-end:.55rem; }
-  nav .r a { font-family:"Rubik", "Arial Black", sans-serif; font-weight:900; font-size:.7rem; letter-spacing:.09em; text-transform:uppercase; text-decoration:none; margin-inline-start:1.1rem; } nav .r a:hover { text-decoration:underline; }
+  nav .r { display:flex; gap:1.1rem; align-items:center; }
+  nav .r a { font-family:"Rubik", "Arial Black", sans-serif; font-weight:900; font-size:.7rem; letter-spacing:.09em; text-transform:uppercase; text-decoration:none; } nav .r a:hover { text-decoration:underline; }
   [dir="rtl"] nav .r a { font-size:.8rem; letter-spacing:.02em; }
   nav .r a strong { background:var(--pop); color:var(--ink); padding:.2rem .55rem .24rem; font-weight:inherit; transition:background .3s var(--ease), color .3s var(--ease); }
   nav .r a:hover strong { background:var(--ink); color:var(--pop); }
@@ -377,6 +378,17 @@ ${altLinks(lang, "/chabbat")}
   .sceau { position:absolute; top:5.2rem; inset-inline-end:0; width:110px; height:110px; border-radius:50%; transform:rotate(-7deg); border:5px solid #fff; box-shadow:0 8px 22px rgba(8,42,153,.22); z-index:2; }
   [dir="rtl"] .sceau { transform:rotate(7deg); }
   @media (max-width:720px) { .sceau { width:72px; height:72px; top:4.2rem; } }
+  @media (max-width:720px) {
+    nav .wm { font-size:.8rem; white-space:nowrap; }
+    nav .wm img { width:26px; height:26px; margin-inline-end:.4rem; }
+    nav .r { gap:.5rem; }
+    nav .r a { font-size:.55rem; letter-spacing:.05em; white-space:nowrap; }
+    nav .r > a:not(:has(strong)) { display:none; }
+    [dir="rtl"] nav .r a { font-size:.68rem; }
+    nav .r a strong { white-space:nowrap; padding:.22rem .4rem .26rem; }
+    nav .r .lang { font-size:.72rem; }
+    .lang .dot { margin:0 .3em; }
+  }
   footer img.fsceau { width:30px; height:30px; border-radius:50%; vertical-align:-9px; margin-inline-end:.5rem; }
   h1 { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(2.2rem,5vw,3.4rem); line-height:1.05; letter-spacing:-.02em; margin:3rem 0 .8rem; }
   h1 strong { font-weight:600; }

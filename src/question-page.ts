@@ -293,9 +293,9 @@ const attr = (s: string): string => s.replace(/&/g, "&amp;").replace(/"/g, "&quo
 const jsObject = (v: unknown): string => JSON.stringify(v).replace(/</g, "\\u003c").replace(/\u2028|\u2029/g, "");
 
 const SVG: Record<Mode, string> = {
-  debutant: `<svg viewBox="0 0 80 80" aria-hidden="true"><path d="M27 33a13 13 0 0 1 26 0v12a13 13 0 0 1-26 0Z"/><path d="M32 22.8c2-8.5 14-8.5 16 0M32 22.8h16"/><path d="M27 35c-4 0-4 7 0 7M53 35c4 0 4 7 0 7"/><path d="M33 36h4M43 36h4"/><path d="M40 38.5v4.5"/><path d="M34.5 46q5.5 4 11 0"/></svg>`,
-  classique: `<svg viewBox="0 0 80 80" aria-hidden="true"><path d="M27 40v-8a13 13 0 0 1 26 0v8"/><path d="M32 21.8c2-8.5 14-8.5 16 0M32 21.8h16"/><path d="M27 35c-4 0-4 7 0 7M53 35c4 0 4 7 0 7"/><path d="M33 36h4M43 36h4"/><path d="M40 38.5v4.5"/><path d="M27 40c-.5 9.5 5 16.5 13 16.5s13.5-7 13-16.5v-1c-1 5-5 12-13 12s-12-7-13-12Z" fill="currentColor" stroke-linejoin="round"/><path d="M33 45.5c2.5-2.5 5-2.5 7-.8c2-1.7 4.5-1.7 7 .8c-2 1.8-4.5 2.5-7 1.6c-2.5.9-5 .2-7-1.6Z" fill="currentColor"/><path d="M36.5 50q3.5 2 7 0"/></svg>`,
-  avance: `<svg viewBox="0 0 80 80" aria-hidden="true"><path d="M30 14h20l2 14h-24Z"/><path d="M21 28h38"/><path d="M27 28v32a13 13 0 0 0 26 0V28"/><path d="M26.5 36c-4 1-3 6-1 8c-3 2-3 6-1 9M53.5 36c4 1 3 6 1 8c3 2 3 6 1 9"/><path d="M33 36h4M43 36h4"/><path d="M40 38.5v4.5"/><path d="M35.5 46.5q4.5 3.5 9 0"/><path d="M27 49.5v10.5a13 13 0 0 0 26 0V49.5c-3 2.2-8 3.2-13 3.2s-10-1-13-3.2Z" fill="currentColor" stroke-linejoin="round"/></svg>`,
+  debutant: `<img class="picto" src="/picto-debutant.png" alt="" width="240" height="240" loading="lazy">`,
+  classique: `<img class="picto" src="/picto-classique.png" alt="" width="240" height="240" loading="lazy">`,
+  avance: `<img class="picto" src="/picto-avance.png" alt="" width="240" height="240" loading="lazy">`,
 };
 
 const MODES: readonly Mode[] = ["debutant", "classique", "avance"];
@@ -365,7 +365,8 @@ ${altLinks(lang, PATH)}
   nav .wm { font-family:"Rubik", "Arial Black", sans-serif; font-weight:900; font-size:.92rem; text-transform:uppercase; letter-spacing:.05em; text-decoration:none; }
   nav .wm b { font-weight:inherit; border-bottom:3px solid var(--pop); padding-bottom:1px; }
   nav .wm img { width:34px; height:34px; border-radius:50%; vertical-align:-11px; margin-inline-end:.55rem; }
-  nav .r a { font-family:"Rubik", "Arial Black", sans-serif; font-weight:900; font-size:.7rem; letter-spacing:.09em; text-transform:uppercase; text-decoration:none; margin-inline-start:1.1rem; } nav .r a:hover { text-decoration:underline; }
+  nav .r { display:flex; gap:1.1rem; align-items:center; }
+  nav .r a { font-family:"Rubik", "Arial Black", sans-serif; font-weight:900; font-size:.7rem; letter-spacing:.09em; text-transform:uppercase; text-decoration:none; } nav .r a:hover { text-decoration:underline; }
   [dir="rtl"] nav .r a { font-size:.8rem; letter-spacing:.02em; }
   nav .r a strong { background:var(--pop); color:var(--ink); padding:.2rem .55rem .24rem; font-weight:inherit; transition:background .3s var(--ease), color .3s var(--ease); }
   nav .r a:hover strong { background:var(--ink); color:var(--pop); }
@@ -380,6 +381,17 @@ ${altLinks(lang, PATH)}
   .sceau { position:absolute; top:5.2rem; inset-inline-end:0; width:110px; height:110px; border-radius:50%; transform:rotate(-7deg); border:5px solid #fff; box-shadow:0 8px 22px rgba(8,42,153,.22); z-index:2; }
   [dir="rtl"] .sceau { transform:rotate(7deg); }
   @media (max-width:720px) { .sceau { width:72px; height:72px; top:4.2rem; } }
+  @media (max-width:720px) {
+    nav .wm { font-size:.8rem; white-space:nowrap; }
+    nav .wm img { width:26px; height:26px; margin-inline-end:.4rem; }
+    nav .r { gap:.5rem; }
+    nav .r a { font-size:.55rem; letter-spacing:.05em; white-space:nowrap; }
+    nav .r > a:not(:has(strong)) { display:none; }
+    [dir="rtl"] nav .r a { font-size:.68rem; }
+    nav .r a strong { white-space:nowrap; padding:.22rem .4rem .26rem; }
+    nav .r .lang { font-size:.72rem; }
+    .lang .dot { margin:0 .3em; }
+  }
   footer img.fsceau { width:30px; height:30px; border-radius:50%; vertical-align:-9px; margin-inline-end:.5rem; }
   h1 { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(2.2rem,5vw,3.6rem); line-height:1.05; letter-spacing:-.02em; margin:3rem 0 .8rem; }
   h1 strong { font-weight:600; }
@@ -399,8 +411,8 @@ ${altLinks(lang, PATH)}
   .modes .w { display:block; font-size:.78rem; letter-spacing:.12em; text-transform:uppercase; opacity:.55; margin:.1rem 0 .5rem; }
   .modes .d { display:block; font-size:.9rem; line-height:1.5; opacity:.85; }
   .modes input { position:absolute; opacity:0; pointer-events:none; }
-  .modes svg { grid-row:1 / span 3; width:5rem; height:5rem; margin-top:-.2rem; fill:none; stroke:currentColor; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; transition:transform .5s var(--ease); }
-  .modes label:hover svg { transform:rotate(-4deg) translateY(-2px); }
+  .modes .picto { grid-row:1 / span 3; width:5rem; height:5rem; margin-top:-.2rem; transition:transform .5s var(--ease); }
+  .modes label:hover .picto { transform:rotate(-4deg) translateY(-2px); }
   .modes .h, .modes .w, .modes .d { grid-column:2; }
   .modehelp { display:none; }
   @media (max-width:720px) { .modes { grid-template-columns:1fr; } }
@@ -459,7 +471,7 @@ ${altLinks(lang, PATH)}
   [dir="rtl"] h1, [dir="rtl"] .step .t, [dir="rtl"] .modes .h, [dir="rtl"] button, [dir="rtl"] .acts, [dir="rtl"] #out h2, [dir="rtl"] #out h3 { font-family:"Frank Ruhl Libre", Georgia, serif; }
   [dir="rtl"] h1 { letter-spacing:0; }
   [dir="rtl"] button:hover::before, [dir="rtl"] .acts a:hover::before { content:"[ ← "; }
-  [dir="rtl"] .modes label:hover svg { transform:rotate(4deg) translateY(-2px); }
+  [dir="rtl"] .modes label:hover .picto { transform:rotate(4deg) translateY(-2px); }
   [dir="rtl"] .srcs a, [dir="rtl"] #out code { unicode-bidi:isolate; }
   @media (max-width:720px) { h1 { margin-top:2rem; } .step { flex-wrap:wrap; } .step .s { display:none; } }
 </style>
