@@ -356,17 +356,22 @@ ${altLinks(lang, "/chabbat")}
   body { background:var(--paper); color:var(--ink); font:17px/1.7 "Frank Ruhl Libre", Georgia, serif; padding:0 4vw 5rem; }
   ::selection { background:var(--pop); color:var(--ink); }
   main { max-width:720px; margin:0 auto; }
+  main { position:relative; }
   a { color:var(--ink); }
   nav { display:flex; justify-content:space-between; align-items:baseline; padding:1.1rem 0; font-size:.92rem; }
   nav .wm { font-family:"Fraunces", Georgia, serif; font-weight:300; text-decoration:none; font-size:1.05rem; direction:ltr; }
   nav .wm b { font-weight:600; border-bottom:3px solid var(--pop); padding-bottom:1px; }
-  nav .wm img { width:26px; height:26px; border-radius:50%; vertical-align:-7px; margin-inline-end:.5rem; }
+  nav .wm img { width:34px; height:34px; border-radius:50%; vertical-align:-11px; margin-inline-end:.55rem; }
   nav .r a { text-decoration:none; margin-inline-start:1.1rem; } nav .r a:hover { text-decoration:underline; }
   nav .r a strong { background:var(--pop); color:var(--ink); padding:.14rem .55rem .18rem; font-weight:700; transition:background .3s var(--ease), color .3s var(--ease); }
   nav .r a:hover strong { background:var(--ink); color:var(--pop); }
   nav .r a:has(strong):hover { text-decoration:none; }
   nav .r .lang { margin-inline-start:1.4rem; }
   .lang { font-size:.82rem; letter-spacing:.08em; } .lang a { text-decoration:none; opacity:.6; } .lang a:hover { opacity:1; text-decoration:underline; } .lang .cur { font-weight:700; } .lang .dot { opacity:.35; margin:0 .45em; }
+  .sceau { position:absolute; top:5.2rem; inset-inline-end:0; width:110px; height:110px; border-radius:50%; transform:rotate(-7deg); border:5px solid #fff; box-shadow:0 8px 22px rgba(8,42,153,.22); z-index:2; }
+  [dir="rtl"] .sceau { transform:rotate(7deg); }
+  @media (max-width:720px) { .sceau { width:72px; height:72px; top:4.2rem; } }
+  footer img.fsceau { width:30px; height:30px; border-radius:50%; vertical-align:-9px; margin-inline-end:.5rem; }
   h1 { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(2.2rem,5vw,3.4rem); line-height:1.05; letter-spacing:-.02em; margin:3rem 0 .8rem; }
   h1 strong { font-weight:600; }
   [dir="rtl"] h1 { font-family:"Frank Ruhl Libre", Georgia, serif; letter-spacing:0; }
@@ -399,9 +404,10 @@ ${altLinks(lang, "/chabbat")}
 <body>
 <main>
   <nav>
-    <a class="wm" href="${href(lang, "/")}"><img src="/icon.png" alt="" width="26" height="26"><b>Mamash</b>&nbsp;IA</a>
+    <a class="wm" href="${href(lang, "/")}"><img src="/icon.png" alt="" width="34" height="34"><b>Mamash</b>&nbsp;IA</a>
     <span class="r"><a href="${href(lang, "/question")}">${s.nav.question}</a><a href="${href(lang, "/daf")}">${s.nav.daf}</a><a href="${href(lang, "/install")}"><strong>${s.nav.install}</strong></a>${langSwitcher(lang, "/chabbat")}</span>
   </nav>
+  <img class="sceau" src="/icon.png" alt="">
   <h1>${s.h1}</h1>
   <p class="muted">${s.chapeau}</p>
   ${texte ? `<div class="msg" id="msg">${esc(texte).replace(/\*([^*\n]+)\*/g, "<strong>$1</strong>")}</div>
@@ -416,7 +422,7 @@ ${altLinks(lang, "/chabbat")}
     <p class="gfb" id="gfb"></p>
     <p class="credit">${s.gifCredit}</p>
   </div>
-  <footer><p><a href="${href(lang, "/")}">${s.foot.accueil}</a> · <a href="${href(lang, "/daily")}">${s.foot.daily}</a> · <a href="${href(lang, "/privacy")}">${s.foot.privacy}</a> · ${langSwitcher(lang, "/chabbat")}</p><p>${colophon(lang)}</p></footer>
+  <footer><p><a href="${href(lang, "/")}">${s.foot.accueil}</a> · <a href="${href(lang, "/daily")}">${s.foot.daily}</a> · <a href="${href(lang, "/privacy")}">${s.foot.privacy}</a> · ${langSwitcher(lang, "/chabbat")}</p><p><img class="fsceau" src="/icon.png" alt="">${colophon(lang)}</p></footer>
 </main>
 <script>
 (function () {

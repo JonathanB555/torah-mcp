@@ -429,7 +429,7 @@ ${GA}
         padding:1.1rem 4vw; mix-blend-mode:multiply; }
   nav .wm { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:1.05rem; text-decoration:none; letter-spacing:.01em; }
   nav .wm b { font-weight:600; border-bottom:3px solid var(--pop); padding-bottom:1px; }
-  nav .wm img { width:26px; height:26px; border-radius:50%; vertical-align:-7px; margin-inline-end:.5rem; }
+  nav .wm img { width:34px; height:34px; border-radius:50%; vertical-align:-11px; margin-inline-end:.55rem; }
   nav .r { display:flex; gap:1.1rem; font-size:.92rem; align-items:baseline; }
   nav .grp { font-size:.66rem; letter-spacing:.16em; text-transform:uppercase; opacity:.5; }
   nav .sep { width:1px; height:.9rem; background:var(--ink-15); align-self:center; }
@@ -445,7 +445,11 @@ ${GA}
   }
 
   /* ---- ouverture plein écran ---- */
-  .cover { min-height:100svh; position:relative; display:flex; flex-direction:column; justify-content:center; padding:0 4vw; overflow:hidden; }
+  .cover { position:relative; min-height:100svh; position:relative; display:flex; flex-direction:column; justify-content:center; padding:0 4vw; overflow:hidden; }
+  .sceau { position:absolute; top:6.5rem; inset-inline-end:5vw; width:150px; height:150px; border-radius:50%; transform:rotate(-7deg); border:5px solid #fff; box-shadow:0 8px 22px rgba(8,42,153,.22); z-index:2; }
+  [dir="rtl"] .sceau { transform:rotate(7deg); }
+  @media (max-width:720px) { .sceau { width:72px; height:72px; top:4.6rem; } }
+  footer img.fsceau { width:30px; height:30px; border-radius:50%; vertical-align:-9px; margin-inline-end:.5rem; }
   .cover .he-giant { position:absolute; inset-inline-end:-2vw; top:50%; transform:translateY(-54%); font-weight:700;
     font-size:clamp(7rem, 34vw, 30rem); line-height:1; color:transparent; -webkit-text-stroke:1.5px var(--ink-15); pointer-events:none; user-select:none; direction:rtl; }
   .cover h1 { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(2.6rem, 7.2vw, 6.2rem); line-height:1.02; letter-spacing:-.02em; max-width:11em; position:relative; }
@@ -602,7 +606,7 @@ ${GA}
 <body>
 
 <nav>
-  <a class="wm" href="${href(lang, "/")}" dir="ltr"><img src="/icon.png" alt="" width="26" height="26"><b>Mamash</b>&nbsp;IA</a>
+  <a class="wm" href="${href(lang, "/")}" dir="ltr"><img src="/icon.png" alt="" width="34" height="34"><b>Mamash</b>&nbsp;IA</a>
   <div class="r">
     <span class="grp hide-m">${s.grpSite}</span>
     <a href="${href(lang, "/question")}">${s.navQuestion}</a>
@@ -619,6 +623,7 @@ ${GA}
 </nav>
 
 <header class="cover">
+  <img class="sceau" src="/icon.png" alt="">
   <div class="he-giant" aria-hidden="true">מקור</div>
   <h1 class="fr chor c1">${s.h1}</h1>
   <p class="deck chor c2">${s.deck}</p>
@@ -713,7 +718,7 @@ ${GA}
     <a href="${href(lang, "/daf")}">${s.fDaf}</a><a href="${href(lang, "/outils")}">${s.fOutils}</a><a href="${href(lang, "/install")}">${s.fInstall}</a><a href="${href(lang, "/daily")}">${s.fDaily}</a><a href="${href(lang, "/privacy")}">${s.fPrivacy}</a><a href="https://github.com/JonathanB555/torah-mcp">GitHub</a>${langSwitcher(lang, path)}
   </div>
   <p><a href="https://www.sefaria.org" aria-label="Powered by Sefaria"><img src="https://files.readme.io/dcee0a8-image.png" alt="Powered by Sefaria" width="104" height="54" style="display:block;margin-bottom:.7rem"></a>
-  ${s.credits1} ${colophon(lang)} ${s.credits2}</p>
+  ${s.credits1} <img class="fsceau" src="/icon.png" alt="">${colophon(lang)} ${s.credits2}</p>
 </footer>
 
 <script>
@@ -867,7 +872,7 @@ ${GA}
   nav { display:flex; justify-content:space-between; align-items:baseline; padding:1.1rem 0; }
   nav .wm { font-family:"Fraunces", Georgia, serif; font-weight:300; text-decoration:none; }
   nav .wm b { font-weight:600; border-bottom:3px solid var(--pop); padding-bottom:1px; }
-  nav .wm img { width:26px; height:26px; border-radius:50%; vertical-align:-7px; margin-inline-end:.5rem; }
+  nav .wm img { width:34px; height:34px; border-radius:50%; vertical-align:-11px; margin-inline-end:.55rem; }
   nav .r { display:flex; gap:1.4rem; align-items:baseline; }
   nav a.b { text-decoration:none; } nav a.b:hover { text-decoration:underline; }
   ${LANG_CSS}
@@ -892,7 +897,7 @@ ${GA}
 </head>
 <body>
 <main>
-  <nav><a class="wm" href="${href(lang, "/")}" dir="ltr"><img src="/icon.png" alt="" width="26" height="26"><b>Mamash</b>&nbsp;IA</a><span class="r"><a class="b" href="${href(lang, "/")}">${s.back}</a>${langSwitcher(lang, path)}</span></nav>
+  <nav><a class="wm" href="${href(lang, "/")}" dir="ltr"><img src="/icon.png" alt="" width="34" height="34"><b>Mamash</b>&nbsp;IA</a><span class="r"><a class="b" href="${href(lang, "/")}">${s.back}</a>${langSwitcher(lang, path)}</span></nav>
   <h1>${s.h1}</h1>
   <p class="muted">${s.muted}</p>
 
@@ -928,7 +933,7 @@ ${GA}
   </ul>
 
   <p style="margin-top:3rem"><a class="lnk" href="${href(lang, "/")}">${s.home}</a></p>
-  <footer style="margin-top:2.5rem;font-size:.88rem;opacity:.65"><p>${colophon(lang)}</p><p style="margin-top:.6rem">${langSwitcher(lang, path)}</p></footer>
+  <footer style="margin-top:2.5rem;font-size:.88rem;opacity:.65"><p><img class="fsceau" src="/icon.png" alt="" style="width:26px;height:26px;border-radius:50%;vertical-align:-8px;margin-inline-end:.45rem">${colophon(lang)}</p><p style="margin-top:.6rem">${langSwitcher(lang, path)}</p></footer>
 </main>
 </body>
 </html>`;
