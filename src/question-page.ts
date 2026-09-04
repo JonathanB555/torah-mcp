@@ -369,6 +369,11 @@ ${altLinks(lang, PATH)}
   nav .r a strong { background:var(--pop); color:var(--ink); padding:.14rem .55rem .18rem; font-weight:700; transition:background .3s var(--ease), color .3s var(--ease); }
   nav .r a:hover strong { background:var(--ink); color:var(--pop); }
   nav .r a:has(strong):hover { text-decoration:none; }
+  nav { position:sticky; top:0; z-index:40; background:rgba(247,246,241,.85); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); border-bottom:1.5px solid var(--ink-15); margin:0 -4vw; padding-inline:4vw; }
+  nav .r a:not(:has(strong)) { padding-bottom:3px; background-image:linear-gradient(var(--pop), var(--pop)); background-repeat:no-repeat; background-size:0% 2.5px; background-position:0 100%; transition:background-size .3s var(--ease); }
+  [dir="rtl"] nav .r a:not(:has(strong)) { background-position:100% 100%; }
+  nav .r a:hover { text-decoration:none; background-size:100% 2.5px; }
+  nav .r a:has(strong):hover { background-image:none; }
   nav .r .lang { margin-inline-start:1.1rem; } nav .r .lang a { margin:0; }
   .lang { font-size:.82rem; letter-spacing:.08em; } .lang a { text-decoration:none; opacity:.6; } .lang a:hover { opacity:1; text-decoration:underline; } .lang .cur { font-weight:700; } .lang .dot { opacity:.35; margin:0 .45em; }
   .sceau { position:absolute; top:5.2rem; inset-inline-end:0; width:110px; height:110px; border-radius:50%; transform:rotate(-7deg); border:5px solid #fff; box-shadow:0 8px 22px rgba(8,42,153,.22); z-index:2; }

@@ -263,6 +263,11 @@ ${altLinks(lang, "/chiourim")}
   nav .r a strong { background:var(--pop); color:var(--ink); padding:.14rem .55rem .18rem; font-weight:700; transition:background .3s var(--ease), color .3s var(--ease); }
   nav .r a:hover strong { background:var(--ink); color:var(--pop); }
   nav .r a:has(strong):hover { text-decoration:none; }
+  nav { position:sticky; top:0; z-index:40; background:rgba(247,246,241,.85); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); border-bottom:1.5px solid var(--ink-15); margin:0 -4vw; padding-inline:4vw; }
+  nav .r a:not(:has(strong)) { padding-bottom:3px; background-image:linear-gradient(var(--pop), var(--pop)); background-repeat:no-repeat; background-size:0% 2.5px; background-position:0 100%; transition:background-size .3s var(--ease); }
+  [dir="rtl"] nav .r a:not(:has(strong)) { background-position:100% 100%; }
+  nav .r a:hover { text-decoration:none; background-size:100% 2.5px; }
+  nav .r a:has(strong):hover { background-image:none; }
   nav .r .lang { margin-inline-start:1.4rem; }
   .lang { font-size:.82rem; letter-spacing:.08em; } .lang a { text-decoration:none; opacity:.6; } .lang a:hover { opacity:1; text-decoration:underline; } .lang .cur { font-weight:700; } .lang .dot { opacity:.35; margin:0 .45em; }
   .sceau { position:absolute; top:5.2rem; inset-inline-end:0; width:110px; height:110px; border-radius:50%; transform:rotate(-7deg); border:5px solid #fff; box-shadow:0 8px 22px rgba(8,42,153,.22); z-index:2; }
@@ -278,7 +283,7 @@ ${altLinks(lang, "/chiourim")}
   [dir="rtl"] .glab { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:700; }
   .grule { flex:1; height:1px; background:var(--ink-15); }
   .gn { font-size:.78rem; letter-spacing:.18em; opacity:.55; font-variant-numeric:tabular-nums; }
-  .grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:1.6rem 1.4rem; }
+  .grid { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:1.6rem 1.4rem; }
   .v { cursor:pointer; }
   .v .th { position:relative; display:block; aspect-ratio:16/9; overflow:hidden; border:1.5px solid var(--ink-15); background:var(--ink-15); transition:border-color .3s var(--ease); }
   .v:hover .th { border-color:var(--ink); }
@@ -289,7 +294,7 @@ ${altLinks(lang, "/chiourim")}
   [dir="rtl"] .v:hover .pl::before { content:"← "; }
   .v .th iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
   .v figcaption { padding:.55rem .1rem 0; display:flex; gap:.8rem; align-items:baseline; }
-  .v .vt { font-size:.95rem; line-height:1.45; flex:1; }
+  .v .vt { font-size:.95rem; line-height:1.45; flex:1; min-width:0; overflow-wrap:anywhere; }
   .v .vd { font-size:.78rem; letter-spacing:.1em; opacity:.55; white-space:nowrap; font-variant-numeric:tabular-nums; }
   .v.big { max-width:760px; }
   .v.big .vt { font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.2rem; }
@@ -300,8 +305,8 @@ ${altLinks(lang, "/chiourim")}
   [dir="rtl"] .chaine a:hover::before { content:"[ ← "; }
   .srcnote { margin-top:1.2rem; font-size:.82rem; color:var(--muted); max-width:44rem; }
   footer { margin-top:4rem; font-size:.88rem; color:var(--muted); border-top:1px solid var(--ink-15); padding-top:1.4rem; }
-  @media (max-width:900px) { .grid { grid-template-columns:repeat(2,1fr); } }
-  @media (max-width:600px) { .grid { grid-template-columns:1fr; } h1 { margin-top:2rem; } }
+  @media (max-width:900px) { .grid { grid-template-columns:repeat(2, minmax(0,1fr)); } }
+  @media (max-width:600px) { .grid { grid-template-columns:minmax(0,1fr); } h1 { margin-top:2rem; } }
 </style>
 </head>
 <body>

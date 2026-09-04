@@ -160,7 +160,7 @@ type Mode = { h: string; who: string; p: string; try: string };
 
 type LandingStrings = {
   title: string; desc: string;
-  grpSite: string; navQuestion: string; navDaf: string; navOutils: string; navDaily: string; navChiourim: string; grpClaude: string; navInstall: string;
+  grpSite: string; navQuestion: string; navDaf: string; navOutils: string; navDaily: string; navChabbat: string; navChiourim: string; grpClaude: string; navInstall: string;
   h1: string; deck: string; act1: string; act2: string;
   demoQ: string; demoA: string; demoSrcLab: string; demoSrc: string; demoTag: string;
   tuiles: { to: string; t: string; d: string }[];
@@ -173,6 +173,7 @@ type LandingStrings = {
   lblB: string; mDeb: Mode; mCla: Mode; mAv: Mode; modesNote1: string; modesNoteLink: string; modesNote2: string;
   bandH2: string; bandP: string; bandAct1: string; bandAct2: string;
   lblC: string; toc: Toc[];
+  shoutWord: string; shoutHe: boolean; shoutLine: string;
   inviteH2: string; inviteAct1: string; inviteAct2: string; inviteNote: string;
   fDaf: string; fOutils: string; fInstall: string; fDaily: string; fPrivacy: string; credits1: string; credits2: string;
 };
@@ -181,7 +182,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
   fr: {
     title: "Mamash IA — la discipline des sources pour Claude",
     desc: "Claude cite la Torah depuis les textes, plus jamais de mémoire. Méthode d'étude, havrouta, guide de paracha, page de Vilna interactive, Sefaria, HebrewBooks, zmanim, guematria. Gratuit, sans compte.",
-    grpSite: "Sur le site", navQuestion: "Une question", navDaf: "Le daf", navOutils: "Outils", navDaily: "Limoud du jour", navChiourim: "Chiourim", grpClaude: "Dans Claude", navInstall: "Installer le MCP",
+    grpSite: "Sur le site", navQuestion: "Une question", navDaf: "Le daf", navOutils: "Outils", navDaily: "Limoud du jour", navChabbat: "Chabbat", navChiourim: "Chiourim", grpClaude: "Dans Claude", navInstall: "Installer le MCP",
     h1: `La Torah <span class="no">de&nbsp;mémoire</span> — <strong>lue dans les textes</strong>.`,
     deck: "Une question de halakha ou de limoud ? La réponse est lue dans la Bible, le Talmud et leurs commentateurs — citée exactement, reliée à ses sources. Sur le site en trois langues, sur WhatsApp chaque vendredi, en vidéo avec le rav Attal — et dans Claude, avec la bibliothèque entière. Gratuit, sans compte, sans collecte.",
     act1: "Poser une question", act2: "Installer dans Claude — 2 min",
@@ -243,6 +244,8 @@ const LANDING_T: Record<Lang, LandingStrings> = {
       { to: "/daily", t: "Le limoud du jour", d: "paracha, daf yomi, Rambam quotidien" },
       { to: "/chiourim", t: "Les chiourim du rav Attal", d: "les cours en vidéo, classés par thèmes" },
     ],
+    shoutWord: "MAMASH", shoutHe: false,
+    shoutLine: "Mamash, ממש — « vraiment, réellement ». Et les initiales de Menahem Mendel Schneerson, le Rabbi de Loubavitch. Tout le site tient dans ce nom : du vrai texte, vraiment lu.",
     inviteH2: "Une URL à coller dans claude.ai, et l'étude <strong>change de nature</strong>.",
     inviteAct1: "Installer maintenant", inviteAct2: "Code source — MIT",
     inviteNote: "Gratuit, sans compte, sans collecte de données. S'accorde avec le MCP officiel de Sefaria — installez les deux : l'officiel pour la profondeur de la bibliothèque, Torah MCP pour la discipline de citation, la havrouta et HebrewBooks.",
@@ -253,7 +256,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
   en: {
     title: "Mamash IA — source discipline for Claude",
     desc: "Claude quotes the Torah from the texts, never again from memory. Study method, chavruta, parashah guide, interactive Vilna page, Sefaria, HebrewBooks, zmanim, gematria. Free, no account.",
-    grpSite: "On the site", navQuestion: "Ask a question", navDaf: "The daf", navOutils: "Tools", navDaily: "Today's learning", navChiourim: "Shiurim", grpClaude: "In Claude", navInstall: "Install the MCP",
+    grpSite: "On the site", navQuestion: "Ask a question", navDaf: "The daf", navOutils: "Tools", navDaily: "Today's learning", navChabbat: "Shabbat", navChiourim: "Shiurim", grpClaude: "In Claude", navInstall: "Install the MCP",
     h1: `Torah <span class="no">from&nbsp;memory</span> — <strong>read in the texts</strong>.`,
     deck: "A halakha or limud question? The answer is read in the Bible, the Talmud and their commentators — quoted exactly, linked to its sources. On the site in three languages, on WhatsApp every Friday, on video with Rav Attal — and in Claude, with the whole library. Free, no account, no data collection.",
     act1: "Ask a question", act2: "Install in Claude — 2 min",
@@ -315,6 +318,8 @@ const LANDING_T: Record<Lang, LandingStrings> = {
       { to: "/daily", t: "Today's learning", d: "parashah, daf yomi, daily Rambam" },
       { to: "/chiourim", t: "Rav Attal's shiurim", d: "video classes (in French), by theme" },
     ],
+    shoutWord: "MAMASH", shoutHe: false,
+    shoutLine: "Mamash, ממש — “really, truly”. And the initials of Menachem Mendel Schneerson, the Lubavitcher Rebbe. The whole site fits in that name: real texts, truly read.",
     inviteH2: "One URL to paste into claude.ai, and study <strong>changes in nature</strong>.",
     inviteAct1: "Install now", inviteAct2: "Source code — MIT",
     inviteNote: "Free, no account, no data collection. Works alongside Sefaria's official MCP — install both: the official one for the depth of the library, Torah MCP for citation discipline, chavruta and HebrewBooks.",
@@ -325,7 +330,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
   he: {
     title: "Mamash IA — משמעת מקורות ל-Claude",
     desc: "Claude מצטט את התורה מתוך הטקסטים, לעולם לא מהזיכרון. שיטת לימוד, חברותא, מדריך לפרשה, דף וילנא אינטראקטיבי, ספריא, HebrewBooks, זמנים, גימטריה. חינם, בלי חשבון.",
-    grpSite: "באתר", navQuestion: "שאלה", navDaf: "הדף", navOutils: "כלים", navDaily: "הלימוד היומי", navChiourim: "שיעורים", grpClaude: "ב-Claude", navInstall: "התקנת ה-MCP",
+    grpSite: "באתר", navQuestion: "שאלה", navDaf: "הדף", navOutils: "כלים", navDaily: "הלימוד היומי", navChabbat: "שבת", navChiourim: "שיעורים", grpClaude: "ב-Claude", navInstall: "התקנת ה-MCP",
     h1: `תורה <span class="no">מהזיכרון</span> — <strong>נקראת מתוך הטקסטים</strong>.`,
     deck: "שאלה בהלכה או בלימוד? התשובה נקראת בתנ\"ך, בתלמוד ובמפרשיהם — מצוטטת במדויק, מקושרת למקורותיה. באתר בשלוש שפות, בוואטסאפ בכל יום שישי, בווידאו עם הרב אטל — וב-Claude, עם הספרייה כולה. חינם, בלי חשבון, בלי איסוף נתונים.",
     act1: "לשאול שאלה", act2: "התקנה ב-Claude — 2 דקות",
@@ -387,6 +392,8 @@ const LANDING_T: Record<Lang, LandingStrings> = {
       { to: "/daily", t: "הלימוד היומי", d: "פרשה, דף יומי, רמב\"ם יומי" },
       { to: "/chiourim", t: "השיעורים של הרב אטל", d: "שיעורי וידאו (בצרפתית), לפי נושאים" },
     ],
+    shoutWord: "ממש", shoutHe: true,
+    shoutLine: "ממש — «באמת, לגמרי». וגם ראשי התיבות של מנחם מנדל שניאורסון, הרבי מליובאוויטש. כל האתר טמון בשם הזה: טקסט אמיתי, שנקרא באמת.",
     inviteH2: "כתובת אחת להדביק ב-claude.ai, והלימוד <strong>משנה את טבעו</strong>.",
     inviteAct1: "להתקין עכשיו", inviteAct2: "קוד מקור — MIT",
     inviteNote: "חינם, בלי חשבון, בלי איסוף נתונים. משתלב עם ה-MCP הרשמי של ספריא — התקינו את שניהם: הרשמי לעומק הספרייה, Torah MCP למשמעת הציטוט, לחברותא ול-HebrewBooks.",
@@ -424,7 +431,7 @@ export function landingHtml(lang: Lang): string {
 ${altLinks(lang, path)}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Frank+Ruhl+Libre:wght@300;400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Frank+Ruhl+Libre:wght@300;400;700;900&family=Archivo+Black&display=swap" rel="stylesheet">
 <meta property="og:type" content="website">
 <meta property="og:title" content="${ogTitle[lang]}">
 <meta property="og:description" content="${ogDesc[lang]}">
@@ -453,20 +460,24 @@ ${GA}
   .lnk:hover::before { content:"[ → "; }
   [dir="rtl"] .lnk:hover::before { content:"[ ← "; }
 
-  /* ---- nav : une ligne, rien d'autre ---- */
-  nav { position:fixed; top:0; left:0; right:0; z-index:20; display:flex; justify-content:space-between; align-items:baseline;
-        padding:1.1rem 4vw; mix-blend-mode:multiply; }
-  nav .wm { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:1.05rem; text-decoration:none; letter-spacing:.01em; }
+  /* ---- nav : barre collante, verre papier, soulignement jaune ---- */
+  nav { position:fixed; top:0; left:0; right:0; z-index:50; display:flex; justify-content:space-between; align-items:center;
+        padding:.75rem 4vw; background:rgba(247,246,241,.82); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
+        border-bottom:1.5px solid var(--ink-15); }
+  nav .wm { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:1.12rem; text-decoration:none; letter-spacing:.01em; display:flex; align-items:center; }
   nav .wm b { font-weight:600; border-bottom:3px solid var(--pop); padding-bottom:1px; }
-  nav .wm img { width:34px; height:34px; border-radius:50%; vertical-align:-11px; margin-inline-end:.55rem; }
-  nav .r { display:flex; gap:1.1rem; font-size:.92rem; align-items:baseline; }
-  nav .grp { font-size:.66rem; letter-spacing:.16em; text-transform:uppercase; opacity:.5; }
-  nav .sep { width:1px; height:.9rem; background:var(--ink-15); align-self:center; }
-  nav .r a { text-decoration:none; }
-  nav .r a strong { background:var(--pop); color:var(--ink); padding:.14rem .55rem .18rem; font-weight:700; transition:background .3s var(--ease), color .3s var(--ease); }
+  nav .wm img { width:36px; height:36px; border-radius:50%; margin-inline-end:.6rem; transition:transform .4s var(--ease); }
+  nav .wm:hover img { transform:rotate(-8deg) scale(1.06); }
+  nav .r { display:flex; gap:1.35rem; font-size:.95rem; align-items:center; }
+  nav .r a { text-decoration:none; padding-bottom:3px;
+    background-image:linear-gradient(var(--pop), var(--pop)); background-repeat:no-repeat;
+    background-size:0% 2.5px; background-position:0 100%; transition:background-size .3s var(--ease); }
+  [dir="rtl"] nav .r a { background-position:100% 100%; }
+  nav .r a:hover { background-size:100% 2.5px; }
+  nav .r a strong { background:var(--pop); color:var(--ink); padding:.3rem .7rem .34rem; font-weight:700; transition:background .3s var(--ease), color .3s var(--ease), box-shadow .3s var(--ease); box-shadow:0 3px 10px rgba(8,42,153,.14); }
+  nav .r a:has(strong) { background-image:none; padding-bottom:0; }
   nav .r a:hover strong { background:var(--ink); color:var(--pop); }
-  nav .r a:has(strong):hover { text-decoration:none; }
-  nav .r a:hover { text-decoration:underline; }
+  nav .r .lang { padding-inline-start:.4rem; border-inline-start:1px solid var(--ink-15); }
   @media (max-width:720px) {
     nav { padding:.9rem 4vw; }
     nav .r { gap:.6rem; font-size:.8rem; }
@@ -524,6 +535,14 @@ ${GA}
   body.ready .cover h1 strong { animation:affirm .7s var(--ease) 1.6s forwards; }
   @keyframes strike { to { transform:scaleX(1); } }
   @keyframes affirm { from { opacity:0; transform:translateY(.15em); } to { opacity:1; transform:none; } }
+
+  /* ---- le cri du nom, DA du sticker ---- */
+  .shout { background:var(--ink); text-align:center; padding:5.5rem 4vw 5rem; overflow:hidden; }
+  .shout .mot { font-family:"Archivo Black", "Arial Black", sans-serif; font-size:clamp(3.4rem, 14vw, 11rem); line-height:.95; color:var(--pop); letter-spacing:.01em; }
+  .shout .mot.he { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:900; }
+  .shout .ia { display:inline-block; background:var(--pop); color:var(--ink); font-family:"Archivo Black", "Arial Black", sans-serif; font-size:clamp(1.5rem, 4.6vw, 3.4rem); line-height:1; padding:.22em .55em .28em; margin-top:1.1rem; transform:rotate(-2deg); letter-spacing:.18em; }
+  [dir="rtl"] .shout .ia { transform:rotate(2deg); }
+  .shout p { margin:2.4rem auto 0; max-width:40rem; color:var(--paper); opacity:.88; font-size:1.06rem; line-height:1.7; }
 
   /* chorégraphie d'entrée */
   .chor { opacity:0; transform:translateY(34px); }
@@ -669,16 +688,12 @@ ${GA}
 <nav>
   <a class="wm" href="${href(lang, "/")}" dir="ltr"><img src="/icon.png" alt="" width="34" height="34"><b>Mamash</b>&nbsp;IA</a>
   <div class="r">
-    <span class="grp hide-m">${s.grpSite}</span>
     <a href="${href(lang, "/question")}">${s.navQuestion}</a>
-    <a href="${href(lang, "/daf")}">${s.navDaf}</a>
-    <a href="${href(lang, "/outils")}" class="hide-m">${s.navOutils}</a>
-    <a href="${href(lang, "/daily")}" class="hide-m">${s.navDaily}</a>
+    <a href="${href(lang, "/chabbat")}" class="hide-m">${s.navChabbat}</a>
     <a href="${href(lang, "/chiourim")}" class="hide-m">${s.navChiourim}</a>
-    <span class="sep hide-m"></span>
-    <span class="grp hide-m">${s.grpClaude}</span>
+    <a href="${href(lang, "/daf")}" class="hide-m">${s.navDaf}</a>
+    <a href="${href(lang, "/outils")}" class="hide-m">${s.navOutils}</a>
     <a href="${href(lang, "/install")}"><strong>${s.navInstall}</strong></a>
-    <span class="sep hide-m"></span>
     ${langSwitcher(lang, path)}
   </div>
 </nav>
@@ -775,6 +790,12 @@ ${GA}
   <div class="toc rv d1">
     ${s.toc.map((i) => `<a href="${h(i.to)}"><span class="t">${i.t}</span><span class="dots"></span><span class="d">${i.d}</span></a>`).join("\n    ")}
   </div>
+</section>
+
+<section class="shout">
+  <div class="mot rv${s.shoutHe ? ' he' : ''}" dir="ltr">${s.shoutWord}</div>
+  <div class="rv d1"><span class="ia">IA&nbsp;!</span></div>
+  <p class="rv d2">${s.shoutLine}</p>
 </section>
 
 <section class="invite">
