@@ -253,9 +253,10 @@ const T = {
     copie: "Copié.",
     copieErr: "Copie impossible ici — sélectionnez le texte à la main.",
     gifLab: "Le GIF qui va avec",
-    gifNote: "Trois au choix — ils changent chaque vendredi. Sur téléphone, le bouton l'envoie directement ; sinon il le télécharge, à joindre dans WhatsApp.",
-    gifGo: "Envoyer le GIF",
-    gifOk: "GIF téléchargé — joignez-le à votre message.",
+    gifNote: "Trois au choix — ils changent chaque vendredi. Le bouton envoie le message ET le GIF ensemble : sur téléphone via la feuille de partage, sur ordinateur en copiant le texte et en téléchargeant le GIF.",
+    gifGo: "Envoyer message + GIF",
+    gifOk: "Parti ! Si seul le GIF a été envoyé, le message est déjà copié — collez-le à la suite.",
+    gifDesk: "Message copié et GIF téléchargé — collez le texte (Cmd+V), puis glissez le GIF dans la conversation.",
     gifErr: "GIF momentanément indisponible.",
     gifCredit: "GIF via Tenor.",
     colle: "Message copié — collez-le dans la conversation (Cmd+V ou Ctrl+V).",
@@ -274,9 +275,10 @@ const T = {
     copie: "Copied.",
     copieErr: "Copying failed here — select the text by hand.",
     gifLab: "The GIF to go with it",
-    gifNote: "Three to choose from — they change every Friday. On a phone the button shares it directly; otherwise it downloads it, to attach in WhatsApp.",
-    gifGo: "Send the GIF",
-    gifOk: "GIF downloaded — attach it to your message.",
+    gifNote: "Three to choose from — they change every Friday. The button sends the message AND the GIF together: on a phone via the share sheet, on a computer by copying the text and downloading the GIF.",
+    gifGo: "Send message + GIF",
+    gifOk: "Sent! If only the GIF went through, the message is already copied — paste it right after.",
+    gifDesk: "Message copied and GIF downloaded — paste the text (Cmd+V), then drag the GIF into the conversation.",
     gifErr: "GIF temporarily unavailable.",
     gifCredit: "GIFs via Tenor.",
     colle: "Message copied — paste it into the conversation (Cmd+V or Ctrl+V).",
@@ -295,9 +297,10 @@ const T = {
     copie: "הועתק.",
     copieErr: "ההעתקה נכשלה — סמנו את הטקסט ידנית.",
     gifLab: "הגיף שמתלווה",
-    gifNote: "שלושה לבחירה — הם מתחלפים בכל יום שישי. בטלפון הכפתור משתף ישירות; אחרת הוא מוריד את הקובץ, לצירוף בוואטסאפ.",
-    gifGo: "שליחת הגיף",
-    gifOk: "הגיף ירד — צרפו אותו להודעה.",
+    gifNote: "שלושה לבחירה — הם מתחלפים בכל יום שישי. הכפתור שולח את ההודעה ואת הגיף יחד: בטלפון דרך חלון השיתוף, במחשב בהעתקת הטקסט והורדת הגיף.",
+    gifGo: "שליחת הודעה + גיף",
+    gifOk: "נשלח! אם רק הגיף עבר, ההודעה כבר הועתקה — הדביקו אותה מיד אחריו.",
+    gifDesk: "ההודעה הועתקה והגיף ירד — הדביקו את הטקסט (Cmd+V) וגררו את הגיף לשיחה.",
     gifErr: "הגיף אינו זמין כרגע.",
     gifCredit: "גיפים דרך Tenor.",
     colle: "ההודעה הועתקה — הדביקו אותה בשיחה (Cmd+V או Ctrl+V).",
@@ -383,7 +386,8 @@ ${altLinks(lang, "/chabbat")}
   [dir="rtl"] .gifs .snd { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:700; }
   .gifs .snd::before { content:"[ "; color:var(--ink-40); } .gifs .snd::after { content:" ]"; color:var(--ink-40); } .gifs .snd:hover::before { content:"[ → "; }
   [dir="rtl"] .gifs .snd:hover::before { content:"[ ← "; }
-  .gifs .credit { margin-top:.9rem; font-size:.78rem; color:var(--muted); }
+  .gifs .gfb { margin-top:.9rem; font-size:.9rem; font-style:italic; color:var(--muted); min-height:1.2em; max-width:44rem; }
+  .gifs .credit { margin-top:.4rem; font-size:.78rem; color:var(--muted); }
   @media (max-width:640px) { .gifs .row { grid-template-columns:1fr 1fr; } }
   footer { margin-top:4rem; font-size:.88rem; color:var(--muted); border-top:1px solid var(--ink-15); padding-top:1.4rem; }
 </style>
@@ -405,43 +409,52 @@ ${altLinks(lang, "/chabbat")}
     <div class="row">
       ${indices.map((i) => `<figure><img src="/api/gif?i=${i}" alt="Chabbat chalom" loading="lazy"><a class="snd" data-i="${i}" role="button" tabindex="0">${s.gifGo}</a></figure>`).join("\n      ")}
     </div>
+    <p class="gfb" id="gfb"></p>
     <p class="credit">${s.gifCredit}</p>
   </div>
   <footer><p><a href="${href(lang, "/")}">${s.foot.accueil}</a> · <a href="${href(lang, "/daily")}">${s.foot.daily}</a> · <a href="${href(lang, "/privacy")}">${s.foot.privacy}</a> · ${langSwitcher(lang, "/chabbat")}</p><p>${colophon(lang)}</p></footer>
 </main>
 <script>
 (function () {
-  var GIF_OK = "${s.gifOk}";
-  var GIF_ERR = "${s.gifErr}";
+  var texte = ${JSON.stringify(texte)};
+  var fb = document.getElementById("fb");
+  function feedback(m) { if (!fb) return; fb.textContent = m; setTimeout(function () { if (fb.textContent === m) fb.textContent = ""; }, 6000); }
+  function copier(t) {
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(t);
+    return Promise.reject();
+  }
+  var gfb = document.getElementById("gfb");
+  function gifFeedback(m) { gfb.textContent = m; setTimeout(function () { if (gfb.textContent === m) gfb.textContent = ""; }, 9000); }
+
+  // Message + GIF ensemble. Le texte ne transite jamais par une URL
+  // (WhatsApp desktop macOS y corrompt les émojis) : partage natif avec
+  // fichier + texte quand l'appareil sait le faire, sinon copie + fichier.
   document.querySelectorAll(".gifs .snd").forEach(function (btn) {
     btn.addEventListener("click", function (e) {
       e.preventDefault();
       var i = btn.getAttribute("data-i");
+      var pCopie = texte ? copier(texte).catch(function () {}) : Promise.resolve();
       fetch("/api/gif?i=" + i)
         .then(function (r) { if (!r.ok) throw 0; return r.blob(); })
         .then(function (b) {
           var file = new File([b], "chabbat-chalom.gif", { type: "image/gif" });
           if (navigator.canShare && navigator.canShare({ files: [file] })) {
-            return navigator.share({ files: [file] }).catch(function (er) { if (er && er.name === "AbortError") return; throw er; });
+            var charge = texte ? { files: [file], text: texte } : { files: [file] };
+            if (texte && !navigator.canShare(charge)) charge = { files: [file] };
+            return navigator.share(charge).then(function () { if (texte) gifFeedback("${s.gifOk}"); }, function (er) { if (er && er.name === "AbortError") return; throw er; });
           }
           var url = URL.createObjectURL(b);
           var a = document.createElement("a");
           a.href = url; a.download = "chabbat-chalom.gif";
           document.body.appendChild(a); a.click(); a.remove();
           setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
-          btn.textContent = GIF_OK;
-          setTimeout(function () { btn.textContent = "${s.gifGo}"; }, 3000);
+          return pCopie.then(function () { gifFeedback(texte ? "${s.gifDesk}" : "${s.gifOk}"); });
         })
-        .catch(function () { btn.textContent = GIF_ERR; setTimeout(function () { btn.textContent = "${s.gifGo}"; }, 3000); });
+        .catch(function () { gifFeedback("${s.gifErr}"); });
     });
   });
 
   var msg = document.getElementById("msg"); if (!msg) return;
-  var texte = ${JSON.stringify(texte)};
-  var fb = document.getElementById("fb");
-  function feedback(m) { fb.textContent = m; setTimeout(function () { if (fb.textContent === m) fb.textContent = ""; }, 2500); }
-  // Jamais le texte dans l'URL : WhatsApp desktop (macOS) y corrompt les émojis.
-  // Partage natif quand il existe ; sinon copie + WhatsApp ouvert vide, à coller.
   document.getElementById("share").addEventListener("click", function (e) {
     e.preventDefault();
     if (navigator.share) {
@@ -455,8 +468,7 @@ ${altLinks(lang, "/chabbat")}
   });
   document.getElementById("copy").addEventListener("click", function (e) {
     e.preventDefault();
-    (navigator.clipboard && navigator.clipboard.writeText ? navigator.clipboard.writeText(texte) : Promise.reject())
-      .then(function () { feedback("${s.copie}"); }, function () { feedback("${s.copieErr}"); });
+    copier(texte).then(function () { feedback("${s.copie}"); }, function () { feedback("${s.copieErr}"); });
   });
 })();
 </script>
