@@ -165,6 +165,7 @@ type LandingStrings = {
   demos: { q: string; a: string; src: string }[]; demoSrcLab: string; demoTag: string;
   tuiles: { to: string; t: string; d: string }[];
   maisonLab: string; maisonT: string; maisonD: string;
+  bibLab: string; bibT: string; bibD: string;
   kezAria: string; kezId: string;
   fig1n: string; fig1u: string; fig1t: string; fig2n: string; fig2u: string; fig2t: string; fig3n: string; fig3u: string; fig3t: string;
   vsNonH: string; vsNonP: string; vsYesH: string; vsYesP: string;
@@ -186,6 +187,9 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     maisonLab: "770 Eastern Parkway · Brooklyn — photographie réelle",
     maisonT: "La maison d'où vient le cri.",
     maisonD: "C'est de cette maison de briques — le 770, la maison d'étude du Rabbi — qu'est parti le mot d'ordre que ce site reprend : la Torah avec chacun, vraiment, <strong>ממש</strong>. La photo est réelle. La discipline des sources aussi.",
+    bibLab: "Synagogue Yossef Karo · Safed — photographie réelle · photo Djampa, CC BY-SA 4.0",
+    bibT: "Les livres sont réels aussi.",
+    bibD: "Dans la synagogue Yossef Karo, à Safed, les seforim attendent sur leurs étagères. C'est lui, l'auteur du <strong>Choulhan Aroukh</strong> — le code que ce site ouvre et cite, référence par référence, au lieu de le réciter de mémoire.",
     grpSite: "Sur le site", navQuestion: "Une question", navDaf: "Le daf", navOutils: "Outils", navDaily: "Limoud du jour", navChabbat: "Chabbat", navChiourim: "Chiourim", grpClaude: "Dans Claude", navInstall: "Installer le MCP",
     h1: `La Torah <span class="no">de&nbsp;mémoire</span> — <strong>lue dans les textes</strong>.`,
     deck: "Des réponses de halakha et de limoud citées depuis la Bible, le Talmud et leurs commentateurs — sur le site en trois langues, sur WhatsApp chaque vendredi, en vidéo avec le rav Attal, et dans Claude avec la bibliothèque entière. Gratuit, sans compte, sans collecte.",
@@ -277,6 +281,9 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     maisonLab: "770 Eastern Parkway · Brooklyn — a real photograph",
     maisonT: "The house the cry comes from.",
     maisonD: "From this brick house — 770, the Rebbe's study hall — came the watchword this site takes up: Torah with everyone, truly, <strong>ממש</strong>. The photograph is real. So is the discipline of sources.",
+    bibLab: "Yosef Karo Synagogue · Safed — a real photograph · photo Djampa, CC BY-SA 4.0",
+    bibT: "The books are real too.",
+    bibD: "In the Yosef Karo synagogue in Safed, the sefarim wait on their shelves. He wrote the <strong>Shulchan Arukh</strong> — the code this site opens and quotes, reference by reference, instead of reciting it from memory.",
     grpSite: "On the site", navQuestion: "Ask a question", navDaf: "The daf", navOutils: "Tools", navDaily: "Today's learning", navChabbat: "Shabbat", navChiourim: "Shiurim", grpClaude: "In Claude", navInstall: "Install the MCP",
     h1: `Torah <span class="no">from&nbsp;memory</span> — <strong>read in the texts</strong>.`,
     deck: "Halakha and limud answers quoted from the Bible, the Talmud and their commentators — on the site in three languages, on WhatsApp every Friday, on video with Rav Attal, and in Claude with the whole library. Free, no account, no data collection.",
@@ -368,6 +375,9 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     maisonLab: "איסטרן פארקוויי 770 · ברוקלין — צילום אמיתי",
     maisonT: "הבית שממנו בא הקול.",
     maisonD: "מהבית הזה — 770, בית מדרשו של הרבי — יצאה הקריאה שהאתר נושא: תורה עם כל אחד, באמת, <strong>ממש</strong>. הצילום אמיתי. וכך גם משמעת המקורות.",
+    bibLab: "בית הכנסת יוסף קארו · צפת — צילום אמיתי · צילום Djampa, CC BY-SA 4.0",
+    bibT: "גם הספרים אמיתיים.",
+    bibD: "בבית הכנסת יוסף קארו בצפת ממתינים הספרים על מדפיהם. הוא מחבר <strong>השולחן ערוך</strong> — הקוד שהאתר פותח ומצטט, מראה מקום אחרי מראה מקום, במקום לדקלם מן הזיכרון.",
     grpSite: "באתר", navQuestion: "שאלה", navDaf: "הדף", navOutils: "כלים", navDaily: "הלימוד היומי", navChabbat: "שבת", navChiourim: "שיעורים", grpClaude: "ב-Claude", navInstall: "התקנת ה-MCP",
     h1: `תורה <span class="no">מהזיכרון</span> — <strong>נקראת מתוך הטקסטים</strong>.`,
     deck: "תשובות בהלכה ובלימוד, מצוטטות מהתנ\"ך, מהתלמוד וממפרשיהם — באתר בשלוש שפות, בוואטסאפ בכל יום שישי, בווידאו עם הרב אטל, וב-Claude עם הספרייה כולה. חינם, בלי חשבון, בלי איסוף נתונים.",
@@ -588,7 +598,10 @@ ${GA}
   [dir="rtl"] .maison .mtxt h2 { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:700; letter-spacing:0; }
   .maison .mtxt p { margin-top:1rem; font-size:1.02rem; line-height:1.75; color:var(--muted); max-width:30rem; }
   .maison .mtxt strong { font-weight:700; color:var(--ink); background:linear-gradient(transparent 60%, var(--pop) 60% 92%, transparent 92%); padding:0 .1em; }
-  @media (max-width:900px) { .maison { grid-template-columns:1fr; gap:1.6rem; padding:3rem 4vw; } .maison .mvid { transform:rotate(-1deg); } }
+  .maison.flip .mvid { order:2; transform:rotate(1.4deg); }
+  .maison.flip .mtxt { order:1; }
+  [dir="rtl"] .maison.flip .mvid { transform:rotate(-1.4deg); }
+  @media (max-width:900px) { .maison { grid-template-columns:1fr; gap:1.6rem; padding:3rem 4vw; } .maison .mvid { transform:rotate(-1deg); order:0; } .maison .mtxt { order:1; } }
   /* Écran peu haut (MacBook 13") : tout le héros tient sans défiler */
   @media (min-width:901px) and (max-height:940px) {
     .cover { padding:5.4rem 4vw 1.6rem; }
@@ -870,6 +883,17 @@ ${GA}
       ${glose("modes", s.gModes, href(lang, "/question"))}
       ${glose("sources", s.gSources, "https://developers.sefaria.org/docs/the-sefaria-mcp")}
     </aside>
+  </div>
+</section>
+
+<section class="maison flip rv" aria-label="Safed">
+  <figure class="mvid">
+    <video src="/seforim.mp4" poster="/seforim-poster.jpg" autoplay muted loop playsinline preload="metadata" width="960" height="540"></video>
+    <figcaption>${s.bibLab}</figcaption>
+  </figure>
+  <div class="mtxt">
+    <h2>${s.bibT}</h2>
+    <p>${s.bibD}</p>
   </div>
 </section>
 

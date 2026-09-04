@@ -258,6 +258,7 @@ const T = {
     envMsgLab: "Le message de la semaine",
     envLire: "Lire en entier",
     envChoix: "Trois au choix, renouvelés chaque vendredi — cliquez pour changer.",
+    vidLab: "Photographie réelle · photo Olaf Herfurth, CC BY-SA 3.0",
     gifOk: "Parti ! Si seul le GIF a été envoyé, le message est déjà copié — collez-le à la suite.",
     gifDesk: "Message copié et GIF téléchargé — collez le texte (Cmd+V), puis glissez le GIF dans la conversation.",
     gifErr: "GIF momentanément indisponible.",
@@ -283,6 +284,7 @@ const T = {
     envMsgLab: "This week's message",
     envLire: "Read in full",
     envChoix: "Three to pick from, renewed every Friday — click to change.",
+    vidLab: "A real photograph · photo Olaf Herfurth, CC BY-SA 3.0",
     gifOk: "Sent! If only the GIF went through, the message is already copied — paste it right after.",
     gifDesk: "Message copied and GIF downloaded — paste the text (Cmd+V), then drag the GIF into the conversation.",
     gifErr: "GIF temporarily unavailable.",
@@ -308,6 +310,7 @@ const T = {
     envMsgLab: "מסר השבוע",
     envLire: "לקריאה מלאה",
     envChoix: "שלושה לבחירה, מתחדשים בכל יום שישי — הקישו להחלפה.",
+    vidLab: "צילום אמיתי · צילום Olaf Herfurth, CC BY-SA 3.0",
     gifOk: "נשלח! אם רק הגיף עבר, ההודעה כבר הועתקה — הדביקו אותה מיד אחריו.",
     gifDesk: "ההודעה הועתקה והגיף ירד — הדביקו את הטקסט (Cmd+V) וגררו את הגיף לשיחה.",
     gifErr: "הגיף אינו זמין כרגע.",
@@ -461,6 +464,11 @@ ${altLinks(lang, "/chabbat")}
     .eplus { justify-self:center; }
     .etxt { max-height:7.4em; }
   }
+  .cvid { margin:3.2rem 0 0; transform:rotate(-1.2deg); }
+  [dir="rtl"] .cvid { transform:rotate(1.2deg); }
+  .cvid video { display:block; width:100%; height:auto; border:6px solid #fff; box-shadow:0 16px 38px rgba(8,42,153,.16); background:var(--ink); }
+  .cvid figcaption { margin-top:.55rem; font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
+  [dir="rtl"] .cvid figcaption { letter-spacing:.03em; }
   footer { margin-top:4rem; font-size:.88rem; color:var(--muted); border-top:1px solid var(--ink-15); padding-top:1.4rem; }
 </style>
 </head>
@@ -478,11 +486,18 @@ ${altLinks(lang, "/chabbat")}
   <p class="meta">${s.genere} ${esc(dateGen)}.</p>
   <div class="acts"><a href="#" id="copy">${s.copier}</a><a href="#" id="share" role="button">${s.partager}</a><span class="fb" id="fb"></span></div>` : `<div class="msg">${s.vide}</div>
   ${gifsHtml}`}
+  <figure class="cvid">
+    <video src="/bougies.mp4" poster="/bougies-poster.jpg" autoplay muted loop playsinline preload="metadata" width="960" height="540"></video>
+    <figcaption>${s.vidLab}</figcaption>
+  </figure>
   <footer><p><a href="${href(lang, "/")}">${s.foot.accueil}</a> · <a href="${href(lang, "/daily")}">${s.foot.daily}</a> · <a href="${href(lang, "/privacy")}">${s.foot.privacy}</a> · ${langSwitcher(lang, "/chabbat")}</p><p><img class="fsceau" src="/icon.png" alt="">${colophon(lang)}</p></footer>
 </main>
 <script>
 (function () {
   var texte = ${JSON.stringify(texte)};
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.querySelectorAll("video[autoplay]").forEach(function (v) { v.removeAttribute("autoplay"); v.pause(); });
+  }
   var fb = document.getElementById("fb");
   function feedback(m) { if (!fb) return; fb.textContent = m; setTimeout(function () { if (fb.textContent === m) fb.textContent = ""; }, 6000); }
   function copier(t) {
