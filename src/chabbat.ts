@@ -258,7 +258,7 @@ const T = {
     envMsgLab: "Le message de la semaine",
     envLire: "Lire en entier",
     envChoix: "Trois au choix, renouvelés chaque vendredi — cliquez pour changer.",
-    vidLab: "Photographie réelle · photo Olaf Herfurth, CC BY-SA 3.0",
+    vidLab: "Deux flammes : Zakhor et Chamor — illustration",
     gifOk: "Parti ! Si seul le GIF a été envoyé, le message est déjà copié — collez-le à la suite.",
     gifDesk: "Message copié et GIF téléchargé — collez le texte (Cmd+V), puis glissez le GIF dans la conversation.",
     gifErr: "GIF momentanément indisponible.",
@@ -284,7 +284,7 @@ const T = {
     envMsgLab: "This week's message",
     envLire: "Read in full",
     envChoix: "Three to pick from, renewed every Friday — click to change.",
-    vidLab: "A real photograph · photo Olaf Herfurth, CC BY-SA 3.0",
+    vidLab: "Two flames: Zachor and Shamor — an illustration",
     gifOk: "Sent! If only the GIF went through, the message is already copied — paste it right after.",
     gifDesk: "Message copied and GIF downloaded — paste the text (Cmd+V), then drag the GIF into the conversation.",
     gifErr: "GIF temporarily unavailable.",
@@ -310,7 +310,7 @@ const T = {
     envMsgLab: "מסר השבוע",
     envLire: "לקריאה מלאה",
     envChoix: "שלושה לבחירה, מתחדשים בכל יום שישי — הקישו להחלפה.",
-    vidLab: "צילום אמיתי · צילום Olaf Herfurth, CC BY-SA 3.0",
+    vidLab: "שתי להבות: זכור ושמור — אילוסטרציה",
     gifOk: "נשלח! אם רק הגיף עבר, ההודעה כבר הועתקה — הדביקו אותה מיד אחריו.",
     gifDesk: "ההודעה הועתקה והגיף ירד — הדביקו את הטקסט (Cmd+V) וגררו את הגיף לשיחה.",
     gifErr: "הגיף אינו זמין כרגע.",
@@ -463,6 +463,7 @@ ${altLinks(lang, "/chabbat")}
     .envoi { grid-template-columns:1fr; gap:.8rem; }
     .eplus { justify-self:center; }
     .etxt { max-height:7.4em; }
+    .ecard, [dir="rtl"] .ecard, .cvid, [dir="rtl"] .cvid { transform:none; }
   }
   .cvid { margin:3.2rem 0 0; transform:rotate(-1.2deg); }
   [dir="rtl"] .cvid { transform:rotate(1.2deg); }
