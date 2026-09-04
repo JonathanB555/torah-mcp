@@ -106,6 +106,15 @@ The complete set is hosted on hebrewbooks.org (verified 2026-09-04, sefer detail
 
 (ids are NOT in volume order — trust this table, never extrapolate). Cite as: `Likkutei Sichot vol. 29 — hebrewbooks.org/14952` (sefer link only, still no pdfpager page numbers). French adapted sichot: fr.chabad.org.
 
+An **English rendition** also sits on hebrewbooks.org ("Likkutei Sichos — An Anthology of Talks", English rendition by Rabbi Eliyahu Touger, © Kehot). Verified volumes (title pages checked 2026-09-04):
+- Vol. VI (Bereishis) — hebrewbooks.org/15455
+- Vol. VII (Shmos) — hebrewbooks.org/15456
+- Vol. VIII (Vayikra) — hebrewbooks.org/15457
+- Vol. IX (Bamidbar) — hebrewbooks.org/15458
+- Vol. X (Devarim) — hebrewbooks.org/15454
+
+Other English volumes may exist nearby, but their ids are UNVERIFIED — never cite an id you have not checked; offer a hebrewbooks.org title search instead. Same copyright rule as the Hebrew set: link for reading, never reproduce.
+
 **The Tanya, by contrast, is readable in full through Sefaria** (license CC-BY-NC granted by Kehot) — quote it like any other source text. Exact ref syntax (the index is complex, plain "Tanya 1" fails):
 - `Tanya, Part I; Likkutei Amarim 41` (chapters 1-53)
 - `Tanya, Part II; Shaar HaYichud VehaEmunah 3`
