@@ -511,21 +511,25 @@ ${GA}
   nav .wm img { width:36px; height:36px; border-radius:50%; margin-inline-end:.6rem; transition:transform .4s var(--ease); }
   nav .wm:hover img { transform:rotate(-8deg) scale(1.06); }
   nav .r { display:flex; gap:1.35rem; font-size:.95rem; align-items:center; }
-  nav .r a { text-decoration:none; padding-bottom:3px;
+  nav .r a { font-family:"Archivo Black", "Arial Black", sans-serif; font-weight:400; font-size:.72rem; letter-spacing:.09em; text-transform:uppercase; text-decoration:none; padding-bottom:3px;
     background-image:linear-gradient(var(--pop), var(--pop)); background-repeat:no-repeat;
     background-size:0% 2.5px; background-position:0 100%; transition:background-size .3s var(--ease); }
-  [dir="rtl"] nav .r a { background-position:100% 100%; }
+  [dir="rtl"] nav .r a { background-position:100% 100%; font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:900; font-size:.9rem; letter-spacing:0; text-transform:none; }
   nav .r a:hover { background-size:100% 2.5px; }
-  nav .r a strong { background:var(--pop); color:var(--ink); padding:.3rem .7rem .34rem; font-weight:700; transition:background .3s var(--ease), color .3s var(--ease), box-shadow .3s var(--ease); box-shadow:0 3px 10px rgba(8,42,153,.14); }
+  nav .r a strong { background:var(--pop); color:var(--ink); padding:.34rem .7rem .38rem; font-weight:inherit; transition:background .3s var(--ease), color .3s var(--ease), box-shadow .3s var(--ease); box-shadow:0 3px 10px rgba(8,42,153,.14); }
   nav .r a:has(strong) { background-image:none; padding-bottom:0; }
   nav .r a:hover strong { background:var(--ink); color:var(--pop); }
   nav .r .lang { padding-inline-start:.4rem; border-inline-start:1px solid var(--ink-15); }
   @media (max-width:720px) {
-    nav { padding:.9rem 4vw; }
-    nav .r { gap:.6rem; font-size:.8rem; }
-    nav .r a { margin-inline-start:.55rem; }
+    nav { padding:.7rem 3vw; }
+    nav .wm { font-size:.95rem; }
+    nav .wm img { width:26px; height:26px; margin-inline-end:.45rem; }
+    nav .r { gap:.55rem; }
+    nav .r a { margin-inline-start:0; font-size:.55rem; letter-spacing:.05em; white-space:nowrap; }
+    [dir="rtl"] nav .r a { font-size:.76rem; }
     nav .r .hide-m { display:none; }
-    nav .r .lang { margin-inline-start:.55rem; }
+    nav .r .lang { margin-inline-start:0; padding-inline-start:.35rem; font-size:.72rem; }
+    .lang .dot { margin:0 .3em; }
   }
 
   /* ---- ouverture plein écran ---- */
@@ -596,7 +600,7 @@ ${GA}
     .tuiles { grid-template-columns:1fr 1fr; gap:1rem 1.2rem; margin-top:2.6rem; }
   }
   @media (max-width:720px) {
-    nav .r a strong { white-space:nowrap; padding:.1rem .45rem .14rem; }
+    nav .r a strong { white-space:nowrap; padding:.26rem .45rem .3rem; letter-spacing:.05em; }
   }
   footer img.fsceau { width:30px; height:30px; border-radius:50%; vertical-align:-9px; margin-inline-end:.5rem; }
   .cover .he-giant { position:absolute; inset-inline-end:-2vw; top:50%; transform:translateY(-54%); font-weight:700;
@@ -764,7 +768,7 @@ ${GA}
 <nav>
   <a class="wm" href="${href(lang, "/")}" dir="ltr"><img src="/icon.png" alt="" width="34" height="34"><b>Mamash</b>&nbsp;IA</a>
   <div class="r">
-    <a href="${href(lang, "/question")}">${s.navQuestion}</a>
+    <a href="${href(lang, "/question")}" class="hide-m">${s.navQuestion}</a>
     <a href="${href(lang, "/chabbat")}" class="hide-m">${s.navChabbat}</a>
     <a href="${href(lang, "/chiourim")}" class="hide-m">${s.navChiourim}</a>
     <a href="${href(lang, "/daf")}" class="hide-m">${s.navDaf}</a>
@@ -1039,7 +1043,7 @@ export function installHtml(lang: Lang): string {
 ${altLinks(lang, path)}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Frank+Ruhl+Libre:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Frank+Ruhl+Libre:wght@400;700;900&family=Archivo+Black&display=swap" rel="stylesheet">
 <meta property="og:type" content="website">
 <meta property="og:title" content="${ogTitle[lang]}">
 <meta property="og:description" content="${ogDesc[lang]}">
@@ -1058,7 +1062,8 @@ ${GA}
   nav .wm b { font-weight:600; border-bottom:3px solid var(--pop); padding-bottom:1px; }
   nav .wm img { width:34px; height:34px; border-radius:50%; vertical-align:-11px; margin-inline-end:.55rem; }
   nav .r { display:flex; gap:1.4rem; align-items:baseline; }
-  nav a.b { text-decoration:none; } nav a.b:hover { text-decoration:underline; }
+  nav a.b { font-family:"Archivo Black", "Arial Black", sans-serif; font-weight:400; font-size:.7rem; letter-spacing:.09em; text-transform:uppercase; text-decoration:none; } nav a.b:hover { text-decoration:underline; }
+  [dir="rtl"] nav a.b { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:900; font-size:.88rem; letter-spacing:0; text-transform:none; }
   ${LANG_CSS}
   h1 { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(2.2rem,5vw,3.6rem); line-height:1.05; letter-spacing:-.02em; margin:3.5rem 0 .8rem; }
   [dir="rtl"] h1 { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:700; letter-spacing:0; }
