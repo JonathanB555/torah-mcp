@@ -465,7 +465,10 @@ ${altLinks(lang, path)}
   .step .rule { flex:1; height:1px; background:var(--line); }
   .step .s { font-size:.76rem; letter-spacing:.18em; text-transform:uppercase; opacity:.55; }
   .modes { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin:0 0 .4rem; }
-  .modes label { display:block; cursor:pointer; border:1.5px solid var(--line); padding:.9rem 1rem 1rem; position:relative; transition:border-color .3s, background .3s; }
+  .modes label { display:grid; grid-template-columns:auto 1fr; column-gap:.9rem; align-items:start; cursor:pointer; border:1.5px solid var(--line); padding:.9rem 1rem 1rem; position:relative; transition:border-color .3s, background .3s; }
+  .modes .picto { grid-row:1 / span 3; width:3.6rem; height:3.6rem; margin-top:.15rem; transition:transform .5s cubic-bezier(0.16,1,0.3,1); }
+  .modes label:hover .picto { transform:rotate(-4deg) translateY(-2px); }
+  [dir="rtl"] .modes label:hover .picto { transform:rotate(4deg) translateY(-2px); }
   .modes label:hover { border-color:var(--gold); }
   .modes label:has(input:checked) { border-color:var(--ink); background:#ffeeb2; }
   .modes label:has(input:checked)::after { content:"${s.chosen}"; position:absolute; top:.55rem; inset-inline-end:.8rem; font-size:.68rem; letter-spacing:.14em; text-transform:uppercase; opacity:.7; }
@@ -507,8 +510,8 @@ ${GA_SNIPPET}
   <p class="muted">${s.lead}</p>
   <div class="step"><span class="n">1</span><span class="t">${s.step1}</span><span class="rule"></span><span class="s">${s.step1s}</span></div>
   <div class="modes" role="radiogroup" aria-label="${s.level}">
-    <label><input type="radio" name="tmode" value="debutant" checked><span class="h">${s.begH}</span><span class="w">${s.begW}</span><span class="d">${s.begD}</span></label>
-    <label><input type="radio" name="tmode" value="classique"><span class="h">${s.claH}</span><span class="w">${s.claW}</span><span class="d">${s.claD}</span></label>
+    <label><input type="radio" name="tmode" value="debutant" checked><img class="picto" src="/picto-debutant.png" alt="" width="240" height="240" loading="lazy"><span class="h">${s.begH}</span><span class="w">${s.begW}</span><span class="d">${s.begD}</span></label>
+    <label><input type="radio" name="tmode" value="classique"><img class="picto" src="/picto-classique.png" alt="" width="240" height="240" loading="lazy"><span class="h">${s.claH}</span><span class="w">${s.claW}</span><span class="d">${s.claD}</span></label>
   </div>
   <p class="modehelp" id="mh"></p>
   <div class="step"><span class="n">2</span><span class="t">${s.step2}</span><span class="rule"></span></div>
