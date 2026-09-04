@@ -18,6 +18,8 @@ export interface Env {
   QUESTION_DAILY_CAP?: string;
   /** Journal statistique privé des questions (D1). Absent = pas de journal. */
   STATS_DB?: D1Database;
+  /** Posé uniquement dans .dev.vars : désactive la redirection http→https en dev local. */
+  DEV?: string;
   /** Mot de passe de la page privée /stats (Basic auth, utilisateur libre). Absent = page désactivée. */
   STATS_PASSWORD?: string;
 }

@@ -429,6 +429,7 @@ ${GA}
         padding:1.1rem 4vw; mix-blend-mode:multiply; }
   nav .wm { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:1.05rem; text-decoration:none; letter-spacing:.01em; }
   nav .wm b { font-weight:600; border-bottom:3px solid var(--ink); padding-bottom:1px; }
+  nav .wm img { width:26px; height:26px; border-radius:50%; vertical-align:-7px; margin-inline-end:.5rem; }
   nav .r { display:flex; gap:1.1rem; font-size:.92rem; align-items:baseline; }
   nav .grp { font-size:.66rem; letter-spacing:.16em; text-transform:uppercase; opacity:.5; }
   nav .sep { width:1px; height:.9rem; background:var(--ink-15); align-self:center; }
@@ -598,7 +599,7 @@ ${GA}
 <body>
 
 <nav>
-  <a class="wm" href="${href(lang, "/")}" dir="ltr"><b>Mamash</b>&nbsp;IA</a>
+  <a class="wm" href="${href(lang, "/")}" dir="ltr"><img src="/icon.png" alt="" width="26" height="26"><b>Mamash</b>&nbsp;IA</a>
   <div class="r">
     <span class="grp hide-m">${s.grpSite}</span>
     <a href="${href(lang, "/question")}">${s.navQuestion}</a>
@@ -863,6 +864,7 @@ ${GA}
   nav { display:flex; justify-content:space-between; align-items:baseline; padding:1.1rem 0; }
   nav .wm { font-family:"Fraunces", Georgia, serif; font-weight:300; text-decoration:none; }
   nav .wm b { font-weight:600; border-bottom:3px solid var(--ink); padding-bottom:1px; }
+  nav .wm img { width:26px; height:26px; border-radius:50%; vertical-align:-7px; margin-inline-end:.5rem; }
   nav .r { display:flex; gap:1.4rem; align-items:baseline; }
   nav a.b { text-decoration:none; } nav a.b:hover { text-decoration:underline; }
   ${LANG_CSS}
@@ -887,7 +889,7 @@ ${GA}
 </head>
 <body>
 <main>
-  <nav><a class="wm" href="${href(lang, "/")}" dir="ltr"><b>Mamash</b>&nbsp;IA</a><span class="r"><a class="b" href="${href(lang, "/")}">${s.back}</a>${langSwitcher(lang, path)}</span></nav>
+  <nav><a class="wm" href="${href(lang, "/")}" dir="ltr"><img src="/icon.png" alt="" width="26" height="26"><b>Mamash</b>&nbsp;IA</a><span class="r"><a class="b" href="${href(lang, "/")}">${s.back}</a>${langSwitcher(lang, path)}</span></nav>
   <h1>${s.h1}</h1>
   <p class="muted">${s.muted}</p>
 

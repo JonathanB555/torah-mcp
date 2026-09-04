@@ -363,6 +363,7 @@ ${altLinks(lang, PATH)}
   nav { display:flex; justify-content:space-between; align-items:baseline; padding:1.1rem 0; font-size:.92rem; }
   nav .wm { font-family:"Fraunces", Georgia, serif; font-weight:300; text-decoration:none; font-size:1.05rem; }
   nav .wm b { font-weight:600; border-bottom:3px solid var(--ink); padding-bottom:1px; }
+  nav .wm img { width:26px; height:26px; border-radius:50%; vertical-align:-7px; margin-inline-end:.5rem; }
   nav .r a { text-decoration:none; margin-inline-start:1.1rem; } nav .r a:hover { text-decoration:underline; }
   nav .r .lang { margin-inline-start:1.1rem; } nav .r .lang a { margin:0; }
   .lang { font-size:.82rem; letter-spacing:.08em; } .lang a { text-decoration:none; opacity:.6; } .lang a:hover { opacity:1; text-decoration:underline; } .lang .cur { font-weight:700; } .lang .dot { opacity:.35; margin:0 .45em; }
@@ -452,7 +453,7 @@ ${altLinks(lang, PATH)}
 <body>
 <main>
   <nav>
-    <a class="wm" href="${href(lang, "/")}" dir="ltr"><b>Mamash</b>&nbsp;IA</a>
+    <a class="wm" href="${href(lang, "/")}" dir="ltr"><img src="/icon.png" alt="" width="26" height="26"><b>Mamash</b>&nbsp;IA</a>
     <span class="r"><a href="${href(lang, "/outils")}">${s.navTools}</a><a href="${href(lang, "/daf")}">${s.navDaf}</a><a href="${href(lang, "/install")}"><strong>${s.navInstall}</strong></a>${langSwitcher(lang, PATH)}</span>
   </nav>
 

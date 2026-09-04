@@ -253,7 +253,8 @@ export default {
     const url = new URL(request.url);
 
     // http → https (les liens nus tapés ou linkifiés en http arrivent ici).
-    if (url.protocol === "http:") {
+    // Jamais en dev local (wrangler dev sert en http ; DEV=1 dans .dev.vars).
+    if (url.protocol === "http:" && !env.DEV) {
       url.protocol = "https:";
       return Response.redirect(url.toString(), 301);
     }
