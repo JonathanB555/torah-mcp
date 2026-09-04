@@ -161,7 +161,7 @@ ${altLinks(lang, path)}
 <meta property="og:type" content="website">
 <meta property="og:title" content="${s.ogTitle}">
 <meta property="og:description" content="${s.ogDesc}">
-<meta property="og:image" content="https://mamash-ia.com/og.png">
+<meta property="og:image" content="https://mamash-ia.com/og.png?v=2">
 <meta property="og:url" content="https://mamash-ia.com${href(lang, path)}">
 <meta name="twitter:card" content="summary_large_image">
 ${GA_SNIPPET}
@@ -495,7 +495,7 @@ ${altLinks(lang, path)}
 <meta property="og:type" content="website">
 <meta property="og:title" content="${s.ogTitle}">
 <meta property="og:description" content="${s.ogDesc}">
-<meta property="og:image" content="https://mamash-ia.com/og.png">
+<meta property="og:image" content="https://mamash-ia.com/og.png?v=2">
 <meta property="og:url" content="https://mamash-ia.com${href(lang, path)}">
 <meta name="twitter:card" content="summary_large_image">
 ${GA_SNIPPET}

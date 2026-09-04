@@ -21,7 +21,7 @@ const GA = `<!-- Google tag (gtag.js) -->
 
 const LANG_CSS = `.lang { font-size:.82rem; letter-spacing:.08em; } .lang a { text-decoration:none; opacity:.6; } .lang a:hover { opacity:1; text-decoration:underline; } .lang .cur { font-weight:700; } .lang .dot { opacity:.35; margin:0 .45em; }`;
 
-const OG_IMAGE = `<meta property="og:image" content="https://mamash-ia.com/og.png">
+const OG_IMAGE = `<meta property="og:image" content="https://mamash-ia.com/og.png?v=2">
 <meta name="twitter:card" content="summary_large_image">`;
 
 const ogTitle = { fr: "Mamash IA — la discipline des sources pour Claude", en: "Mamash IA — source discipline for Claude", he: "Mamash IA — משמעת מקורות ל-Claude" };
@@ -161,7 +161,7 @@ type Mode = { h: string; who: string; p: string; try: string };
 type LandingStrings = {
   title: string; desc: string;
   grpSite: string; navQuestion: string; navDaf: string; navOutils: string; navDaily: string; navChabbat: string; navChiourim: string; grpClaude: string; navInstall: string;
-  h1: string; deck: string; act1: string; act2: string;
+  h1: string; deck: string; act1: string; act2: string; debloque: string;
   demoQ: string; demoA: string; demoSrcLab: string; demoSrc: string; demoTag: string;
   tuiles: { to: string; t: string; d: string }[];
   kezAria: string; kezId: string;
@@ -173,7 +173,7 @@ type LandingStrings = {
   lblB: string; mDeb: Mode; mCla: Mode; mAv: Mode; modesNote1: string; modesNoteLink: string; modesNote2: string;
   bandH2: string; bandP: string; bandAct1: string; bandAct2: string;
   lblC: string; toc: Toc[];
-  shoutWord: string; shoutHe: boolean; shoutLine: string;
+  shoutWord: string; shoutHe: boolean; shoutLine: string; nameline: string;
   inviteH2: string; inviteAct1: string; inviteAct2: string; inviteNote: string;
   fDaf: string; fOutils: string; fInstall: string; fDaily: string; fPrivacy: string; credits1: string; credits2: string;
 };
@@ -184,8 +184,9 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     desc: "Claude cite la Torah depuis les textes, plus jamais de mémoire. Méthode d'étude, havrouta, guide de paracha, page de Vilna interactive, Sefaria, HebrewBooks, zmanim, guematria. Gratuit, sans compte.",
     grpSite: "Sur le site", navQuestion: "Une question", navDaf: "Le daf", navOutils: "Outils", navDaily: "Limoud du jour", navChabbat: "Chabbat", navChiourim: "Chiourim", grpClaude: "Dans Claude", navInstall: "Installer le MCP",
     h1: `La Torah <span class="no">de&nbsp;mémoire</span> — <strong>lue dans les textes</strong>.`,
-    deck: "Une question de halakha ou de limoud ? La réponse est lue dans la Bible, le Talmud et leurs commentateurs — citée exactement, reliée à ses sources. Sur le site en trois langues, sur WhatsApp chaque vendredi, en vidéo avec le rav Attal — et dans Claude, avec la bibliothèque entière. Gratuit, sans compte, sans collecte.",
+    deck: "Des réponses de halakha et de limoud citées depuis la Bible, le Talmud et leurs commentateurs — sur le site en trois langues, sur WhatsApp chaque vendredi, en vidéo avec le rav Attal, et dans Claude avec la bibliothèque entière. Gratuit, sans compte, sans collecte.",
     act1: "Poser une question", act2: "Installer dans Claude — 2 min",
+    debloque: "Dans Claude, le connecteur débloque ce que le site n'a pas : la <b>havrouta</b> qui vous interroge et vous fait défendre Rachi contre Tossafot, le <b>daf en page de Vilna</b> ouvert dans la conversation, le <b>guide de paracha</b> complet, les fiches sources — et l'étude en continu, sans limite de questions. Seize outils, gratuits.",
     demoQ: "« Pourquoi allume-t-on deux bougies le vendredi soir ? »",
     demoA: "Deux mèches : l'une pour <strong>Zakhor</strong>, « souviens-toi », l'autre pour <strong>Chamor</strong>, « garde » — les deux formulations du Chabbat dans la Torah, réunies dans la lumière.",
     demoSrcLab: "Textes lus", demoSrc: "Choulhan Aroukh, Orah Hayim 263:1 · Exode 20, 8 · Deutéronome 5, 12",
@@ -246,6 +247,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     ],
     shoutWord: "MAMASH", shoutHe: false,
     shoutLine: "Mamash, ממש — « vraiment, réellement ». Et les initiales de Menahem Mendel Schneerson, le Rabbi de Loubavitch. Tout le site tient dans ce nom : du vrai texte, vraiment lu.",
+    nameline: "ממש · « vraiment » · les initiales du Rabbi — Menahem Mendel Schneerson",
     inviteH2: "Une URL à coller dans claude.ai, et l'étude <strong>change de nature</strong>.",
     inviteAct1: "Installer maintenant", inviteAct2: "Code source — MIT",
     inviteNote: "Gratuit, sans compte, sans collecte de données. S'accorde avec le MCP officiel de Sefaria — installez les deux : l'officiel pour la profondeur de la bibliothèque, Torah MCP pour la discipline de citation, la havrouta et HebrewBooks.",
@@ -258,8 +260,9 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     desc: "Claude quotes the Torah from the texts, never again from memory. Study method, chavruta, parashah guide, interactive Vilna page, Sefaria, HebrewBooks, zmanim, gematria. Free, no account.",
     grpSite: "On the site", navQuestion: "Ask a question", navDaf: "The daf", navOutils: "Tools", navDaily: "Today's learning", navChabbat: "Shabbat", navChiourim: "Shiurim", grpClaude: "In Claude", navInstall: "Install the MCP",
     h1: `Torah <span class="no">from&nbsp;memory</span> — <strong>read in the texts</strong>.`,
-    deck: "A halakha or limud question? The answer is read in the Bible, the Talmud and their commentators — quoted exactly, linked to its sources. On the site in three languages, on WhatsApp every Friday, on video with Rav Attal — and in Claude, with the whole library. Free, no account, no data collection.",
+    deck: "Halakha and limud answers quoted from the Bible, the Talmud and their commentators — on the site in three languages, on WhatsApp every Friday, on video with Rav Attal, and in Claude with the whole library. Free, no account, no data collection.",
     act1: "Ask a question", act2: "Install in Claude — 2 min",
+    debloque: "In Claude, the connector unlocks what the site doesn't have: the <b>chavruta</b> that questions you and makes you defend Rashi against Tosafot, the <b>Vilna-page daf</b> opened right in the conversation, the full <b>parashah guide</b>, source sheets — and continuous study, with no question limit. Sixteen tools, free.",
     demoQ: "“Why do we light two candles on Friday night?”",
     demoA: "Two wicks: one for <strong>Zachor</strong>, “remember”, and one for <strong>Shamor</strong>, “keep” — the Torah's two formulations of Shabbat, joined in the light.",
     demoSrcLab: "Texts read", demoSrc: "Shulchan Arukh, Orach Chayim 263:1 · Exodus 20:8 · Deuteronomy 5:12",
@@ -320,6 +323,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     ],
     shoutWord: "MAMASH", shoutHe: false,
     shoutLine: "Mamash, ממש — “really, truly”. And the initials of Menachem Mendel Schneerson, the Lubavitcher Rebbe. The whole site fits in that name: real texts, truly read.",
+    nameline: "ממש · “truly” · the Rebbe's initials — Menachem Mendel Schneerson",
     inviteH2: "One URL to paste into claude.ai, and study <strong>changes in nature</strong>.",
     inviteAct1: "Install now", inviteAct2: "Source code — MIT",
     inviteNote: "Free, no account, no data collection. Works alongside Sefaria's official MCP — install both: the official one for the depth of the library, Torah MCP for citation discipline, chavruta and HebrewBooks.",
@@ -332,8 +336,9 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     desc: "Claude מצטט את התורה מתוך הטקסטים, לעולם לא מהזיכרון. שיטת לימוד, חברותא, מדריך לפרשה, דף וילנא אינטראקטיבי, ספריא, HebrewBooks, זמנים, גימטריה. חינם, בלי חשבון.",
     grpSite: "באתר", navQuestion: "שאלה", navDaf: "הדף", navOutils: "כלים", navDaily: "הלימוד היומי", navChabbat: "שבת", navChiourim: "שיעורים", grpClaude: "ב-Claude", navInstall: "התקנת ה-MCP",
     h1: `תורה <span class="no">מהזיכרון</span> — <strong>נקראת מתוך הטקסטים</strong>.`,
-    deck: "שאלה בהלכה או בלימוד? התשובה נקראת בתנ\"ך, בתלמוד ובמפרשיהם — מצוטטת במדויק, מקושרת למקורותיה. באתר בשלוש שפות, בוואטסאפ בכל יום שישי, בווידאו עם הרב אטל — וב-Claude, עם הספרייה כולה. חינם, בלי חשבון, בלי איסוף נתונים.",
+    deck: "תשובות בהלכה ובלימוד, מצוטטות מהתנ\"ך, מהתלמוד וממפרשיהם — באתר בשלוש שפות, בוואטסאפ בכל יום שישי, בווידאו עם הרב אטל, וב-Claude עם הספרייה כולה. חינם, בלי חשבון, בלי איסוף נתונים.",
     act1: "לשאול שאלה", act2: "התקנה ב-Claude — 2 דקות",
+    debloque: "ב-Claude המחבר פותח את מה שאין באתר: ה<b>חברותא</b> ששואלת אתכם ומעמידה אתכם להגן על רש\"י מול תוספות, <b>דף וילנא</b> שנפתח בתוך השיחה, <b>מדריך הפרשה</b> המלא, דפי מקורות — ולימוד רציף, בלי הגבלת שאלות. שישה־עשר כלים, חינם.",
     demoQ: "«למה מדליקים שני נרות בערב שבת?»",
     demoA: "שתי פתילות: אחת כנגד <strong>זכור</strong> ואחת כנגד <strong>שמור</strong> — שתי לשונות השבת בתורה, מתאחדות באור.",
     demoSrcLab: "טקסטים שנקראו", demoSrc: "שולחן ערוך, אורח חיים רסג:א · שמות כ, ח · דברים ה, יב",
@@ -394,6 +399,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     ],
     shoutWord: "ממש", shoutHe: true,
     shoutLine: "ממש — «באמת, לגמרי». וגם ראשי התיבות של מנחם מנדל שניאורסון, הרבי מליובאוויטש. כל האתר טמון בשם הזה: טקסט אמיתי, שנקרא באמת.",
+    nameline: "«באמת, ממש» · ראשי התיבות של הרבי — מנחם מנדל שניאורסון",
     inviteH2: "כתובת אחת להדביק ב-claude.ai, והלימוד <strong>משנה את טבעו</strong>.",
     inviteAct1: "להתקין עכשיו", inviteAct2: "קוד מקור — MIT",
     inviteNote: "חינם, בלי חשבון, בלי איסוף נתונים. משתלב עם ה-MCP הרשמי של ספריא — התקינו את שניהם: הרשמי לעומק הספרייה, Torah MCP למשמעת הציטוט, לחברותא ול-HebrewBooks.",
@@ -487,12 +493,23 @@ ${GA}
   }
 
   /* ---- ouverture plein écran ---- */
-  .cover { position:relative; min-height:100svh; display:flex; flex-direction:column; justify-content:center; padding:6.5rem 4vw 3rem; overflow:hidden; }
+  .cover { position:relative; min-height:100svh; display:flex; flex-direction:column; justify-content:center; padding:6.8rem 4vw 3rem; overflow:hidden; background:var(--ink); color:var(--paper); }
+  .cmot { font-family:"Archivo Black", "Arial Black", sans-serif; font-weight:400; font-size:clamp(3.2rem, 9vw, 7.6rem); line-height:.95; color:var(--pop); letter-spacing:.01em; }
+  .cmot.he { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:900; }
+  .cia { display:inline-block; background:var(--pop); color:var(--ink); font-family:"Archivo Black", "Arial Black", sans-serif; font-weight:400; font-size:.34em; line-height:1; padding:.24em .5em .3em; margin-inline-start:.3em; vertical-align:.32em; letter-spacing:.16em; transform:rotate(-2deg); box-shadow:0 6px 16px rgba(0,0,0,.25); }
+  [dir="rtl"] .cia { transform:rotate(2deg); }
+  .nameline { margin-top:1rem; font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; color:rgba(247,246,241,.62); }
+  .sub { margin-top:2.1rem; font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(1.5rem, 3.1vw, 2.5rem); line-height:1.12; letter-spacing:-.01em; max-width:15em; }
+  [dir="rtl"] .sub { font-family:"Frank Ruhl Libre", Georgia, serif; letter-spacing:0; }
   .cgrid { display:grid; grid-template-columns:1.12fr .88fr; gap:3.5rem; align-items:center; }
   .cta { display:inline-block; background:var(--pop); color:var(--ink); font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.15rem; padding:.55rem 1.15rem .65rem; text-decoration:none; box-shadow:0 4px 14px rgba(8,42,153,.16); transition:background .3s var(--ease), color .3s var(--ease), transform .3s var(--ease); }
   .cta:hover { background:var(--ink); color:var(--pop); transform:translateY(-2px); }
+  .cta2 { background:transparent; border:2px solid rgba(247,246,241,.75); color:var(--paper); box-shadow:none; padding:.47rem 1.05rem .57rem; }
+  .cta2:hover { background:var(--paper); color:var(--ink); border-color:var(--paper); }
+  .debloque { margin-top:1.3rem; max-width:36rem; font-size:.9rem; line-height:1.65; color:rgba(247,246,241,.66); }
+  .debloque b { color:var(--paper); font-weight:700; background:linear-gradient(transparent 62%, var(--pop) 62% 92%, transparent 92%); padding:0 .08em; }
   [dir="rtl"] .cta { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:700; }
-  .demo { position:relative; margin:0; background:#fff; border:1.5px solid var(--ink-15); padding:1.7rem 1.8rem 1.5rem; transform:rotate(1.6deg); box-shadow:0 14px 38px rgba(8,42,153,.12); max-width:26rem; justify-self:end; }
+  .demo { position:relative; margin:0; color:var(--ink); background:#fff; border:1.5px solid var(--ink-15); padding:1.7rem 1.8rem 1.5rem; transform:rotate(1.6deg); box-shadow:0 18px 44px rgba(0,0,0,.3); max-width:26rem; justify-self:end; }
   [dir="rtl"] .demo { transform:rotate(-1.6deg); justify-self:start; }
   .demo .sceau { position:absolute; top:-30px; inset-inline-end:-26px; width:96px; height:96px; border-radius:50%; transform:rotate(-8deg); border:5px solid #fff; box-shadow:0 8px 22px rgba(8,42,153,.22); }
   [dir="rtl"] .demo .sceau { transform:rotate(8deg); }
@@ -504,11 +521,11 @@ ${GA}
   .demo .ds span { font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; }
   .demo .dtag { display:block; margin-top:.8rem; font-size:.68rem; letter-spacing:.16em; text-transform:uppercase; opacity:.5; }
   .tuiles { display:grid; grid-template-columns:repeat(4, 1fr); gap:1.2rem; margin-top:3.6rem; }
-  .tuile { text-decoration:none; border-top:2px solid var(--ink); padding-top:.7rem; transition:transform .3s var(--ease), border-color .3s var(--ease); }
+  .tuile { text-decoration:none; color:var(--paper); border-top:2px solid rgba(247,246,241,.4); padding-top:.7rem; transition:transform .3s var(--ease), border-color .3s var(--ease); }
   .tuile:hover { transform:translateY(-3px); border-top-color:var(--pop); }
   .tuile b { display:block; font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.02rem; }
   [dir="rtl"] .tuile b { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:700; }
-  .tuile span { display:block; margin-top:.15rem; font-size:.82rem; color:var(--muted); line-height:1.45; }
+  .tuile span { display:block; margin-top:.15rem; font-size:.82rem; color:rgba(247,246,241,.65); line-height:1.45; }
   @media (max-width:960px) {
     .cover { min-height:auto; padding:5.8rem 4vw 2.6rem; }
     .cgrid { grid-template-columns:minmax(0, 1fr); gap:2.4rem; }
@@ -524,15 +541,14 @@ ${GA}
   footer img.fsceau { width:30px; height:30px; border-radius:50%; vertical-align:-9px; margin-inline-end:.5rem; }
   .cover .he-giant { position:absolute; inset-inline-end:-2vw; top:50%; transform:translateY(-54%); font-weight:700;
     font-size:clamp(7rem, 34vw, 30rem); line-height:1; color:transparent; -webkit-text-stroke:1.5px var(--ink-15); pointer-events:none; user-select:none; direction:rtl; }
-  .cover h1 { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(2.5rem, 5.4vw, 4.6rem); line-height:1.02; letter-spacing:-.02em; max-width:11em; position:relative; }
-  .cover h1 strong { font-weight:600; }
-  .cover h1 .no { position:relative; white-space:nowrap; }
-  .cover h1 .no::after { content:""; position:absolute; left:-.04em; right:-.04em; top:.56em; height:.055em; background:var(--ink);
+  .cover .sub strong { font-weight:600; }
+  .cover .sub .no { position:relative; white-space:nowrap; }
+  .cover .sub .no::after { content:""; position:absolute; left:-.04em; right:-.04em; top:.56em; height:.07em; background:var(--pop);
     transform:scaleX(0); transform-origin:left center; }
-  [dir="rtl"] .cover h1 .no::after { transform-origin:right center; }
-  .cover h1 strong { opacity:0; }
-  body.ready .cover h1 .no::after { animation:strike .55s var(--ease) 1.15s forwards; }
-  body.ready .cover h1 strong { animation:affirm .7s var(--ease) 1.6s forwards; }
+  [dir="rtl"] .cover .sub .no::after { transform-origin:right center; }
+  .cover .sub strong { opacity:0; }
+  body.ready .cover .sub .no::after { animation:strike .55s var(--ease) 1.15s forwards; }
+  body.ready .cover .sub strong { animation:affirm .7s var(--ease) 1.6s forwards; }
   @keyframes strike { to { transform:scaleX(1); } }
   @keyframes affirm { from { opacity:0; transform:translateY(.15em); } to { opacity:1; transform:none; } }
 
@@ -556,11 +572,11 @@ ${GA}
   nav { opacity:0; }
   body.ready nav { animation:rise .8s var(--ease) .9s forwards; transform:none; }
   @media (prefers-reduced-motion: reduce) {
-    .chor, .he-giant, nav, .cover h1 strong { opacity:1 !important; animation:none !important; transform:none !important; }
+    .chor, .he-giant, nav, .cover .sub strong { opacity:1 !important; animation:none !important; transform:none !important; }
     .cover h1 .no::after { transform:scaleX(1); animation:none !important; }
   }
-  .cover p.deck { margin-top:2rem; max-width:34rem; font-size:1.12rem; color:var(--ink); opacity:.85; position:relative; }
-  .cover .acts { margin-top:2.6rem; display:flex; gap:2.4rem; flex-wrap:wrap; font-size:1.1rem; position:relative; }
+  .cover p.deck { margin-top:1.6rem; max-width:34rem; font-size:1.05rem; color:rgba(247,246,241,.82); position:relative; }
+  .cover .acts { align-items:center; margin-top:2.4rem; display:flex; gap:2.4rem; flex-wrap:wrap; font-size:1.1rem; position:relative; }
   .cover .hint { position:absolute; bottom:2rem; inset-inline-start:4vw; font-size:.8rem; letter-spacing:.18em; text-transform:uppercase; opacity:.5; }
 
   /* ---- reveal ---- */
@@ -681,7 +697,7 @@ ${GA}
     .guf { line-height:1.8; }
   }
 </style>
-<noscript><style>.chor,.he-giant,nav,.cover h1 strong{opacity:1 !important;transform:none !important}.cover h1 .no::after{transform:scaleX(1)}</style></noscript>
+<noscript><style>.chor,.he-giant,nav,.cover .sub strong{opacity:1 !important;transform:none !important}.cover .sub .no::after{transform:scaleX(1)}</style></noscript>
 </head>
 <body>
 
@@ -699,15 +715,17 @@ ${GA}
 </nav>
 
 <header class="cover">
-  <div class="he-giant" aria-hidden="true">מקור</div>
   <div class="cgrid">
     <div>
-      <h1 class="fr chor c1">${s.h1}</h1>
+      <h1 class="cmot${s.shoutHe ? " he" : ""} chor c1" dir="ltr">${s.shoutWord}<span class="cia">IA&nbsp;!</span></h1>
+      <p class="nameline chor c1">${s.nameline}</p>
+      <p class="sub fr chor c2">${s.h1}</p>
       <p class="deck chor c2">${s.deck}</p>
       <div class="acts chor c3">
         <a class="cta" href="${href(lang, "/question")}">${s.act1}</a>
-        <a class="lnk" href="${href(lang, "/install")}">${s.act2}</a>
+        <a class="cta cta2" href="${href(lang, "/install")}">${s.act2}</a>
       </div>
+      <p class="debloque chor c3">${s.debloque}</p>
     </div>
     <figure class="demo chor c2">
       <img class="sceau" src="/icon.png" alt="">
@@ -790,12 +808,6 @@ ${GA}
   <div class="toc rv d1">
     ${s.toc.map((i) => `<a href="${h(i.to)}"><span class="t">${i.t}</span><span class="dots"></span><span class="d">${i.d}</span></a>`).join("\n    ")}
   </div>
-</section>
-
-<section class="shout">
-  <div class="mot rv${s.shoutHe ? ' he' : ''}" dir="ltr">${s.shoutWord}</div>
-  <div class="rv d1"><span class="ia">IA&nbsp;!</span></div>
-  <p class="rv d2">${s.shoutLine}</p>
 </section>
 
 <section class="invite">
