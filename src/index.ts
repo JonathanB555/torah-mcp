@@ -252,6 +252,12 @@ export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
 
+    // http → https (les liens nus tapés ou linkifiés en http arrivent ici).
+    if (url.protocol === "http:") {
+      url.protocol = "https:";
+      return Response.redirect(url.toString(), 301);
+    }
+
     // Migration de marque : torah-mcp.com → mamash-ia.com. Les pages redirigent ;
     // le connecteur (/mcp), l'API et l'admin continuent de servir sur l'ancien
     // domaine pour toujours (connecteurs installés, fiche Anthropic, registre).
