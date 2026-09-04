@@ -350,7 +350,7 @@ ${altLinks(lang, "/chabbat")}
   gtag('config', 'G-NG6P5HPH9K');
 </script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Frank+Ruhl+Libre:wght@400;700;900&family=Archivo+Black&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Frank+Ruhl+Libre:wght@400;700&family=Rubik:wght@900&display=swap');
   :root { --paper:#f7f6f1; --ink:#082a99; --pop:#ffd23f; --ink-40:rgba(8,42,153,.4); --ink-15:rgba(8,42,153,.14); --muted:rgba(8,42,153,.65); --ease:cubic-bezier(0.16,1,0.3,1); }
   * { box-sizing:border-box; margin:0; }
   body { background:var(--paper); color:var(--ink); font:17px/1.7 "Frank Ruhl Libre", Georgia, serif; padding:0 4vw 5rem; }
@@ -359,11 +359,11 @@ ${altLinks(lang, "/chabbat")}
   main { position:relative; }
   a { color:var(--ink); }
   nav { display:flex; justify-content:space-between; align-items:baseline; padding:1.1rem 0; font-size:.92rem; }
-  nav .wm { font-family:"Fraunces", Georgia, serif; font-weight:300; text-decoration:none; font-size:1.05rem; direction:ltr; }
-  nav .wm b { font-weight:600; border-bottom:3px solid var(--pop); padding-bottom:1px; }
+  nav .wm { font-family:"Rubik", "Arial Black", sans-serif; font-weight:900; font-size:.92rem; text-transform:uppercase; letter-spacing:.05em; text-decoration:none; direction:ltr; }
+  nav .wm b { font-weight:inherit; border-bottom:3px solid var(--pop); padding-bottom:1px; }
   nav .wm img { width:34px; height:34px; border-radius:50%; vertical-align:-11px; margin-inline-end:.55rem; }
-  nav .r a { font-family:"Archivo Black", "Arial Black", sans-serif; font-weight:400; font-size:.7rem; letter-spacing:.09em; text-transform:uppercase; text-decoration:none; margin-inline-start:1.1rem; } nav .r a:hover { text-decoration:underline; }
-  [dir="rtl"] nav .r a { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:900; font-size:.88rem; letter-spacing:0; text-transform:none; }
+  nav .r a { font-family:"Rubik", "Arial Black", sans-serif; font-weight:900; font-size:.7rem; letter-spacing:.09em; text-transform:uppercase; text-decoration:none; margin-inline-start:1.1rem; } nav .r a:hover { text-decoration:underline; }
+  [dir="rtl"] nav .r a { font-size:.8rem; letter-spacing:.02em; }
   nav .r a strong { background:var(--pop); color:var(--ink); padding:.2rem .55rem .24rem; font-weight:inherit; transition:background .3s var(--ease), color .3s var(--ease); }
   nav .r a:hover strong { background:var(--ink); color:var(--pop); }
   nav .r a:has(strong):hover { text-decoration:none; }

@@ -473,7 +473,7 @@ export function landingHtml(lang: Lang): string {
 ${altLinks(lang, path)}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Frank+Ruhl+Libre:wght@300;400;700;900&family=Archivo+Black&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Frank+Ruhl+Libre:wght@300;400;700;900&family=Rubik:wght@900&display=swap" rel="stylesheet">
 <meta property="og:type" content="website">
 <meta property="og:title" content="${ogTitle[lang]}">
 <meta property="og:description" content="${ogDesc[lang]}">
@@ -506,15 +506,15 @@ ${GA}
   nav { position:fixed; top:0; left:0; right:0; z-index:50; display:flex; justify-content:space-between; align-items:center;
         padding:.75rem 4vw; background:rgba(247,246,241,.82); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
         border-bottom:1.5px solid var(--ink-15); }
-  nav .wm { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:1.12rem; text-decoration:none; letter-spacing:.01em; display:flex; align-items:center; }
-  nav .wm b { font-weight:600; border-bottom:3px solid var(--pop); padding-bottom:1px; }
+  nav .wm { font-family:"Rubik", "Arial Black", sans-serif; font-weight:900; font-size:.98rem; text-transform:uppercase; letter-spacing:.05em; text-decoration:none; display:flex; align-items:center; }
+  nav .wm b { font-weight:inherit; border-bottom:3px solid var(--pop); padding-bottom:1px; }
   nav .wm img { width:36px; height:36px; border-radius:50%; margin-inline-end:.6rem; transition:transform .4s var(--ease); }
   nav .wm:hover img { transform:rotate(-8deg) scale(1.06); }
   nav .r { display:flex; gap:1.35rem; font-size:.95rem; align-items:center; }
-  nav .r a { font-family:"Archivo Black", "Arial Black", sans-serif; font-weight:400; font-size:.72rem; letter-spacing:.09em; text-transform:uppercase; text-decoration:none; padding-bottom:3px;
+  nav .r a { font-family:"Rubik", "Arial Black", sans-serif; font-weight:900; font-size:.72rem; letter-spacing:.09em; text-transform:uppercase; text-decoration:none; padding-bottom:3px;
     background-image:linear-gradient(var(--pop), var(--pop)); background-repeat:no-repeat;
     background-size:0% 2.5px; background-position:0 100%; transition:background-size .3s var(--ease); }
-  [dir="rtl"] nav .r a { background-position:100% 100%; font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:900; font-size:.9rem; letter-spacing:0; text-transform:none; }
+  [dir="rtl"] nav .r a { background-position:100% 100%; font-size:.82rem; letter-spacing:.02em; }
   nav .r a:hover { background-size:100% 2.5px; }
   nav .r a strong { background:var(--pop); color:var(--ink); padding:.34rem .7rem .38rem; font-weight:inherit; transition:background .3s var(--ease), color .3s var(--ease), box-shadow .3s var(--ease); box-shadow:0 3px 10px rgba(8,42,153,.14); }
   nav .r a:has(strong) { background-image:none; padding-bottom:0; }
@@ -522,11 +522,11 @@ ${GA}
   nav .r .lang { padding-inline-start:.4rem; border-inline-start:1px solid var(--ink-15); }
   @media (max-width:720px) {
     nav { padding:.7rem 3vw; }
-    nav .wm { font-size:.95rem; }
+    nav .wm { font-size:.85rem; }
     nav .wm img { width:26px; height:26px; margin-inline-end:.45rem; }
     nav .r { gap:.55rem; }
     nav .r a { margin-inline-start:0; font-size:.55rem; letter-spacing:.05em; white-space:nowrap; }
-    [dir="rtl"] nav .r a { font-size:.76rem; }
+    [dir="rtl"] nav .r a { font-size:.68rem; }
     nav .r .hide-m { display:none; }
     nav .r .lang { margin-inline-start:0; padding-inline-start:.35rem; font-size:.72rem; }
     .lang .dot { margin:0 .3em; }
@@ -534,9 +534,8 @@ ${GA}
 
   /* ---- ouverture plein écran ---- */
   .cover { position:relative; min-height:100svh; display:flex; flex-direction:column; justify-content:center; padding:6.8rem 4vw 3rem; overflow:hidden; background:var(--ink); color:var(--paper); }
-  .cmot { font-family:"Archivo Black", "Arial Black", sans-serif; font-weight:400; font-size:clamp(3.2rem, 9vw, 7.6rem); line-height:.95; color:var(--pop); letter-spacing:.01em; }
-  .cmot.he { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:900; }
-  .cia { display:inline-block; background:var(--pop); color:var(--ink); font-family:"Archivo Black", "Arial Black", sans-serif; font-weight:400; font-size:.34em; line-height:1; padding:.24em .5em .3em; margin-inline-start:.3em; vertical-align:.32em; letter-spacing:.16em; transform:rotate(-2deg); box-shadow:0 6px 16px rgba(0,0,0,.25); }
+  .cmot { font-family:"Rubik", "Arial Black", sans-serif; font-weight:900; font-size:clamp(3.2rem, 9vw, 7.6rem); line-height:.95; color:var(--pop); letter-spacing:.01em; }
+  .cia { display:inline-block; background:var(--pop); color:var(--ink); font-family:"Rubik", "Arial Black", sans-serif; font-weight:900; font-size:.34em; line-height:1; padding:.24em .5em .3em; margin-inline-start:.3em; vertical-align:.32em; letter-spacing:.16em; transform:rotate(-2deg); box-shadow:0 6px 16px rgba(0,0,0,.25); }
   [dir="rtl"] .cia { transform:rotate(2deg); }
   .nameline { margin-top:1rem; font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; color:rgba(247,246,241,.62); }
   .sub { margin-top:2.1rem; font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(1.5rem, 3.1vw, 2.5rem); line-height:1.12; letter-spacing:-.01em; max-width:15em; }
@@ -618,9 +617,9 @@ ${GA}
 
   /* ---- le cri du nom, DA du sticker ---- */
   .shout { background:var(--ink); text-align:center; padding:5.5rem 4vw 5rem; overflow:hidden; }
-  .shout .mot { font-family:"Archivo Black", "Arial Black", sans-serif; font-size:clamp(3.4rem, 14vw, 11rem); line-height:.95; color:var(--pop); letter-spacing:.01em; }
+  .shout .mot { font-family:"Rubik", "Arial Black", sans-serif; font-weight:900; font-size:clamp(3.4rem, 14vw, 11rem); line-height:.95; color:var(--pop); letter-spacing:.01em; }
   .shout .mot.he { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:900; }
-  .shout .ia { display:inline-block; background:var(--pop); color:var(--ink); font-family:"Archivo Black", "Arial Black", sans-serif; font-size:clamp(1.5rem, 4.6vw, 3.4rem); line-height:1; padding:.22em .55em .28em; margin-top:1.1rem; transform:rotate(-2deg); letter-spacing:.18em; }
+  .shout .ia { display:inline-block; background:var(--pop); color:var(--ink); font-family:"Rubik", "Arial Black", sans-serif; font-weight:900; font-size:clamp(1.5rem, 4.6vw, 3.4rem); line-height:1; padding:.22em .55em .28em; margin-top:1.1rem; transform:rotate(-2deg); letter-spacing:.18em; }
   [dir="rtl"] .shout .ia { transform:rotate(2deg); }
   .shout p { margin:2.4rem auto 0; max-width:40rem; color:var(--paper); opacity:.88; font-size:1.06rem; line-height:1.7; }
 
@@ -742,6 +741,8 @@ ${GA}
   [dir="rtl"] .cover h1, [dir="rtl"] .band h2, [dir="rtl"] .invite h2 { font-weight:400; }
   [dir="rtl"] .cover h1 strong, [dir="rtl"] .invite h2 strong, [dir="rtl"] .kez .vs h3, [dir="rtl"] .modes .col h3, [dir="rtl"] .toc .t, [dir="rtl"] .lnk { font-weight:700; }
   [dir="rtl"] .cover h1 .no::after { top:.5em; }
+  /* Le cri reste en Rubik 900 aussi en hébreu (prime sur les règles RTL génériques) */
+  [dir="rtl"] .cover h1.cmot { font-family:"Rubik", "Arial Black", sans-serif; font-weight:900; }
   [dir="rtl"] nav .grp, [dir="rtl"] .cover .hint, [dir="rtl"] .amud-head .lbl, [dir="rtl"] .glose h3, [dir="rtl"] .modes .who { letter-spacing:.05em; }
   [dir="rtl"] .toc .dots { transform:translateY(-.3em); }
 
@@ -1043,7 +1044,7 @@ export function installHtml(lang: Lang): string {
 ${altLinks(lang, path)}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Frank+Ruhl+Libre:wght@400;700;900&family=Archivo+Black&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Frank+Ruhl+Libre:wght@400;700&family=Rubik:wght@900&display=swap" rel="stylesheet">
 <meta property="og:type" content="website">
 <meta property="og:title" content="${ogTitle[lang]}">
 <meta property="og:description" content="${ogDesc[lang]}">
@@ -1058,12 +1059,12 @@ ${GA}
   main { max-width:820px; margin:0 auto; }
   a { color:var(--ink); }
   nav { display:flex; justify-content:space-between; align-items:baseline; padding:1.1rem 0; }
-  nav .wm { font-family:"Fraunces", Georgia, serif; font-weight:300; text-decoration:none; }
-  nav .wm b { font-weight:600; border-bottom:3px solid var(--pop); padding-bottom:1px; }
+  nav .wm { font-family:"Rubik", "Arial Black", sans-serif; font-weight:900; font-size:.95rem; text-transform:uppercase; letter-spacing:.05em; text-decoration:none; }
+  nav .wm b { font-weight:inherit; border-bottom:3px solid var(--pop); padding-bottom:1px; }
   nav .wm img { width:34px; height:34px; border-radius:50%; vertical-align:-11px; margin-inline-end:.55rem; }
   nav .r { display:flex; gap:1.4rem; align-items:baseline; }
-  nav a.b { font-family:"Archivo Black", "Arial Black", sans-serif; font-weight:400; font-size:.7rem; letter-spacing:.09em; text-transform:uppercase; text-decoration:none; } nav a.b:hover { text-decoration:underline; }
-  [dir="rtl"] nav a.b { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:900; font-size:.88rem; letter-spacing:0; text-transform:none; }
+  nav a.b { font-family:"Rubik", "Arial Black", sans-serif; font-weight:900; font-size:.7rem; letter-spacing:.09em; text-transform:uppercase; text-decoration:none; } nav a.b:hover { text-decoration:underline; }
+  [dir="rtl"] nav a.b { font-size:.8rem; letter-spacing:.02em; }
   ${LANG_CSS}
   h1 { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(2.2rem,5vw,3.6rem); line-height:1.05; letter-spacing:-.02em; margin:3.5rem 0 .8rem; }
   [dir="rtl"] h1 { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:700; letter-spacing:0; }
