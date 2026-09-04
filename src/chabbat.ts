@@ -253,8 +253,11 @@ const T = {
     copie: "Copié.",
     copieErr: "Copie impossible ici — sélectionnez le texte à la main.",
     gifLab: "Le GIF qui va avec",
-    gifNote: "Trois au choix — ils changent chaque vendredi. Le bouton envoie le message ET le GIF ensemble : sur téléphone via la feuille de partage, sur ordinateur en copiant le texte et en téléchargeant le GIF.",
-    gifGo: "Envoyer message + GIF",
+    gifNote: "Ils partent ensemble : sur téléphone via la feuille de partage ; sur ordinateur, le texte est copié et le GIF téléchargé — collez le texte, glissez le GIF.",
+    gifGo: "Envoyer les deux sur WhatsApp",
+    envMsgLab: "Le message de la semaine",
+    envLire: "Lire en entier",
+    envChoix: "Trois au choix, renouvelés chaque vendredi — cliquez pour changer.",
     gifOk: "Parti ! Si seul le GIF a été envoyé, le message est déjà copié — collez-le à la suite.",
     gifDesk: "Message copié et GIF téléchargé — collez le texte (Cmd+V), puis glissez le GIF dans la conversation.",
     gifErr: "GIF momentanément indisponible.",
@@ -275,8 +278,11 @@ const T = {
     copie: "Copied.",
     copieErr: "Copying failed here — select the text by hand.",
     gifLab: "The GIF to go with it",
-    gifNote: "Three to choose from — they change every Friday. The button sends the message AND the GIF together: on a phone via the share sheet, on a computer by copying the text and downloading the GIF.",
-    gifGo: "Send message + GIF",
+    gifNote: "They leave together: on a phone via the share sheet; on a computer the text is copied and the GIF downloaded — paste the text, drag the GIF.",
+    gifGo: "Send both on WhatsApp",
+    envMsgLab: "This week's message",
+    envLire: "Read in full",
+    envChoix: "Three to pick from, renewed every Friday — click to change.",
     gifOk: "Sent! If only the GIF went through, the message is already copied — paste it right after.",
     gifDesk: "Message copied and GIF downloaded — paste the text (Cmd+V), then drag the GIF into the conversation.",
     gifErr: "GIF temporarily unavailable.",
@@ -297,8 +303,11 @@ const T = {
     copie: "הועתק.",
     copieErr: "ההעתקה נכשלה — סמנו את הטקסט ידנית.",
     gifLab: "הגיף שמתלווה",
-    gifNote: "שלושה לבחירה — הם מתחלפים בכל יום שישי. הכפתור שולח את ההודעה ואת הגיף יחד: בטלפון דרך חלון השיתוף, במחשב בהעתקת הטקסט והורדת הגיף.",
-    gifGo: "שליחת הודעה + גיף",
+    gifNote: "הם נשלחים יחד: בטלפון דרך חלון השיתוף; במחשב הטקסט מועתק והגיף יורד — הדביקו את הטקסט וגררו את הגיף.",
+    gifGo: "שליחת שניהם בוואטסאפ",
+    envMsgLab: "מסר השבוע",
+    envLire: "לקריאה מלאה",
+    envChoix: "שלושה לבחירה, מתחדשים בכל יום שישי — הקישו להחלפה.",
     gifOk: "נשלח! אם רק הגיף עבר, ההודעה כבר הועתקה — הדביקו אותה מיד אחריו.",
     gifDesk: "ההודעה הועתקה והגיף ירד — הדביקו את הטקסט (Cmd+V) וגררו את הגיף לשיחה.",
     gifErr: "הגיף אינו זמין כרגע.",
@@ -323,15 +332,26 @@ export async function chabbatPage(env: Env, lang: Lang): Promise<string> {
   } catch {}
   const texte: string = row ? row[lang] || row.fr : "";
   const indices = gifsDeLaSemaine(row?.vendredi || vendrediCourant());
-  const gifsHtml = `<div class="gifs">
-    <span class="lab">${s.gifLab}</span>
-    <p class="note">${s.gifNote}</p>
-    <div class="row">
-      ${indices.map((i) => `<figure><img src="/api/gif?i=${i}" alt="Chabbat chalom" loading="lazy"><a class="snd" data-i="${i}" role="button" tabindex="0">${s.gifGo}</a></figure>`).join("\n      ")}
+  // Aperçu du message pour la carte du composeur (sans les * de gras WhatsApp)
+  const brut = texte.replace(/\*/g, "");
+  const apercu = brut.length > 330 ? brut.slice(0, Math.max(brut.lastIndexOf(" ", 330), 200)) + " …" : brut;
+  const gifsHtml = `<div class="envoi">
+    ${texte ? `<div class="ecard">
+      <span class="elab">${s.envMsgLab}</span>
+      <div class="etxt">${esc(apercu)}</div>
+      <a class="elire" href="#msg">${s.envLire}</a>
     </div>
-    <p class="gfb" id="gfb"></p>
-    <p class="credit">${s.gifCredit}</p>
-  </div>`;
+    <div class="eplus" aria-hidden="true">+</div>` : ""}
+    <div class="egifs">
+      <span class="elab">${s.gifLab}</span>
+      <div class="erow">
+        ${indices.map((i, k) => `<button type="button" class="egif${k === 0 ? " sel" : ""}" data-i="${i}" aria-pressed="${k === 0}"><img src="/api/gif?i=${i}" alt="GIF Chabbat ${k + 1}" loading="lazy"></button>`).join("")}
+      </div>
+      <span class="echoix">${s.envChoix}</span>
+    </div>
+  </div>
+  <div class="eacts"><a href="#" id="both" class="ego" role="button">${s.gifGo}</a><span class="gfb" id="gfb"></span></div>
+  <p class="enote">${s.gifNote} ${s.gifCredit}</p>`;
   const dateGen = row
     ? new Date(row.ts).toLocaleDateString(t(lang, { fr: "fr-FR", en: "en-GB", he: "he-IL" }), { day: "numeric", month: "long", year: "numeric" })
     : "";
@@ -410,21 +430,37 @@ ${altLinks(lang, "/chabbat")}
   .acts a { text-decoration:none; } .acts a::before { content:"[ "; color:var(--ink-40); } .acts a::after { content:" ]"; color:var(--ink-40); } .acts a:hover::before { content:"[ → "; }
   [dir="rtl"] .acts a:hover::before { content:"[ ← "; }
   .acts .fb { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:400; font-size:.85rem; font-style:italic; color:var(--muted); min-height:1em; }
-  .gifs { margin:1.5rem 0 2rem; border-top:1px dotted var(--ink-40); border-bottom:1px dotted var(--ink-40); padding:1.2rem 0 1.3rem; }
-  .gifs .lab { display:block; font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.15rem; margin-bottom:.2rem; }
-  [dir="rtl"] .gifs .lab { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:700; }
-  .gifs .note { font-size:.88rem; color:var(--muted); margin-bottom:1rem; max-width:44rem; }
-  .gifs .row { display:grid; grid-template-columns:repeat(3,1fr); gap:1.2rem; }
-  .gifs figure { margin:0; }
-  .gifs img { width:100%; aspect-ratio:1; object-fit:cover; border:1.5px solid var(--ink-15); display:block; background:var(--ink-15); }
-  .gifs figure:hover img { border-color:var(--ink); }
-  .gifs .snd { display:inline-block; margin-top:.5rem; font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:.98rem; text-decoration:none; cursor:pointer; }
-  [dir="rtl"] .gifs .snd { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:700; }
-  .gifs .snd::before { content:"[ "; color:var(--ink-40); } .gifs .snd::after { content:" ]"; color:var(--ink-40); } .gifs .snd:hover::before { content:"[ → "; }
-  [dir="rtl"] .gifs .snd:hover::before { content:"[ ← "; }
-  .gifs .gfb { margin-top:.9rem; font-size:.9rem; font-style:italic; color:var(--muted); min-height:1.2em; max-width:44rem; }
-  .gifs .credit { margin-top:.4rem; font-size:.78rem; color:var(--muted); }
-  @media (max-width:640px) { .gifs .row { grid-template-columns:1fr 1fr; } }
+  /* Le composeur d'envoi : la carte du message + le GIF = un seul colis */
+  .envoi { display:grid; grid-template-columns:1.25fr auto 1fr; gap:1.3rem; align-items:center; margin:1.7rem 0 0; }
+  .ecard { background:#fff; border:1.5px solid var(--ink-15); padding:1rem 1.15rem 2.7rem; position:relative; transform:rotate(-1.2deg); box-shadow:0 10px 26px rgba(8,42,153,.09); }
+  [dir="rtl"] .ecard { transform:rotate(1.2deg); }
+  .elab { display:block; font-size:.66rem; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:.5rem; }
+  [dir="rtl"] .elab { letter-spacing:.04em; }
+  .etxt { font-size:.88rem; line-height:1.55; white-space:pre-line; max-height:9.8em; overflow:hidden; position:relative; }
+  .etxt::after { content:""; position:absolute; inset-inline:0; bottom:0; height:3.2em; background:linear-gradient(rgba(255,255,255,0), #fff); }
+  .elire { position:absolute; bottom:.85rem; inset-inline-start:1.15rem; font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:.88rem; text-decoration:none; }
+  [dir="rtl"] .elire { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:700; }
+  .elire::before { content:"[ "; color:var(--ink-40); } .elire::after { content:" ]"; color:var(--ink-40); } .elire:hover::before { content:"[ ↓ "; }
+  .eplus { font-family:"Rubik", "Arial Black", sans-serif; font-weight:900; font-size:1.7rem; line-height:1; background:var(--pop); padding:.14em .34em .22em; transform:rotate(-3deg); box-shadow:0 4px 12px rgba(8,42,153,.14); }
+  .erow { display:grid; grid-template-columns:repeat(3, 1fr); gap:.6rem; }
+  .egif { padding:0; border:2.5px solid var(--ink-15); background:none; cursor:pointer; transition:border-color .25s, transform .25s; }
+  .egif img { display:block; width:100%; aspect-ratio:1; object-fit:cover; background:var(--ink-15); }
+  .egif:hover { border-color:var(--ink-40); }
+  .egif.sel { border-color:var(--ink); transform:rotate(-2deg) scale(1.04); box-shadow:0 6px 16px rgba(8,42,153,.2); }
+  [dir="rtl"] .egif.sel { transform:rotate(2deg) scale(1.04); }
+  .echoix { display:block; margin-top:.5rem; font-size:.78rem; color:var(--muted); }
+  .eacts { margin-top:1.2rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap; }
+  .ego { display:inline-block; background:var(--pop); color:var(--ink); font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.08rem; padding:.52rem 1.1rem .62rem; text-decoration:none; box-shadow:0 4px 14px rgba(8,42,153,.16); transition:background .3s, color .3s, transform .3s; }
+  .ego:hover { background:var(--ink); color:var(--pop); transform:translateY(-2px); }
+  [dir="rtl"] .ego { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:700; }
+  .gfb { font-size:.9rem; font-style:italic; color:var(--muted); }
+  .enote { margin-top:.7rem; font-size:.82rem; color:var(--muted); max-width:44rem; }
+  .envoi + .msg, .eacts ~ .msg { margin-top:2rem; }
+  @media (max-width:640px) {
+    .envoi { grid-template-columns:1fr; gap:.8rem; }
+    .eplus { justify-self:center; }
+    .etxt { max-height:7.4em; }
+  }
   footer { margin-top:4rem; font-size:.88rem; color:var(--muted); border-top:1px solid var(--ink-15); padding-top:1.4rem; }
 </style>
 </head>
@@ -437,10 +473,10 @@ ${altLinks(lang, "/chabbat")}
   <img class="sceau" src="/icon.png" alt="">
   <h1>${s.h1}</h1>
   <p class="muted">${s.chapeau}</p>
-  ${texte ? `<div class="acts"><a href="#" id="copy">${s.copier}</a><a href="#" id="share" role="button">${s.partager}</a><span class="fb" id="fb"></span></div>
-  ${gifsHtml}
+  ${texte ? `${gifsHtml}
   <div class="msg" id="msg">${esc(texte).replace(/\*([^*\n]+)\*/g, "<strong>$1</strong>")}</div>
-  <p class="meta">${s.genere} ${esc(dateGen)}.</p>` : `<div class="msg">${s.vide}</div>
+  <p class="meta">${s.genere} ${esc(dateGen)}.</p>
+  <div class="acts"><a href="#" id="copy">${s.copier}</a><a href="#" id="share" role="button">${s.partager}</a><span class="fb" id="fb"></span></div>` : `<div class="msg">${s.vide}</div>
   ${gifsHtml}`}
   <footer><p><a href="${href(lang, "/")}">${s.foot.accueil}</a> · <a href="${href(lang, "/daily")}">${s.foot.daily}</a> · <a href="${href(lang, "/privacy")}">${s.foot.privacy}</a> · ${langSwitcher(lang, "/chabbat")}</p><p><img class="fsceau" src="/icon.png" alt="">${colophon(lang)}</p></footer>
 </main>
@@ -456,32 +492,40 @@ ${altLinks(lang, "/chabbat")}
   var gfb = document.getElementById("gfb");
   function gifFeedback(m) { gfb.textContent = m; setTimeout(function () { if (gfb.textContent === m) gfb.textContent = ""; }, 9000); }
 
-  // Message + GIF ensemble. Le texte ne transite jamais par une URL
-  // (WhatsApp desktop macOS y corrompt les émojis) : partage natif avec
-  // fichier + texte quand l'appareil sait le faire, sinon copie + fichier.
-  document.querySelectorAll(".gifs .snd").forEach(function (btn) {
-    btn.addEventListener("click", function (e) {
-      e.preventDefault();
-      var i = btn.getAttribute("data-i");
-      var pCopie = texte ? copier(texte).catch(function () {}) : Promise.resolve();
-      fetch("/api/gif?i=" + i)
-        .then(function (r) { if (!r.ok) throw 0; return r.blob(); })
-        .then(function (b) {
-          var file = new File([b], "chabbat-chalom.gif", { type: "image/gif" });
-          if (navigator.canShare && navigator.canShare({ files: [file] })) {
-            var charge = texte ? { files: [file], text: texte } : { files: [file] };
-            if (texte && !navigator.canShare(charge)) charge = { files: [file] };
-            return navigator.share(charge).then(function () { if (texte) gifFeedback("${s.gifOk}"); }, function (er) { if (er && er.name === "AbortError") return; throw er; });
-          }
-          var url = URL.createObjectURL(b);
-          var a = document.createElement("a");
-          a.href = url; a.download = "chabbat-chalom.gif";
-          document.body.appendChild(a); a.click(); a.remove();
-          setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
-          return pCopie.then(function () { gifFeedback(texte ? "${s.gifDesk}" : "${s.gifOk}"); });
-        })
-        .catch(function () { gifFeedback("${s.gifErr}"); });
+  // Le composeur : on choisit son GIF, un seul bouton envoie le colis.
+  // Le texte ne transite jamais par une URL (WhatsApp desktop macOS y
+  // corrompt les émojis) : partage natif fichier + texte quand l'appareil
+  // sait le faire, sinon copie + téléchargement.
+  var choisi = null;
+  document.querySelectorAll(".egif").forEach(function (b) {
+    if (choisi === null) choisi = b.getAttribute("data-i");
+    b.addEventListener("click", function () {
+      document.querySelectorAll(".egif").forEach(function (x) { x.classList.remove("sel"); x.setAttribute("aria-pressed", "false"); });
+      b.classList.add("sel"); b.setAttribute("aria-pressed", "true");
+      choisi = b.getAttribute("data-i");
     });
+  });
+  var both = document.getElementById("both");
+  if (both) both.addEventListener("click", function (e) {
+    e.preventDefault();
+    var pCopie = texte ? copier(texte).catch(function () {}) : Promise.resolve();
+    fetch("/api/gif?i=" + choisi)
+      .then(function (r) { if (!r.ok) throw 0; return r.blob(); })
+      .then(function (b) {
+        var file = new File([b], "chabbat-chalom.gif", { type: "image/gif" });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          var charge = texte ? { files: [file], text: texte } : { files: [file] };
+          if (texte && !navigator.canShare(charge)) charge = { files: [file] };
+          return navigator.share(charge).then(function () { if (texte) gifFeedback("${s.gifOk}"); }, function (er) { if (er && er.name === "AbortError") return; throw er; });
+        }
+        var url = URL.createObjectURL(b);
+        var a = document.createElement("a");
+        a.href = url; a.download = "chabbat-chalom.gif";
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+        return pCopie.then(function () { gifFeedback(texte ? "${s.gifDesk}" : "${s.gifOk}"); });
+      })
+      .catch(function () { gifFeedback("${s.gifErr}"); });
   });
 
   var msg = document.getElementById("msg"); if (!msg) return;
