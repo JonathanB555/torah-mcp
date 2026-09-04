@@ -51,12 +51,14 @@ The server also ships an `instructions` block (loaded by MCP clients at
 initialize) telling the model to load the skill before answering any religious
 question, and five MCP prompts (`hebrewbooks`, `havrouta`, `paracha`, `debutant`, `avance`).
 
-## The website
+## The website — Mamash IA
 
-Everything the MCP does also exists on the web, no install needed, in three
-languages: French at the root ([torah-mcp.com](https://torah-mcp.com)),
-English under [/en](https://torah-mcp.com/en), Hebrew (RTL) under
-[/he](https://torah-mcp.com/he) — same slugs everywhere (`/question`, `/daf`,
+The website now lives under its own brand, **Mamash IA** (the connector keeps
+its `torah-mcp` identity; torah-mcp.com redirects, and torah-mcp.com/mcp keeps
+serving installed connectors forever). Everything the MCP does also exists on the web, no install needed, in three
+languages: French at the root ([mamash-ia.com](https://mamash-ia.com)),
+English under [/en](https://mamash-ia.com/en), Hebrew (RTL) under
+[/he](https://mamash-ia.com/he) — same slugs everywhere (`/question`, `/daf`,
 `/outils`, `/install`, `/daily`, `/privacy`), a FR · EN · עב switcher on
 every page, `hreflang` links for search engines.
 

@@ -17,7 +17,7 @@ import { type Lang, href, altLinks, langSwitcher } from "./i18n";
 export const DAF_VIEWER_URI = "ui://torah-mcp/daf-viewer.html";
 export const MCP_APP_MIME = "text/html;profile=mcp-app";
 
-const USER_AGENT = "torah-mcp/1.5 (+https://torah-mcp.com)";
+const USER_AGENT = "torah-mcp/1.5 (+https://mamash-ia.com)";
 
 async function sefariaJson(env: Env, path: string): Promise<any> {
   const resp = await fetch(`${env.SEFARIA_API_URL}${path}`, {
@@ -171,7 +171,7 @@ const T: Record<Lang, Strings> = {
     today: "Daf du jour",
     all: "Tout traduire",
     hideAll: "Masquer les traductions",
-    back: "← torah-mcp.com",
+    back: "← mamash-ia.com",
     loading: "טוען את הדף…",
     error: "Erreur de chargement — réessayez.",
     hint: "לחיצה על קטע — תרגום. Un clic sur un segment affiche sa traduction.",
@@ -187,7 +187,7 @@ const T: Record<Lang, Strings> = {
     today: "Today's daf",
     all: "Translate all",
     hideAll: "Hide translations",
-    back: "← torah-mcp.com",
+    back: "← mamash-ia.com",
     loading: "Loading the daf…",
     error: "Loading error — please try again.",
     hint: "לחיצה על קטע — תרגום. Click a segment to show its translation.",
@@ -203,7 +203,7 @@ const T: Record<Lang, Strings> = {
     today: "הדף היומי",
     all: "תרגם הכול",
     hideAll: "הסתר תרגומים",
-    back: "torah-mcp.com →",
+    back: "mamash-ia.com →",
     loading: "טוען את הדף…",
     error: "שגיאה בטעינה — נסו שוב.",
     hint: "לחיצה על קטע מציגה את תרגומו.",
@@ -405,7 +405,7 @@ ${altLinks(lang, "/daf")}
     function gtag(){ dataLayer.push(arguments); }
     gtag("js", new Date());
     gtag("config", "G-NG6P5HPH9K");
-    // Mode web : la page est servie sur torah-mcp.com/daf — on interroge l'API.
+    // Mode web : la page est servie sur mamash-ia.com/daf — on interroge l'API.
     document.getElementById("topbar").style.display = "block";
     if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) applyTheme("dark");
     var refQs = function (ref) { return ref ? "?ref=" + encodeURIComponent(ref) : ""; };
@@ -425,7 +425,7 @@ ${altLinks(lang, "/daf")}
           if (d.error) { l.textContent = d.error; return; }
           render({ structuredContent: d });
           var seg = (d.segments || []).length;
-          document.title = d.ref + " — Torah MCP";
+          document.title = d.ref + " — Mamash IA";
           if (history.replaceState) history.replaceState(null, "", PAGE + refQs(ref));
         })
         .catch(function () { l.textContent = S.error; });

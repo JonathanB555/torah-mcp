@@ -124,7 +124,7 @@ const GROUPES: readonly Groupe[] = ["fetes", "torah", "emouna", "moussar", "cour
 
 const T = {
   fr: {
-    title: "Chiourim — Torah MCP",
+    title: "Chiourim — Mamash IA",
     desc: "Les chiourim en vidéo du rav Meir Attal : moussar, émouna, fêtes — en français. Le dernier cours et le catalogue par thèmes.",
     h1: "Les <strong>chiourim</strong> du rav Attal.",
     lead: "Les cours du rav Meir Attal, en français — du moussar enraciné dans les textes, une trentaine de minutes chacun. Rien ne se charge depuis YouTube avant que vous cliquiez ; la vidéo se lance alors sans cookies.",
@@ -140,7 +140,7 @@ const T = {
     foot: { accueil: "Accueil", daily: "Limoud du jour", privacy: "Confidentialité" },
   },
   en: {
-    title: "Video shiurim — Torah MCP",
+    title: "Video shiurim — Mamash IA",
     desc: "Rav Meir Attal's video shiurim: mussar, emunah, festivals — in French. The latest class and the catalogue by theme.",
     h1: "Rav Attal's <strong>shiurim</strong>.",
     lead: "Rav Meir Attal's classes, in French — mussar rooted in the texts, about thirty minutes each. Nothing loads from YouTube until you click; the video then plays without cookies.",
@@ -156,7 +156,7 @@ const T = {
     foot: { accueil: "Home", daily: "Today's learning", privacy: "Privacy" },
   },
   he: {
-    title: "שיעורים בווידאו — Torah MCP",
+    title: "שיעורים בווידאו — Mamash IA",
     desc: "השיעורים של הרב מאיר אטל: מוסר, אמונה, חגים — בצרפתית. השיעור האחרון והקטלוג לפי נושאים.",
     h1: "השיעורים של <strong>הרב אטל</strong>.",
     lead: "שיעוריו של הרב מאיר אטל, בצרפתית — מוסר מושרש בטקסטים, כחצי שעה כל אחד. שום דבר לא נטען מיוטיוב לפני הלחיצה; הווידאו מתנגן אז ללא עוגיות.",
@@ -181,7 +181,7 @@ interface RssEntry { id: string; t: string; date: string }
 async function fluxRecent(): Promise<RssEntry[]> {
   try {
     const resp = await fetch(RSS_URL, {
-      headers: { "User-Agent": "torah-mcp/1.10 (+https://torah-mcp.com)" },
+      headers: { "User-Agent": "torah-mcp/1.10 (+https://mamash-ia.com)" },
       cf: { cacheTtl: 3600, cacheEverything: true },
     } as RequestInit);
     if (!resp.ok) return [];
@@ -235,8 +235,8 @@ ${altLinks(lang, "/chiourim")}
 <meta property="og:type" content="website">
 <meta property="og:title" content="${esc(s.title)}">
 <meta property="og:description" content="${esc(s.desc)}">
-<meta property="og:image" content="https://torah-mcp.com/og.png">
-<meta property="og:url" content="https://torah-mcp.com${href(lang, "/chiourim")}">
+<meta property="og:image" content="https://mamash-ia.com/og.png">
+<meta property="og:url" content="https://mamash-ia.com${href(lang, "/chiourim")}">
 <meta name="twitter:card" content="summary_large_image">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-NG6P5HPH9K"></script>
@@ -298,7 +298,7 @@ ${altLinks(lang, "/chiourim")}
 <body>
 <main>
   <nav>
-    <a class="wm" href="${href(lang, "/")}"><b>Torah</b>&nbsp;MCP</a>
+    <a class="wm" href="${href(lang, "/")}"><b>Mamash</b>&nbsp;IA</a>
     <span class="r"><a href="${href(lang, "/question")}">${s.nav.question}</a><a href="${href(lang, "/daf")}">${s.nav.daf}</a><a href="${href(lang, "/outils")}">${s.nav.outils}</a><a href="${href(lang, "/install")}"><strong>${s.nav.install}</strong></a>${langSwitcher(lang, "/chiourim")}</span>
   </nav>
   <h1>${s.h1}</h1>

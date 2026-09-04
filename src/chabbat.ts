@@ -40,12 +40,12 @@ On ne devient pas quelqu'un de bien en pensant de belles choses. On le devient e
 
 Et la haftara (Isaïe 54) murmure la même chose : les montagnes peuvent chanceler — Son attachement, lui, ne bouge pas.
 
-📚 Le limoud du jour : torah-mcp.com/daily
-💬 Une question ? torah-mcp.com/question
+📚 Le limoud du jour : mamash-ia.com/daily
+💬 Une question ? mamash-ia.com/question
 
 *Chabbat chalom !* ✨`;
 
-const CONSIGNES = `Tu rédiges le message WhatsApp de Chabbat du site torah-mcp.com, en français.
+const CONSIGNES = `Tu rédiges le message WhatsApp de Chabbat du site mamash-ia.com, en français.
 
 Règles absolues :
 - Ne cite QUE ce que tu as lu : avant d'écrire, lis la haftara avec le tool
@@ -159,8 +159,8 @@ export async function genererChabbat(env: Env): Promise<{ vendredi: string; ok: 
   const trData = await appelClaude(
     env,
     `Tu traduis un message WhatsApp de Chabbat. Rends deux versions complètes du message fourni :
-- entre <EN> et </EN> : anglais naturel, translittération anglaise usuelle (Shabbat, parashah, Rashi…), liens torah-mcp.com/en/daily et torah-mcp.com/en/question, « *Shabbat shalom!* ✨ » final ;
-- entre <HE> et </HE> : hébreu israélien soigné (pas de calque), les versets cités le sont dans leur texte original, liens torah-mcp.com/he/daily et torah-mcp.com/he/question, « *שבת שלום!* ✨ » final.
+- entre <EN> et </EN> : anglais naturel, translittération anglaise usuelle (Shabbat, parashah, Rashi…), liens mamash-ia.com/en/daily et mamash-ia.com/en/question, « *Shabbat shalom!* ✨ » final ;
+- entre <HE> et </HE> : hébreu israélien soigné (pas de calque), les versets cités le sont dans leur texte original, liens mamash-ia.com/he/daily et mamash-ia.com/he/question, « *שבת שלום!* ✨ » final.
 Conserve la structure, les *gras* WhatsApp et les émojis-repères de début de ligne. Réponds par les deux blocs seuls.`,
     [{ role: "user", content: fr }],
     undefined,
@@ -224,7 +224,7 @@ export async function servirGif(request: Request): Promise<Response> {
   const i = Number(new URL(request.url).searchParams.get("i"));
   if (!Number.isInteger(i) || i < 0 || i >= GIFS.length) return new Response("Introuvable", { status: 404 });
   const resp = await fetch(GIFS[i], {
-    headers: { "User-Agent": "torah-mcp/1.10 (+https://torah-mcp.com)" },
+    headers: { "User-Agent": "torah-mcp/1.10 (+https://mamash-ia.com)" },
     cf: { cacheTtl: 86_400, cacheEverything: true },
   } as RequestInit);
   if (!resp.ok) return new Response("GIF momentanément indisponible", { status: 502 });
@@ -244,7 +244,7 @@ export async function servirGif(request: Request): Promise<Response> {
 
 const T = {
   fr: {
-    title: "Le WhatsApp de Chabbat — Torah MCP",
+    title: "Le WhatsApp de Chabbat — Mamash IA",
     desc: "Le message de Chabbat de la semaine — paracha, horaires, un fil et une morale — prêt à copier dans WhatsApp.",
     h1: 'Le <strong>WhatsApp</strong> de Chabbat.',
     chapeau: "Chaque vendredi matin, le site compose le message de la semaine : la paracha, les horaires de Paris, Marseille et Genève, un fil, une morale — la haftara réellement lue avant d'être citée. Copiez, envoyez.",
@@ -266,7 +266,7 @@ const T = {
     foot: { accueil: "Accueil", daily: "Limoud du jour", privacy: "Confidentialité" },
   },
   en: {
-    title: "The Shabbat WhatsApp — Torah MCP",
+    title: "The Shabbat WhatsApp — Mamash IA",
     desc: "This week's Shabbat message — parashah, candle-lighting times, one thread and one lesson — ready to paste into WhatsApp.",
     h1: 'The Shabbat <strong>WhatsApp</strong>.',
     chapeau: "Every Friday morning the site composes the week's message: the parashah, times for Paris, Marseille and Geneva, one thread, one lesson — the haftarah actually read before being quoted. Copy it, send it.",
@@ -288,7 +288,7 @@ const T = {
     foot: { accueil: "Home", daily: "Today's learning", privacy: "Privacy" },
   },
   he: {
-    title: "הוואטסאפ של שבת — Torah MCP",
+    title: "הוואטסאפ של שבת — Mamash IA",
     desc: "מסר השבת של השבוע — פרשה, זמני הדלקת נרות, חוט אחד ומוסר אחד — מוכן להדבקה בוואטסאפ.",
     h1: 'הוואטסאפ של <strong>שבת</strong>.',
     chapeau: "בכל יום שישי בבוקר האתר מחבר את מסר השבוע: הפרשה, זמני פריז, מרסיי וז'נבה, חוט אחד, מוסר אחד — ההפטרה נקראת באמת לפני שהיא מצוטטת. העתיקו ושלחו.",
@@ -338,8 +338,8 @@ ${altLinks(lang, "/chabbat")}
 <meta property="og:type" content="website">
 <meta property="og:title" content="${s.title}">
 <meta property="og:description" content="${s.desc}">
-<meta property="og:image" content="https://torah-mcp.com/og.png">
-<meta property="og:url" content="https://torah-mcp.com${href(lang, "/chabbat")}">
+<meta property="og:image" content="https://mamash-ia.com/og.png">
+<meta property="og:url" content="https://mamash-ia.com${href(lang, "/chabbat")}">
 <meta name="twitter:card" content="summary_large_image">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-NG6P5HPH9K"></script>
@@ -395,7 +395,7 @@ ${altLinks(lang, "/chabbat")}
 <body>
 <main>
   <nav>
-    <a class="wm" href="${href(lang, "/")}"><b>Torah</b>&nbsp;MCP</a>
+    <a class="wm" href="${href(lang, "/")}"><b>Mamash</b>&nbsp;IA</a>
     <span class="r"><a href="${href(lang, "/question")}">${s.nav.question}</a><a href="${href(lang, "/daf")}">${s.nav.daf}</a><a href="${href(lang, "/install")}"><strong>${s.nav.install}</strong></a>${langSwitcher(lang, "/chabbat")}</span>
   </nav>
   <h1>${s.h1}</h1>

@@ -58,13 +58,13 @@ const STYLE = `
 
 const DAILY_T = {
   fr: {
-    title: "Le limoud du jour — Torah MCP",
+    title: "Le limoud du jour — Mamash IA",
     desc: "Paracha, daf yomi, Rambam quotidien et tous les cycles d'étude du jour, avec liens directs vers les textes.",
-    ogTitle: "Torah MCP — la discipline des sources pour Claude",
+    ogTitle: "Mamash IA — la discipline des sources pour Claude",
     ogDesc: "Claude cite la Torah depuis les textes, plus jamais de mémoire. Méthode, havrouta, guide de paracha, daf interactif, zmanim, guematria. Gratuit.",
     h1: "Le limoud du jour",
     chapeau: (date: string, home: string) =>
-      `${date} — cycles d'étude du jour, textes servis par <a href="https://www.sefaria.org">Sefaria</a>. <a href="${home}">Qu'est-ce que Torah MCP ?</a>`,
+      `${date} — cycles d'étude du jour, textes servis par <a href="https://www.sefaria.org">Sefaria</a>. <a href="${home}">Qu'est-ce que Mamash IA ?</a>`,
     unavailable: "Calendriers momentanément indisponibles — réessayez dans un instant.",
     h2: "Étudier avec Claude",
     howto: "Ajoutez Torah MCP à claude.ai (Settings → Connectors → Add custom connector) et demandez « le daf du jour en havrouta » :",
@@ -72,13 +72,13 @@ const DAILY_T = {
     privacy: "Confidentialité",
   },
   en: {
-    title: "Today's learning — Torah MCP",
+    title: "Today's learning — Mamash IA",
     desc: "Parashah, daf yomi, daily Rambam and every study cycle of the day, with direct links to the texts.",
-    ogTitle: "Torah MCP — the discipline of sources for Claude",
+    ogTitle: "Mamash IA — the discipline of sources for Claude",
     ogDesc: "Claude quotes the Torah from the texts, never from memory. Method, chavruta, parashah guide, interactive daf, zmanim, gematria. Free.",
     h1: "Today's learning",
     chapeau: (date: string, home: string) =>
-      `${date} — today's study cycles, texts served by <a href="https://www.sefaria.org">Sefaria</a>. <a href="${home}">What is Torah MCP?</a>`,
+      `${date} — today's study cycles, texts served by <a href="https://www.sefaria.org">Sefaria</a>. <a href="${home}">What is Mamash IA?</a>`,
     unavailable: "Calendars temporarily unavailable — try again in a moment.",
     h2: "Study with Claude",
     howto: "Add Torah MCP to claude.ai (Settings → Connectors → Add custom connector) and ask for “today's daf, in chavruta”:",
@@ -86,13 +86,13 @@ const DAILY_T = {
     privacy: "Privacy",
   },
   he: {
-    title: "הלימוד היומי — Torah MCP",
+    title: "הלימוד היומי — Mamash IA",
     desc: "פרשה, דף יומי, רמב\"ם יומי וכל מחזורי הלימוד של היום, עם קישורים ישירים לטקסטים.",
-    ogTitle: "Torah MCP — משמעת המקורות ל-Claude",
+    ogTitle: "Mamash IA — משמעת המקורות ל-Claude",
     ogDesc: "Claude מצטט את התורה מתוך הטקסטים, לעולם לא מהזיכרון. שיטה, חברותא, מדריך פרשה, דף אינטראקטיבי, זמנים, גימטריה. חינם.",
     h1: "הלימוד היומי",
     chapeau: (date: string, home: string) =>
-      `${date} — מחזורי הלימוד של היום, הטקסטים מוגשים דרך <a href="https://www.sefaria.org">ספריא</a>. <a href="${home}">מה זה Torah MCP?</a>`,
+      `${date} — מחזורי הלימוד של היום, הטקסטים מוגשים דרך <a href="https://www.sefaria.org">ספריא</a>. <a href="${home}">מה זה Mamash IA?</a>`,
     unavailable: "הלוחות אינם זמינים כרגע — נסו שוב בעוד רגע.",
     h2: "ללמוד עם Claude",
     howto: "הוסיפו את Torah MCP ל-claude.ai (Settings → Connectors → Add custom connector) ובקשו «את הדף היומי בחברותא»:",
@@ -135,7 +135,7 @@ export async function renderDaily(env: Env, lang: Lang = "fr"): Promise<string> 
   let date = "";
   try {
     const resp = await fetch(`${env.SEFARIA_API_URL}/calendars`, {
-      headers: { Accept: "application/json", "User-Agent": "torah-mcp/1.4 (+https://torah-mcp.com)" },
+      headers: { Accept: "application/json", "User-Agent": "torah-mcp/1.4 (+https://mamash-ia.com)" },
       cf: { cacheTtl: 1800, cacheEverything: true },
     } as RequestInit);
     const data: any = await resp.json();
@@ -161,8 +161,8 @@ ${altLinks(lang, path)}
 <meta property="og:type" content="website">
 <meta property="og:title" content="${s.ogTitle}">
 <meta property="og:description" content="${s.ogDesc}">
-<meta property="og:image" content="https://torah-mcp.com/og.png">
-<meta property="og:url" content="https://torah-mcp.com${href(lang, path)}">
+<meta property="og:image" content="https://mamash-ia.com/og.png">
+<meta property="og:url" content="https://mamash-ia.com${href(lang, path)}">
 <meta name="twitter:card" content="summary_large_image">
 ${GA_SNIPPET}
 </head>
@@ -272,12 +272,12 @@ const OUTILS_JS = {
 /** Chaînes du gabarit HTML. */
 const OUTILS_T = {
   fr: {
-    title: "Outils — Torah MCP",
+    title: "Outils — Mamash IA",
     desc: "Zmanim, dates hébraïques, guematria, nikoud et fiches sources — utilisables directement, sans installation.",
-    ogTitle: "Torah MCP — la discipline des sources pour Claude",
+    ogTitle: "Mamash IA — la discipline des sources pour Claude",
     ogDesc: "Claude cite la Torah depuis les textes, plus jamais de mémoire. Méthode, havrouta, guide de paracha, daf interactif, zmanim, guematria. Gratuit.",
     chosen: "→ choisi",
-    navHome: "← torah-mcp.com",
+    navHome: "← mamash-ia.com",
     navDaf: "Ouvrir le daf du jour",
     navDaily: "Le limoud du jour",
     h1: "Les outils, sans installation",
@@ -319,12 +319,12 @@ const OUTILS_T = {
     privacy: "Confidentialité",
   },
   en: {
-    title: "Tools — Torah MCP",
+    title: "Tools — Mamash IA",
     desc: "Zmanim, Hebrew dates, gematria, nikkud and source cards — usable directly, no installation needed.",
-    ogTitle: "Torah MCP — the discipline of sources for Claude",
+    ogTitle: "Mamash IA — the discipline of sources for Claude",
     ogDesc: "Claude quotes the Torah from the texts, never from memory. Method, chavruta, parashah guide, interactive daf, zmanim, gematria. Free.",
     chosen: "→ chosen",
-    navHome: "← torah-mcp.com",
+    navHome: "← mamash-ia.com",
     navDaf: "Open today's daf",
     navDaily: "Today's learning",
     h1: "The tools, no installation needed",
@@ -366,12 +366,12 @@ const OUTILS_T = {
     privacy: "Privacy",
   },
   he: {
-    title: "כלים — Torah MCP",
+    title: "כלים — Mamash IA",
     desc: "זמנים, תאריכים עבריים, גימטריה, ניקוד ודפי מקור — לשימוש ישיר, בלי התקנה.",
-    ogTitle: "Torah MCP — משמעת המקורות ל-Claude",
+    ogTitle: "Mamash IA — משמעת המקורות ל-Claude",
     ogDesc: "Claude מצטט את התורה מתוך הטקסטים, לעולם לא מהזיכרון. שיטה, חברותא, מדריך פרשה, דף אינטראקטיבי, זמנים, גימטריה. חינם.",
     chosen: "← נבחר",
-    navHome: "→ torah-mcp.com",
+    navHome: "→ mamash-ia.com",
     navDaf: "פתיחת הדף היומי",
     navDaily: "הלימוד היומי",
     h1: "הכלים, בלי התקנה",
@@ -495,8 +495,8 @@ ${altLinks(lang, path)}
 <meta property="og:type" content="website">
 <meta property="og:title" content="${s.ogTitle}">
 <meta property="og:description" content="${s.ogDesc}">
-<meta property="og:image" content="https://torah-mcp.com/og.png">
-<meta property="og:url" content="https://torah-mcp.com${href(lang, path)}">
+<meta property="og:image" content="https://mamash-ia.com/og.png">
+<meta property="og:url" content="https://mamash-ia.com${href(lang, path)}">
 <meta name="twitter:card" content="summary_large_image">
 ${GA_SNIPPET}
 </head>

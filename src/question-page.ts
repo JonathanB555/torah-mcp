@@ -72,7 +72,7 @@ interface Strings {
 
 const T: Record<Lang, Strings> = {
   fr: {
-    title: "Poser une question — Torah MCP",
+    title: "Poser une question — Mamash IA",
     desc: "Posez votre question sur la Torah, la halakha, le Talmud, en français. La réponse est lue dans les textes réels (Sefaria) et citée exactement — sans rien installer.",
     ogDesc: "Une question sur la Torah, en français. La réponse est lue dans les textes réels et citée exactement.",
     navTools: "Outils",
@@ -105,7 +105,7 @@ const T: Record<Lang, Strings> = {
     hclr: "Effacer l'historique",
     copy: "Copier la réponse",
     share: "Partager",
-    disc: "Réponse rédigée par Claude à partir des textes lus sur Sefaria, selon la méthode Torah MCP — vérifiez toujours les sources citées. Pour une décision de halakha pratique, consultez un rabbin.",
+    disc: "Réponse rédigée par Claude à partir des textes lus sur Sefaria, selon la méthode Mamash IA — vérifiez toujours les sources citées. Pour une décision de halakha pratique, consultez un rabbin.",
     again: "Poser une autre question",
     againInstall: "Installer Torah MCP dans Claude pour aller plus loin",
     footHome: "Accueil",
@@ -124,7 +124,7 @@ const T: Record<Lang, Strings> = {
     shareCancel: "Partage annulé.",
     readMore: "Lire la suite : ",
     qLabel: "Question : ",
-    sig: "— Torah MCP, ",
+    sig: "— Mamash IA, ",
     err: "Erreur — réessayez.",
     errNet: "Erreur réseau — réessayez.",
     errGeneric: "Le service de réponse est momentanément indisponible — réessayez.",
@@ -143,7 +143,7 @@ const T: Record<Lang, Strings> = {
     suiteGo: "Demander la suite",
   },
   en: {
-    title: "Ask a question — Torah MCP",
+    title: "Ask a question — Mamash IA",
     desc: "Ask your question about the Torah, halakha or the Talmud, in English. The answer is read from the actual texts (Sefaria) and quoted exactly — nothing to install.",
     ogDesc: "A question about the Torah, in English. The answer is read from the actual texts and quoted exactly.",
     navTools: "Tools",
@@ -176,7 +176,7 @@ const T: Record<Lang, Strings> = {
     hclr: "Clear history",
     copy: "Copy the answer",
     share: "Share",
-    disc: "Answer written by Claude from the texts read on Sefaria, following the Torah MCP method — always check the sources cited. For a practical halakhic ruling, consult a rabbi.",
+    disc: "Answer written by Claude from the texts read on Sefaria, following the Mamash IA method — always check the sources cited. For a practical halakhic ruling, consult a rabbi.",
     again: "Ask another question",
     againInstall: "Install Torah MCP in Claude to go further",
     footHome: "Home",
@@ -195,7 +195,7 @@ const T: Record<Lang, Strings> = {
     shareCancel: "Sharing cancelled.",
     readMore: "Read more: ",
     qLabel: "Question: ",
-    sig: "— Torah MCP, ",
+    sig: "— Mamash IA, ",
     err: "Error — please try again.",
     errNet: "Network error — please try again.",
     errGeneric: "The answering service is temporarily unavailable — please try again.",
@@ -214,7 +214,7 @@ const T: Record<Lang, Strings> = {
     suiteGo: "Ask the follow-up",
   },
   he: {
-    title: "שאלה — Torah MCP",
+    title: "שאלה — Mamash IA",
     desc: "שאלו על התורה, ההלכה או התלמוד, בעברית. התשובה נקראת מתוך הטקסטים האמיתיים (ספריא) ומצוטטת במדויק — בלי להתקין דבר.",
     ogDesc: "שאלה על התורה, בעברית. התשובה נקראת מתוך הטקסטים האמיתיים ומצוטטת במדויק.",
     navTools: "כלים",
@@ -247,7 +247,7 @@ const T: Record<Lang, Strings> = {
     hclr: "מחיקת ההיסטוריה",
     copy: "העתקת התשובה",
     share: "שיתוף",
-    disc: "התשובה נכתבה על ידי Claude מתוך הטקסטים שנקראו בספריא, לפי שיטת Torah MCP — בדקו תמיד את המקורות המצוטטים. להכרעה הלכתית למעשה, שאלו רב.",
+    disc: "התשובה נכתבה על ידי Claude מתוך הטקסטים שנקראו בספריא, לפי שיטת Mamash IA — בדקו תמיד את המקורות המצוטטים. להכרעה הלכתית למעשה, שאלו רב.",
     again: "לשאול שאלה נוספת",
     againInstall: "התקינו את Torah MCP ב-Claude כדי להעמיק",
     footHome: "דף הבית",
@@ -266,7 +266,7 @@ const T: Record<Lang, Strings> = {
     shareCancel: "השיתוף בוטל.",
     readMore: "להמשך קריאה: ",
     qLabel: "שאלה: ",
-    sig: "— Torah MCP, ",
+    sig: "— Mamash IA, ",
     err: "שגיאה — נסו שוב.",
     errNet: "שגיאת רשת — נסו שוב.",
     errGeneric: "שירות המענה אינו זמין כרגע — נסו שוב.",
@@ -340,8 +340,8 @@ export function questionHtml(lang: Lang): string {
 <meta property="og:type" content="website">
 <meta property="og:title" content="${attr(s.title)}">
 <meta property="og:description" content="${attr(s.ogDesc)}">
-<meta property="og:image" content="https://torah-mcp.com/og.png">
-<meta property="og:url" content="https://torah-mcp.com${href(lang, PATH)}">
+<meta property="og:image" content="https://mamash-ia.com/og.png">
+<meta property="og:url" content="https://mamash-ia.com${href(lang, PATH)}">
 <meta name="twitter:card" content="summary_large_image">
 ${altLinks(lang, PATH)}
 <!-- Google tag (gtag.js) -->
@@ -452,7 +452,7 @@ ${altLinks(lang, PATH)}
 <body>
 <main>
   <nav>
-    <a class="wm" href="${href(lang, "/")}" dir="ltr"><b>Torah</b>&nbsp;MCP</a>
+    <a class="wm" href="${href(lang, "/")}" dir="ltr"><b>Mamash</b>&nbsp;IA</a>
     <span class="r"><a href="${href(lang, "/outils")}">${s.navTools}</a><a href="${href(lang, "/daf")}">${s.navDaf}</a><a href="${href(lang, "/install")}"><strong>${s.navInstall}</strong></a>${langSwitcher(lang, PATH)}</span>
   </nav>
 
@@ -590,7 +590,7 @@ ${altLinks(lang, PATH)}
     e.preventDefault(); if (!cur) return;
     var t = texte(cur);
     if (navigator.share) {
-      navigator.share({ title: "Torah MCP — " + cur.q, text: t }).then(function () { feedback(S.shared); }, function (er) { if (!er || er.name !== "AbortError") feedback(S.shareCancel); });
+      navigator.share({ title: "Mamash IA — " + cur.q, text: t }).then(function () { feedback(S.shared); }, function (er) { if (!er || er.name !== "AbortError") feedback(S.shareCancel); });
     } else {
       window.open("https://wa.me/?text=" + encodeURIComponent(t.length > 3500 ? t.slice(0, 3400) + "…\\n\\n" + S.readMore + lien(cur) : t), "_blank", "noopener");
     }

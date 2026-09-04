@@ -15,7 +15,11 @@
 	// torah-mcp.<compte>.workers.dev reste active en alias — des connecteurs
 	// installés pointent dessus, ne pas la couper.
 	"workers_dev": true,
+	// mamash-ia.com est le domaine du site (marque Mamash IA) ; torah-mcp.com
+	// reste branché pour toujours (redirection des pages, /mcp et /api servis).
 	"routes": [
+		{ "pattern": "mamash-ia.com", "custom_domain": true },
+		{ "pattern": "www.mamash-ia.com", "custom_domain": true },
 		{ "pattern": "torah-mcp.com", "custom_domain": true },
 		{ "pattern": "www.torah-mcp.com", "custom_domain": true }
 	],

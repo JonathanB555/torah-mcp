@@ -11,7 +11,7 @@ import type { Env, ToolDefinition, ToolHandler } from "./sefaria";
 
 const HEBCAL_URL = "https://www.hebcal.com";
 const DICTA_NAKDAN_URL = "https://nakdan-2-0.loadbalancer.dicta.org.il/api";
-const USER_AGENT = "torah-mcp/1.4 (+https://torah-mcp.com)";
+const USER_AGENT = "torah-mcp/1.4 (+https://mamash-ia.com)";
 
 // Villes usuelles → geonameid Hebcal
 const VILLES: Record<string, number> = {
@@ -482,7 +482,7 @@ export const limoudHandlers: Record<string, ToolHandler> = {
       ``,
       `📚 Étudier la paracha : ${lien}`,
       ``,
-      `— torah-mcp.com`,
+      `— mamash-ia.com`,
     ];
     const mot = lignes.filter((x, i, a) => !(x === "" && a[i - 1] === "")).join("\n");
 

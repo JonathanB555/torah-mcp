@@ -231,6 +231,18 @@ async function handleRpc(req: JsonRpcRequest, env: Env) {
   }
 }
 
+/** Chemins qui restent servis sur l'ancien domaine (connecteurs, API, admin). */
+function resterSurAncienDomaine(path: string): boolean {
+  return (
+    path === "/mcp" || path.endsWith("/mcp") || // y compris /<token>/mcp
+    path.startsWith("/api/") ||
+    path === "/stats" || path === "/stats.csv" ||
+    path === "/chabbat/generer" ||
+    path === "/health" ||
+    path === "/og.png" || path === "/icon.png" || path === "/favicon.ico"
+  );
+}
+
 export default {
   // Cron du vendredi matin : composer le WhatsApp de Chabbat de la semaine.
   async scheduled(_controller: ScheduledController, env: Env, ctx: ExecutionContext): Promise<void> {
@@ -239,6 +251,14 @@ export default {
 
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
+
+    // Migration de marque : torah-mcp.com → mamash-ia.com. Les pages redirigent ;
+    // le connecteur (/mcp), l'API et l'admin continuent de servir sur l'ancien
+    // domaine pour toujours (connecteurs installés, fiche Anthropic, registre).
+    const hote = url.hostname;
+    if ((hote === "torah-mcp.com" || hote === "www.torah-mcp.com" || hote === "www.mamash-ia.com") && request.method === "GET" && !resterSurAncienDomaine(url.pathname)) {
+      return Response.redirect(`https://mamash-ia.com${url.pathname}${url.search}`, 301);
+    }
 
     if (request.method === "OPTIONS") {
       return new Response(null, { status: 204, headers: CORS_HEADERS });

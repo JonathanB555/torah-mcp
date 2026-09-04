@@ -33,7 +33,7 @@ const MAX_TOOL_RESULT_CHARS = 7000;
 const MAX_QUESTION_CHARS = 600;
 const MAX_OUTPUT_TOKENS = 6000;
 
-const WEB_CONTEXT_MD = `# Contexte : réponse sur le site torah-mcp.com
+const WEB_CONTEXT_MD = `# Contexte : réponse sur le site mamash-ia.com
 
 Tu réponds à un visiteur du site qui n'utilise pas Claude. Il n'y aura pas
 de suite à la conversation : donne une réponse complète en une fois, en
@@ -148,7 +148,7 @@ export async function repondreQuestion(
   if (!apiKey) {
     return {
       status: 503,
-      body: { error: "La question en ligne n'est pas encore activée sur ce serveur (clé API absente). Installez Torah MCP dans Claude : torah-mcp.com/install" },
+      body: { error: "La question en ligne n'est pas encore activée sur ce serveur (clé API absente). Installez Torah MCP dans Claude : mamash-ia.com/install" },
     };
   }
   const question = String(input.question || "").trim();

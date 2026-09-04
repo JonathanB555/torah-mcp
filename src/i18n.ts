@@ -14,7 +14,7 @@ export type Lang = "fr" | "en" | "he";
 export const LANGS: readonly Lang[] = ["fr", "en", "he"] as const;
 export const LANG_NAMES: Record<Lang, string> = { fr: "Français", en: "English", he: "עברית" };
 export const LANG_SHORT: Record<Lang, string> = { fr: "FR", en: "EN", he: "עב" };
-export const SITE = "https://torah-mcp.com";
+export const SITE = "https://mamash-ia.com";
 
 export const dirOf = (lang: Lang): "rtl" | "ltr" => (lang === "he" ? "rtl" : "ltr");
 

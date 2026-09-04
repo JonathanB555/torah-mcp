@@ -21,10 +21,10 @@ const GA = `<!-- Google tag (gtag.js) -->
 
 const LANG_CSS = `.lang { font-size:.82rem; letter-spacing:.08em; } .lang a { text-decoration:none; opacity:.6; } .lang a:hover { opacity:1; text-decoration:underline; } .lang .cur { font-weight:700; } .lang .dot { opacity:.35; margin:0 .45em; }`;
 
-const OG_IMAGE = `<meta property="og:image" content="https://torah-mcp.com/og.png">
+const OG_IMAGE = `<meta property="og:image" content="https://mamash-ia.com/og.png">
 <meta name="twitter:card" content="summary_large_image">`;
 
-const ogTitle = { fr: "Torah MCP — la discipline des sources pour Claude", en: "Torah MCP — source discipline for Claude", he: "Torah MCP — משמעת מקורות ל-Claude" };
+const ogTitle = { fr: "Mamash IA — la discipline des sources pour Claude", en: "Mamash IA — source discipline for Claude", he: "Mamash IA — משמעת מקורות ל-Claude" };
 const ogDesc = {
   fr: "Claude cite la Torah depuis les textes, plus jamais de mémoire. Méthode, havrouta, guide de paracha, daf interactif, zmanim, guematria. Gratuit.",
   en: "Claude quotes the Torah from the texts, never again from memory. Method, chavruta, parashah guide, interactive daf, zmanim, gematria. Free.",
@@ -40,8 +40,8 @@ type PrivacyStrings = { title: string; h1: string; contact: string; body: string
 /** Le corps FR mêle déjà FR et EN ; l'EN ne garde que l'anglais ; l'HE traduit tout. `{Q}` = lien /question. */
 const PRIVACY_T: Record<Lang, PrivacyStrings> = {
   fr: {
-    title: "Torah MCP — Confidentialité / Privacy",
-    h1: "Confidentialité — Torah MCP",
+    title: "Mamash IA — Confidentialité / Privacy",
+    h1: "Confidentialité — Mamash IA",
     contact: "Contact :",
     body: `<p>Le service MCP ne collecte, ne stocke et ne partage aucune donnée personnelle.
   Il ne demande aucun compte, ne dépose aucun cookie, et ne conserve aucun
@@ -60,7 +60,7 @@ const PRIVACY_T: Record<Lang, PrivacyStrings> = {
   texts; Cloudflare's infrastructure produces short-lived operational logs
   (IP address, timestamp) used solely for security and rate limiting.</p>
   <h2>Mesure d'audience du site web</h2>
-  <p>Les pages de ce site (torah-mcp.com) utilisent Google Analytics 4 pour
+  <p>Les pages de ce site (mamash-ia.com) utilisent Google Analytics 4 pour
   mesurer la fréquentation de façon agrégée (pages vues, provenance). Cela
   concerne uniquement la consultation du site dans un navigateur.
   <strong>Le connecteur MCP lui-même n'envoie rien à Google Analytics</strong> :
@@ -74,15 +74,15 @@ const PRIVACY_T: Record<Lang, PrivacyStrings> = {
   <p>The <a href="{Q}">/question</a> page sends your question, as written, to Anthropic's API (Claude) to draft an answer from texts read on Sefaria. The answer is not stored. We do keep a <strong>private statistical log</strong> of each question: its text, the chosen level, date, processing time, number of sources read, token volume and country of origin (Cloudflare aggregate) — <strong>never the IP address nor any identifier</strong>, so a question cannot be linked to a person. This log is used only to understand usage and track cost; it is neither published nor shared. The IP address is only used by the in-memory rate limiter, without logs. Anthropic's processing is governed by its <a href="https://www.anthropic.com/legal/privacy">privacy policy</a> (API data is not used for training). Do not include personal information.</p>
 
   <h2>Website analytics — English</h2>
-  <p>The website pages (torah-mcp.com) use Google Analytics 4 for aggregate
+  <p>The website pages (mamash-ia.com) use Google Analytics 4 for aggregate
   traffic measurement (page views, referrers) — browser visits only.
   <strong>The MCP connector itself sends nothing to Google Analytics</strong>:
   no usage inside Claude or any assistant is measured, and the in-Claude daf
   viewer loads no tracker.</p>`,
   },
   en: {
-    title: "Torah MCP — Privacy",
-    h1: "Privacy — Torah MCP",
+    title: "Mamash IA — Privacy",
+    h1: "Privacy — Mamash IA",
     contact: "Contact:",
     body: `<p>This server collects, stores and shares no personal data. No account, no
   cookies, no history of queries. Requests are forwarded to the public
@@ -94,15 +94,15 @@ const PRIVACY_T: Record<Lang, PrivacyStrings> = {
   <h2>Video shiurim</h2>
   <p>The <a href="/en/chiourim">/chiourim</a> page presents videos hosted by YouTube. Thumbnails are served from YouTube's servers, and the player only loads when you click, via youtube-nocookie.com — YouTube's enhanced-privacy mode, with no cookies before playback. Watching the videos is governed by <a href="https://policies.google.com/privacy">Google's privacy policy</a>.</p>
   <h2>Website analytics</h2>
-  <p>The website pages (torah-mcp.com) use Google Analytics 4 for aggregate
+  <p>The website pages (mamash-ia.com) use Google Analytics 4 for aggregate
   traffic measurement (page views, referrers) — browser visits only.
   <strong>The MCP connector itself sends nothing to Google Analytics</strong>:
   no usage inside Claude or any assistant is measured, and the in-Claude daf
   viewer loads no tracker. See <a href="https://policies.google.com/privacy">Google's privacy policy</a>.</p>`,
   },
   he: {
-    title: "Torah MCP — פרטיות",
-    h1: "פרטיות — Torah MCP",
+    title: "Mamash IA — פרטיות",
+    h1: "פרטיות — Mamash IA",
     contact: "יצירת קשר:",
     body: `<p>שירות ה-MCP אינו אוסף, אינו שומר ואינו משתף שום מידע אישי. הוא אינו דורש חשבון, אינו מציב עוגיות, ואינו שומר היסטוריה של השאלות שנשאלו. הבקשות עוברות ל-API הציבורי של <a href="https://www.sefaria.org">ספריא</a> כדי לאחזר את הטקסטים המבוקשים, ותשתית Cloudflare מפיקה יומנים טכניים תפעוליים קצרי מועד (כתובת IP, חותמת זמן) המשמשים אך ורק לאבטחה ולהגבלת קצב.</p>
   <h2>«שאלה» באתר</h2>
@@ -110,7 +110,7 @@ const PRIVACY_T: Record<Lang, PrivacyStrings> = {
   <h2>שיעורים בווידאו</h2>
   <p>העמוד <a href="/he/chiourim" dir="ltr">/chiourim</a> מציג סרטונים המתארחים ביוטיוב. התמונות הממוזערות מוגשות משרתי יוטיוב, והנגן נטען רק בלחיצה, דרך youtube-nocookie.com — מצב הפרטיות המורחבת של יוטיוב, ללא עוגיות לפני הניגון. צפייה בסרטונים כפופה ל<a href="https://policies.google.com/privacy">מדיניות הפרטיות של Google</a>.</p>
   <h2>מדידת קהל באתר</h2>
-  <p>עמודי האתר (torah-mcp.com) משתמשים ב-Google Analytics 4 למדידת התנועה באופן מצרפי (צפיות בעמודים, מקור ההגעה). הדבר נוגע רק לגלישה באתר בדפדפן. <strong>מחבר ה-MCP עצמו אינו שולח דבר ל-Google Analytics</strong>: שום נתון שימוש ב-Claude או בכל עוזר אחר אינו נמדד, ומציג הדף המשולב ב-Claude אינו טוען שום כלי מעקב. ראו את <a href="https://policies.google.com/privacy">מדיניות הפרטיות של Google</a>.</p>`,
+  <p>עמודי האתר (mamash-ia.com) משתמשים ב-Google Analytics 4 למדידת התנועה באופן מצרפי (צפיות בעמודים, מקור ההגעה). הדבר נוגע רק לגלישה באתר בדפדפן. <strong>מחבר ה-MCP עצמו אינו שולח דבר ל-Google Analytics</strong>: שום נתון שימוש ב-Claude או בכל עוזר אחר אינו נמדד, ומציג הדף המשולב ב-Claude אינו טוען שום כלי מעקב. ראו את <a href="https://policies.google.com/privacy">מדיניות הפרטיות של Google</a>.</p>`,
   },
 };
 
@@ -144,7 +144,7 @@ ${GA}
   <h1>${s.h1}</h1>
   ${s.body.replace(/\{Q\}/g, href(lang, "/question"))}
   <p>${s.contact} <a href="https://github.com/JonathanB555/torah-mcp/issues" dir="ltr">github.com/JonathanB555/torah-mcp/issues</a></p>
-  <footer><a href="${href(lang, "/")}">Torah MCP</a>${langSwitcher(lang, path)}</footer>
+  <footer><a href="${href(lang, "/")}">Mamash IA</a>${langSwitcher(lang, path)}</footer>
 </main>
 </body>
 </html>`;
@@ -177,7 +177,7 @@ type LandingStrings = {
 
 const LANDING_T: Record<Lang, LandingStrings> = {
   fr: {
-    title: "Torah MCP — la discipline des sources pour Claude",
+    title: "Mamash IA — la discipline des sources pour Claude",
     desc: "Claude cite la Torah depuis les textes, plus jamais de mémoire. Méthode d'étude, havrouta, guide de paracha, page de Vilna interactive, Sefaria, HebrewBooks, zmanim, guematria. Gratuit, sans compte.",
     grpSite: "Sur le site", navQuestion: "Une question", navDaf: "Le daf", navOutils: "Outils", navDaily: "Limoud du jour", navChiourim: "Chiourim", grpClaude: "Dans Claude", navInstall: "Installer le MCP",
     h1: `Claude cite la Torah <span class="no">de&nbsp;mémoire</span> <strong>depuis les textes</strong>.`,
@@ -190,7 +190,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     fig3n: "0", fig3u: "référence inventée", fig3t: "La règle est simple : ce qui n'a pas été lu n'est pas cité — et chaque citation vient avec le lien pour la vérifier.",
     vsNonH: "Une IA ordinaire <em>— répond de mémoire</em>",
     vsNonP: "Elle a croisé ces textes une fois, à l'entraînement, et les reconstitue : références approximatives, citations recomposées, parfois inventées de toutes pièces — avec la même assurance dans les deux cas, et sans jamais dire ce qu'elle n'a pas ouvert.",
-    vsYesH: "Torah MCP <em>— ouvre le livre</em>",
+    vsYesH: "Mamash IA <em>— ouvre le livre</em>",
     vsYesP: "La question déclenche une lecture : le texte est ouvert dans l'édition Sefaria, cité tel qu'il est écrit, avec sa référence exacte, relié à ses commentateurs et aux textes qui en dépendent. Une précision vérifiable, à un clic — et, quand une source manque, la réponse le dit.",
     lblA: "Le manifeste, commenté en marge", ariaInner: "Commentaires — colonne intérieure", ariaOuter: "Commentaires — colonne extérieure",
     gMethode: { h: "La méthode", p: "Chargée avant toute réponse religieuse : lire, citer depuis la lecture, signaler les mahloket, ne jamais fabriquer une référence.", try: "« Que dit la Guemara sur l'objet perdu ? Cite la sougya. »" },
@@ -200,7 +200,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     gQuotidien: { h: "Le quotidien", p: "Zmanim et horaires de Chabbat, dates hébraïques, guematria exacte, nikoud (Dicta), fiche source prête pour WhatsApp.", link: "Utilisables en ligne, sans installation" },
     gModes: { h: "Trois modes", p: "Débutant, classique, avancé — le registre change, la discipline des sources jamais. Claude devine votre niveau à votre question, et vous changez de mode d'un mot.", try: "« Je n'y connais rien, explique-moi simplement. »", link: "Poser une question sur le site, sans Claude" },
     gSources: { h: "Les sources", p: "Textes, commentateurs et recherche Sefaria — licences affichées — et le catalogue HebrewBooks (~65 000 seforim).", link: "S'accorde avec le MCP officiel de Sefaria" },
-    guf1: `Les assistants répondent aux questions de Torah <mark data-ref="memoire">de mémoire</mark> — avec l'assurance de celui qui n'a pas ouvert le livre. Torah MCP renverse le geste : avant toute réponse, votre assistant charge <mark data-ref="methode">une méthode d'étude</mark> qui l'oblige à lire le texte, à le citer tel qu'il est écrit, et à dire où l'étudier.`,
+    guf1: `Les assistants répondent aux questions de Torah <mark data-ref="memoire">de mémoire</mark> — avec l'assurance de celui qui n'a pas ouvert le livre. Mamash IA renverse le geste : avant toute réponse, votre assistant charge <mark data-ref="methode">une méthode d'étude</mark> qui l'oblige à lire le texte, à le citer tel qu'il est écrit, et à dire où l'étudier.`,
     guf2: `Parce qu'on n'apprend pas seul, il sait aussi devenir <mark data-ref="havrouta">partenaire de havrouta</mark> — celui qui pose les questions plutôt que d'y répondre — et préparer <mark data-ref="paracha">la paracha de la semaine</mark> comme un chantier : aliya par aliya, machloket comprises.`,
     guf3: `Et parce que l'étude vit dans une journée juive, il porte <mark data-ref="quotidien">les outils du quotidien</mark> — zmanim, dates, guematria, nikoud, fiches à partager — et <mark data-ref="sources">toute la bibliothèque</mark> : Sefaria pour lire et relier, HebrewBooks pour étudier sur la page scannée.`,
     guf4: `Et parce que la Torah n'appartient pas aux seuls savants, il parle <mark data-ref="modes">à chacun selon son niveau</mark> : tout en français et chaque mot expliqué pour qui débute, la source en langue originale et le lomdus pour qui la maîtrise.`,
@@ -240,7 +240,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     credits2: "Indépendant de Sefaria et de hebrewbooks.org.",
   },
   en: {
-    title: "Torah MCP — source discipline for Claude",
+    title: "Mamash IA — source discipline for Claude",
     desc: "Claude quotes the Torah from the texts, never again from memory. Study method, chavruta, parashah guide, interactive Vilna page, Sefaria, HebrewBooks, zmanim, gematria. Free, no account.",
     grpSite: "On the site", navQuestion: "Ask a question", navDaf: "The daf", navOutils: "Tools", navDaily: "Today's learning", navChiourim: "Shiurim", grpClaude: "In Claude", navInstall: "Install the MCP",
     h1: `Claude quotes the Torah <span class="no">from&nbsp;memory</span> <strong>from the texts</strong>.`,
@@ -253,7 +253,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     fig3n: "0", fig3u: "invented references", fig3t: "The rule is simple: what has not been read is not quoted — and every quotation comes with the link to check it.",
     vsNonH: "An ordinary AI <em>— answers from memory</em>",
     vsNonP: "It crossed these texts once, during training, and reconstructs them: approximate references, recomposed quotations, sometimes invented outright — with the same confidence in both cases, and without ever saying what it did not open.",
-    vsYesH: "Torah MCP <em>— opens the book</em>",
+    vsYesH: "Mamash IA <em>— opens the book</em>",
     vsYesP: "The question triggers a reading: the text is opened in the Sefaria edition, quoted as it is written, with its exact reference, linked to its commentators and to the texts that depend on it. Verifiable precision, one click away — and, when a source is missing, the answer says so.",
     lblA: "The manifesto, annotated in the margin", ariaInner: "Commentaries — inner column", ariaOuter: "Commentaries — outer column",
     gMethode: { h: "The method", p: "Loaded before any religious answer: read, quote from the reading, flag the machloket, never fabricate a reference.", try: "“What does the Gemara say about lost objects? Quote the sugya.”" },
@@ -263,7 +263,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     gQuotidien: { h: "Everyday", p: "Zmanim and Shabbat times, Hebrew dates, exact gematria, nikkud (Dicta), a source sheet ready for WhatsApp.", link: "Usable online, no installation" },
     gModes: { h: "Three modes", p: "Beginner, classic, advanced — the register changes, the source discipline never does. Claude guesses your level from your question, and you switch modes with a word.", try: "“I know nothing about this, explain it simply.”", link: "Ask a question on the site, without Claude" },
     gSources: { h: "The sources", p: "Texts, commentators and Sefaria search — licences displayed — and the HebrewBooks catalogue (~65,000 seforim).", link: "Works alongside Sefaria's official MCP" },
-    guf1: `Assistants answer Torah questions <mark data-ref="memoire">from memory</mark> — with the confidence of one who has not opened the book. Torah MCP reverses the gesture: before any answer, your assistant loads <mark data-ref="methode">a study method</mark> that obliges it to read the text, to quote it as it is written, and to say where to study it.`,
+    guf1: `Assistants answer Torah questions <mark data-ref="memoire">from memory</mark> — with the confidence of one who has not opened the book. Mamash IA reverses the gesture: before any answer, your assistant loads <mark data-ref="methode">a study method</mark> that obliges it to read the text, to quote it as it is written, and to say where to study it.`,
     guf2: `Because one does not learn alone, it also knows how to become <mark data-ref="havrouta">a chavruta partner</mark> — the one who asks the questions rather than answering them — and to prepare <mark data-ref="paracha">the week's parashah</mark> like a worksite: aliyah by aliyah, machloket included.`,
     guf3: `And because study lives inside a Jewish day, it carries <mark data-ref="quotidien">the everyday tools</mark> — zmanim, dates, gematria, nikkud, source sheets to share — and <mark data-ref="sources">the whole library</mark>: Sefaria to read and connect, HebrewBooks to study from the scanned page.`,
     guf4: `And because the Torah does not belong to scholars alone, it speaks <mark data-ref="modes">to each at their level</mark>: everything in plain English and every word explained for the beginner, the source in the original language and the lomdus for the one who has mastered it.`,
@@ -303,7 +303,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     credits2: "Independent of Sefaria and of hebrewbooks.org.",
   },
   he: {
-    title: "Torah MCP — משמעת מקורות ל-Claude",
+    title: "Mamash IA — משמעת מקורות ל-Claude",
     desc: "Claude מצטט את התורה מתוך הטקסטים, לעולם לא מהזיכרון. שיטת לימוד, חברותא, מדריך לפרשה, דף וילנא אינטראקטיבי, ספריא, HebrewBooks, זמנים, גימטריה. חינם, בלי חשבון.",
     grpSite: "באתר", navQuestion: "שאלה", navDaf: "הדף", navOutils: "כלים", navDaily: "הלימוד היומי", navChiourim: "שיעורים", grpClaude: "ב-Claude", navInstall: "התקנת ה-MCP",
     h1: `Claude מצטט את התורה <span class="no">מהזיכרון</span> <strong>מתוך הטקסטים</strong>.`,
@@ -316,7 +316,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     fig3n: "0", fig3u: "מקורות בדויים", fig3t: "הכלל פשוט: מה שלא נקרא — לא מצוטט. וכל ציטוט מגיע עם קישור לבדיקה.",
     vsNonH: "AI רגיל <em>— עונה מהזיכרון</em>",
     vsNonP: "הוא נתקל בטקסטים האלה פעם אחת, באימון, ומשחזר אותם: מראי מקומות משוערים, ציטוטים מורכבים מחדש ולעתים בדויים לגמרי — באותו ביטחון בשני המקרים, ובלי לומר לעולם מה לא פתח.",
-    vsYesH: "Torah MCP <em>— פותח את הספר</em>",
+    vsYesH: "Mamash IA <em>— פותח את הספר</em>",
     vsYesP: "השאלה מפעילה קריאה: הטקסט נפתח במהדורת ספריא, מצוטט כלשונו, עם מראה מקום מדויק, מקושר למפרשיו ולטקסטים התלויים בו. דיוק שאפשר לבדוק בלחיצה — וכשמקור חסר, התשובה אומרת זאת.",
     lblA: "המניפסט, עם הערות בשוליים", ariaInner: "פירושים — הטור הפנימי", ariaOuter: "פירושים — הטור החיצוני",
     gMethode: { h: "השיטה", p: "נטענת לפני כל תשובה תורנית: לקרוא, לצטט מתוך הקריאה, לציין מחלוקות, לעולם לא לבדות מראה מקום.", try: "«מה אומרת הגמרא על אבדה? צטט את הסוגיה.»" },
@@ -326,7 +326,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     gQuotidien: { h: "היומיום", p: "זמני היום וזמני שבת, תאריכים עבריים, גימטריה מדויקת, ניקוד (דיקטה), דף מקורות מוכן לוואטסאפ.", link: "לשימוש מקוון, בלי התקנה" },
     gModes: { h: "שלושה מצבים", p: "מתחיל, קלאסי, מתקדם — המשלב משתנה, משמעת המקורות לעולם לא. Claude מנחש את רמתכם מתוך השאלה, ואתם מחליפים מצב במילה אחת.", try: "«אני לא מבין בזה כלום, תסביר לי בפשטות.»", link: "לשאול שאלה באתר, בלי Claude" },
     gSources: { h: "המקורות", p: "טקסטים, מפרשים וחיפוש בספריא — הרישיונות מוצגים — וקטלוג HebrewBooks (כ-65,000 ספרים).", link: "משתלב עם ה-MCP הרשמי של ספריא" },
-    guf1: `עוזרי AI עונים על שאלות בתורה <mark data-ref="memoire">מהזיכרון</mark> — בביטחון של מי שלא פתח את הספר. Torah MCP הופך את המהלך: לפני כל תשובה, העוזר שלכם טוען <mark data-ref="methode">שיטת לימוד</mark> שמחייבת אותו לקרוא את הטקסט, לצטט אותו כלשונו, ולומר היכן ללמוד אותו.`,
+    guf1: `עוזרי AI עונים על שאלות בתורה <mark data-ref="memoire">מהזיכרון</mark> — בביטחון של מי שלא פתח את הספר. Mamash IA הופך את המהלך: לפני כל תשובה, העוזר שלכם טוען <mark data-ref="methode">שיטת לימוד</mark> שמחייבת אותו לקרוא את הטקסט, לצטט אותו כלשונו, ולומר היכן ללמוד אותו.`,
     guf2: `ומכיוון שאין לומדים לבד, הוא יודע גם להיות <mark data-ref="havrouta">חברותא</mark> — זה ששואל את השאלות במקום לענות עליהן — ולהכין את <mark data-ref="paracha">פרשת השבוע</mark> כמו אתר בנייה: עלייה אחר עלייה, כולל המחלוקות.`,
     guf3: `ומכיוון שהלימוד חי בתוך יום יהודי, הוא נושא <mark data-ref="quotidien">את כלי היומיום</mark> — זמנים, תאריכים, גימטריה, ניקוד, דפי מקורות לשיתוף — ו<mark data-ref="sources">את הספרייה כולה</mark>: ספריא לקריאה ולקישור, HebrewBooks ללימוד מן הדף הסרוק.`,
     guf4: `ומכיוון שהתורה אינה שייכת לחכמים בלבד, הוא מדבר <mark data-ref="modes">אל כל אחד לפי רמתו</mark>: הכול בעברית פשוטה וכל מונח מוסבר למי שמתחיל, המקור בלשונו והלמדנות למי ששולט בו.`,
@@ -598,7 +598,7 @@ ${GA}
 <body>
 
 <nav>
-  <a class="wm" href="${href(lang, "/")}" dir="ltr"><b>Torah</b>&nbsp;MCP</a>
+  <a class="wm" href="${href(lang, "/")}" dir="ltr"><b>Mamash</b>&nbsp;IA</a>
   <div class="r">
     <span class="grp hide-m">${s.grpSite}</span>
     <a href="${href(lang, "/question")}">${s.navQuestion}</a>
@@ -757,7 +757,7 @@ type InstallStrings = {
 
 const INSTALL_T: Record<Lang, InstallStrings> = {
   fr: {
-    title: "Installation — Torah MCP",
+    title: "Installation — Mamash IA",
     desc: "Installer Torah MCP dans claude.ai, Claude Code ou tout client MCP : le guide technique complet.",
     back: "← l'accueil",
     h1: "L'installation, en deux minutes.",
@@ -782,7 +782,7 @@ const INSTALL_T: Record<Lang, InstallStrings> = {
     home: "Retour à l'accueil",
   },
   en: {
-    title: "Install — Torah MCP",
+    title: "Install — Mamash IA",
     desc: "Install Torah MCP in claude.ai, Claude Code or any MCP client: the complete technical guide.",
     back: "← home",
     h1: "Installation, in two minutes.",
@@ -807,7 +807,7 @@ const INSTALL_T: Record<Lang, InstallStrings> = {
     home: "Back to home",
   },
   he: {
-    title: "התקנה — Torah MCP",
+    title: "התקנה — Mamash IA",
     desc: "התקנת Torah MCP ב-claude.ai, ב-Claude Code או בכל לקוח MCP: המדריך הטכני המלא.",
     back: "→ לעמוד הבית",
     h1: "ההתקנה, בשתי דקות.",
@@ -887,7 +887,7 @@ ${GA}
 </head>
 <body>
 <main>
-  <nav><a class="wm" href="${href(lang, "/")}" dir="ltr"><b>Torah</b>&nbsp;MCP</a><span class="r"><a class="b" href="${href(lang, "/")}">${s.back}</a>${langSwitcher(lang, path)}</span></nav>
+  <nav><a class="wm" href="${href(lang, "/")}" dir="ltr"><b>Mamash</b>&nbsp;IA</a><span class="r"><a class="b" href="${href(lang, "/")}">${s.back}</a>${langSwitcher(lang, path)}</span></nav>
   <h1>${s.h1}</h1>
   <p class="muted">${s.muted}</p>
 

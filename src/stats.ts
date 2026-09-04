@@ -83,7 +83,7 @@ function tempsConstant(a: string, b: string): boolean {
 function demanderAuth(): Response {
   return new Response("Authentification requise.", {
     status: 401,
-    headers: { "WWW-Authenticate": 'Basic realm="Torah MCP — statistiques", charset="UTF-8"', "Cache-Control": "no-store" },
+    headers: { "WWW-Authenticate": 'Basic realm="Mamash IA — statistiques", charset="UTF-8"', "Cache-Control": "no-store" },
   });
 }
 
@@ -203,7 +203,7 @@ export async function pageStats(request: Request, env: Env): Promise<Response> {
 
   const html = `<!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">
-<title>Statistiques — Torah MCP</title>
+<title>Statistiques — Mamash IA</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Frank+Ruhl+Libre:wght@400;700&display=swap');
   :root { --paper:#f7f6f1; --ink:#082a99; --ink-40:rgba(8,42,153,.4); --ink-15:rgba(8,42,153,.14); --muted:rgba(8,42,153,.65); --hl:#dbe3ff; }
@@ -233,7 +233,7 @@ export async function pageStats(request: Request, env: Env): Promise<Response> {
   @media (max-width:900px) { .ks { grid-template-columns:1fr 1fr; } .grid { grid-template-columns:1fr; } td.p { display:none; } }
 </style></head>
 <body><main>
-  <nav><a class="wm" href="/"><b>Torah</b>&nbsp;MCP</a><span class="r"><a href="/question">La question</a><a href="/outils">Outils</a><a href="/install">Installer</a></span></nav>
+  <nav><a class="wm" href="/"><b>Mamash</b>&nbsp;IA</a><span class="r"><a href="/question">La question</a><a href="/outils">Outils</a><a href="/install">Installer</a></span></nav>
   <h1>Les <strong>questions</strong> posées.</h1>
   <p class="muted">Journal privé de <code>/question</code> — sans adresse IP ni identifiant. Heures de Paris. Coût indicatif aux prix publics Sonnet.</p>
   <div class="ks">${bloc("Depuis le début", tout)}${bloc("30 jours", j30)}${bloc("7 jours", j7)}${bloc("24 heures", j1)}</div>
