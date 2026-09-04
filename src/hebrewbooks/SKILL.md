@@ -82,6 +82,39 @@ If Sefaria does not have the text (some acharonim, most responsa, Kaf HaChaim, Y
 - Other machine-readable options worth trying: he.wikisource.org, AlHaTorah, Dicta.
 - Never fabricate a hebrewbooks.org identifier, a page number, or a Sefaria ref.
 
+## Chabad sources — the Rebbe's torah
+
+**Likkutei Sichot is copyrighted (© Kehot Publication Society). Never reproduce a sicha in full**, whatever the user asks: summarize its argument, quote at most a few short lines with the volume and page, and send the reader to the official scan for the full text.
+
+The complete set is hosted on hebrewbooks.org (verified 2026-09-04, sefer detail pages checked by title). Volume → id:
+
+| Vol | id | Vol | id | Vol | id |
+|---|---|---|---|---|---|
+| 1 | 14924 | 14 | 14939 | 27 | 14950 |
+| 2 | 14925 | 15 | 14933 | 28 | 14951 |
+| 3 | 14926 | 16 | 14934 | 29 | 14952 |
+| 4 | 14927 | 17 | 14940 | 30 | 14953 |
+| 5 | 14928 | 18 | 14941 | 31 | 14954 |
+| 6 | 14929 | 19 | 14942 | 32 | 14955 |
+| 7 | 14930 | 20 | 14943 | 33 | 14956 |
+| 8 | 14931 | 21 | 14944 | 34 | 14957 |
+| 9 | 14932 | 22 | 14945 | 35 | 14958 |
+| 10 | 14935 | 23 | 14946 | 36 | 14959 |
+| 11 | 14936 | 24 | 14947 | 37 | 14960 |
+| 12 | 14937 | 25 | 14948 | 38 | 14961 |
+| 13 | 14938 | 26 | 14949 | 39 | 14962 |
+
+(ids are NOT in volume order — trust this table, never extrapolate). Cite as: `Likkutei Sichot vol. 29 — hebrewbooks.org/14952` (sefer link only, still no pdfpager page numbers). French adapted sichot: fr.chabad.org.
+
+**The Tanya, by contrast, is readable in full through Sefaria** (license CC-BY-NC granted by Kehot) — quote it like any other source text. Exact ref syntax (the index is complex, plain "Tanya 1" fails):
+- `Tanya, Part I; Likkutei Amarim 41` (chapters 1-53)
+- `Tanya, Part II; Shaar HaYichud VehaEmunah 3`
+- `Tanya, Part III; Iggeret HaTeshuvah 4`
+- `Tanya, Part IV; Iggeret HaKodesh 12`
+- `Tanya, Part V; Kuntres Acharon 5`
+
+Likkutei Torah (the Alter Rebbe's) exists on Sefaria as a complex index — resolve the exact section (e.g. via sefaria_search) before quoting. Torah Or is NOT on Sefaria (verified 2026-09-04): send readers to hebrewbooks.org.
+
 ## Quality rules
 
 - **Never invent** a sefer reference, page number, or URL. If unsure, omit.
