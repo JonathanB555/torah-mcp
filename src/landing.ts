@@ -162,7 +162,7 @@ type LandingStrings = {
   title: string; desc: string;
   grpSite: string; navQuestion: string; navDaf: string; navOutils: string; navDaily: string; navChabbat: string; navChiourim: string; grpClaude: string; navInstall: string;
   h1: string; deck: string; act1: string; act2: string; debloque: string;
-  demoQ: string; demoA: string; demoSrcLab: string; demoSrc: string; demoTag: string;
+  demos: { q: string; a: string; src: string }[]; demoSrcLab: string; demoTag: string;
   tuiles: { to: string; t: string; d: string }[];
   kezAria: string; kezId: string;
   fig1n: string; fig1u: string; fig1t: string; fig2n: string; fig2u: string; fig2t: string; fig3n: string; fig3u: string; fig3t: string;
@@ -187,10 +187,22 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     deck: "Des réponses de halakha et de limoud citées depuis la Bible, le Talmud et leurs commentateurs — sur le site en trois langues, sur WhatsApp chaque vendredi, en vidéo avec le rav Attal, et dans Claude avec la bibliothèque entière. Gratuit, sans compte, sans collecte.",
     act1: "Poser une question", act2: "Installer dans Claude — 2 min",
     debloque: "Dans Claude, le connecteur débloque ce que le site n'a pas : la <b>havrouta</b> qui vous interroge et vous fait défendre Rachi contre Tossafot, le <b>daf en page de Vilna</b> ouvert dans la conversation, le <b>guide de paracha</b> complet, les fiches sources — et l'étude en continu, sans limite de questions. Seize outils, gratuits.",
-    demoQ: "« Pourquoi allume-t-on deux bougies le vendredi soir ? »",
-    demoA: "Deux mèches : l'une pour <strong>Zakhor</strong>, « souviens-toi », l'autre pour <strong>Chamor</strong>, « garde » — les deux formulations du Chabbat dans la Torah, réunies dans la lumière.",
-    demoSrcLab: "Textes lus", demoSrc: "Choulhan Aroukh, Orah Hayim 263:1 · Exode 20, 8 · Deutéronome 5, 12",
-    demoTag: "Réponse réelle — lue sur Sefaria",
+    demos: [
+      { q: "« Pourquoi allume-t-on deux bougies le vendredi soir ? »",
+        a: "Deux mèches : l'une pour <strong>Zakhor</strong>, « souviens-toi », l'autre pour <strong>Chamor</strong>, « garde » — les deux formulations du Chabbat dans la Torah, réunies dans la lumière.",
+        src: "Choulhan Aroukh, Orah Hayim 263:1 · Exode 20, 8 · Deutéronome 5, 12" },
+      { q: "« Pourquoi brise-t-on un verre au mariage ? »",
+        a: "Au festin de noces de son fils, <strong>Mar, fils de Ravina</strong>, voit les Sages rire aux éclats : il brise devant eux une coupe de quatre cents zouz — « là où il y a joie, qu'il y ait <strong>tremblement</strong> ».",
+        src: "Berakhot 30b–31a · Psaumes 2, 11" },
+      { q: "« D'où viennent les 613 mitsvot ? »",
+        a: "Rabbi Simlaï l'enseigne : <strong>365 interdits</strong> comme les jours de l'année solaire, <strong>248 commandements</strong> comme les membres du corps — l'année entière, le corps entier.",
+        src: "Makkot 23b · Deutéronome 33, 4" },
+      { q: "« Où la Torah interdit-elle viande et lait ? »",
+        a: "Trois fois elle répète « tu ne cuiras pas le chevreau dans le lait de sa mère » — une pour la <strong>cuisson</strong>, une pour la <strong>consommation</strong>, une pour le <strong>profit</strong>, enseigne la Guemara.",
+        src: "Exode 23, 19 · Houlin 115b" },
+    ],
+    demoSrcLab: "Textes lus",
+    demoTag: "Réponses réelles — lues sur Sefaria",
     tuiles: [
       { to: "/question", t: "Une question", d: "En français, à votre niveau — réponse sourcée." },
       { to: "/chabbat", t: "Le WhatsApp de Chabbat", d: "Le message du vendredi — et le GIF qui va avec." },
@@ -263,10 +275,22 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     deck: "Halakha and limud answers quoted from the Bible, the Talmud and their commentators — on the site in three languages, on WhatsApp every Friday, on video with Rav Attal, and in Claude with the whole library. Free, no account, no data collection.",
     act1: "Ask a question", act2: "Install in Claude — 2 min",
     debloque: "In Claude, the connector unlocks what the site doesn't have: the <b>chavruta</b> that questions you and makes you defend Rashi against Tosafot, the <b>Vilna-page daf</b> opened right in the conversation, the full <b>parashah guide</b>, source sheets — and continuous study, with no question limit. Sixteen tools, free.",
-    demoQ: "“Why do we light two candles on Friday night?”",
-    demoA: "Two wicks: one for <strong>Zachor</strong>, “remember”, and one for <strong>Shamor</strong>, “keep” — the Torah's two formulations of Shabbat, joined in the light.",
-    demoSrcLab: "Texts read", demoSrc: "Shulchan Arukh, Orach Chayim 263:1 · Exodus 20:8 · Deuteronomy 5:12",
-    demoTag: "A real answer — read on Sefaria",
+    demos: [
+      { q: "“Why do we light two candles on Friday night?”",
+        a: "Two wicks: one for <strong>Zachor</strong>, “remember”, and one for <strong>Shamor</strong>, “keep” — the Torah's two formulations of Shabbat, joined in the light.",
+        src: "Shulchan Arukh, Orach Chayim 263:1 · Exodus 20:8 · Deuteronomy 5:12" },
+      { q: "“Why do we break a glass at a wedding?”",
+        a: "At his son's wedding feast, <strong>Mar son of Ravina</strong> saw the Sages growing too merry: he broke a cup worth four hundred zuz before them — “where there is rejoicing, there should be <strong>trembling</strong>.”",
+        src: "Berakhot 30b–31a · Psalms 2:11" },
+      { q: "“Where do the 613 mitzvot come from?”",
+        a: "Rabbi Simlai taught: <strong>365 prohibitions</strong> like the days of the solar year, <strong>248 positive commands</strong> like the limbs of the body — the whole year, the whole body.",
+        src: "Makkot 23b · Deuteronomy 33:4" },
+      { q: "“Where does the Torah forbid meat and milk?”",
+        a: "Three times it repeats “you shall not cook a kid in its mother's milk” — one for <strong>cooking</strong>, one for <strong>eating</strong>, one for <strong>benefit</strong>, the Gemara teaches.",
+        src: "Exodus 23:19 · Chullin 115b" },
+    ],
+    demoSrcLab: "Texts read",
+    demoTag: "Real answers — read on Sefaria",
     tuiles: [
       { to: "/question", t: "Ask a question", d: "At your level — with the sources." },
       { to: "/chabbat", t: "The Shabbat WhatsApp", d: "Friday's message — with its GIF." },
@@ -339,10 +363,22 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     deck: "תשובות בהלכה ובלימוד, מצוטטות מהתנ\"ך, מהתלמוד וממפרשיהם — באתר בשלוש שפות, בוואטסאפ בכל יום שישי, בווידאו עם הרב אטל, וב-Claude עם הספרייה כולה. חינם, בלי חשבון, בלי איסוף נתונים.",
     act1: "לשאול שאלה", act2: "התקנה ב-Claude — 2 דקות",
     debloque: "ב-Claude המחבר פותח את מה שאין באתר: ה<b>חברותא</b> ששואלת אתכם ומעמידה אתכם להגן על רש\"י מול תוספות, <b>דף וילנא</b> שנפתח בתוך השיחה, <b>מדריך הפרשה</b> המלא, דפי מקורות — ולימוד רציף, בלי הגבלת שאלות. שישה־עשר כלים, חינם.",
-    demoQ: "«למה מדליקים שני נרות בערב שבת?»",
-    demoA: "שתי פתילות: אחת כנגד <strong>זכור</strong> ואחת כנגד <strong>שמור</strong> — שתי לשונות השבת בתורה, מתאחדות באור.",
-    demoSrcLab: "טקסטים שנקראו", demoSrc: "שולחן ערוך, אורח חיים רסג:א · שמות כ, ח · דברים ה, יב",
-    demoTag: "תשובה אמיתית — נקראה בספריא",
+    demos: [
+      { q: "«למה מדליקים שני נרות בערב שבת?»",
+        a: "שתי פתילות: אחת כנגד <strong>זכור</strong> ואחת כנגד <strong>שמור</strong> — שתי לשונות השבת בתורה, מתאחדות באור.",
+        src: "שולחן ערוך, אורח חיים רסג:א · שמות כ, ח · דברים ה, יב" },
+      { q: "«למה שוברים כוס בחתונה?»",
+        a: "במשתה בנו ראה <strong>מר בריה דרבינא</strong> את החכמים שמחים יותר מדי: הביא כוס יקרה בת ארבע מאות זוז ושבר לפניהם — «במקום גילה שם תהא <strong>רעדה</strong>».",
+        src: "ברכות ל ב–לא א · תהלים ב, יא" },
+      { q: "«מניין תרי\"ג מצוות?»",
+        a: "דרש רבי שמלאי: <strong>שס\"ה לאוין</strong> כמניין ימות החמה, <strong>רמ\"ח עשה</strong> כנגד איבריו של אדם — השנה כולה, הגוף כולו.",
+        src: "מכות כג ב · דברים לג, ד" },
+      { q: "«היכן אוסרת התורה בשר בחלב?»",
+        a: "שלוש פעמים נאמר «לא תבשל גדי בחלב אמו» — אחת ל<strong>בישול</strong>, אחת ל<strong>אכילה</strong>, אחת ל<strong>הנאה</strong>, מלמדת הגמרא.",
+        src: "שמות כג, יט · חולין קטו ב" },
+    ],
+    demoSrcLab: "טקסטים שנקראו",
+    demoTag: "תשובות אמיתיות — נקראו בספריא",
     tuiles: [
       { to: "/question", t: "שאלה", d: "ברמה שלכם — עם המקורות." },
       { to: "/chabbat", t: "הוואטסאפ של שבת", d: "מסר יום שישי — והגיף שמתלווה." },
@@ -520,12 +556,36 @@ ${GA}
   .demo .ds { margin-top:1rem; font-size:.8rem; color:var(--muted); border-top:1px dotted var(--ink-40); padding-top:.7rem; }
   .demo .ds span { font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; }
   .demo .dtag { display:block; margin-top:.8rem; font-size:.68rem; letter-spacing:.16em; text-transform:uppercase; opacity:.5; }
+  .demo .dq, .demo .da, .demo .ds { transition:opacity .45s var(--ease); }
+  .demo.sw .dq, .demo.sw .da, .demo.sw .ds { opacity:0; }
   .tuiles { display:grid; grid-template-columns:repeat(4, 1fr); gap:1.2rem; margin-top:3.6rem; }
   .tuile { text-decoration:none; color:var(--paper); border-top:2px solid rgba(247,246,241,.4); padding-top:.7rem; transition:transform .3s var(--ease), border-color .3s var(--ease); }
   .tuile:hover { transform:translateY(-3px); border-top-color:var(--pop); }
   .tuile b { display:block; font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.02rem; }
   [dir="rtl"] .tuile b { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:700; }
   .tuile span { display:block; margin-top:.15rem; font-size:.82rem; color:rgba(247,246,241,.65); line-height:1.45; }
+  /* Écran peu haut (MacBook 13") : tout le héros tient sans défiler */
+  @media (min-width:901px) and (max-height:940px) {
+    .cover { padding:5.4rem 4vw 1.6rem; }
+    .cgrid { gap:2.6rem; }
+    .cmot { font-size:clamp(2.9rem, 6.2vw, 4.8rem); }
+    .nameline { margin-top:.65rem; font-size:.72rem; }
+    .sub { margin-top:1.05rem; font-size:clamp(1.3rem, 2.25vw, 1.8rem); }
+    .cover p.deck { margin-top:.95rem; font-size:.98rem; }
+    .cover .acts { margin-top:1.35rem; }
+    .cta { font-size:1.06rem; }
+    .debloque { margin-top:.85rem; font-size:.84rem; line-height:1.55; }
+    .tuiles { margin-top:1.9rem; }
+    .tuile b { font-size:.95rem; }
+    .tuile span { font-size:.78rem; }
+    .demo { padding:1.35rem 1.45rem 1.15rem; max-width:23.5rem; }
+    .demo .dq { font-size:1.06rem; }
+    .demo .da { font-size:.9rem; margin-top:.7rem; }
+    .demo .ds { margin-top:.75rem; padding-top:.55rem; }
+    .demo .dtag { margin-top:.6rem; }
+    .demo .sceau { width:78px; height:78px; top:-24px; inset-inline-end:-20px; }
+    .cover .hint { display:none; }
+  }
   @media (max-width:960px) {
     .cover { min-height:auto; padding:5.8rem 4vw 2.6rem; }
     .cgrid { grid-template-columns:minmax(0, 1fr); gap:2.4rem; }
@@ -729,9 +789,9 @@ ${GA}
     </div>
     <figure class="demo chor c2">
       <img class="sceau" src="/icon.png" alt="">
-      <figcaption class="dq">${s.demoQ}</figcaption>
-      <p class="da">${s.demoA}</p>
-      <p class="ds"><span>${s.demoSrcLab}</span> — ${s.demoSrc}</p>
+      <figcaption class="dq">${s.demos[0].q}</figcaption>
+      <p class="da">${s.demos[0].a}</p>
+      <p class="ds"><span>${s.demoSrcLab}</span> — ${s.demos[0].src}</p>
       <span class="dtag">${s.demoTag}</span>
     </figure>
   </div>
@@ -853,6 +913,24 @@ ${GA}
   }
   link(".glose", ".guf mark");
   link(".guf mark", ".glose");
+
+  // La carte-démo tourne : une vraie question chasse l'autre, en fondu
+  var demos = ${JSON.stringify(s.demos).replace(/</g, "\\u003c")};
+  var srcLab = ${JSON.stringify(s.demoSrcLab)};
+  var carte = document.querySelector(".demo");
+  if (carte && demos.length > 1 && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    var di = 0;
+    setInterval(function () {
+      carte.classList.add("sw");
+      setTimeout(function () {
+        di = (di + 1) % demos.length;
+        carte.querySelector(".dq").innerHTML = demos[di].q;
+        carte.querySelector(".da").innerHTML = demos[di].a;
+        carte.querySelector(".ds").innerHTML = "<span>" + srcLab + "</span> — " + demos[di].src;
+        carte.classList.remove("sw");
+      }, 470);
+    }, 8500);
+  }
 })();
 </script>
 </body>
