@@ -323,6 +323,15 @@ export async function chabbatPage(env: Env, lang: Lang): Promise<string> {
   } catch {}
   const texte: string = row ? row[lang] || row.fr : "";
   const indices = gifsDeLaSemaine(row?.vendredi || vendrediCourant());
+  const gifsHtml = `<div class="gifs">
+    <span class="lab">${s.gifLab}</span>
+    <p class="note">${s.gifNote}</p>
+    <div class="row">
+      ${indices.map((i) => `<figure><img src="/api/gif?i=${i}" alt="Chabbat chalom" loading="lazy"><a class="snd" data-i="${i}" role="button" tabindex="0">${s.gifGo}</a></figure>`).join("\n      ")}
+    </div>
+    <p class="gfb" id="gfb"></p>
+    <p class="credit">${s.gifCredit}</p>
+  </div>`;
   const dateGen = row
     ? new Date(row.ts).toLocaleDateString(t(lang, { fr: "fr-FR", en: "en-GB", he: "he-IL" }), { day: "numeric", month: "long", year: "numeric" })
     : "";
@@ -401,7 +410,7 @@ ${altLinks(lang, "/chabbat")}
   .acts a { text-decoration:none; } .acts a::before { content:"[ "; color:var(--ink-40); } .acts a::after { content:" ]"; color:var(--ink-40); } .acts a:hover::before { content:"[ → "; }
   [dir="rtl"] .acts a:hover::before { content:"[ ← "; }
   .acts .fb { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:400; font-size:.85rem; font-style:italic; color:var(--muted); min-height:1em; }
-  .gifs { margin-top:2.6rem; border-top:1px dotted var(--ink-40); padding-top:1.4rem; }
+  .gifs { margin:1.5rem 0 2rem; border-top:1px dotted var(--ink-40); border-bottom:1px dotted var(--ink-40); padding:1.2rem 0 1.3rem; }
   .gifs .lab { display:block; font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.15rem; margin-bottom:.2rem; }
   [dir="rtl"] .gifs .lab { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:700; }
   .gifs .note { font-size:.88rem; color:var(--muted); margin-bottom:1rem; max-width:44rem; }
@@ -428,18 +437,11 @@ ${altLinks(lang, "/chabbat")}
   <img class="sceau" src="/icon.png" alt="">
   <h1>${s.h1}</h1>
   <p class="muted">${s.chapeau}</p>
-  ${texte ? `<div class="msg" id="msg">${esc(texte).replace(/\*([^*\n]+)\*/g, "<strong>$1</strong>")}</div>
-  <p class="meta">${s.genere} ${esc(dateGen)}.</p>
-  <div class="acts"><a href="#" id="copy">${s.copier}</a><a href="#" id="share" role="button">${s.partager}</a><span class="fb" id="fb"></span></div>` : `<div class="msg">${s.vide}</div>`}
-  <div class="gifs">
-    <span class="lab">${s.gifLab}</span>
-    <p class="note">${s.gifNote}</p>
-    <div class="row">
-      ${indices.map((i) => `<figure><img src="/api/gif?i=${i}" alt="Chabbat chalom" loading="lazy"><a class="snd" data-i="${i}" role="button" tabindex="0">${s.gifGo}</a></figure>`).join("\n      ")}
-    </div>
-    <p class="gfb" id="gfb"></p>
-    <p class="credit">${s.gifCredit}</p>
-  </div>
+  ${texte ? `<div class="acts"><a href="#" id="copy">${s.copier}</a><a href="#" id="share" role="button">${s.partager}</a><span class="fb" id="fb"></span></div>
+  ${gifsHtml}
+  <div class="msg" id="msg">${esc(texte).replace(/\*([^*\n]+)\*/g, "<strong>$1</strong>")}</div>
+  <p class="meta">${s.genere} ${esc(dateGen)}.</p>` : `<div class="msg">${s.vide}</div>
+  ${gifsHtml}`}
   <footer><p><a href="${href(lang, "/")}">${s.foot.accueil}</a> · <a href="${href(lang, "/daily")}">${s.foot.daily}</a> · <a href="${href(lang, "/privacy")}">${s.foot.privacy}</a> · ${langSwitcher(lang, "/chabbat")}</p><p><img class="fsceau" src="/icon.png" alt="">${colophon(lang)}</p></footer>
 </main>
 <script>
