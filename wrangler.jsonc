@@ -7,8 +7,9 @@
 	"observability": { "enabled": true },
 
 	// Le WhatsApp de Chabbat : composé chaque vendredi à 05:00 UTC (07:00 Paris
-	// l'été, 06:00 l'hiver), publié sur /chabbat.
-	"triggers": { "crons": ["0 5 * * 5"] },
+	// l'été, 06:00 l'hiver), publié sur /chabbat. Jour en toutes lettres :
+	// Cloudflare compte les jours 1=dimanche (le « 5 » a tiré un jeudi, 03.09.2026).
+	"triggers": { "crons": ["0 5 * * FRI"] },
 	"upload_source_maps": true,
 
 	// URL canonique : torah-mcp.com (domaine custom Cloudflare). L'adresse

@@ -165,7 +165,7 @@ type Strings = {
 /** Chaînes de l'interface. Le FR est la référence (identique au visualiseur historique). */
 const T: Record<Lang, Strings> = {
   fr: {
-    title: "Daf",
+    title: "Le daf du jour — Mamash IA",
     description: "Visualiseur de daf façon Vilna : Guemara au centre, Rachi et Tossafot dépliables, traduction au clic.",
     open: "Ouvrir",
     today: "Daf du jour",
@@ -181,7 +181,7 @@ const T: Record<Lang, Strings> = {
     trEn: "Traduction anglaise (pas de version française de ce texte sur Sefaria).",
   },
   en: {
-    title: "Daf",
+    title: "The daily daf — Mamash IA",
     description: "Vilna-style daf viewer: Gemara in the centre, Rashi and Tosafot expandable, translation on click.",
     open: "Open",
     today: "Today's daf",
@@ -197,7 +197,7 @@ const T: Record<Lang, Strings> = {
     trEn: "English translation.",
   },
   he: {
-    title: "דף",
+    title: "הדף היומי — Mamash IA",
     description: "צפייה בדף גמרא בפריסת וילנא: הגמרא במרכז, רש״י ותוספות נפתחים, תרגום בלחיצה.",
     open: "פתיחה",
     today: "הדף היומי",
@@ -233,6 +233,11 @@ export function dafViewerHtml(lang: Lang): string {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${s.title}</title>
 <meta name="description" content="${s.description}">
+<meta property="og:title" content="${s.title}">
+<meta property="og:description" content="${s.description}">
+<meta property="og:image" content="https://mamash-ia.com/og.png?v=2">
+<meta property="og:type" content="website">
+<link rel="icon" href="/icon.png">
 ${altLinks(lang, "/daf")}
 <style>
   :root {
