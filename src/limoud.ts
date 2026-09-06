@@ -217,7 +217,7 @@ export const limoudTools: ToolDefinition[] = [
       type: "object",
       properties: {
         ...LIEU_PROPS,
-        date: { type: "string", description: "YYYY-MM-DD (défaut : aujourd'hui)." },
+        date: { type: "string", description: "YYYY-MM-DD (défaut : aujourd'hui). Vaut aussi avec chabbat=true : horaires du Chabbat de la semaine de cette date (passée ou future)." },
         chabbat: { type: "boolean", description: "true : horaires de Chabbat au lieu des zmanim du jour." },
       },
       required: [],
@@ -333,7 +333,11 @@ export const limoudHandlers: Record<string, ToolHandler> = {
   zmanim: async (args, _env) => {
     const lieu = resolveLieu(args);
     if (args?.chabbat) {
-      const data = await getJson(`${HEBCAL_URL}/shabbat?cfg=json&${lieu}&M=on`, "Hebcal shabbat");
+      // La date vaut aussi ici : Chabbat de la semaine de cette date (sinon, le prochain).
+      const dc = (args?.date || "").trim();
+      const [gy, gm, gd] = dc.split("-").map(Number);
+      const dateParam = gy && gm && gd ? `&gy=${gy}&gm=${gm}&gd=${gd}` : "";
+      const data = await getJson(`${HEBCAL_URL}/shabbat?cfg=json&${lieu}&M=on${dateParam}`, "Hebcal shabbat");
       return {
         lieu: data.location?.title,
         evenements: (data.items || []).map((i: any) => ({
