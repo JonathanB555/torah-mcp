@@ -62,5 +62,10 @@ export const htmlAttrs = (lang: Lang) => `lang="${lang}" dir="${dirOf(lang)}"`;
 export const colophon = (lang: Lang) =>
   t(lang, { fr: "Un projet personnel de Jonathan Bensaid.", en: "A personal project by Jonathan Bensaid.", he: "נעשה בידי יונתן בן־סעיד." });
 
+/** La saison des feuilles de miel : de maintenant à la fin des fêtes de Tichri
+ * (Simhat Torah 5787 s'achève le 4 octobre 2026 au soir). Après, les entrées
+ * saisonnières (nav, badge) disparaissent d'elles-mêmes. */
+export const saisonMiel = (): boolean => Date.now() < Date.parse("2026-10-05T00:00:00Z");
+
 /** Marqueur de langue à passer au serveur (/api/question). */
 export const langLabel = (lang: Lang) => t(lang, { fr: "français", en: "anglais", he: "hébreu" });

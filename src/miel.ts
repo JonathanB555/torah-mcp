@@ -52,7 +52,7 @@ interface StringsMiel {
   h1: string; chapeau: string;
   labPrenom: string; phPrenom: string; labHeb: string; phHeb: string;
   labVille: string; autreVille: string; btnImprimer: string;
-  btnImage: string; imgOk: string; imgErr: string;
+  btnImage: string; imgOk: string; imgErr: string; btnWa: string; waTexte: string;
   notePrint: string; notePrivee: string;
   datesTitre: string; regleAvec: string; regleSans: string;
   lignes: { f: string; i: string; d: string }[];
@@ -97,6 +97,8 @@ const T: Record<Lang, StringsMiel> = {
     btnImprimer: "Imprimer / enregistrer en PDF",
     btnImage: "Télécharger en image — pour WhatsApp ou Photos",
     imgOk: "Image prête !", imgErr: "Échec de l'image — utilisez l'impression.",
+    btnWa: "Partager la page sur WhatsApp",
+    waTexte: "La feuille de miel de Roch Hachana - cree la tienne, avec les horaires de ta ville :",
     notePrint: "Dans la fenêtre d'impression, activez « Imprimer les arrière-plans » et choisissez A4 sans marges.",
     notePrivee: "Tout se passe dans votre navigateur : rien n'est envoyé, rien n'est conservé.",
     datesTitre: "Dates des Fêtes de Tichri de l'année",
@@ -136,6 +138,8 @@ const T: Record<Lang, StringsMiel> = {
     btnImprimer: "Print / save as PDF",
     btnImage: "Download as an image — for WhatsApp or Photos",
     imgOk: "Image ready!", imgErr: "Image failed — use print instead.",
+    btnWa: "Share the page on WhatsApp",
+    waTexte: "The Rosh Hashana honey sheet - make yours, with your city's times:",
     notePrint: "In the print dialog, enable “Background graphics” and choose A4 with no margins.",
     notePrivee: "Everything happens in your browser: nothing is sent, nothing is stored.",
     datesTitre: "Dates of the Tishrei Holidays",
@@ -175,6 +179,8 @@ const T: Record<Lang, StringsMiel> = {
     btnImprimer: "הדפסה / שמירה כ-PDF",
     btnImage: "הורדה כתמונה — לוואטסאפ או לתמונות",
     imgOk: "התמונה מוכנה!", imgErr: "יצירת התמונה נכשלה — השתמשו בהדפסה.",
+    btnWa: "שיתוף העמוד בוואטסאפ",
+    waTexte: "דף הדבש לראש השנה - צרו את שלכם, עם זמני העיר שלכם:",
     notePrint: "בחלון ההדפסה הפעילו « רקעים » ובחרו A4 בלי שוליים.",
     notePrivee: "הכול קורה בדפדפן שלכם: שום דבר לא נשלח ולא נשמר.",
     datesTitre: "מועדי חודש תשרי",
@@ -249,7 +255,9 @@ ${altLinks(lang, "/miel")}
   nav { display:flex; justify-content:space-between; align-items:center; padding:.4rem 0 1rem; }
   nav .wm { font-family:"Rubik", "Arial Black", sans-serif; font-weight:900; font-size:.92rem; letter-spacing:.05em; text-transform:uppercase; text-decoration:none; color:var(--ink); }
   nav .wm img { width:30px; height:30px; border-radius:50%; vertical-align:-9px; margin-inline-end:.5rem; }
+  nav .r { white-space:nowrap; }
   nav .r a { color:var(--ink); text-decoration:none; margin-inline-start:1rem; font-size:.9rem; }
+  @media (max-width:640px) { nav .r a { margin-inline-start:.6rem; font-size:.8rem; } nav .r .lang { margin-inline-start:.5rem; padding-inline-start:.5rem; } }
   nav .r .lang { margin-inline-start:1.1rem; padding-inline-start:.8rem; border-inline-start:1px solid rgba(8,42,153,.25); font-size:.82rem; }
   nav .r .lang a { margin-inline-start:0; }
   .lang .dot { opacity:.4; margin:0 .35em; }
@@ -274,6 +282,9 @@ ${altLinks(lang, "/miel")}
   button.btn2 { background:transparent; border:1.5px solid var(--ink); box-shadow:none; margin-top:.6rem; font-size:.95rem; }
   button.btn2:hover { background:var(--ink); color:var(--pop); }
   .retimg { font-weight:700; color:var(--ink); min-height:1.2em; margin-top:.5rem; }
+  .btnwa { display:block; text-align:center; margin-top:.6rem; background:#25d366; color:#0b3d2c; font-weight:700;
+    font-size:.95rem; padding:.55rem 1rem .62rem; text-decoration:none; }
+  .btnwa:hover { filter:brightness(1.06); }
   .note { font-size:.8rem; color:var(--muted); margin-top:.7rem; line-height:1.5; }
   .cadre-apercu { border:1.5px solid rgba(8,42,153,.15); background:#e6e4dc; overflow:hidden; position:relative; }
   .apercu { transform-origin:top left; }
@@ -352,6 +363,7 @@ ${altLinks(lang, "/miel")}
       <div class="champ"><label for="ville">${s.labVille}</label><select id="ville">${villesOpts}<option value="autre">${s.autreVille}</option></select></div>
       <button id="telecharger" type="button">${s.btnImage}</button>
       <button id="imprimer" type="button" class="btn2">${s.btnImprimer}</button>
+      <a id="btnwa" class="btnwa" href="https://wa.me/?text=${encodeURIComponent(s.waTexte + " https://mamash-ia.com" + href(lang, "/miel"))}" target="_blank" rel="noopener">${s.btnWa}</a>
       <p class="note retimg" id="retimg"></p>
       <p class="note">${s.notePrint}</p>
       <p class="note">${s.notePrivee}</p>
@@ -452,6 +464,9 @@ ${altLinks(lang, "/miel")}
   }
   document.getElementById("imprimer").addEventListener("click", function () { marquerCreation("bouton"); window.print(); });
   window.addEventListener("beforeprint", function () { marquerCreation("raccourci"); });
+  document.getElementById("btnwa").addEventListener("click", function () {
+    if (typeof gtag === "function") gtag("event", "partage_whatsapp", { langue: document.documentElement.lang });
+  });
 
   // Image PNG haute définition de la feuille, puis feuille de partage du téléphone
   var retimg = document.getElementById("retimg");

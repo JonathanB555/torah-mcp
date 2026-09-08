@@ -8,7 +8,7 @@
  * du dictionnaire `T`, et celles utilisées par le script sont injectées dans `S`.
  */
 
-import { type Lang, href, altLinks, langSwitcher, htmlAttrs, colophon } from "./i18n";
+import { type Lang, href, altLinks, langSwitcher, htmlAttrs, colophon, saisonMiel, t } from "./i18n";
 
 const PATH = "/question";
 
@@ -370,6 +370,9 @@ ${altLinks(lang, PATH)}
   [dir="rtl"] nav .r a { font-size:.8rem; letter-spacing:.02em; }
   nav .r a strong { background:var(--pop); color:var(--ink); padding:.2rem .55rem .24rem; font-weight:inherit; transition:background .3s var(--ease), color .3s var(--ease); }
   nav .r a:hover strong { background:var(--ink); color:var(--pop); }
+  nav .r a.navmiel { background:var(--ink); color:var(--pop); padding:.2rem .55rem .24rem; box-shadow:0 3px 10px rgba(8,42,153,.2); }
+  nav .r a.navmiel:hover { background:var(--pop); color:var(--ink); text-decoration:none; }
+
   nav .r a:has(strong):hover { text-decoration:none; }
   nav { position:sticky; top:0; z-index:40; background:rgba(247,246,241,.85); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); border-bottom:1.5px solid var(--ink-15); margin:0 -4vw; padding-inline:4vw; }
   nav .r a:not(:has(strong)) { padding-bottom:3px; background-image:linear-gradient(var(--pop), var(--pop)); background-repeat:no-repeat; background-size:0% 2.5px; background-position:0 100%; transition:background-size .3s var(--ease); }
@@ -480,7 +483,7 @@ ${altLinks(lang, PATH)}
 <main>
   <nav>
     <a class="wm" href="${href(lang, "/")}" dir="ltr"><img src="/icon.png" alt="" width="34" height="34"><b>Mamash</b>&nbsp;IA</a>
-    <span class="r"><a href="${href(lang, "/outils")}">${s.navTools}</a><a href="${href(lang, "/daf")}">${s.navDaf}</a><a href="${href(lang, "/install")}"><strong>${s.navInstall}</strong></a>${langSwitcher(lang, PATH)}</span>
+    <span class="r">${saisonMiel() ? `<a class="navmiel" href="${href(lang, "/miel")}">${t(lang, { fr: "La feuille de miel", en: "The honey sheet", he: "דף הדבש" })}</a>` : ""}<a href="${href(lang, "/outils")}">${s.navTools}</a><a href="${href(lang, "/daf")}">${s.navDaf}</a><a href="${href(lang, "/install")}"><strong>${s.navInstall}</strong></a>${langSwitcher(lang, PATH)}</span>
   </nav>
 
   <img class="sceau" src="/icon.png" alt="">

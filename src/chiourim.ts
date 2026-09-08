@@ -10,7 +10,7 @@
  */
 
 import type { Env } from "./sefaria";
-import { type Lang, altLinks, htmlAttrs, href, langSwitcher, colophon, t } from "./i18n";
+import { type Lang, altLinks, htmlAttrs, href, langSwitcher, colophon, t, saisonMiel } from "./i18n";
 
 const CHANNEL_ID = "UCtqyBROvt1svSBieQqDAUBA";
 const CHANNEL_URL = "https://www.youtube.com/@meirattal6523";
@@ -264,6 +264,9 @@ ${altLinks(lang, "/chiourim")}
   [dir="rtl"] nav .r a { font-size:.8rem; letter-spacing:.02em; }
   nav .r a strong { background:var(--pop); color:var(--ink); padding:.2rem .55rem .24rem; font-weight:inherit; transition:background .3s var(--ease), color .3s var(--ease); }
   nav .r a:hover strong { background:var(--ink); color:var(--pop); }
+  nav .r a.navmiel { background:var(--ink); color:var(--pop); padding:.2rem .55rem .24rem; box-shadow:0 3px 10px rgba(8,42,153,.2); }
+  nav .r a.navmiel:hover { background:var(--pop); color:var(--ink); text-decoration:none; }
+
   nav .r a:has(strong):hover { text-decoration:none; }
   nav { position:sticky; top:0; z-index:40; background:rgba(247,246,241,.85); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); border-bottom:1.5px solid var(--ink-15); margin:0 -4vw; padding-inline:4vw; }
   nav .r a:not(:has(strong)) { padding-bottom:3px; background-image:linear-gradient(var(--pop), var(--pop)); background-repeat:no-repeat; background-size:0% 2.5px; background-position:0 100%; transition:background-size .3s var(--ease); }
@@ -326,7 +329,7 @@ ${altLinks(lang, "/chiourim")}
 <main>
   <nav>
     <a class="wm" href="${href(lang, "/")}"><img src="/icon.png" alt="" width="34" height="34"><b>Mamash</b>&nbsp;IA</a>
-    <span class="r"><a href="${href(lang, "/question")}">${s.nav.question}</a><a href="${href(lang, "/daf")}">${s.nav.daf}</a><a href="${href(lang, "/outils")}">${s.nav.outils}</a><a href="${href(lang, "/install")}"><strong>${s.nav.install}</strong></a>${langSwitcher(lang, "/chiourim")}</span>
+    <span class="r">${saisonMiel() ? `<a class="navmiel" href="${href(lang, "/miel")}">${t(lang, { fr: "La feuille de miel", en: "The honey sheet", he: "דף הדבש" })}</a>` : ""}<a href="${href(lang, "/question")}">${s.nav.question}</a><a href="${href(lang, "/daf")}">${s.nav.daf}</a><a href="${href(lang, "/outils")}">${s.nav.outils}</a><a href="${href(lang, "/install")}"><strong>${s.nav.install}</strong></a>${langSwitcher(lang, "/chiourim")}</span>
   </nav>
   <img class="sceau" src="/icon.png" alt="">
   <h1>${s.h1}</h1>

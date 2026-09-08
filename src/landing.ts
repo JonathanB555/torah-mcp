@@ -4,7 +4,7 @@
  * le gabarit HTML/CSS/JS est unique, seules les chaînes changent.
  */
 
-import { type Lang, SITE, href, altLinks, langSwitcher, htmlAttrs, colophon } from "./i18n";
+import { type Lang, SITE, href, altLinks, langSwitcher, htmlAttrs, colophon, saisonMiel } from "./i18n";
 
 // ----------------------------------------------------------------------------
 // Fragments communs
@@ -165,6 +165,7 @@ type LandingStrings = {
   demos: { q: string; a: string; src: string }[]; demoSrcLab: string; demoTag: string;
   tuiles: { to: string; t: string; d: string }[];
   maisonLab: string; maisonT: string; maisonD: string;
+  navMiel: string; badgeMielT: string; badgeMielS: string;
   bibLab: string; bibT: string; bibD: string;
   kezAria: string; kezId: string;
   fig1n: string; fig1u: string; fig1t: string; fig2n: string; fig2u: string; fig2t: string; fig3n: string; fig3u: string; fig3t: string;
@@ -184,6 +185,9 @@ const LANDING_T: Record<Lang, LandingStrings> = {
   fr: {
     title: "Mamash IA — la discipline des sources pour Claude",
     desc: "Claude cite la Torah depuis les textes, plus jamais de mémoire. Méthode d'étude, havrouta, guide de paracha, page de Vilna interactive, Sefaria, HebrewBooks, zmanim, guematria. Gratuit, sans compte.",
+    navMiel: "La feuille de miel",
+    badgeMielT: "La feuille de miel",
+    badgeMielS: "une par invité — créez la vôtre",
     maisonLab: "770 Eastern Parkway · Brooklyn — photographie réelle",
     maisonT: "La maison d'où vient le cri.",
     maisonD: "C'est de cette maison de briques — le 770, la maison d'étude du Rabbi — qu'est parti le mot d'ordre que ce site reprend : la Torah avec chacun, vraiment, <strong>ממש</strong>. La photo est réelle. La discipline des sources aussi.",
@@ -278,6 +282,9 @@ const LANDING_T: Record<Lang, LandingStrings> = {
   en: {
     title: "Mamash IA — source discipline for Claude",
     desc: "Claude quotes the Torah from the texts, never again from memory. Study method, chavruta, parashah guide, interactive Vilna page, Sefaria, HebrewBooks, zmanim, gematria. Free, no account.",
+    navMiel: "The honey sheet",
+    badgeMielT: "The honey sheet",
+    badgeMielS: "one per guest — make yours",
     maisonLab: "770 Eastern Parkway · Brooklyn — a real photograph",
     maisonT: "The house the cry comes from.",
     maisonD: "From this brick house — 770, the Rebbe's study hall — came the watchword this site takes up: Torah with everyone, truly, <strong>ממש</strong>. The photograph is real. So is the discipline of sources.",
@@ -372,6 +379,9 @@ const LANDING_T: Record<Lang, LandingStrings> = {
   he: {
     title: "Mamash IA — משמעת מקורות ל-Claude",
     desc: "Claude מצטט את התורה מתוך הטקסטים, לעולם לא מהזיכרון. שיטת לימוד, חברותא, מדריך לפרשה, דף וילנא אינטראקטיבי, ספריא, HebrewBooks, זמנים, גימטריה. חינם, בלי חשבון.",
+    navMiel: "דף הדבש",
+    badgeMielT: "דף הדבש",
+    badgeMielS: "אחד לכל אורח — צרו את שלכם",
     maisonLab: "איסטרן פארקוויי 770 · ברוקלין — צילום אמיתי",
     maisonT: "הבית שממנו בא הקול.",
     maisonD: "מהבית הזה — 770, בית מדרשו של הרבי — יצאה הקריאה שהאתר נושא: תורה עם כל אחד, באמת, <strong>ממש</strong>. הצילום אמיתי. וכך גם משמעת המקורות.",
@@ -540,6 +550,9 @@ ${GA}
   nav .r a:has(strong) { background-image:none; padding-bottom:0; }
   nav .r a:hover strong { background:var(--ink); color:var(--pop); }
   nav .r .lang { padding-inline-start:.4rem; border-inline-start:1px solid var(--ink-15); }
+  nav .r a.navmiel { background:var(--ink); color:var(--pop); padding:.34rem .7rem .38rem; background-image:none;
+    box-shadow:0 3px 10px rgba(8,42,153,.2); transition:background .3s var(--ease), color .3s var(--ease); }
+  nav .r a.navmiel:hover { background:var(--pop); color:var(--ink); }
   @media (max-width:720px) {
     nav { padding:.7rem 3vw; }
     nav .wm { font-size:.85rem; }
@@ -553,6 +566,18 @@ ${GA}
   }
 
   /* ---- ouverture plein écran ---- */
+  .badgemiel { position:absolute; top:5.4rem; inset-inline-end:3vw; z-index:5; text-decoration:none;
+    background:var(--pop); color:var(--ink); padding:.55rem .95rem .65rem; transform:rotate(3deg);
+    box-shadow:.2rem .3rem 0 rgba(0,0,0,.35); transition:transform .3s var(--ease); }
+  .badgemiel:hover { transform:rotate(0deg) scale(1.05); }
+  [dir="rtl"] .badgemiel { transform:rotate(-3deg); }
+  .badgemiel b { display:block; font-family:"Rubik", "Arial Black", sans-serif; font-weight:900; font-size:.92rem;
+    letter-spacing:.06em; text-transform:uppercase; }
+  .badgemiel span { display:block; font-size:.78rem; margin-top:.1rem; }
+  @media (max-width:720px) {
+    .badgemiel { position:static; display:inline-block; align-self:flex-start; margin:0 0 1.4rem;
+      padding:.4rem .7rem .5rem; transform:rotate(-1.5deg); }
+    .badgemiel b { font-size:.8rem; } .badgemiel span { font-size:.7rem; } }
   .cover { position:relative; min-height:100svh; display:flex; flex-direction:column; justify-content:center; padding:6.8rem 4vw 3rem; overflow:hidden; background:var(--ink); color:var(--paper); }
   .cmot { font-family:"Rubik", "Arial Black", sans-serif; font-weight:900; font-size:clamp(3.2rem, 9vw, 7.6rem); line-height:.95; color:var(--pop); letter-spacing:.01em; }
   .cia { display:inline-block; background:var(--pop); color:var(--ink); font-family:"Rubik", "Arial Black", sans-serif; font-weight:900; font-size:.34em; line-height:1; padding:.24em .5em .3em; margin-inline-start:.3em; vertical-align:.32em; letter-spacing:.16em; transform:rotate(-2deg); box-shadow:0 6px 16px rgba(0,0,0,.25); }
@@ -804,6 +829,7 @@ ${GA}
 <nav>
   <a class="wm" href="${href(lang, "/")}" dir="ltr"><img src="/icon.png" alt="" width="34" height="34"><b>Mamash</b>&nbsp;IA</a>
   <div class="r">
+    ${saisonMiel() ? `<a href="${href(lang, "/miel")}" class="navmiel hide-m">${s.navMiel}</a>` : ""}
     <a href="${href(lang, "/question")}" class="hide-m">${s.navQuestion}</a>
     <a href="${href(lang, "/chabbat")}" class="hide-m">${s.navChabbat}</a>
     <a href="${href(lang, "/chiourim")}" class="hide-m">${s.navChiourim}</a>
@@ -815,6 +841,7 @@ ${GA}
 </nav>
 
 <header class="cover">
+  ${saisonMiel() ? `<a class="badgemiel" href="${href(lang, "/miel")}"><b>${s.badgeMielT}</b><span>${s.badgeMielS}</span></a>` : ""}
   <div class="cgrid">
     <div>
       <h1 class="cmot${s.shoutHe ? " he" : ""} chor c1" dir="ltr">${s.shoutWord}<span class="cia">IA&nbsp;!</span></h1>
