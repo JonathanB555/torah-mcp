@@ -222,6 +222,14 @@ export function mielPage(lang: Lang): string {
 <meta property="og:image" content="https://mamash-ia.com/og.png?v=2">
 <meta property="og:type" content="website">
 ${altLinks(lang, "/miel")}
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NG6P5HPH9K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NG6P5HPH9K');
+</script>
 <link rel="icon" href="/icon.png">
 <link rel="stylesheet" href="/fonts/fonts-miel.css">
 <style>
