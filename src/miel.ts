@@ -97,7 +97,7 @@ const T: Record<Lang, StringsMiel> = {
     btnImprimer: "Imprimer / enregistrer en PDF",
     btnImage: "Télécharger en image — pour WhatsApp ou Photos",
     imgOk: "Image prête !", imgErr: "Échec de l'image — utilisez l'impression.",
-    btnWa: "Partager la page sur WhatsApp",
+    btnWa: "Partager sur WhatsApp",
     waTexte: "La feuille de miel de Roch Hachana - cree la tienne, avec les horaires de ta ville :",
     notePrint: "Dans la fenêtre d'impression, activez « Imprimer les arrière-plans » et choisissez A4 sans marges.",
     notePrivee: "Tout se passe dans votre navigateur : rien n'est envoyé, rien n'est conservé.",
@@ -138,7 +138,7 @@ const T: Record<Lang, StringsMiel> = {
     btnImprimer: "Print / save as PDF",
     btnImage: "Download as an image — for WhatsApp or Photos",
     imgOk: "Image ready!", imgErr: "Image failed — use print instead.",
-    btnWa: "Share the page on WhatsApp",
+    btnWa: "Share on WhatsApp",
     waTexte: "The Rosh Hashana honey sheet - make yours, with your city's times:",
     notePrint: "In the print dialog, enable “Background graphics” and choose A4 with no margins.",
     notePrivee: "Everything happens in your browser: nothing is sent, nothing is stored.",
@@ -179,7 +179,7 @@ const T: Record<Lang, StringsMiel> = {
     btnImprimer: "הדפסה / שמירה כ-PDF",
     btnImage: "הורדה כתמונה — לוואטסאפ או לתמונות",
     imgOk: "התמונה מוכנה!", imgErr: "יצירת התמונה נכשלה — השתמשו בהדפסה.",
-    btnWa: "שיתוף העמוד בוואטסאפ",
+    btnWa: "שיתוף בוואטסאפ",
     waTexte: "דף הדבש לראש השנה - צרו את שלכם, עם זמני העיר שלכם:",
     notePrint: "בחלון ההדפסה הפעילו « רקעים » ובחרו A4 בלי שוליים.",
     notePrivee: "הכול קורה בדפדפן שלכם: שום דבר לא נשלח ולא נשמר.",
@@ -464,18 +464,15 @@ ${altLinks(lang, "/miel")}
   }
   document.getElementById("imprimer").addEventListener("click", function () { marquerCreation("bouton"); window.print(); });
   window.addEventListener("beforeprint", function () { marquerCreation("raccourci"); });
-  document.getElementById("btnwa").addEventListener("click", function () {
-    if (typeof gtag === "function") gtag("event", "partage_whatsapp", { langue: document.documentElement.lang });
-  });
 
-  // Image PNG haute définition de la feuille, puis feuille de partage du téléphone
+
+  // Fabrication commune : la feuille en PNG haute définition
   var retimg = document.getElementById("retimg");
   var btnImg = document.getElementById("telecharger");
   var MSG_OK = ${JSON.stringify(t(lang, { fr: T.fr.imgOk, en: T.en.imgOk, he: T.he.imgOk }))};
   var MSG_ERR = ${JSON.stringify(t(lang, { fr: T.fr.imgErr, en: T.en.imgErr, he: T.he.imgErr }))};
-  btnImg.addEventListener("click", function () {
-    retimg.textContent = "…";
-    btnImg.disabled = true;
+  var WA_TEXTE = ${JSON.stringify(t(lang, { fr: T.fr.waTexte, en: T.en.waTexte, he: T.he.waTexte }))} + " https://mamash-ia.com${href(lang, "/miel")}";
+  function fabriquerImage(fini) {
     var feuille = document.querySelector(".page");
     (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(function () {
       return html2canvas(feuille, {
@@ -489,23 +486,53 @@ ${altLinks(lang, "/miel")}
       });
     }).then(function (canvas) {
       canvas.toBlob(function (blob) {
-        btnImg.disabled = false;
-        if (!blob) { retimg.textContent = MSG_ERR; return; }
-        marquerCreation("image");
+        if (!blob) { fini(null); return; }
         var nomFichier = "feuille-de-miel" + (prenom.value.trim() ? "-" + prenom.value.trim().toLowerCase() : "") + ".png";
-        var fichier = new File([blob], nomFichier, { type: "image/png" });
-        if (navigator.canShare && navigator.canShare({ files: [fichier] })) {
-          navigator.share({ files: [fichier] }).then(function () { retimg.textContent = MSG_OK; }, function () { retimg.textContent = ""; });
-          return;
-        }
-        var url = URL.createObjectURL(blob);
-        var a = document.createElement("a");
-        a.href = url; a.download = nomFichier;
-        document.body.appendChild(a); a.click(); a.remove();
-        setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
-        retimg.textContent = MSG_OK;
+        fini(new File([blob], nomFichier, { type: "image/png" }));
       }, "image/png");
-    }).catch(function () { btnImg.disabled = false; retimg.textContent = MSG_ERR; });
+    }).catch(function () { fini(null); });
+  }
+  function partageFichierPossible() {
+    try {
+      return !!(navigator.canShare && navigator.canShare({ files: [new File([""], "t.png", { type: "image/png" })] }));
+    } catch (e) { return false; }
+  }
+
+  // « Télécharger en image » : feuille de partage, sinon téléchargement
+  btnImg.addEventListener("click", function () {
+    retimg.textContent = "…"; btnImg.disabled = true;
+    fabriquerImage(function (fichier) {
+      btnImg.disabled = false;
+      if (!fichier) { retimg.textContent = MSG_ERR; return; }
+      marquerCreation("image");
+      if (partageFichierPossible()) {
+        navigator.share({ files: [fichier] }).then(function () { retimg.textContent = MSG_OK; }, function () { retimg.textContent = ""; });
+        return;
+      }
+      var url = URL.createObjectURL(fichier);
+      var a = document.createElement("a");
+      a.href = url; a.download = fichier.name;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+      retimg.textContent = MSG_OK;
+    });
+  });
+
+  // « Partager sur WhatsApp » : LE DOCUMENT sur téléphone (image + mot),
+  // le lien wa.me de la page en repli quand le partage de fichiers n'existe pas.
+  var btnWa = document.getElementById("btnwa");
+  btnWa.addEventListener("click", function (e) {
+    if (typeof gtag === "function") gtag("event", "partage_whatsapp", { langue: document.documentElement.lang, mode: partageFichierPossible() ? "document" : "lien" });
+    if (!partageFichierPossible()) return; // desktop : le lien wa.me fait le travail
+    e.preventDefault();
+    retimg.textContent = "…";
+    fabriquerImage(function (fichier) {
+      if (!fichier) { retimg.textContent = MSG_ERR; return; }
+      marquerCreation("whatsapp");
+      var charge = { files: [fichier], text: WA_TEXTE };
+      if (!navigator.canShare(charge)) charge = { files: [fichier] };
+      navigator.share(charge).then(function () { retimg.textContent = MSG_OK; }, function () { retimg.textContent = ""; });
+    });
   });
 })();
 </script>
