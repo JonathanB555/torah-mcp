@@ -52,6 +52,7 @@ interface StringsMiel {
   h1: string; chapeau: string;
   labPrenom: string; phPrenom: string; labHeb: string; phHeb: string;
   labVille: string; autreVille: string; btnImprimer: string;
+  btnImage: string; imgOk: string; imgErr: string;
   notePrint: string; notePrivee: string;
   datesTitre: string; regleAvec: string; regleSans: string;
   lignes: { f: string; i: string; d: string }[];
@@ -94,6 +95,8 @@ const T: Record<Lang, StringsMiel> = {
     labHeb: "En hébreu (modifiable)", phHeb: "אסתר",
     labVille: "La ville — pour les horaires", autreVille: "Autre ville (sans horaires)",
     btnImprimer: "Imprimer / enregistrer en PDF",
+    btnImage: "Télécharger en image — pour WhatsApp ou Photos",
+    imgOk: "Image prête !", imgErr: "Échec de l'image — utilisez l'impression.",
     notePrint: "Dans la fenêtre d'impression, activez « Imprimer les arrière-plans » et choisissez A4 sans marges.",
     notePrivee: "Tout se passe dans votre navigateur : rien n'est envoyé, rien n'est conservé.",
     datesTitre: "Dates des Fêtes de Tichri de l'année",
@@ -131,6 +134,8 @@ const T: Record<Lang, StringsMiel> = {
     labHeb: "In Hebrew (editable)", phHeb: "אסתר",
     labVille: "City — for the times", autreVille: "Other city (no times)",
     btnImprimer: "Print / save as PDF",
+    btnImage: "Download as an image — for WhatsApp or Photos",
+    imgOk: "Image ready!", imgErr: "Image failed — use print instead.",
     notePrint: "In the print dialog, enable “Background graphics” and choose A4 with no margins.",
     notePrivee: "Everything happens in your browser: nothing is sent, nothing is stored.",
     datesTitre: "Dates of the Tishrei Holidays",
@@ -168,6 +173,8 @@ const T: Record<Lang, StringsMiel> = {
     labHeb: "בעברית (ניתן לעריכה)", phHeb: "אסתר",
     labVille: "העיר — לזמנים", autreVille: "עיר אחרת (בלי זמנים)",
     btnImprimer: "הדפסה / שמירה כ-PDF",
+    btnImage: "הורדה כתמונה — לוואטסאפ או לתמונות",
+    imgOk: "התמונה מוכנה!", imgErr: "יצירת התמונה נכשלה — השתמשו בהדפסה.",
     notePrint: "בחלון ההדפסה הפעילו « רקעים » ובחרו A4 בלי שוליים.",
     notePrivee: "הכול קורה בדפדפן שלכם: שום דבר לא נשלח ולא נשמר.",
     datesTitre: "מועדי חודש תשרי",
@@ -232,6 +239,7 @@ ${altLinks(lang, "/miel")}
 </script>
 <link rel="icon" href="/icon.png">
 <link rel="stylesheet" href="/fonts/fonts-miel.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
   :root { --paper:#f7f6f1; --ink:#082a99; --pop:#ffd23f; --muted:#5a5a6e; --rouge:#b3232a; --encre:#23233d; }
   * { box-sizing:border-box; margin:0; }
@@ -263,6 +271,9 @@ ${altLinks(lang, "/miel")}
   button { display:inline-block; width:100%; background:var(--pop); color:var(--ink); border:none; cursor:pointer;
            font:700 1.05rem "Frank Ruhl Libre", Georgia, serif; padding:.7rem 1rem .8rem; box-shadow:0 4px 14px rgba(8,42,153,.16); }
   button:hover { background:var(--ink); color:var(--pop); }
+  button.btn2 { background:transparent; border:1.5px solid var(--ink); box-shadow:none; margin-top:.6rem; font-size:.95rem; }
+  button.btn2:hover { background:var(--ink); color:var(--pop); }
+  .retimg { font-weight:700; color:var(--ink); min-height:1.2em; margin-top:.5rem; }
   .note { font-size:.8rem; color:var(--muted); margin-top:.7rem; line-height:1.5; }
   .cadre-apercu { border:1.5px solid rgba(8,42,153,.15); background:#e6e4dc; overflow:hidden; position:relative; }
   .apercu { transform-origin:top left; }
@@ -339,7 +350,9 @@ ${altLinks(lang, "/miel")}
       <div class="champ"><label for="prenom">${s.labPrenom}</label><input id="prenom" placeholder="${s.phPrenom}" maxlength="24" autocomplete="off"></div>
       <div class="champ"><label for="heb">${s.labHeb}</label><input id="heb" placeholder="${s.phHeb}" maxlength="24" autocomplete="off"></div>
       <div class="champ"><label for="ville">${s.labVille}</label><select id="ville">${villesOpts}<option value="autre">${s.autreVille}</option></select></div>
-      <button id="imprimer" type="button">${s.btnImprimer}</button>
+      <button id="telecharger" type="button">${s.btnImage}</button>
+      <button id="imprimer" type="button" class="btn2">${s.btnImprimer}</button>
+      <p class="note retimg" id="retimg"></p>
       <p class="note">${s.notePrint}</p>
       <p class="note">${s.notePrivee}</p>
     </form>
@@ -427,7 +440,58 @@ ${altLinks(lang, "/miel")}
   zoom();
   majVille();
 
-  document.getElementById("imprimer").addEventListener("click", function () { window.print(); });
+  // Comptage anonyme des feuilles créées (événement GA4 : ville + langue, jamais le prénom)
+  var derniereMarque = 0;
+  function marquerCreation(origine) {
+    var t = Date.now();
+    if (t - derniereMarque < 3000) return; // clic + beforeprint = une seule feuille
+    derniereMarque = t;
+    if (typeof gtag === "function") {
+      gtag("event", "feuille_miel", { ville: ville.value, langue: document.documentElement.lang, origine: origine });
+    }
+  }
+  document.getElementById("imprimer").addEventListener("click", function () { marquerCreation("bouton"); window.print(); });
+  window.addEventListener("beforeprint", function () { marquerCreation("raccourci"); });
+
+  // Image PNG haute définition de la feuille, puis feuille de partage du téléphone
+  var retimg = document.getElementById("retimg");
+  var btnImg = document.getElementById("telecharger");
+  var MSG_OK = ${JSON.stringify(t(lang, { fr: T.fr.imgOk, en: T.en.imgOk, he: T.he.imgOk }))};
+  var MSG_ERR = ${JSON.stringify(t(lang, { fr: T.fr.imgErr, en: T.en.imgErr, he: T.he.imgErr }))};
+  btnImg.addEventListener("click", function () {
+    retimg.textContent = "…";
+    btnImg.disabled = true;
+    var feuille = document.querySelector(".page");
+    (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(function () {
+      return html2canvas(feuille, {
+        scale: 2.2,
+        useCORS: true,
+        onclone: function (doc) {
+          var a = doc.getElementById("apercu"); if (a) a.style.transform = "none";
+          var c = doc.getElementById("capercu"); if (c) { c.style.height = "auto"; c.style.overflow = "visible"; c.style.border = "none"; }
+          var pg = doc.querySelector(".page"); if (pg) pg.style.height = "301mm"; // marge d'arrondi html2canvas
+        },
+      });
+    }).then(function (canvas) {
+      canvas.toBlob(function (blob) {
+        btnImg.disabled = false;
+        if (!blob) { retimg.textContent = MSG_ERR; return; }
+        marquerCreation("image");
+        var nomFichier = "feuille-de-miel" + (prenom.value.trim() ? "-" + prenom.value.trim().toLowerCase() : "") + ".png";
+        var fichier = new File([blob], nomFichier, { type: "image/png" });
+        if (navigator.canShare && navigator.canShare({ files: [fichier] })) {
+          navigator.share({ files: [fichier] }).then(function () { retimg.textContent = MSG_OK; }, function () { retimg.textContent = ""; });
+          return;
+        }
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        a.href = url; a.download = nomFichier;
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+        retimg.textContent = MSG_OK;
+      }, "image/png");
+    }).catch(function () { btnImg.disabled = false; retimg.textContent = MSG_ERR; });
+  });
 })();
 </script>
 </body>
