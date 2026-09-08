@@ -241,6 +241,11 @@ ${altLinks(lang, "/miel")}
   [dir="rtl"] h1 { font-family:"Frank Ruhl Libre", Georgia, serif; }
   h1 strong { color:var(--rouge); }
   p.chapeau { max-width:44rem; margin-top:.7rem; color:var(--muted); }
+  .entete { display:flex; align-items:center; gap:2rem; }
+  .entete > div { flex:1; min-width:0; }
+  .potmiel { width:clamp(120px, 16vw, 190px); height:auto; flex:none; transform:rotate(4deg);
+             filter:drop-shadow(0 10px 22px rgba(8,42,153,.18)); }
+  @media (max-width:640px) { .entete { gap:1rem; } .potmiel { width:96px; } }
   .atelier { display:grid; grid-template-columns:minmax(260px,340px) minmax(0,1fr); gap:2.2rem; margin-top:1.6rem; align-items:start; }
   form .champ { margin-bottom:1rem; }
   label { display:block; font-size:.78rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; margin-bottom:.3rem; }
@@ -314,8 +319,13 @@ ${altLinks(lang, "/miel")}
     <a class="wm" href="${href(lang, "/")}" dir="ltr"><img src="/icon.png" alt="">Mamash IA</a>
     <span class="r"><a href="${href(lang, "/question")}">${s.nav.question}</a><a href="${href(lang, "/chabbat")}">${s.nav.chabbat}</a>${langSwitcher(lang, "/miel")}</span>
   </nav>
-  <h1>${s.h1}</h1>
-  <p class="chapeau">${s.chapeau}</p>
+  <div class="entete">
+    <div>
+      <h1>${s.h1}</h1>
+      <p class="chapeau">${s.chapeau}</p>
+    </div>
+    <img class="potmiel" src="/miel-pot.png" alt="" width="512" height="512">
+  </div>
   <div class="atelier">
     <form onsubmit="return false">
       <div class="champ"><label for="prenom">${s.labPrenom}</label><input id="prenom" placeholder="${s.phPrenom}" maxlength="24" autocomplete="off"></div>
