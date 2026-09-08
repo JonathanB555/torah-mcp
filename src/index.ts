@@ -28,6 +28,7 @@ import { genererChabbat, chabbatPage, servirGif } from "./chabbat";
 import { chiourimPage } from "./chiourim";
 import { limoudTools, limoudHandlers } from "./limoud";
 import { renderDaily, outilsHtml } from "./pages";
+import { mielPage, VILLES_MIEL } from "./miel";
 import { dafViewerTools, dafViewerHandlers, DAF_VIEWER_URI, DAF_VIEWER_HTML, dafViewerHtml, MCP_APP_MIME } from "./dafviewer";
 import { ICON_PNG_BASE64, OG_JPEG_BASE64 } from "./icon";
 import { PICTOS_PNG_BASE64 } from "./pictos";
@@ -309,6 +310,37 @@ export default {
     // GIF de Chabbat : sélection servie par le Worker (index borné).
     if (request.method === "GET" && url.pathname === "/api/gif") return servirGif(request);
 
+    // Horaires de Tichri 5787 pour le générateur de feuilles de miel (/miel).
+    // Villes en liste fermée (pas de proxy ouvert) ; réponse cachée 6 h en périphérie.
+    if (request.method === "GET" && url.pathname === "/api/miel-horaires") {
+      const cle = url.searchParams.get("v") || "";
+      const ville = VILLES_MIEL[cle];
+      if (!ville) return jsonResponse({ error: "ville inconnue" }, 400);
+      const r = await fetch(
+        `https://www.hebcal.com/hebcal?v=1&cfg=json&start=2026-09-10&end=2026-10-05&maj=on&c=on&M=on&geonameid=${ville.g}`,
+        { cf: { cacheTtl: 21600, cacheEverything: true } } as RequestInit
+      );
+      if (!r.ok) return jsonResponse({ error: "horaires indisponibles" }, 502);
+      const data: any = await r.json();
+      const heures: Record<string, string> = {};
+      const CIBLES: Record<string, [string, string]> = {
+        veille: ["candles", "2026-09-11"], soir2: ["candles", "2026-09-12"], sortieRH: ["havdalah", "2026-09-13"],
+        kolnidre: ["candles", "2026-09-20"], sortieYK: ["havdalah", "2026-09-21"],
+        souccot: ["candles", "2026-09-25"], finFetes: ["havdalah", "2026-10-04"],
+      };
+      for (const item of data.items || []) {
+        for (const [k, [cat, jour]] of Object.entries(CIBLES)) {
+          if (item.category === cat && String(item.date).startsWith(jour)) {
+            const m = String(item.title).match(/(\d{1,2}:\d{2})/);
+            if (m) heures[k] = m[1];
+          }
+        }
+      }
+      return new Response(JSON.stringify(heures), {
+        headers: { "Content-Type": "application/json", "Cache-Control": "public, max-age=21600" },
+      });
+    }
+
     if (url.pathname.startsWith("/api/")) {
       const toolMap: Record<string, string> = {
         daf: "daf_viewer",
@@ -358,6 +390,7 @@ export default {
         case "/question": return html(questionHtml(lang));
         case "/daf": return html(dafViewerHtml(lang));
         case "/outils": return html(outilsHtml(lang));
+        case "/miel": return html(mielPage(lang));
         case "/install": return html(installHtml(lang));
         case "/privacy": return html(privacyHtml(lang));
         case "/daily": return html(await renderDaily(env, lang), { "Cache-Control": "public, max-age=900" });

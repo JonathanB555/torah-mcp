@@ -256,6 +256,7 @@ const T = {
     gifNote: "Ils partent ensemble : sur téléphone via la feuille de partage ; sur ordinateur, le texte est copié et le GIF téléchargé — collez le texte, glissez le GIF.",
     gifGo: "Envoyer les deux sur WhatsApp",
     envMsgLab: "Le message de la semaine",
+    mielLien: "Nouveau : la feuille de miel personnalisée, à imprimer",
     envLire: "Lire en entier",
     envChoix: "Trois au choix, renouvelés chaque vendredi — cliquez pour changer.",
     vidLab: "Deux flammes : Zakhor et Chamor — illustration",
@@ -282,6 +283,7 @@ const T = {
     gifNote: "They leave together: on a phone via the share sheet; on a computer the text is copied and the GIF downloaded — paste the text, drag the GIF.",
     gifGo: "Send both on WhatsApp",
     envMsgLab: "This week's message",
+    mielLien: "New: the personalized honey sheet, ready to print",
     envLire: "Read in full",
     envChoix: "Three to pick from, renewed every Friday — click to change.",
     vidLab: "Two flames: Zachor and Shamor — an illustration",
@@ -308,6 +310,7 @@ const T = {
     gifNote: "הם נשלחים יחד: בטלפון דרך חלון השיתוף; במחשב הטקסט מועתק והגיף יורד — הדביקו את הטקסט וגררו את הגיף.",
     gifGo: "שליחת שניהם בוואטסאפ",
     envMsgLab: "מסר השבוע",
+    mielLien: "חדש: דף הדבש האישי, מוכן להדפסה",
     envLire: "לקריאה מלאה",
     envChoix: "שלושה לבחירה, מתחדשים בכל יום שישי — הקישו להחלפה.",
     vidLab: "שתי להבות: זכור ושמור — אילוסטרציה",
@@ -465,6 +468,10 @@ ${altLinks(lang, "/chabbat")}
     .etxt { max-height:7.4em; }
     .ecard, [dir="rtl"] .ecard, .cvid, [dir="rtl"] .cvid { transform:none; }
   }
+  .lienmiel { margin-top:.6rem; }
+  .lienmiel a { display:inline-block; background:var(--pop); color:var(--ink); font-weight:700; font-size:.92rem;
+    padding:.3rem .7rem .38rem; text-decoration:none; box-shadow:2px 3px 0 var(--ink); transform:rotate(-1deg); }
+  .lienmiel a:hover { background:var(--ink); color:var(--pop); }
   .cvid { margin:3.2rem 0 0; transform:rotate(-1.2deg); }
   [dir="rtl"] .cvid { transform:rotate(1.2deg); }
   .cvid video { display:block; width:100%; height:auto; border:6px solid #fff; box-shadow:0 16px 38px rgba(8,42,153,.16); background:var(--ink); }
@@ -482,6 +489,7 @@ ${altLinks(lang, "/chabbat")}
   <img class="sceau" src="/icon.png" alt="">
   <h1>${s.h1}</h1>
   <p class="muted">${s.chapeau}</p>
+  <p class="lienmiel"><a href="${href(lang, "/miel")}">${s.mielLien}</a></p>
   ${texte ? `${gifsHtml}
   <div class="msg" id="msg">${esc(texte).replace(/\*([^*\n]+)\*/g, "<strong>$1</strong>")}</div>
   <p class="meta">${s.genere} ${esc(dateGen)}.</p>
