@@ -64,25 +64,25 @@ interface StringsMiel {
 /* Les 9 simanim : hébreu et phonétique identiques dans les trois langues. */
 const SIM_HEB = [
   "יְהִי רָצוֹן מִלְּפָנֶיךָ ה׳ אֱלֹקֵינוּ וֵאלֹקֵי אֲבוֹתֵינוּ, שֶׁתְּחַדֵּשׁ עָלֵינוּ שָׁנָה טוֹבָה וּמְתוּקָה",
-  "יְהִי רָצוֹן… שֶׁיִּתַּמּוּ אוֹיְבֵינוּ וְשׂוֹנְאֵינוּ וְכָל מְבַקְשֵׁי רָעָתֵנוּ",
-  "יְהִי רָצוֹן… שֶׁנִּהְיֶה מְלֵאִים מִצְוֹת כָּרִמּוֹן",
-  "יְהִי רָצוֹן… שֶׁתִּקְרַע רֹעַ גְּזַר דִּינֵנוּ, וְיִקָּרְאוּ לְפָנֶיךָ זָכִיּוֹתֵינוּ",
-  "יְהִי רָצוֹן… שֶׁיִּרְבּוּ זָכִיּוֹתֵינוּ וּתְלַבְּבֵנוּ",
-  "יְהִי רָצוֹן… שֶׁיִּכָּרְתוּ אוֹיְבֵינוּ וְשׂוֹנְאֵינוּ וְכָל מְבַקְשֵׁי רָעָתֵנוּ",
-  "יְהִי רָצוֹן… שֶׁיִּסְתַּלְּקוּ אוֹיְבֵינוּ וְשׂוֹנְאֵינוּ וְכָל מְבַקְשֵׁי רָעָתֵנוּ",
-  "יְהִי רָצוֹן… שֶׁנִּהְיֶה לְרֹאשׁ וְלֹא לְזָנָב",
-  "יְהִי רָצוֹן… שֶׁנִּפְרֶה וְנִרְבֶּה כַּדָּגִים",
+  "יְהִי רָצוֹן מִלְּפָנֶיךָ ה׳ אֱלֹקֵינוּ וֵאלֹקֵי אֲבוֹתֵינוּ, שֶׁיִּתַּמּוּ אוֹיְבֵינוּ וְשׂוֹנְאֵינוּ וְכָל מְבַקְשֵׁי רָעָתֵנוּ",
+  "יְהִי רָצוֹן מִלְּפָנֶיךָ ה׳ אֱלֹקֵינוּ וֵאלֹקֵי אֲבוֹתֵינוּ, שֶׁנִּהְיֶה מְלֵאִים מִצְוֹת כָּרִמּוֹן",
+  "יְהִי רָצוֹן מִלְּפָנֶיךָ ה׳ אֱלֹקֵינוּ וֵאלֹקֵי אֲבוֹתֵינוּ, שֶׁתִּקְרַע רֹעַ גְּזַר דִּינֵנוּ, וְיִקָּרְאוּ לְפָנֶיךָ זָכִיּוֹתֵינוּ",
+  "יְהִי רָצוֹן מִלְּפָנֶיךָ ה׳ אֱלֹקֵינוּ וֵאלֹקֵי אֲבוֹתֵינוּ, שֶׁיִּרְבּוּ זָכִיּוֹתֵינוּ וּתְלַבְּבֵנוּ",
+  "יְהִי רָצוֹן מִלְּפָנֶיךָ ה׳ אֱלֹקֵינוּ וֵאלֹקֵי אֲבוֹתֵינוּ, שֶׁיִּכָּרְתוּ אוֹיְבֵינוּ וְשׂוֹנְאֵינוּ וְכָל מְבַקְשֵׁי רָעָתֵנוּ",
+  "יְהִי רָצוֹן מִלְּפָנֶיךָ ה׳ אֱלֹקֵינוּ וֵאלֹקֵי אֲבוֹתֵינוּ, שֶׁיִּסְתַּלְּקוּ אוֹיְבֵינוּ וְשׂוֹנְאֵינוּ וְכָל מְבַקְשֵׁי רָעָתֵנוּ",
+  "יְהִי רָצוֹן מִלְּפָנֶיךָ ה׳ אֱלֹקֵינוּ וֵאלֹקֵי אֲבוֹתֵינוּ, שֶׁנִּהְיֶה לְרֹאשׁ וְלֹא לְזָנָב",
+  "יְהִי רָצוֹן מִלְּפָנֶיךָ ה׳ אֱלֹקֵינוּ וֵאלֹקֵי אֲבוֹתֵינוּ, שֶׁנִּפְרֶה וְנִרְבֶּה כַּדָּגִים",
 ];
 const SIM_PHON = [
-  "Yehi ratsone milefanékha… chéte'hadech alénou chana tova oumetouka",
-  "… chéyitamou oyevénou vésonénou vékhol mevakché raaténou",
-  "… chénihyé meléïm mitsvot karimone",
-  "… chétikra roa guezar dinénou, véyikarou lefanékha zakhiyoténou",
-  "… chéyirbou zakhiyoténou outelabevénou",
-  "… chéyikartou oyevénou vésonénou",
-  "… chéyistalkou oyevénou vésonénou",
-  "… chénihyé leroch vélo lezanav",
-  "… chénifré vénirbé kadaguim",
+  "Yehi ratsone milefanékha Ado-naï Élo-hénou vé-Élo-hé avoténou, chéte'hadech alénou chana tova oumetouka",
+  "Yehi ratsone milefanékha Ado-naï Élo-hénou vé-Élo-hé avoténou, chéyitamou oyevénou vésonénou vékhol mevakché raaténou",
+  "Yehi ratsone milefanékha Ado-naï Élo-hénou vé-Élo-hé avoténou, chénihyé meléïm mitsvot karimone",
+  "Yehi ratsone milefanékha Ado-naï Élo-hénou vé-Élo-hé avoténou, chétikra roa guezar dinénou, véyikarou lefanékha zakhiyoténou",
+  "Yehi ratsone milefanékha Ado-naï Élo-hénou vé-Élo-hé avoténou, chéyirbou zakhiyoténou outelabevénou",
+  "Yehi ratsone milefanékha Ado-naï Élo-hénou vé-Élo-hé avoténou, chéyikartou oyevénou vésonénou vékhol mevakché raaténou",
+  "Yehi ratsone milefanékha Ado-naï Élo-hénou vé-Élo-hé avoténou, chéyistalkou oyevénou vésonénou vékhol mevakché raaténou",
+  "Yehi ratsone milefanékha Ado-naï Élo-hénou vé-Élo-hé avoténou, chénihyé leroch vélo lezanav",
+  "Yehi ratsone milefanékha Ado-naï Élo-hénou vé-Élo-hé avoténou, chénifré vénirbé kadaguim",
 ];
 
 const T: Record<Lang, StringsMiel> = {
@@ -295,20 +295,20 @@ ${altLinks(lang, "/miel")}
            padding:4.5mm 8mm 4mm; display:flex; flex-direction:column; align-items:center; text-align:center; }
   .bande { width:100%; display:flex; justify-content:space-between; font-size:2.9mm; font-weight:700; letter-spacing:.3mm; }
   .bande .bh { font-family:"Frank Ruhl Libre", serif; }
-  .titre { font-family:"Monoton", cursive; font-size:13mm; line-height:1.12; color:var(--encre); margin-top:3mm; letter-spacing:.5mm; }
+  .titre { font-family:"Monoton", cursive; font-size:12mm; line-height:1.12; color:var(--encre); margin-top:3mm; letter-spacing:.5mm; }
   .ligne-annee { display:flex; align-items:center; gap:5mm; margin-top:2.4mm; }
   .sceau { width:11mm; height:11mm; border-radius:50%; }
   .annee { font-family:"Playfair Display", serif; font-weight:900; font-style:italic; font-size:5.8mm; color:var(--rouge); }
   .main { font-size:7mm; }
-  .rouge1 { font-family:"Playfair Display", serif; font-weight:900; font-size:5.8mm; color:var(--rouge); margin-top:2.6mm; }
+  .rouge1 { font-family:"Playfair Display", serif; font-weight:900; font-size:5.8mm; color:var(--rouge); margin-top:2mm; }
   .rouge2 { font-family:"Playfair Display", serif; font-weight:900; font-size:7.4mm; color:var(--rouge); letter-spacing:1.6mm; }
   .regle { width:100%; border-top:.5mm solid var(--rouge); border-bottom:.5mm solid var(--rouge); color:var(--rouge);
-           font-weight:700; font-size:3.3mm; letter-spacing:.35mm; padding:1.1mm 0; margin-top:2.2mm; }
+           font-weight:700; font-size:3.3mm; letter-spacing:.35mm; padding:1.1mm 0; margin-top:1.8mm; }
   .regle.r2 { margin-top:2.4mm; }
   .dates { width:100%; border-collapse:collapse; margin-top:1.8mm; }
-  .dates td { font-size:3mm; padding:.4mm 0; vertical-align:baseline; text-align:left; }
+  .dates td { font-size:2.8mm; padding:.2mm 0; vertical-align:baseline; text-align:left; }
   .dates .f { font-weight:700; white-space:nowrap; }
-  .dates .f i { font-weight:400; font-style:italic; font-size:2.9mm; }
+  .dates .f i { font-weight:400; font-style:italic; font-size:2.7mm; }
   .dates .pts { width:100%; border-bottom:.35mm dotted var(--encre); transform:translateY(-1mm); }
   .dates .d { font-weight:700; white-space:nowrap; text-align:right; padding-left:1.5mm; }
   .sansh .avech { display:none; }
@@ -318,20 +318,20 @@ ${altLinks(lang, "/miel")}
   [dir="rtl"] .dates td { text-align:right; }
   [dir="rtl"] .dates .d { text-align:left; padding-left:0; padding-right:1.5mm; }
   [dir="rtl"] .sims { text-align:right; }
-  .nomrow { width:100%; display:flex; align-items:center; justify-content:center; gap:4mm; margin-top:2.2mm;
-            border-top:.8mm double var(--rouge); border-bottom:.8mm double var(--rouge); padding:1.6mm 0; }
+  .nomrow { width:100%; display:flex; align-items:center; justify-content:center; gap:4mm; margin-top:1.8mm;
+            border-top:.8mm double var(--rouge); border-bottom:.8mm double var(--rouge); padding:1.2mm 0; }
   .nomlab { color:var(--rouge); font-weight:700; font-size:3.4mm; letter-spacing:.3mm; font-variant:small-caps; }
   .lenom { font-family:"Playfair Display", serif; font-weight:900; font-size:6.8mm; letter-spacing:.8mm; text-transform:uppercase; min-height:9mm; }
   .lenom.creux { border-bottom:.4mm dotted var(--encre); min-width:70mm; }
   .nomheb { font-family:"Frank Ruhl Libre", serif; font-weight:700; font-size:5.4mm; direction:rtl; }
-  .intro { font-size:3.1mm; margin-top:1.4mm; line-height:1.45; max-width:180mm; }
+  .intro { font-size:2.9mm; margin-top:1mm; line-height:1.45; max-width:180mm; }
   .hebin { font-family:"Frank Ruhl Libre", serif; font-weight:700; font-size:4.1mm; direction:rtl; unicode-bidi:isolate; }
   .ph { font-style:italic; }
-  .sims { width:100%; display:grid; grid-template-columns:1fr 1fr; gap:1mm 5mm; margin-top:1.4mm; text-align:left; }
-  .simt { font-weight:700; font-size:3mm; color:var(--rouge); }
+  .sims { width:100%; display:grid; grid-template-columns:1fr 1fr; gap:.5mm 4mm; margin-top:1mm; text-align:left; }
+  .simt { font-weight:700; font-size:2.8mm; color:var(--rouge); }
   .simt .bpe { color:#1a1a2e; font-weight:400; font-style:italic; font-family:"Frank Ruhl Libre", serif; }
-  .simheb { font-family:"Frank Ruhl Libre", serif; font-weight:700; font-size:3.8mm; direction:rtl; text-align:right; line-height:1.45; }
-  .simph { font-size:2.7mm; font-style:italic; line-height:1.3; opacity:.9; }
+  .simheb { font-family:"Frank Ruhl Libre", serif; font-weight:700; font-size:3.2mm; direction:rtl; text-align:right; line-height:1.3; }
+  .simph { font-size:2.3mm; font-style:italic; line-height:1.2; opacity:.9; }
   .pied { width:100%; margin-top:auto; display:flex; justify-content:space-between; align-items:baseline;
           border-top:.3mm solid var(--encre); padding-top:1.4mm; font-size:2.6mm; }
   .pied .pm { font-size:2.9mm; font-weight:700; }
