@@ -312,6 +312,12 @@ ${altLinks(lang, "/miel")}
   .dates .pts { width:100%; border-bottom:.35mm dotted var(--encre); transform:translateY(-1mm); }
   .dates .d { font-weight:700; white-space:nowrap; text-align:right; padding-left:1.5mm; }
   .sansh .avech { display:none; }
+  /* Feuille hébreu : la page reste le gabarit LTR de référence, mais chaque bloc de prose
+     hébreu se lit de droite à gauche — sinon l'algorithme bidi éclate « 19 h 54 » autour du texte. */
+  [dir="rtl"] .rouge1, [dir="rtl"] .regle, [dir="rtl"] .dates, [dir="rtl"] .intro, [dir="rtl"] .simt, [dir="rtl"] .pied { direction:rtl; }
+  [dir="rtl"] .dates td { text-align:right; }
+  [dir="rtl"] .dates .d { text-align:left; padding-left:0; padding-right:1.5mm; }
+  [dir="rtl"] .sims { text-align:right; }
   .nomrow { width:100%; display:flex; align-items:center; justify-content:center; gap:4mm; margin-top:2.2mm;
             border-top:.8mm double var(--rouge); border-bottom:.8mm double var(--rouge); padding:1.6mm 0; }
   .nomlab { color:var(--rouge); font-weight:700; font-size:3.4mm; letter-spacing:.3mm; font-variant:small-caps; }
