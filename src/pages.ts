@@ -644,8 +644,8 @@ ${GA_SNIPPET}
       var id = "c" + Date.now();
       return "<div id='" + id + "' style='white-space:pre-wrap'>" + esc(d.mot||"") + "</div>" +
         "<div style='margin-top:.6rem'>" +
-        "<a href='" + esc(d.partage_whatsapp||"#") + "' target='_blank' rel='noopener' style=\"font-family:'Fraunces',Georgia,serif;font-weight:600;text-decoration:none\">[ " + S.cWa + " ]</a>&nbsp;&nbsp;" +
-        "<button class='copy' onclick=\"navigator.clipboard.writeText(document.getElementById('" + id + "').innerText).then(()=>{this.textContent='" + S.copied + "'})\">" + S.copy + "</button>" +
+        "<a href='" + esc(d.partage_whatsapp||"#") + "' target='_blank' rel='noopener' style=\\"font-family:'Fraunces',Georgia,serif;font-weight:600;text-decoration:none\\">[ " + S.cWa + " ]</a>&nbsp;&nbsp;" +
+        "<button class='copy' onclick=\\"navigator.clipboard.writeText(document.getElementById('" + id + "').innerText).then(()=>{this.textContent='" + S.copied + "'})\\">" + S.copy + "</button>" +
         "</div>";
     },
     fiche: function (d) {
