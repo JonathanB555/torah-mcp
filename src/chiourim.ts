@@ -127,7 +127,9 @@ const T = {
     title: "Chiourim — Mamash IA",
     desc: "Les chiourim en vidéo du rav Meir Attal : moussar, émouna, fêtes — en français. Le dernier cours et le catalogue par thèmes.",
     h1: "Les <strong>chiourim</strong> du rav Attal.",
-    lead: "Les cours du rav Meir Attal, en français — du moussar enraciné dans les textes, une trentaine de minutes chacun. Rien ne se charge depuis YouTube avant que vous cliquiez ; la vidéo se lance alors sans cookies.",
+    lead: "Du moussar enraciné dans les textes, une trentaine de minutes chacun. Rien ne se charge depuis YouTube avant votre clic.",
+    courtsG: { fetes: "Fêtes", torah: "Textes", emouna: "Émouna", moussar: "Moussar", courts: "Courts" } as Record<Groupe, string>,
+    toutVoir: "Tout le catalogue",
     dernier: "Le dernier chiour",
     nouveaux: "Les plus récents",
     groupes: { fetes: "Les fêtes et le calendrier", torah: "Figures et textes", emouna: "Émouna et pensée juive", moussar: "Moussar et vie intérieure", courts: "Formats courts" } as Record<Groupe, string>,
@@ -143,7 +145,9 @@ const T = {
     title: "Video shiurim — Mamash IA",
     desc: "Rav Meir Attal's video shiurim: mussar, emunah, festivals — in French. The latest class and the catalogue by theme.",
     h1: "Rav Attal's <strong>shiurim</strong>.",
-    lead: "Rav Meir Attal's classes, in French — mussar rooted in the texts, about thirty minutes each. Nothing loads from YouTube until you click; the video then plays without cookies.",
+    lead: "Mussar rooted in the texts, about thirty minutes each — in French. Nothing loads from YouTube until you click.",
+    courtsG: { fetes: "Festivals", torah: "Texts", emouna: "Emunah", moussar: "Mussar", courts: "Short" } as Record<Groupe, string>,
+    toutVoir: "The whole catalogue",
     dernier: "The latest shiur",
     nouveaux: "Most recent",
     groupes: { fetes: "Festivals and the calendar", torah: "Figures and texts", emouna: "Emunah and Jewish thought", moussar: "Mussar and inner life", courts: "Short clips" } as Record<Groupe, string>,
@@ -159,7 +163,9 @@ const T = {
     title: "שיעורים בווידאו — Mamash IA",
     desc: "השיעורים של הרב מאיר אטל: מוסר, אמונה, חגים — בצרפתית. השיעור האחרון והקטלוג לפי נושאים.",
     h1: "השיעורים של <strong>הרב אטל</strong>.",
-    lead: "שיעוריו של הרב מאיר אטל, בצרפתית — מוסר מושרש בטקסטים, כחצי שעה כל אחד. שום דבר לא נטען מיוטיוב לפני הלחיצה; הווידאו מתנגן אז ללא עוגיות.",
+    lead: "מוסר מושרש בטקסטים, כחצי שעה כל אחד — בצרפתית. שום דבר לא נטען מיוטיוב לפני הלחיצה.",
+    courtsG: { fetes: "חגים", torah: "טקסטים", emouna: "אמונה", moussar: "מוסר", courts: "קצרים" } as Record<Groupe, string>,
+    toutVoir: "כל הקטלוג",
     dernier: "השיעור האחרון",
     nouveaux: "החדשים ביותר",
     groupes: { fetes: "חגים ולוח השנה", torah: "דמויות וטקסטים", emouna: "אמונה ומחשבה יהודית", moussar: "מוסר ועבודת המידות", courts: "קטעים קצרים" } as Record<Groupe, string>,
@@ -178,6 +184,9 @@ const mins = (d: number) => (d ? Math.round(d / 60) : 0);
 
 interface RssEntry { id: string; t: string; date: string }
 
+/** Certaines vidéos ont une date pour titre (« 9 août 2026 ») : inutilisables en vitrine. */
+const titreUtile = (t: string): boolean => !!t && !/^\d{1,2} [\p{L}]+ \d{4}$/u.test(t.trim());
+
 async function fluxRecent(): Promise<RssEntry[]> {
   try {
     const resp = await fetch(RSS_URL, {
@@ -193,7 +202,7 @@ async function fluxRecent(): Promise<RssEntry[]> {
         t: (m[1].match(/<media:title>([^<]*)<\/media:title>/)?.[1] || "").replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#39;/g, "'"),
         date: m[1].match(/<published>([^<]*)<\/published>/)?.[1]?.slice(0, 10) || "",
       }))
-      .filter((e) => e.id && !/^\d{1,2} \w+ \d{4}$/.test(e.t));
+      .filter((e) => e.id && titreUtile(e.t));
   } catch {
     return [];
   }
@@ -205,6 +214,7 @@ export async function rafraichirChiourim(env: Env): Promise<{ vus: number; nouve
   if (!env.STATS_DB || rss.length === 0) return { vus: rss.length, nouveaux: 0 };
   let nouveaux = 0;
   for (const e of rss) {
+    if (!titreUtile(e.t)) continue;
     const r = await env.STATS_DB
       .prepare(`INSERT OR IGNORE INTO chiourim (id, titre, publie) VALUES (?, ?, ?)`)
       .bind(e.id, e.t, e.date)
@@ -228,6 +238,15 @@ export async function chiourSemaine(env: Env): Promise<RssEntry | null> {
   }
 }
 
+/** Un récent en ligne compacte : miniature réduite + titre, pour la colonne de droite. */
+function ligne(v: { id: string; t: string; d?: number }, s: (typeof T)[Lang]): string {
+  const duree = v.d ? `<span class="vd">${mins(v.d)} ${s.min}</span>` : "";
+  return `<li class="v rl" data-id="${esc(v.id)}">
+    <span class="th"><img loading="lazy" src="https://i.ytimg.com/vi/${esc(v.id)}/mqdefault.jpg" alt=""><span class="pl">▶</span></span>
+    <span class="rt"><span class="vt">${esc(v.t)}</span>${duree}</span>
+  </li>`;
+}
+
 function carte(v: { id: string; t: string; d?: number }, s: (typeof T)[Lang], grande = false): string {
   const duree = v.d ? `<span class="vd">${mins(v.d)} ${s.min}</span>` : "";
   return `<figure class="v${grande ? " big" : ""}" data-id="${esc(v.id)}">
@@ -249,17 +268,24 @@ export async function chiourimPage(env: Env, lang: Lang): Promise<string> {
     archive = (rows?.results || []).map((r: any) => ({ id: r.id, t: r.titre, date: r.publie }));
   } catch {}
   const rssIds = new Set(rss.map((e) => e.id));
-  const horsRss = archive.filter((e) => !rssIds.has(e.id) && !catalogueParId.has(e.id));
+  const horsRss = archive.filter((e) => !rssIds.has(e.id) && !catalogueParId.has(e.id) && titreUtile(e.t));
   const recents = [...rss.slice(1), ...horsRss].slice(0, 12);
   const dejaMontres = new Set([dernier?.id, ...recents.map((e) => e.id)].filter(Boolean) as string[]);
   const dureeDe = (id: string) => catalogueParId.get(id)?.d;
 
-  const sections = GROUPES.map((g) => {
-    const vids = CATALOGUE.filter((v) => v.g === g && !dejaMontres.has(v.id));
-    if (!vids.length) return "";
-    return `<section class="grp"><div class="ghead"><span class="glab">${s.groupes[g]}</span><span class="grule"></span><span class="gn">${vids.length}</span></div>
-    <div class="grid">${vids.map((v) => carte(v, s)).join("\n")}</div></section>`;
-  }).join("\n");
+  const parGroupe = GROUPES.map((g) => ({ g, vids: CATALOGUE.filter((v) => v.g === g && !dejaMontres.has(v.id)) })).filter((x) => x.vids.length);
+  const total = parGroupe.reduce((n, x) => n + x.vids.length, 0) + (dernier ? 1 : 0) + recents.length;
+
+  const sections = parGroupe
+    .map(({ g, vids }) => `<section class="grp" id="g-${g}"><div class="ghead"><span class="glab">${s.groupes[g]}</span><span class="grule"></span><span class="gn">${vids.length}</span></div>
+    <div class="grid">${vids.map((v) => carte(v, s)).join("\n")}</div></section>`)
+    .join("\n");
+
+  // La barre de thèmes : on voit d'emblée l'ampleur du catalogue, et chaque
+  // pastille descend à sa section.
+  const barre = `<nav class="themes" aria-label="${esc(s.toutVoir)}">
+    ${parGroupe.map(({ g, vids }) => `<a href="#g-${g}"><b>${s.courtsG[g]}</b><span>${vids.length}</span></a>`).join("\n    ")}
+  </nav>`;
 
   return `<!doctype html>
 <html ${htmlAttrs(lang)}>
@@ -328,11 +354,11 @@ ${altLinks(lang, "/chiourim")}
     .lang .dot { margin:0 .3em; }
   }
   footer img.fsceau { width:30px; height:30px; border-radius:50%; vertical-align:-9px; margin-inline-end:.5rem; }
-  h1 { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(2.2rem,5vw,3.4rem); line-height:1.05; letter-spacing:-.02em; margin:3rem 0 .8rem; }
+  h1 { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(1.9rem,3.6vw,2.6rem); line-height:1.05; letter-spacing:-.02em; margin:1.6rem 0 .5rem; }
   h1 strong { font-weight:600; }
   [dir="rtl"] h1 { font-family:"Frank Ruhl Libre", Georgia, serif; letter-spacing:0; }
-  p.muted { color:var(--muted); max-width:44rem; }
-  .ghead { display:flex; align-items:baseline; gap:1.2rem; margin:3rem 0 1.2rem; }
+  p.muted { color:var(--muted); max-width:46rem; font-size:.92rem; line-height:1.55; }
+  .ghead { display:flex; align-items:baseline; gap:1.2rem; margin:2.2rem 0 .9rem; }
   .glab { font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.25rem; }
   [dir="rtl"] .glab { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:700; }
   .grule { flex:1; height:1px; background:var(--ink-15); }
@@ -350,7 +376,27 @@ ${altLinks(lang, "/chiourim")}
   .v figcaption { padding:.55rem .1rem 0; display:flex; gap:.8rem; align-items:baseline; }
   .v .vt { font-size:.95rem; line-height:1.45; flex:1; min-width:0; overflow-wrap:anywhere; }
   .v .vd { font-size:.78rem; letter-spacing:.1em; opacity:.55; white-space:nowrap; font-variant-numeric:tabular-nums; }
-  .v.big { max-width:760px; }
+  /* ---- la barre de thèmes : l'ampleur du catalogue, visible d'emblée ---- */
+  .themes { display:flex; flex-wrap:wrap; gap:.5rem; margin:1.1rem 0 .2rem; }
+  .themes a { display:flex; align-items:baseline; gap:.45rem; text-decoration:none; color:var(--ink);
+    border:1.5px solid var(--ink-15); padding:.32rem .7rem .38rem; transition:border-color .25s var(--ease), background .25s var(--ease); }
+  .themes a:hover { border-color:var(--ink); background:var(--pop); }
+  .themes b { font-weight:600; font-size:.9rem; }
+  .themes span { font-size:.75rem; opacity:.6; font-variant-numeric:tabular-nums; }
+
+  /* ---- la une : dernier chiour à gauche, récents en liste à droite ---- */
+  .une { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(0,1fr); gap:2rem; align-items:start; margin-top:.4rem; }
+  .une .ghead { margin-top:1.2rem; }
+  .rlist { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.65rem; }
+  .v.rl { display:flex; gap:.8rem; align-items:flex-start; }
+  .v.rl .th { flex:none; width:124px; aspect-ratio:16/9; }
+  .v.rl .pl { inset-inline-start:auto; inset-inline-end:.35rem; bottom:.2rem; font-size:.8rem; }
+  .v.rl .rt { display:flex; flex-direction:column; gap:.2rem; min-width:0; padding-top:.1rem; }
+  .v.rl .vt { font-size:.88rem; line-height:1.35; }
+  .v.rl .vd { font-size:.72rem; }
+  @media (max-width:900px) { .une { grid-template-columns:minmax(0,1fr); gap:.6rem; } }
+
+  .v.big { max-width:none; }
   .v.big .vt { font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.2rem; }
   [dir="rtl"] .v.big .vt { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:700; }
   .chaine { margin-top:3rem; font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.05rem; }
@@ -360,7 +406,7 @@ ${altLinks(lang, "/chiourim")}
   .srcnote { margin-top:1.2rem; font-size:.82rem; color:var(--muted); max-width:44rem; }
   footer { margin-top:4rem; font-size:.88rem; color:var(--muted); border-top:1px solid var(--ink-15); padding-top:1.4rem; }
   @media (max-width:900px) { .grid { grid-template-columns:repeat(2, minmax(0,1fr)); } }
-  @media (max-width:600px) { .grid { grid-template-columns:minmax(0,1fr); } h1 { margin-top:2rem; } }
+  @media (max-width:600px) { .grid { grid-template-columns:minmax(0,1fr); } h1 { margin-top:1.2rem; font-size:1.6rem; padding-inline-end:4.5rem; } }
 </style>
 </head>
 <body>
@@ -373,11 +419,21 @@ ${altLinks(lang, "/chiourim")}
   <h1>${s.h1}</h1>
   <p class="muted">${s.lead}</p>
 
-  ${dernier ? `<div class="ghead"><span class="glab">${s.dernier}</span><span class="grule"></span><span class="gn">${esc(dernier.date)}</span></div>
-  ${carte({ id: dernier.id, t: dernier.t, d: dureeDe(dernier.id) }, s, true)}` : ""}
+  ${barre}
 
-  ${recents.length ? `<section class="grp"><div class="ghead"><span class="glab">${s.nouveaux}</span><span class="grule"></span></div>
-  <div class="grid">${recents.map((e) => carte({ id: e.id, t: e.t, d: dureeDe(e.id) }, s)).join("\n")}</div></section>` : ""}
+  ${dernier ? `<div class="une">
+    <div class="uneg">
+      <div class="ghead"><span class="glab">${s.dernier}</span><span class="grule"></span><span class="gn">${esc(dernier.date)}</span></div>
+      ${carte({ id: dernier.id, t: dernier.t, d: dureeDe(dernier.id) }, s, true)}
+    </div>
+    ${recents.length ? `<div class="uned">
+      <div class="ghead"><span class="glab">${s.nouveaux}</span><span class="grule"></span></div>
+      <ul class="rlist">${recents.slice(0, 5).map((e) => ligne({ id: e.id, t: e.t, d: dureeDe(e.id) }, s)).join("\n")}</ul>
+    </div>` : ""}
+  </div>` : ""}
+
+  ${recents.length > 5 ? `<section class="grp"><div class="ghead"><span class="glab">${s.nouveaux}</span><span class="grule"></span></div>
+  <div class="grid">${recents.slice(5).map((e) => carte({ id: e.id, t: e.t, d: dureeDe(e.id) }, s)).join("\n")}</div></section>` : ""}
 
   ${sections}
 
