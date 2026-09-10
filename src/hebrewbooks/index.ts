@@ -30,12 +30,14 @@ function unwrapJsonp(text: string): any {
 async function hebrewbooksSearch(env: Env, args: any): Promise<any> {
   if (!env.HEBREWBOOKS_API_KEY) {
     throw new Error(
-      "Recherche HebrewBooks non configurée : ce tool utilise l'API officielle " +
-        "HebrewBooks.org, qui requiert une clé accordée sur demande " +
-        "(developers@hebrewbooks.org). Une fois la clé reçue : " +
-        "wrangler secret put HEBREWBOOKS_API_KEY. " +
-        "En attendant, chercher le titre via sefaria_search et construire la " +
-        "lecture avec les liens hebrewbooks.org donnés par le skill."
+      "La recherche dans le catalogue HebrewBooks n'est pas disponible sur ce " +
+        "serveur : l'API officielle de hebrewbooks.org exige une clé, qui n'a " +
+        "pas encore été accordée. Utilisez sefaria_search pour trouver le texte, " +
+        "puis lisez le sefer sur hebrewbooks.org. Tous les autres outils " +
+        "fonctionnent normalement. — HebrewBooks catalogue search is unavailable " +
+        "on this server: the official hebrewbooks.org API requires a key that " +
+        "has not been granted yet. Use sefaria_search to find the text, then read " +
+        "the sefer on hebrewbooks.org. Every other tool works normally."
     );
   }
   const title = String(args?.titre || "").trim();

@@ -72,6 +72,13 @@ interface JsonRpcRequest {
 }
 
 const allTools = [...sefariaTools, ...hebrewbooksTools, ...limoudTools, ...dafViewerTools];
+
+/** Les outils réellement annonçables. La recherche du catalogue HebrewBooks
+ *  dépend d'une clé API accordée par hebrewbooks.org ; tant qu'elle manque,
+ *  l'outil échouerait à chaque appel. Mieux vaut ne pas le proposer que de
+ *  faire croire à une panne — un utilisateur nous a signalé exactement cela. */
+const outilsExposes = (env: Env) =>
+  env.HEBREWBOOKS_API_KEY ? allTools : allTools.filter((t) => t.name !== "hebrewbooks_search");
 const allHandlers = { ...sefariaHandlers, ...hebrewbooksHandlers, ...limoudHandlers, ...dafViewerHandlers };
 
 const CORS_HEADERS: Record<string, string> = {
@@ -167,7 +174,7 @@ async function handleRpc(req: JsonRpcRequest, env: Env) {
         return rpcResult(null, {});
 
       case "tools/list":
-        return rpcResult(id, { tools: allTools });
+        return rpcResult(id, { tools: outilsExposes(env) });
 
       case "tools/call": {
         const name: string = req.params?.name;
@@ -454,7 +461,7 @@ export default {
       return jsonResponse({
         status: "ok",
         server: { name: env.SERVER_NAME, version: env.SERVER_VERSION },
-        tools_count: allTools.length,
+        tools_count: outilsExposes(env).length,
         auth: (env.BEARER_TOKENS || "").trim() ? "invitation" : "public",
       });
     }
