@@ -45,6 +45,9 @@ const S = {
     imprimerP: "Le générateur reprend ces mêmes sédarim, avec les horaires de votre ville et le prénom de chaque convive.",
     retour: "Retour au site",
     simanim: "simanim",
+    navComp: "Le comparateur", navTalmud: "L'origine", navFiches: "Les simanim",
+    navRoubia: "La roubia", navRites: "Les rites", navImp: "Imprimer",
+    sommaire: "Sommaire",
   },
   en: {
     titre: "The seder of the simanim",
@@ -75,6 +78,9 @@ const S = {
     imprimerP: "The generator uses these same sedarim, with your city's times and each guest's name.",
     retour: "Back to the site",
     simanim: "simanim",
+    navComp: "The comparator", navTalmud: "The origin", navFiches: "The simanim",
+    navRoubia: "Rubia", navRites: "The rites", navImp: "Print",
+    sommaire: "Contents",
   },
   he: {
     titre: "סדר הסימנים",
@@ -105,6 +111,9 @@ const S = {
     imprimerP: "המחולל משתמש באותם סדרים, עם זמני העיר שלכם ושם כל מסובה.",
     retour: "חזרה לאתר",
     simanim: "סימנים",
+    navComp: "ההשוואה", navTalmud: "המקור", navFiches: "הסימנים",
+    navRoubia: "הרוביא", navRites: "המנהגים", navImp: "הדפסה",
+    sommaire: "תוכן",
   },
 } as const;
 
@@ -200,8 +209,31 @@ ${altLinks(lang, PATH)}
   .chapeau { margin-top:1.4rem; font-size:clamp(1.05rem,1.7vw,1.28rem); max-width:34em; color:var(--muted); }
   h2 { font-family:"Fraunces",Georgia,serif; font-weight:300; font-size:clamp(1.7rem,3.4vw,2.6rem); line-height:1.08; letter-spacing:-.02em; }
   [dir="rtl"] h2, [dir="rtl"] h3 { font-family:"Frank Ruhl Libre",Georgia,serif; letter-spacing:0; }
-  section { margin-top:clamp(3.5rem,7vw,6rem); }
+  section { margin-top:clamp(3.2rem,6vw,5rem); scroll-margin-top:7.5rem; }
   .kicker { font-family:"Rubik","Arial Black",sans-serif; font-weight:900; font-size:.68rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-bottom:.7rem; }
+
+  /* --- le sommaire, collé en haut --- */
+  .toc { position:sticky; top:0; z-index:40; display:flex; flex-wrap:wrap; gap:0; margin-top:2.4rem;
+    background:var(--paper); border-top:2px solid var(--ink); border-bottom:2px solid var(--ink); }
+  .toc a { display:flex; align-items:baseline; gap:.5rem; padding:.7rem 1rem .75rem; text-decoration:none;
+    font-family:"Rubik","Arial Black",sans-serif; font-weight:900; font-size:.68rem; letter-spacing:.11em;
+    text-transform:uppercase; border-inline-end:1px solid var(--line); transition:background .2s, color .2s; }
+  [dir="rtl"] .toc a { font-family:"Frank Ruhl Libre",serif; letter-spacing:0; font-size:.82rem; }
+  .toc a b { font-family:"Frank Ruhl Libre",serif; font-size:1.05rem; font-weight:700; color:var(--muted); }
+  .toc a:hover { background:var(--pop); }
+  .toc a.ici { background:var(--ink); color:var(--pop); }
+  .toc a.ici b { color:var(--pop); }
+  .toc a.tocimp { margin-inline-start:auto; border-inline-end:0; background:var(--pop); }
+  .toc a.tocimp:hover { background:var(--ink); color:var(--pop); }
+
+  /* --- la lettre qui numérote chaque section --- */
+  /* La lettre qui numérote la section : un cartouche plein, comme ailleurs
+     sur le site, plutôt qu'un contour qui se perd sur fond papier. */
+  .ot { display:inline-grid; place-items:center; width:2.1rem; height:2.1rem; background:var(--ink);
+    color:var(--pop); font-family:"Frank Ruhl Libre",serif; font-size:1.25rem; font-weight:700;
+    line-height:1; margin-bottom:.7rem; }
+  .dossier .ot { background:var(--pop); color:var(--ink); }
+  .stitre { margin-top:.7rem; color:var(--muted); max-width:38em; }
 
   /* --- le passage du Talmud --- */
   .talmud { border-top:2px solid var(--ink); border-bottom:2px solid var(--ink); padding:2rem 0 2.2rem; }
@@ -238,12 +270,14 @@ ${altLinks(lang, PATH)}
   .dossier { background:var(--ink); color:var(--paper); padding:clamp(2rem,4vw,3.4rem); }
   .dossier h2 { color:var(--pop); }
   .dossier p { margin-top:1rem; max-width:40em; }
-  .dossier .duo { display:grid; grid-template-columns:1fr 1fr; gap:1.4rem; max-width:420px; margin-top:1.8rem; }
+  .dossier .duo { display:grid; grid-template-columns:1fr 1fr; gap:1.4rem; max-width:360px; margin-top:1.6rem; float:inline-end; margin-inline-start:2.4rem; }
+  .dossier .dtxt { overflow:hidden; }
   .dossier .duo figure { margin:0; }
   .dossier .duo img { border:1.5px solid rgba(255,255,255,.28); background:var(--paper); }
   .dossier .duo figcaption { margin-top:.5rem; font-family:"Rubik",sans-serif; font-weight:900; font-size:.66rem; letter-spacing:.14em; text-transform:uppercase; color:var(--pop); }
 
   /* --- la citation, dans le texte de l'auteur --- */
+  .citation { border:2px solid var(--ink); padding:1.6rem 1.8rem 1.8rem; margin:1.6rem 0 2.6rem; background:#fff; }
   .citation blockquote { border-inline-start:5px solid var(--pop); padding:.4rem 0 .4rem 1.4rem; margin:1.4rem 0 1rem; }
   [dir="rtl"] .citation blockquote { padding:.4rem 1.4rem .4rem 0; }
   .citation .heb { font-family:"Frank Ruhl Libre",serif; font-size:clamp(1.25rem,2.6vw,1.9rem); line-height:1.7; }
@@ -270,7 +304,14 @@ ${altLinks(lang, PATH)}
   .rv { opacity:0; transform:translateY(14px); transition:opacity .6s var(--ease), transform .6s var(--ease); }
   .rv.in { opacity:1; transform:none; }
   @media (prefers-reduced-motion:reduce) { .rv { opacity:1; transform:none; transition:none; } html { scroll-behavior:auto; } }
-  @media (max-width:640px) { .fi { grid-template-columns:78px 1fr; gap:.85rem; } .dossier .duo { max-width:none; } }
+  .fin { border-top:2px solid var(--ink); padding-top:1.6rem; }
+  @media (max-width:760px) {
+    .fi { grid-template-columns:78px 1fr; gap:.85rem; }
+    .dossier .duo { max-width:none; float:none; margin-inline-start:0; }
+    .toc a { flex:1 1 auto; justify-content:center; font-size:.56rem; padding:.42rem .4rem .46rem; letter-spacing:.06em; }
+    .toc a b { font-size:.9rem; }
+    .toc a.tocimp { margin-inline-start:0; }
+  }
 </style>
 </head>
 <body>
@@ -282,55 +323,74 @@ ${altLinks(lang, PATH)}
   <h1><span class="sur">${s.sur}</span>${s.titre}.</h1>
   <p class="chapeau">${s.chapeau}</p>
 
-  <section class="talmud">
-    <p class="kicker">${s.talmudTitre}</p>
-    <p>${s.talmudIntro}</p>
-    <p class="heb">${s.talmudHeb}</p>
-    ${s.talmudFr ? `<p class="tr">${s.talmudFr}</p>` : ""}
-    <p class="ref">${s.talmudRef}</p>
-  </section>
+  <!-- Le sommaire colle en haut au défilement et marque où l'on se trouve :
+       la page est longue, il faut pouvoir y entrer par le milieu. -->
+  <nav class="toc" id="toc" aria-label="${s.sommaire}">
+    <a href="#comparateur" data-cible="comparateur"><b>א</b>${s.navComp}</a>
+    <a href="#origine" data-cible="origine"><b>ב</b>${s.navTalmud}</a>
+    <a href="#simanim" data-cible="simanim"><b>ג</b>${s.navFiches}</a>
+    <a href="#roubia" data-cible="roubia"><b>ד</b>${s.navRoubia}</a>
+    <a href="#rites" data-cible="rites"><b>ה</b>${s.navRites}</a>
+    <a href="#imprimer" data-cible="imprimer" class="tocimp">${s.navImp}</a>
+  </nav>
 
-  <section>
-    <p class="kicker">${s.compTitre}</p>
+  <section id="comparateur">
+    <p class="ot">א</p>
     <h2>${s.compOrdre}.</h2>
+    <p class="stitre">${s.compTitre}</p>
     <div class="rbs">${boutons}</div>
     <p class="aide">${s.compAide}</p>
     <div class="grille" id="grille">${cartes}</div>
     <span class="marque" id="marque"></span>
   </section>
 
-  <section>
-    <p class="kicker">${s.fichesTitre}</p>
+  <section id="origine" class="talmud">
+    <p class="ot">ב</p>
+    <h2>${s.talmudTitre}.</h2>
+    <p class="stitre">${s.talmudIntro}</p>
+    <p class="heb">${s.talmudHeb}</p>
+    ${s.talmudFr ? `<p class="tr">${s.talmudFr}</p>` : ""}
+    <p class="ref">${s.talmudRef}</p>
+  </section>
+
+  <section id="simanim">
+    <p class="ot">ג</p>
+    <h2>${s.fichesTitre}.</h2>
     <div class="fis">${fiches}</div>
   </section>
 
-  <section class="dossier rv">
+  <section id="roubia" class="dossier rv">
+    <p class="ot">ד</p>
     <h2>${s.dossierTitre}</h2>
-    <p>${s.dossierP1}</p>
-    <p>${s.dossierP2}</p>
-    <p>${s.dossierP3}</p>
     <div class="duo">
       <figure><img src="/simanim/fenugrec.webp" alt="" width="440" height="440" loading="lazy"><figcaption>תלתן · ${lang === "he" ? "תלתן" : lang === "en" ? "fenugreek" : "fenugrec"}</figcaption></figure>
       <figure><img src="/simanim/loubia.webp" alt="" width="440" height="440" loading="lazy"><figcaption>לוביא · ${lang === "he" ? "לוביא" : lang === "en" ? "black-eyed peas" : "loubia"}</figcaption></figure>
     </div>
+    <div class="dtxt">
+      <p>${s.dossierP1}</p>
+      <p>${s.dossierP2}</p>
+      <p>${s.dossierP3}</p>
+    </div>
   </section>
 
-  <section class="citation rv">
-    <p class="kicker">${s.citTitre}</p>
-    <blockquote>
-      <p class="heb" dir="rtl">${s.citHeb}</p>
-      <p class="tr">${s.citTrad}</p>
-    </blockquote>
-    <p class="ref">${s.citRef} · <a href="https://hebrewbooks.org/pdfpager.aspx?req=8751&amp;pgnum=209" rel="noopener">${s.citVoir}</a></p>
-    <p class="nt">${s.citNote}</p>
-  </section>
+  <section id="rites">
+    <p class="ot">ה</p>
+    <h2>${s.sourcesTitre}.</h2>
 
-  <section>
-    <p class="kicker">${s.sourcesTitre}</p>
+    <div class="citation rv">
+      <p class="stitre">${s.citTitre}</p>
+      <blockquote>
+        <p class="heb" dir="rtl">${s.citHeb}</p>
+        <p class="tr">${s.citTrad}</p>
+      </blockquote>
+      <p class="ref">${s.citRef} · <a href="https://hebrewbooks.org/pdfpager.aspx?req=8751&amp;pgnum=209" rel="noopener">${s.citVoir}</a></p>
+      <p class="nt">${s.citNote}</p>
+    </div>
+
     <div class="srcs">${sources}</div>
   </section>
 
-  <section class="rv">
+  <section id="imprimer" class="rv fin">
     <h2>${s.imprimer}</h2>
     <p class="chapeau">${s.imprimerP}</p>
     <a class="cta" href="${href(lang, "/miel")}">${s.imprimer}</a>
@@ -402,6 +462,30 @@ ${retourTab(lang, PATH)}
     es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
   }, { rootMargin: "0px 0px -8% 0px" });
   document.querySelectorAll(".rv").forEach(function (e) { io.observe(e); });
+
+  // Le sommaire marque la section où l'on se trouve. Sans ce repère, une page
+  // de six mille pixels ne dit jamais où l'on en est.
+  var liens = Array.prototype.slice.call(document.querySelectorAll(".toc a[data-cible]"));
+  var sections = liens.map(function (a) { return document.getElementById(a.getAttribute("data-cible")); });
+  var toc = document.getElementById("toc");
+  function situer() {
+    var repere = (toc ? toc.getBoundingClientRect().height : 0) + 24;
+    var courant = 0;
+    sections.forEach(function (sec, i) {
+      if (!sec) return;
+      var r = sec.getBoundingClientRect();
+      if (r.top <= repere && r.bottom > repere) courant = i;
+      else if (r.bottom <= repere) courant = Math.max(courant, i);
+    });
+    liens.forEach(function (a, i) { a.classList.toggle("ici", i === courant); });
+  }
+  var attente = false;
+  addEventListener("scroll", function () {
+    if (attente) return;
+    attente = true;
+    requestAnimationFrame(function () { situer(); attente = false; });
+  }, { passive: true });
+  situer();
 })();
 </script>
 </body>
