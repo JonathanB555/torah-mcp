@@ -57,6 +57,7 @@ interface StringsMiel {
   datesTitre: string; regleAvec: string; regleSans: string;
   lignes: { f: string; i: string; d: string }[];
   nomLab: string; berakhotTitre: string; introB1: string; introB2: string;
+  noteMinhag: string;
   simLabels: string[]; trad: string; src: string; offert: string;
   nav: { question: string; chabbat: string; install: string };
 }
@@ -117,13 +118,14 @@ const T: Record<Lang, StringsMiel> = {
       { f: "SIMHAT TORAH", i: "<span class=\"avech\">— fin des fêtes <b data-k=\"finFetes\"></b></span>", d: "dimanche 4 octobre" },
     ],
     nomLab: "Cet exemplaire est celui de",
-    berakhotTitre: "LES BERAKHOT DU SOIR DE ROCH-HACHANA — LE SÉDÈR DES SIMANIM",
+    berakhotTitre: "LES BERAKHOT DU SOIR DE ROCH-HACHANA — LE SÉDÈR DES SIMANIM DU CHOULHAN AROUKH",
     introB1: "On trempe le pain du Motsi dans le miel. Sur le premier fruit, on bénit",
     introB2: ", puis, pour chaque siman :",
     simLabels: ["La pomme trempée dans le miel", "La datte — tamar", "La grenade — rimone", "La courge — kra",
-      "Le fenugrec — roubia", "Le poireau — karti", "La blette — silka", "La tête (poisson ou agneau)", "Le poisson"],
+      "Le fenugrec — roubia (ou la loubia)", "Le poireau — karti", "La blette — silka", "La tête (poisson ou agneau)", "Le poisson"],
+    noteMinhag: "L'ordre des simanim varie selon les communautés — les familles tunisiennes ont le leur. Suivez l'usage de votre famille.",
     trad: "« Que ce soit Ta volonté de renouveler pour nous une année bonne et douce. »",
-    src: "Sources lues sur Sefaria : Talmud, Horayot 12a (Abayé) · Kitsour Choulhan Aroukh 129, 9 · Michna Beroura 583, 21",
+    src: "Sources lues sur Sefaria : Talmud, Horayot 12a (Abayé) · Choulhan Aroukh, Orah Hayim 583, 1",
     offert: "offert par",
     nav: { question: "Une question", chabbat: "Chabbat", install: "Installer le MCP" },
   },
@@ -158,13 +160,14 @@ const T: Record<Lang, StringsMiel> = {
       { f: "SIMCHAT TORAH", i: "<span class=\"avech\">— holidays end <b data-k=\"finFetes\"></b></span>", d: "Sunday, October 4" },
     ],
     nomLab: "This copy belongs to",
-    berakhotTitre: "THE ROSH HASHANA EVENING BLESSINGS — THE SIMANIM SEDER",
+    berakhotTitre: "THE ROSH HASHANA EVENING BLESSINGS — THE SIMANIM SEDER OF THE SHULCHAN ARUKH",
     introB1: "Dip the Motzi bread in honey. Over the first fruit, say",
     introB2: ", then, for each siman:",
     simLabels: ["The apple dipped in honey", "The date — tamar", "The pomegranate — rimon", "The gourd — kra",
-      "The fenugreek — rubia", "The leek — karti", "The chard — silka", "The head (fish or lamb)", "The fish"],
+      "The fenugreek — rubia (or black-eyed peas)", "The leek — karti", "The chard — silka", "The head (fish or lamb)", "The fish"],
+    noteMinhag: "The order of the simanim varies between communities — Tunisian families have their own. Follow your family's custom.",
     trad: "“May it be Your will to renew for us a good and sweet year.”",
-    src: "Sources read on Sefaria: Talmud, Horayot 12a (Abaye) · Kitzur Shulchan Arukh 129:9 · Mishna Berura 583:21",
+    src: "Sources read on Sefaria: Talmud, Horayot 12a (Abaye) · Shulchan Arukh, Orach Chayim 583:1",
     offert: "offered by",
     nav: { question: "Ask a question", chabbat: "Shabbat", install: "Install the MCP" },
   },
@@ -199,12 +202,13 @@ const T: Record<Lang, StringsMiel> = {
       { f: "שמחת תורה", i: "<span class=\"avech\">— צאת החגים <b data-k=\"finFetes\"></b></span>", d: "ראשון, 4.10" },
     ],
     nomLab: "הדף הזה שייך ל",
-    berakhotTitre: "ברכות ליל ראש השנה — סדר הסימנים",
+    berakhotTitre: "ברכות ליל ראש השנה — סדר הסימנים שבשולחן ערוך",
     introB1: "טובלים את פרוסת המוציא בדבש. על הפרי הראשון מברכים",
     introB2: ", ואחר כך, לכל סימן:",
-    simLabels: ["התפוח בדבש", "התמר", "הרימון", "הקרא (דלעת)", "הרוביא", "הכרתי", "הסלקא", "הראש (דג או כבש)", "הדגים"],
+    simLabels: ["התפוח בדבש", "התמר", "הרימון", "הקרא (דלעת)", "הרוביא (תלתן)", "הכרתי", "הסלקא", "הראש (דג או כבש)", "הדגים"],
+    noteMinhag: "סדר הסימנים משתנה מקהילה לקהילה — למשפחות מתוניסיה יש סדר משלהן. לכו אחר מנהג משפחתכם.",
     trad: "",
-    src: "מקורות שנקראו בספריא: הוריות יב ע״א (אביי) · קיצור שולחן ערוך קכט, ט · משנה ברורה תקפג, כא",
+    src: "מקורות שנקראו בספריא: הוריות יב ע״א (אביי) · שולחן ערוך אורח חיים תקפג, א",
     offert: "מוגש על ידי",
     nav: { question: "שאלה", chabbat: "שבת", install: "התקנת ה-MCP" },
   },
@@ -310,7 +314,7 @@ ${altLinks(lang, "/miel")}
   .rouge2 { font-family:"Playfair Display", serif; font-weight:900; font-size:7.4mm; color:var(--rouge); letter-spacing:1.6mm; }
   .regle { width:100%; border-top:.5mm solid var(--rouge); border-bottom:.5mm solid var(--rouge); color:var(--rouge);
            font-weight:700; font-size:3.3mm; letter-spacing:.35mm; padding:1.1mm 0; margin-top:1.8mm; }
-  .regle.r2 { margin-top:2.4mm; }
+  .regle.r2 { margin-top:2.4mm; font-size:2.95mm; letter-spacing:.22mm; }
   .dates { width:100%; border-collapse:collapse; margin-top:1.8mm; }
   .dates td { font-size:2.8mm; padding:.2mm 0; vertical-align:baseline; text-align:left; }
   .dates .f { font-weight:700; white-space:nowrap; }
@@ -333,8 +337,10 @@ ${altLinks(lang, "/miel")}
   .intro { font-size:2.9mm; margin-top:1mm; line-height:1.45; max-width:180mm; }
   .hebin { font-family:"Frank Ruhl Libre", serif; font-weight:700; font-size:4.1mm; direction:rtl; unicode-bidi:isolate; }
   .ph { font-style:italic; }
-  .sims { width:100%; display:grid; grid-template-columns:1fr 1fr; gap:.5mm 4mm; margin-top:1mm; text-align:left; }
+  .sims { width:100%; display:grid; grid-template-columns:1fr 1fr; gap:.2mm 4mm; margin-top:.6mm; text-align:left; }
   .simt { font-weight:700; font-size:2.8mm; color:var(--rouge); }
+  .minhag { width:100%; margin-top:.8mm; font-size:2.4mm; line-height:1.25; font-style:italic; color:#3a3a52; border-top:.2mm solid rgba(26,26,46,.25); padding-top:.9mm; text-align:left; }
+  [dir="rtl"] .minhag { direction:rtl; text-align:right; }
   .simt .bpe { color:#1a1a2e; font-weight:400; font-style:italic; font-family:"Frank Ruhl Libre", serif; }
   .simheb { font-family:"Frank Ruhl Libre", serif; font-weight:700; font-size:3.2mm; direction:rtl; text-align:right; line-height:1.3; }
   .simph { font-size:2.3mm; font-style:italic; line-height:1.2; opacity:.9; }
@@ -395,6 +401,7 @@ ${altLinks(lang, "/miel")}
           <span class="hebin">בָּרוּךְ אַתָּה ה׳ אֱלֹקֵינוּ מֶלֶךְ הָעוֹלָם בּוֹרֵא פְּרִי הָעֵץ</span>
           <span class="ph">(Baroukh ata Ado-naï Élo-hénou mélekh haolam, boré peri haets)</span>${s.introB2}</div>
         <div class="sims">${sims}</div>
+        <div class="minhag">${s.noteMinhag}</div>
         <div class="pied"><span>${s.src}</span><span class="pm">${s.offert} mamash-ia.com</span></div>
       </div></div>
     </div></div>
