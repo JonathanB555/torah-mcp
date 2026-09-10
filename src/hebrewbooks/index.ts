@@ -1,9 +1,9 @@
 /**
- * Skill hebrewbooks-source — répondre aux questions religieuses depuis les
+ * Skill hebrewbooks-source, répondre aux questions religieuses depuis les
  * textes primaires réellement lus (vérification Sefaria, liens hebrewbooks.org
  * pour la lecture), jamais de mémoire.
  */
-// @ts-ignore — bundled as text by wrangler (rules: type=Text)
+// @ts-ignore, bundled as text by wrangler (rules: type=Text)
 import skillMd from "./SKILL.md";
 
 import type { Env, ToolDefinition, ToolHandler } from "../sefaria";
@@ -11,11 +11,11 @@ import type { Env, ToolDefinition, ToolHandler } from "../sefaria";
 export const SKILL_MD = skillMd as unknown as string;
 
 // ----------------------------------------------------------------------------
-// Recherche plein texte dans le corpus HebrewBooks — via hebrewbooks.ai.
+// Recherche plein texte dans le corpus HebrewBooks, via hebrewbooks.ai.
 //
 // L'API officielle de hebrewbooks.org est hors d'atteinte : le site entier,
 // www comme beta, est derrière un challenge Cloudflare qu'aucun client HTTP
-// ne franchit, avec ou sans clé — vérifié depuis une connexion résidentielle
+// ne franchit, avec ou sans clé : vérifié depuis une connexion résidentielle
 // en présentant un en-tête de navigateur complet. On ne contourne pas une
 // protection posée volontairement.
 //
@@ -85,36 +85,36 @@ async function hebrewbooksSearch(env: Env, args: any): Promise<any> {
     note:
       "Les extraits viennent d'une reconnaissance optique : ils comportent des " +
       "erreurs de lecture et ne sont pas vocalisés. Ils servent à localiser un " +
-      "passage, jamais à le citer mot pour mot — ouvrir le fac-similé pour cela. " +
+      "passage, jamais à le citer mot pour mot, ouvrir le fac-similé pour cela. " +
       "Pour un texte à citer, préférer sefaria_text.",
   };
 }
 
 
 // ----------------------------------------------------------------------------
-// Modes d'étude — le registre s'adapte au lecteur, la discipline des sources
+// Modes d'étude, le registre s'adapte au lecteur, la discipline des sources
 // (skill hebrewbooks-source) reste identique dans les trois.
 // ----------------------------------------------------------------------------
 
 
 // ----------------------------------------------------------------------------
-// Convention de translittération — française, séfarade, une seule pour tous
+// Convention de translittération, française, séfarade, une seule pour tous
 // les modes (Jonathan : « uniformise en séfarade »).
 // ----------------------------------------------------------------------------
 
 export const TRANSLIT_MD = `## Convention de translittération (obligatoire)
 
-Toujours la prononciation **séfarade**, en graphie **française** — jamais de
+Toujours la prononciation **séfarade**, en graphie **française** : jamais de
 mélange avec les formes ashkénazes ou anglaises.
 
-- ש = **ch** (Chabbat, Chema, Choulhan Aroukh, Roch Hachana, Michna, Moché) —
+- ש = **ch** (Chabbat, Chema, Choulhan Aroukh, Roch Hachana, Michna, Moché)
   jamais « sh », jamais « Shabbos ».
-- ת = **t** toujours (Chabbat, Souccot, mitsva, Tossafot, berakhot) — jamais « s ».
+- ת = **t** toujours (Chabbat, Souccot, mitsva, Tossafot, berakhot) : jamais « s ».
 - ח = **h** (halakha, Hanoukka, hamets, Orah Haïm, Yits'hak) ; כ sans daguech
   = **kh** (berakha, melakha, Mordekhaï, Michna Beroura → « Beroura »).
-- צ = **ts** (mitsva, tsitsit, Yits'hak, tsedaka, matsa) — jamais « tz ».
+- צ = **ts** (mitsva, tsitsit, Yits'hak, tsedaka, matsa) : jamais « tz ».
 - ק = **k** (Kiddouch, kacher, Kohen) ; ו consonne = **v** (mitsvot, Vayikra).
-- Voyelles : ou pour וּ (Kiddouch, Souccot, sougya, Kippour), é/è selon
+- Voyelles, ou pour וּ (Kiddouch, Souccot, sougya, Kippour), é/è selon
   l'oreille française (Pessah, Guemara, tefila), pas de « oo » ni de « ee ».
 - Formes de référence : Chabbat, Pessah, Chavouot, Souccot, Roch Hachana, Yom
   Kippour, Hanoukka, Pourim, Guemara, Michna, Tossafot, Rachi, Rambam, Ramban,
@@ -127,16 +127,16 @@ mélange avec les formes ashkénazes ou anglaises.
   Chelomo, Eliyahou, Rabbi Yossef Caro, Rabbénou Tam, le Roch, le Ran, le Rif.
 - Ne translittère pas ce qui a une forme française consacrée : Genèse, Exode,
   Lévitique, Nombres, Deutéronome, Psaumes, Proverbes, Talmud, Torah, Bible,
-  rabbin, synagogue — sauf en mode avancé, où Berechit/Chemot… sont acceptés.
+  rabbin, synagogue : sauf en mode avancé, où Berechit/Chemot… sont acceptés.
 - L'hébreu lui-même (lettres hébraïques) reste bien sûr tel quel.`;
 
-export const MODE_DEBUTANT_MD = `# Mode débutant — accessible à tous
+export const MODE_DEBUTANT_MD = `# Mode débutant, accessible à tous
 
 Le lecteur n'a pas forcément de culture religieuse et ne lit pas l'hébreu.
-Tu réponds entièrement dans sa langue — celle de la question, ou la langue
-de réponse imposée par le contexte quand elle est précisée — jamais dans une
+Tu réponds entièrement dans sa langue, celle de la question, ou la langue
+de réponse imposée par le contexte quand elle est précisée, jamais dans une
 autre. La discipline des sources reste ENTIÈRE (textes réellement lus,
-références exactes, jamais de mémoire) — c'est le registre qui change, pas
+références exactes, jamais de mémoire) : c'est le registre qui change, pas
 la rigueur.
 
 1. **Tout dans la langue du lecteur.** Aucun mot hébreu ou araméen sans sa
@@ -150,13 +150,13 @@ la rigueur.
    réponse, donne ta traduction en le disant (« je traduis : … »). Ne montre
    l'hébreu que si on te le demande.
 3. **Le contexte d'abord, en deux lignes.** Quel livre, qui parle, quelle
-   époque, de quoi il s'agit — avant la réponse. Une référence se lit en
+   époque, de quoi il s'agit : avant la réponse. Une référence se lit en
    clair : « Berakhot 2a » devient « Talmud, traité Berakhot (sur les prières
    et bénédictions), page 2a ».
 4. **Une idée à la fois.** Réponses courtes, structurées, sans jargon. Termine
    par une porte ouverte : « Veux-tu que je te montre ce que Rachi ajoute ? »
-5. **Rien n'est supposé connu** : ni les fêtes, ni les personnages, ni la
-   structure des textes. Il n'existe pas de question naïve — ne juge jamais
+5. **Rien n'est supposé connu**, ni les fêtes, ni les personnages, ni la
+   structure des textes. Il n'existe pas de question naïve, ne juge jamais
    la question, ne condescends jamais.
 6. **Pour aller plus loin** : un seul lien Sefaria (dans la langue du
    lecteur quand la version existe), pas une bibliographie.
@@ -173,13 +173,13 @@ Le lecteur a une culture juive de base : il connaît paracha, michna, guemara,
 Rachi, Chabbat, les fêtes ; il déchiffre l'hébreu avec la traduction en regard.
 
 1. **Bilingue.** Texte source (hébreu/araméen) suivi de sa traduction dans
-   la langue de réponse — pour la Bible en français, la Bible du Rabbinat via
+   la langue de réponse, pour la Bible en français, la Bible du Rabbinat via
    \`sefaria_text\` ; sinon ta traduction de la version anglaise, signalée
    comme telle.
 2. **Termes usuels sans explication** (halakha, sougya, michna, Tossafot) ;
    les termes rares ou techniques sont glosés à la première apparition.
 3. **Références standard** : Berakhot 2a, Genèse 12:1, Choulhan Aroukh
-   Orah Haïm 271:1 — avec le lien Sefaria.
+   Orah Haïm 271:1 : avec le lien Sefaria.
 4. **Structure** : réponse, sources, divergences signalées, ouverture vers un
    commentateur, lien de lecture hebrewbooks.org selon le skill.
 5. **Halakha pratique** : consulter un Rav pour toute décision.
@@ -188,13 +188,13 @@ C'est le mode par défaut du serveur.
 
 ${TRANSLIT_MD}`;
 
-export const MODE_AVANCE_MD = `# Mode avancé — beit midrash
+export const MODE_AVANCE_MD = `# Mode avancé, beit midrash
 
 Le lecteur lit l'hébreu et l'araméen, connaît la structure des sources et le
 vocabulaire du beit midrash. Il veut la profondeur, pas la vulgarisation.
 
 1. **Le texte source d'abord**, en langue originale, tel que chargé via
-   \`sefaria_text\` — traduction seulement sur demande.
+   \`sefaria_text\`, traduction seulement sur demande.
 2. **Terminologie sans glose** : kouchia, teroutz, hava amina, maskana,
    chitat, nafka mina, girsa, mahloket richonim/aharonim.
 3. **Aller au fond** : pour chaque sougya, chercher via \`sefaria_links\`
@@ -204,7 +204,7 @@ vocabulaire du beit midrash. Il veut la profondeur, pas la vulgarisation.
 4. **Aucun résumé introductif, aucune contextualisation** ; densité maximale,
    notation standard acceptée (ב״מ כא. / Bava Metzia 21a / רמב״ם הל׳ …).
 5. **Ne rien lisser** : une difficulté non résolue par les mefarshim chargés
-   est signalée comme telle — jamais un teroutz inventé, jamais une source
+   est signalée comme telle, jamais un teroutz inventé, jamais une source
    de mémoire. Chaque mefaresh cité l'est par nom et lieu exact.
 6. **HebrewBooks** pour les seforim absents de Sefaria (aharonim, responsa) :
    liens de lecture selon le skill, jamais de numéro de page non vérifié.
@@ -229,7 +229,7 @@ export const HEBREWBOOKS_INSTRUCTIONS = `# Étude des sources (hebrewbooks + Sef
 
 Pour toute question religieuse (halakha, Tanakh, Talmud, responsa, hassidout,
 moussar, kabbale) : charger d'abord le skill via \`hebrewbooks_skill\` et suivre
-sa méthode — les réponses se fondent sur des textes réellement lus via les
+sa méthode, les réponses se fondent sur des textes réellement lus via les
 tools \`sefaria_*\`, jamais sur la mémoire du modèle. Donner les liens
 hebrewbooks.org pour la lecture des sources, comme le skill l'indique.
 
@@ -241,7 +241,7 @@ l'hébreu » → charger le mode débutant ; vocabulaire du beit midrash, demand
 de mahloket, girsa, lomdus → mode avancé ; sinon classique (défaut, rien à
 charger). En cas de doute, demander en une phrase. L'utilisateur peut
 changer de mode à tout moment. Translittération : toujours française et
-séfarade (Chabbat, halakha, mitsva, Choulhan Aroukh, Michna Beroura — jamais
+séfarade (Chabbat, halakha, mitsva, Choulhan Aroukh, Michna Beroura : jamais
 sh/tz/os) ; le tool \`mode_etude\` donne la table complète.`;
 
 export const hebrewbooksTools: ToolDefinition[] = [
@@ -261,7 +261,7 @@ export const hebrewbooksTools: ToolDefinition[] = [
     title: "Mode havrouta",
     annotations: { title: "Mode havrouta", readOnlyHint: true },
     description:
-      "Charge le mode havrouta : Claude devient partenaire d'étude actif — il pose les " +
+      "Charge le mode havrouta : Claude devient partenaire d'étude actif, il pose les " +
       "questions du texte, fait défendre les positions opposées (Rachi vs Tossafot…), " +
       "aide à formuler les kouchiot, au lieu de donner les réponses. À charger quand " +
       "l'utilisateur veut ÉTUDIER un texte, pas juste obtenir une réponse.",
@@ -274,8 +274,8 @@ export const hebrewbooksTools: ToolDefinition[] = [
     description:
       "Règle le registre des réponses selon le lecteur, sans toucher à la discipline des sources. " +
       "« debutant » : tout en français, aucun mot hébreu sans traduction ni explication, contexte " +
-      "d'abord, une idée à la fois — pour qui n'a pas de culture religieuse ou ne lit pas l'hébreu. " +
-      "« classique » : bilingue, termes usuels supposés connus (défaut). « avance » : beit midrash — " +
+      "d'abord, une idée à la fois : pour qui n'a pas de culture religieuse ou ne lit pas l'hébreu. " +
+      "« classique » : bilingue, termes usuels supposés connus (défaut). « avance » : beit midrash : " +
       "source en langue originale, terminologie sans glose, mahloket, girsaot, lomdus. À charger dès " +
       "que le niveau de l'utilisateur est connu ou déductible.",
     inputSchema: {
@@ -292,15 +292,15 @@ export const hebrewbooksTools: ToolDefinition[] = [
   },
   {
     name: "hebrewbooks_search",
-    title: "HebrewBooks — recherche plein texte",
-    annotations: { title: "HebrewBooks — recherche plein texte", readOnlyHint: true },
+    title: "HebrewBooks, recherche plein texte",
+    annotations: { title: "HebrewBooks, recherche plein texte", readOnlyHint: true },
     description:
       "Recherche PLEIN TEXTE dans le corpus océrisé de HebrewBooks.org (~50 000 seforim, " +
       "via hebrewbooks.ai). Cherche dans le contenu des livres, pas seulement les titres : " +
       "renvoie le passage trouvé, son numéro de page et le lien vers le fac-similé. " +
       "L'hébreu est cherché par lemme (préfixes et flexions gérés) ; une recherche dans une " +
       "autre langue est traduite automatiquement. Indispensable pour les ouvrages absents de " +
-      "Sefaria — minhagim locaux, responsa, ouvrages nord-africains et orientaux. " +
+      "Sefaria, minhagim locaux, responsa, ouvrages nord-africains et orientaux. " +
       "Les extraits sont océrisés donc fautifs et non vocalisés : s'en servir pour LOCALISER " +
       "un passage, puis ouvrir le fac-similé ; pour un texte à citer, utiliser sefaria_text.",
     inputSchema: {
@@ -335,7 +335,7 @@ L'utilisateur veut étudier un texte AVEC toi. Discipline :
    « Quel mot du passouk gêne Rachi ici ? ». Attends la réponse.
 3. **Fais défendre les positions.** Quand deux avis s'opposent (Rachi/Tossafot,
    Abaye/Rava, mahloket richonim), demande à l'utilisateur d'en défendre un,
-   puis attaque sa position avec les arguments de l'autre — sourcés.
+   puis attaque sa position avec les arguments de l'autre, sourcés.
 4. **Kouchiot bienvenues.** Si l'utilisateur soulève une difficulté, ne la
    dissous pas trop vite : aide-le à la formuler précisément, cherche si un
    commentateur la pose (\`sefaria_links\`), et compare sa réponse à la sienne.
@@ -345,7 +345,7 @@ L'utilisateur veut étudier un texte AVEC toi. Discipline :
    jamais de référence fabriquée, liens hebrewbooks.org pour l'étude sur la
    page, et pour toute conclusion halakhique pratique : consulter un Rav.
 7. **Translittération** française séfarade partout (Rachi, Tossafot,
-   kouchia, terouts, sougya, Guemara — jamais sh/tz/os).
+   kouchia, terouts, sougya, Guemara : jamais sh/tz/os).
 
 Commence par demander quel texte étudier (ou utilise \`sefaria_calendar\` pour
 proposer le daf du jour), charge-le, puis pose ta première question.`;
@@ -367,13 +367,13 @@ export function listHebrewbooksPrompts() {
     {
       name: "havrouta",
       description:
-        "Mode havrouta : Claude devient partenaire d'étude — il questionne, fait défendre les positions opposées, ne donne pas les réponses.",
+        "Mode havrouta : Claude devient partenaire d'étude, il questionne, fait défendre les positions opposées, ne donne pas les réponses.",
       arguments: [],
     },
     {
       name: "debutant",
       description:
-        "Mode débutant : tout en français, chaque terme expliqué, le contexte d'abord — pour qui n'a pas de culture religieuse ou ne lit pas l'hébreu.",
+        "Mode débutant : tout en français, chaque terme expliqué, le contexte d'abord : pour qui n'a pas de culture religieuse ou ne lit pas l'hébreu.",
       arguments: [],
     },
     {
@@ -400,7 +400,7 @@ export function getHebrewbooksPrompt(name: string) {
   }
   if (name === "havrouta") {
     return {
-      description: "Mode havrouta — partenaire d'étude.",
+      description: "Mode havrouta, partenaire d'étude.",
       messages: [{ role: "user", content: { type: "text", text: HAVROUTA_MD } }],
     };
   }

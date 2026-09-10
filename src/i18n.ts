@@ -39,7 +39,7 @@ export function altLinks(lang: Lang, path: string): string {
 
 /**
  * Sélecteur de langue en liens-crochets, la langue courante marquée.
- * Rendu : FR · EN · עברית — sans pills, sans drapeaux.
+ * Rendu : FR · EN · עברית : sans pills, sans drapeaux.
  */
 export function langSwitcher(lang: Lang, path: string, cls = "lang"): string {
   const items = LANGS.map((l) =>
@@ -59,7 +59,7 @@ export function t<T>(lang: Lang, v: { fr: T; en: T; he: T }): T {
 export const htmlAttrs = (lang: Lang) => `lang="${lang}" dir="${dirOf(lang)}"`;
 
 /** Le colophon, signé dans la langue de la page, suivi de la dédicace.
- *  Les trois noms sont écrits partout tels que Jonathan les a donnés — sur une
+ *  Les trois noms sont écrits partout tels que Jonathan les a donnés, sur une
  *  dédicace, on ne translittère pas de sa propre main. */
 /** Les trois noms, isolés en dir="ltr" : dans la page hébraïque, une suite
  *  latine non isolée se réordonne au rendu bidirectionnel. */

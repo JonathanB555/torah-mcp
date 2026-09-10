@@ -1,5 +1,5 @@
 /**
- * Page /question — poser une question en français, sans Claude installé.
+ * Page /question, poser une question en français, sans Claude installé.
  * Le mode (débutant / classique / avancé) est partagé avec /outils via
  * localStorage (clé tm_mode). Débutant par défaut.
  *
@@ -46,7 +46,7 @@ interface Strings {
   againInstall: string;
   footHome: string;
   footPrivacy: string;
-  /* — chaînes du script — */
+  /* (chaînes du script) */
   help: Record<Mode, string>;
   steps: string[];
   niv: Record<Mode, string>;
@@ -72,14 +72,14 @@ interface Strings {
 
 const T: Record<Lang, Strings> = {
   fr: {
-    title: "Poser une question — Mamash IA",
-    desc: "Posez votre question sur la Torah, la halakha, le Talmud, en français. La réponse est lue dans les textes réels (Sefaria) et citée exactement — sans rien installer.",
+    title: "Poser une question · Mamash IA",
+    desc: "Posez votre question sur la Torah, la halakha, le Talmud, en français. La réponse est lue dans les textes réels (Sefaria) et citée exactement, sans rien installer.",
     ogDesc: "Une question sur la Torah, en français. La réponse est lue dans les textes réels et citée exactement.",
     navTools: "Outils",
     navDaf: "Le daf",
     navInstall: "Installer le MCP",
     h1: "Posez votre <strong>question</strong>.",
-    lead: "En français, comme elle vous vient. La réponse est lue dans les textes réels — Bible, Talmud, commentateurs, via Sefaria — et citée exactement, avec ses sources. Rien à installer.",
+    lead: "En français, comme elle vous vient. La réponse est lue dans les textes réels (Bible, Talmud, commentateurs, via Sefaria), et citée exactement, avec ses sources. Rien à installer.",
     step1: "Choisissez votre niveau",
     step1s: "on commence par là",
     ariaLevel: "Niveau",
@@ -101,56 +101,56 @@ const T: Record<Lang, Strings> = {
       { q: "Que dit Rachi sur le premier verset de la Genèse ?", label: "Que dit Rachi sur Genèse 1:1 ?" },
     ],
     histLab: "Vos questions",
-    histNote: "— gardées sur cet appareil seulement",
+    histNote: " · gardées sur cet appareil seulement",
     hclr: "Effacer l'historique",
     copy: "Copier la réponse",
     share: "Partager",
-    disc: "Réponse rédigée par Claude à partir des textes lus sur Sefaria, selon la méthode Mamash IA — vérifiez toujours les sources citées. Pour une décision de halakha pratique, consultez un rabbin.",
+    disc: "Réponse rédigée par Claude à partir des textes lus sur Sefaria, selon la méthode Mamash IA · vérifiez toujours les sources citées. Pour une décision de halakha pratique, consultez un rabbin.",
     again: "Poser une autre question",
     againInstall: "Installer Torah MCP dans Claude pour aller plus loin",
     footHome: "Accueil",
     footPrivacy: "Confidentialité",
     help: {
-      debutant: "Tout en français, chaque terme expliqué, le contexte d'abord — pour qui débute ou ne lit pas l'hébreu.",
+      debutant: "Tout en français, chaque terme expliqué, le contexte d'abord : pour qui débute ou ne lit pas l'hébreu.",
       classique: "Bilingue : la source puis sa traduction, termes usuels supposés connus.",
       avance: "Beit midrash : source en langue originale, terminologie sans glose, mahloket et lomdus.",
     },
     steps: ["Lecture des sources…", "Ouverture des textes sur Sefaria…", "Lecture des commentateurs…", "Rédaction de la réponse…"],
     niv: { debutant: "débutant", classique: "classique", avance: "avancé" },
     read: "Textes lus :",
-    copied: "Copié — réponse, sources et lien.",
-    copyFail: "Copie impossible ici — sélectionnez le texte à la main.",
+    copied: "Copié, réponse, sources et lien.",
+    copyFail: "Copie impossible ici, sélectionnez le texte à la main.",
     shared: "Partagé.",
     shareCancel: "Partage annulé.",
     readMore: "Lire la suite : ",
     qLabel: "Question : ",
-    sig: "— Mamash IA, ",
-    err: "Erreur — réessayez.",
-    errNet: "Erreur réseau — réessayez.",
-    errGeneric: "Le service de réponse est momentanément indisponible — réessayez.",
+    sig: " · Mamash IA, ",
+    err: "Erreur, réessayez.",
+    errNet: "Erreur réseau, réessayez.",
+    errGeneric: "Le service de réponse est momentanément indisponible, réessayez.",
     errCause: {
-      credit_epuise: "Le service de questions est en pause : le quota du serveur est épuisé. Les outils, le daf et l'installation dans Claude restent disponibles — réessayez plus tard.",
+      credit_epuise: "Le service de questions est en pause : le quota du serveur est épuisé. Les outils, le daf et l'installation dans Claude restent disponibles, réessayez plus tard.",
       cle_refusee: "Le service de questions est mal configuré côté serveur (clé API refusée). Les autres fonctions du site restent disponibles.",
-      saturation: "Le service de réponse est saturé pour l'instant — réessayez dans une minute.",
-      rate_limit: "Trop de questions pour l'instant — réessayez dans une minute, ou installez Torah MCP dans Claude pour continuer sans limite.",
-      api_5xx: "Le service de réponse est momentanément indisponible — réessayez.",
+      saturation: "Le service de réponse est saturé pour l'instant, réessayez dans une minute.",
+      rate_limit: "Trop de questions pour l'instant, réessayez dans une minute, ou installez Torah MCP dans Claude pour continuer sans limite.",
+      api_5xx: "Le service de réponse est momentanément indisponible, réessayez.",
     },
     locale: "fr-FR",
-    waitNote: "La réponse demande en général 30 à 90 secondes : Claude lit réellement les textes — Bible, Talmud, commentateurs — avant de répondre. C'est le principe de la maison ; la page reste ouverte, la réponse arrive.",
+    waitNote: "La réponse demande en général 30 à 90 secondes : Claude lit réellement les textes (Bible, Talmud, commentateurs), avant de répondre. C'est le principe de la maison ; la page reste ouverte, la réponse arrive.",
     btnWait: "Lecture en cours…",
     suiteLab: "Continuer sur cette réponse",
-    suitePh: "Une question de suite — elle s'appuiera sur la réponse ci-dessus.",
+    suitePh: "Une question de suite, elle s'appuiera sur la réponse ci-dessus.",
     suiteGo: "Demander la suite",
   },
   en: {
-    title: "Ask a question — Mamash IA",
-    desc: "Ask your question about the Torah, halakha or the Talmud, in English. The answer is read from the actual texts (Sefaria) and quoted exactly — nothing to install.",
+    title: "Ask a question · Mamash IA",
+    desc: "Ask your question about the Torah, halakha or the Talmud, in English. The answer is read from the actual texts (Sefaria) and quoted exactly, nothing to install.",
     ogDesc: "A question about the Torah, in English. The answer is read from the actual texts and quoted exactly.",
     navTools: "Tools",
     navDaf: "The daf",
     navInstall: "Install the MCP",
     h1: "Ask your <strong>question</strong>.",
-    lead: "In English, just as it comes to you. The answer is read from the actual texts — Bible, Talmud, commentators, via Sefaria — and quoted exactly, with its sources. Nothing to install.",
+    lead: "In English, just as it comes to you. The answer is read from the actual texts (Bible, Talmud, commentators, via Sefaria), and quoted exactly, with its sources. Nothing to install.",
     step1: "Choose your level",
     step1s: "we start here",
     ariaLevel: "Level",
@@ -172,56 +172,56 @@ const T: Record<Lang, Strings> = {
       { q: "What does Rashi say on the first verse of Genesis?", label: "What does Rashi say on Genesis 1:1?" },
     ],
     histLab: "Your questions",
-    histNote: "— kept on this device only",
+    histNote: " · kept on this device only",
     hclr: "Clear history",
     copy: "Copy the answer",
     share: "Share",
-    disc: "Answer written by Claude from the texts read on Sefaria, following the Mamash IA method — always check the sources cited. For a practical halakhic ruling, consult a rabbi.",
+    disc: "Answer written by Claude from the texts read on Sefaria, following the Mamash IA method, always check the sources cited. For a practical halakhic ruling, consult a rabbi.",
     again: "Ask another question",
     againInstall: "Install Torah MCP in Claude to go further",
     footHome: "Home",
     footPrivacy: "Privacy",
     help: {
-      debutant: "Everything in English, every term explained, the context first — for those starting out or who don't read Hebrew.",
+      debutant: "Everything in English, every term explained, the context first : for those starting out or who don't read Hebrew.",
       classique: "Bilingual: the source, then its translation; common terms taken as known.",
       avance: "Beit midrash: source in the original language, terminology without gloss, machloket and lomdus.",
     },
     steps: ["Reading the sources…", "Opening the texts on Sefaria…", "Reading the commentators…", "Writing the answer…"],
     niv: { debutant: "beginner", classique: "classic", avance: "advanced" },
     read: "Texts read:",
-    copied: "Copied — answer, sources and link.",
-    copyFail: "Copying isn't available here — select the text by hand.",
+    copied: "Copied, answer, sources and link.",
+    copyFail: "Copying isn't available here, select the text by hand.",
     shared: "Shared.",
     shareCancel: "Sharing cancelled.",
     readMore: "Read more: ",
     qLabel: "Question: ",
-    sig: "— Mamash IA, ",
-    err: "Error — please try again.",
-    errNet: "Network error — please try again.",
-    errGeneric: "The answering service is temporarily unavailable — please try again.",
+    sig: " · Mamash IA, ",
+    err: "Error, please try again.",
+    errNet: "Network error, please try again.",
+    errGeneric: "The answering service is temporarily unavailable, please try again.",
     errCause: {
-      credit_epuise: "The question service is paused: the server's quota is exhausted. The tools, the daf and the Claude installation remain available — try again later.",
+      credit_epuise: "The question service is paused: the server's quota is exhausted. The tools, the daf and the Claude installation remain available, try again later.",
       cle_refusee: "The question service is misconfigured on the server (API key refused). The rest of the site remains available.",
-      saturation: "The answering service is overloaded right now — try again in a minute.",
-      rate_limit: "Too many questions for now — try again in a minute, or install Torah MCP in Claude to continue without limits.",
-      api_5xx: "The answering service is temporarily unavailable — please try again.",
+      saturation: "The answering service is overloaded right now, try again in a minute.",
+      rate_limit: "Too many questions for now, try again in a minute, or install Torah MCP in Claude to continue without limits.",
+      api_5xx: "The answering service is temporarily unavailable, please try again.",
     },
     locale: "en-GB",
-    waitNote: "The answer usually takes 30 to 90 seconds: Claude actually reads the texts — Bible, Talmud, commentators — before answering. That is the whole point; keep the page open, the answer is coming.",
+    waitNote: "The answer usually takes 30 to 90 seconds: Claude actually reads the texts (Bible, Talmud, commentators), before answering. That is the whole point; keep the page open, the answer is coming.",
     btnWait: "Reading…",
     suiteLab: "Follow up on this answer",
-    suitePh: "A follow-up question — it will build on the answer above.",
+    suitePh: "A follow-up question, it will build on the answer above.",
     suiteGo: "Ask the follow-up",
   },
   he: {
-    title: "שאלה — Mamash IA",
-    desc: "שאלו על התורה, ההלכה או התלמוד, בעברית. התשובה נקראת מתוך הטקסטים האמיתיים (ספריא) ומצוטטת במדויק — בלי להתקין דבר.",
+    title: "שאלה · Mamash IA",
+    desc: "שאלו על התורה, ההלכה או התלמוד, בעברית. התשובה נקראת מתוך הטקסטים האמיתיים (ספריא) ומצוטטת במדויק, בלי להתקין דבר.",
     ogDesc: "שאלה על התורה, בעברית. התשובה נקראת מתוך הטקסטים האמיתיים ומצוטטת במדויק.",
     navTools: "כלים",
     navDaf: "הדף",
     navInstall: "התקנת ה-MCP",
     h1: "שאלו את <strong>השאלה</strong> שלכם.",
-    lead: "בעברית, כפי שהיא עולה בדעתכם. התשובה נקראת מתוך הטקסטים האמיתיים — תנ\"ך, תלמוד, מפרשים, דרך ספריא — ומצוטטת במדויק, עם המקורות. אין מה להתקין.",
+    lead: "בעברית, כפי שהיא עולה בדעתכם. התשובה נקראת מתוך הטקסטים האמיתיים (תנ\"ך, תלמוד, מפרשים, דרך ספריא) ומצוטטת במדויק, עם המקורות. אין מה להתקין.",
     step1: "בחרו את הרמה שלכם",
     step1s: "מתחילים כאן",
     ariaLevel: "רמה",
@@ -239,49 +239,49 @@ const T: Record<Lang, Strings> = {
       { q: "מה זה בעצם הלכה, ומאין היא באה?", label: "מה זה בעצם הלכה?" },
       { q: "מה אומרת התורה על השבת אבדה?", label: "מה אומרת התורה על השבת אבדה?" },
       { q: "למה פרשת השבוע נקראת כך, ועל מה היא מדברת?", label: "על מה פרשת השבוע?" },
-      { q: "מה ההבדל בין משנה לגמרא?", label: "משנה וגמרא — מה ההבדל?" },
+      { q: "מה ההבדל בין משנה לגמרא?", label: "משנה וגמרא, מה ההבדל?" },
       { q: "מה אומר רש\"י על בראשית א׳ א׳?", label: "מה אומר רש\"י על בראשית א׳ א׳?" },
     ],
     histLab: "השאלות שלכם",
-    histNote: "— נשמרות במכשיר הזה בלבד",
+    histNote: " · נשמרות במכשיר הזה בלבד",
     hclr: "מחיקת ההיסטוריה",
     copy: "העתקת התשובה",
     share: "שיתוף",
-    disc: "התשובה נכתבה על ידי Claude מתוך הטקסטים שנקראו בספריא, לפי שיטת Mamash IA — בדקו תמיד את המקורות המצוטטים. להכרעה הלכתית למעשה, שאלו רב.",
+    disc: "התשובה נכתבה על ידי Claude מתוך הטקסטים שנקראו בספריא, לפי שיטת Mamash IA · בדקו תמיד את המקורות המצוטטים. להכרעה הלכתית למעשה, שאלו רב.",
     again: "לשאול שאלה נוספת",
     againInstall: "התקינו את Torah MCP ב-Claude כדי להעמיק",
     footHome: "דף הבית",
     footPrivacy: "פרטיות",
     help: {
-      debutant: "הכול בעברית פשוטה, כל מונח מוסבר, ההקשר קודם — למי שבתחילת הדרך או אינו קורא ארמית.",
+      debutant: "הכול בעברית פשוטה, כל מונח מוסבר, ההקשר קודם : למי שבתחילת הדרך או אינו קורא ארמית.",
       classique: "המקור ואחריו ביאורו; המונחים המקובלים נחשבים ידועים.",
       avance: "בית מדרש: המקור בלשונו, מינוח ללא ביאור, מחלוקת ולמדנות.",
     },
     steps: ["קוראים את המקורות…", "פותחים את הטקסטים בספריא…", "קוראים את המפרשים…", "כותבים את התשובה…"],
     niv: { debutant: "מתחילים", classique: "קלאסי", avance: "מתקדם" },
     read: "טקסטים שנקראו:",
-    copied: "הועתק — תשובה, מקורות וקישור.",
-    copyFail: "אי אפשר להעתיק כאן — סמנו את הטקסט ידנית.",
+    copied: "הועתק, תשובה, מקורות וקישור.",
+    copyFail: "אי אפשר להעתיק כאן, סמנו את הטקסט ידנית.",
     shared: "שותף.",
     shareCancel: "השיתוף בוטל.",
     readMore: "להמשך קריאה: ",
     qLabel: "שאלה: ",
-    sig: "— Mamash IA, ",
-    err: "שגיאה — נסו שוב.",
-    errNet: "שגיאת רשת — נסו שוב.",
-    errGeneric: "שירות המענה אינו זמין כרגע — נסו שוב.",
+    sig: " · Mamash IA, ",
+    err: "שגיאה, נסו שוב.",
+    errNet: "שגיאת רשת, נסו שוב.",
+    errGeneric: "שירות המענה אינו זמין כרגע, נסו שוב.",
     errCause: {
-      credit_epuise: "שירות השאלות מושהה: מכסת השרת נוצלה במלואה. הכלים, הדף וההתקנה ב-Claude זמינים כרגיל — נסו שוב מאוחר יותר.",
+      credit_epuise: "שירות השאלות מושהה: מכסת השרת נוצלה במלואה. הכלים, הדף וההתקנה ב-Claude זמינים כרגיל, נסו שוב מאוחר יותר.",
       cle_refusee: "שירות השאלות אינו מוגדר כראוי בצד השרת (מפתח ה-API נדחה). שאר האתר זמין כרגיל.",
-      saturation: "שירות המענה עמוס כרגע — נסו שוב בעוד דקה.",
-      rate_limit: "יותר מדי שאלות כרגע — נסו שוב בעוד דקה, או התקינו את Torah MCP ב-Claude כדי להמשיך ללא הגבלה.",
-      api_5xx: "שירות המענה אינו זמין כרגע — נסו שוב.",
+      saturation: "שירות המענה עמוס כרגע, נסו שוב בעוד דקה.",
+      rate_limit: "יותר מדי שאלות כרגע, נסו שוב בעוד דקה, או התקינו את Torah MCP ב-Claude כדי להמשיך ללא הגבלה.",
+      api_5xx: "שירות המענה אינו זמין כרגע, נסו שוב.",
     },
     locale: "he-IL",
-    waitNote: "התשובה אורכת בדרך כלל 30 עד 90 שניות: קלוד קורא באמת את הטקסטים — תנ\"ך, תלמוד, מפרשים — לפני שהוא עונה. זה כל העניין; השאירו את העמוד פתוח, התשובה בדרך.",
+    waitNote: "התשובה אורכת בדרך כלל 30 עד 90 שניות: קלוד קורא באמת את הטקסטים (תנ\"ך, תלמוד, מפרשים) לפני שהוא עונה. זה כל העניין; השאירו את העמוד פתוח, התשובה בדרך.",
     btnWait: "קוראים…",
     suiteLab: "להמשיך על התשובה הזו",
-    suitePh: "שאלת המשך — היא תתבסס על התשובה שלמעלה.",
+    suitePh: "שאלת המשך, היא תתבסס על התשובה שלמעלה.",
     suiteGo: "לשאול את ההמשך",
   },
 };
@@ -399,7 +399,7 @@ ${altLinks(lang, PATH)}
   h1 { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(2.2rem,5vw,3.6rem); line-height:1.05; letter-spacing:-.02em; margin:3rem 0 .8rem; }
   h1 strong { font-weight:600; }
   p.muted { color:var(--muted); max-width:40rem; }
-  /* Étape 1 — le niveau, en évidence */
+  /* Étape 1, le niveau, en évidence */
   .step { display:flex; align-items:baseline; gap:1rem; margin:2.6rem 0 1rem; }
   .step .n { font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.6rem; }
   .step .t { font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.25rem; }
@@ -606,7 +606,7 @@ ${altLinks(lang, PATH)}
   function lien(entry) { return location.origin + S.prefix + "?q=" + encodeURIComponent(entry.q) + "&mode=" + encodeURIComponent(entry.mode); }
   function texte(entry) {
     var t = S.qLabel + entry.q + "\\n\\n" + plain(entry.reponse);
-    if (entry.sources && entry.sources.length) t += "\\n\\n" + S.read + " " + entry.sources.map(function (s) { return s.ref + " — " + s.url; }).join(" · ");
+    if (entry.sources && entry.sources.length) t += "\\n\\n" + S.read + " " + entry.sources.map(function (s) { return s.ref + ", " + s.url; }).join(" · ");
     return t + "\\n\\n" + S.sig + lien(entry);
   }
   function feedback(msg) { fb.textContent = msg; setTimeout(function () { if (fb.textContent === msg) fb.textContent = ""; }, 2500); }
@@ -622,7 +622,7 @@ ${altLinks(lang, PATH)}
     e.preventDefault(); if (!cur) return;
     var t = texte(cur);
     if (navigator.share) {
-      navigator.share({ title: "Mamash IA — " + cur.q, text: t }).then(function () { feedback(S.shared); }, function (er) { if (!er || er.name !== "AbortError") feedback(S.shareCancel); });
+      navigator.share({ title: "Mamash IA · " + cur.q, text: t }).then(function () { feedback(S.shared); }, function (er) { if (!er || er.name !== "AbortError") feedback(S.shareCancel); });
     } else {
       window.open("https://wa.me/?text=" + encodeURIComponent(t.length > 3500 ? t.slice(0, 3400) + "…\\n\\n" + S.readMore + lien(cur) : t), "_blank", "noopener");
     }

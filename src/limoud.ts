@@ -3,7 +3,7 @@
  * - zmanim + horaires de Chabbat (API Hebcal, libre)
  * - conversion de dates hébraïques (Hebcal)
  * - guematria (calcul local, plusieurs méthodes)
- * - nikoud (API publique du nakdan de Dicta — dicta.org.il)
+ * - nikoud (API publique du nakdan de Dicta, dicta.org.il)
  * - fiche source partageable (texte Sefaria mis en forme pour WhatsApp)
  */
 
@@ -57,7 +57,7 @@ function resolveLieu(args: any): string {
 }
 
 // ----------------------------------------------------------------------------
-// Guematria — calcul local
+// Guematria, calcul local
 // ----------------------------------------------------------------------------
 
 const HECHRECHI: Record<string, number> = {
@@ -133,7 +133,7 @@ function aplatir(t: unknown): string[] {
 
 
 // ----------------------------------------------------------------------------
-// Guide de paracha — façon AlHaTorah : étude structurée de la sidra
+// Guide de paracha, façon AlHaTorah : étude structurée de la sidra
 // ----------------------------------------------------------------------------
 
 export const PARACHA_GUIDE_MD = `# Guide d'étude de la paracha
@@ -152,33 +152,33 @@ guides d'AlHaTorah : nourri aux sources réelles, jamais de mémoire.
 
 ## Structure du guide
 
-1. **En un regard** — 3 phrases : où on en est dans le récit, ce qui arrive,
+1. **En un regard** · 3 phrases : où on en est dans le récit, ce qui arrive,
    pourquoi c'est charnière.
-2. **Fil de la paracha** — résumé aliya par aliya (7 aliyot + maftir), une à
+2. **Fil de la paracha**, résumé aliya par aliya (7 aliyot + maftir), une à
    deux phrases chacune, avec la référence exacte de chaque aliya.
-3. **Trois questions du texte** — des difficultés que le TEXTE pose (un mot
+3. **Trois questions du texte**, des difficultés que le TEXTE pose (un mot
    surprenant, une répétition, une contradiction apparente), chacune avec :
    la question, ce que disent DEUX commentateurs qui divergent (Rachi vs
    Ramban, Ibn Ezra vs Sforno…), cités depuis les textes chargés, et une
    invitation à trancher.
-4. **La haftara et son écho** — pourquoi CETTE haftara pour CETTE paracha :
+4. **La haftara et son écho**, pourquoi CETTE haftara pour CETTE paracha :
    le lien thématique, avec les références.
-5. **Pour la table de Chabbat** — 3 questions ouvertes sans réponse fournie,
+5. **Pour la table de Chabbat** · 3 questions ouvertes sans réponse fournie,
    graduées (enfant / ado / adulte).
-6. **Pour aller plus loin** — liens Sefaria de la paracha et des commentaires,
+6. **Pour aller plus loin**, liens Sefaria de la paracha et des commentaires,
    et lecture sur hebrewbooks.org selon les règles du skill.
 
 ## Règles
 
 - Jamais de citation de mémoire ; référence exacte pour chaque source.
 - Citer les versets en français : \`sefaria_text\` renvoie pour le Tanakh la
-  version française (Bible du Rabbinat) à côté de l'hébreu — l'utiliser de
+  version française (Bible du Rabbinat) à côté de l'hébreu, l'utiliser de
   préférence à l'anglais. Pour les commentateurs (hébreu seul), traduire en
   français en le signalant comme ta traduction.
 - Signaler les divergences plutôt que les lisser.
 - Translittération française séfarade partout (Chabbat, paracha, mitsva,
-  Rachi, Ramban — jamais sh/tz/os) ; table complète dans \`mode_etude\`.
-- Adapter la profondeur au mode d'étude actif (débutant / classique / avancé —
+  Rachi, Ramban : jamais sh/tz/os) ; table complète dans \`mode_etude\`.
+- Adapter la profondeur au mode d'étude actif (débutant / classique / avancé
   voir \`mode_etude\`) ou à ce que précise le lecteur.
 - Terminer par : Chabbat chalom.`;
 
@@ -190,7 +190,7 @@ const LIEU_PROPS = {
   geonameid: { type: "number", description: "Identifiant GeoNames (geonames.org)." },
   latitude: { type: "number" },
   longitude: { type: "number" },
-  tzid: { type: "string", description: "Fuseau IANA (ex : Europe/Paris) — requis avec latitude/longitude." },
+  tzid: { type: "string", description: "Fuseau IANA (ex : Europe/Paris) : requis avec latitude/longitude." },
 };
 
 export const limoudTools: ToolDefinition[] = [
@@ -261,11 +261,11 @@ export const limoudTools: ToolDefinition[] = [
   },
   {
     name: "nikoud",
-    title: "Nikoud (vocalisation) — Dicta",
-    annotations: { title: "Nikoud (vocalisation) — Dicta", readOnlyHint: true },
+    title: "Nikoud (vocalisation) · Dicta",
+    annotations: { title: "Nikoud (vocalisation) · Dicta", readOnlyHint: true },
     description:
       "Vocalise un texte hébreu non ponctué via le nakdan de Dicta (dicta.org.il, outil " +
-      "académique). Genres : premodern (textes rabbiniques — défaut), modern, poetry. " +
+      "académique). Genres : premodern (textes rabbiniques, défaut), modern, poetry. " +
       "Renvoie la meilleure vocalisation et les variantes par mot ambigu.",
     inputSchema: {
       type: "object",
@@ -278,8 +278,8 @@ export const limoudTools: ToolDefinition[] = [
   },
   {
     name: "mot_chabbat",
-    title: "Le mot de Chabbat — à partager",
-    annotations: { title: "Le mot de Chabbat — à partager", readOnlyHint: true },
+    title: "Le mot de Chabbat, à partager",
+    annotations: { title: "Le mot de Chabbat, à partager", readOnlyHint: true },
     description:
       "Compose le petit mot de Chabbat de la semaine, prêt à envoyer sur WhatsApp : paracha de la " +
       "semaine (nom, hébreu, référence), verset d'ouverture cité en français depuis la Bible du " +
@@ -301,7 +301,7 @@ export const limoudTools: ToolDefinition[] = [
     description:
       "Compose une fiche source prête à partager (WhatsApp/message) pour une référence : " +
       "texte hébreu, traduction, référence exacte et liens d'étude. Le texte est réellement " +
-      "lu via Sefaria — jamais de citation de mémoire.",
+      "lu via Sefaria, jamais de citation de mémoire.",
     inputSchema: {
       type: "object",
       properties: {
@@ -323,10 +323,10 @@ export const limoudHandlers: Record<string, ToolHandler> = {
       const haf = items.find((i) => i.title?.en === "Haftarah");
       semaine =
         `\n\n## Cette semaine\n\n` +
-        `- Paracha : ${par?.displayValue?.en ?? "?"} (${par?.displayValue?.he ?? ""}) — réf. ${par?.ref ?? "?"}\n` +
-        `- Haftara : ${haf?.displayValue?.en ?? "?"} — réf. ${haf?.ref ?? "?"}`;
+        `- Paracha : ${par?.displayValue?.en ?? "?"} (${par?.displayValue?.he ?? ""}), réf. ${par?.ref ?? "?"}\n` +
+        `- Haftara : ${haf?.displayValue?.en ?? "?"}, réf. ${haf?.ref ?? "?"}`;
     } catch {
-      semaine = "\n\n(Calendrier momentanément indisponible — demander la paracha à étudier.)";
+      semaine = "\n\n(Calendrier momentanément indisponible, demander la paracha à étudier.)";
     }
     return PARACHA_GUIDE_MD + semaine;
   },
@@ -430,7 +430,7 @@ export const limoudHandlers: Record<string, ToolHandler> = {
     // 1. La paracha de la semaine (calendrier de la diaspora par défaut)
     const cal = await getJson(`${env.SEFARIA_API_URL}/calendars`, "Sefaria calendars", 1800);
     const par = (cal.calendar_items || []).find((i: any) => i.title?.en === "Parashat Hashavua");
-    if (!par?.ref) throw new Error("Paracha de la semaine introuvable — réessayer dans un instant.");
+    if (!par?.ref) throw new Error("Paracha de la semaine introuvable, réessayer dans un instant.");
     const nom = par.displayValue?.en || "";
     const nomHe = par.displayValue?.he || "";
     const ref = String(par.ref);
@@ -471,7 +471,7 @@ export const limoudHandlers: Record<string, ToolHandler> = {
       allumage = heure(bougies?.date || "");
       havdala = heure(sortie?.date || "");
       if (allumage) {
-        horaires = `📍 *${lieuTitre}* — allumage ${allumage}` + (havdala ? ` · sortie ${havdala}` : "");
+        horaires = `📍 *${lieuTitre}*, allumage ${allumage}` + (havdala ? ` · sortie ${havdala}` : "");
       }
     } catch {
       // Sans ville valable, le mot part sans horaires.
@@ -480,13 +480,13 @@ export const limoudHandlers: Record<string, ToolHandler> = {
     const lignes = [
       `🕯️ *Chabbat chalom !*`,
       ``,
-      `📖 Cette semaine : *${nom}*${nomHe ? ` · ${nomHe}` : ""} — ${refFr(ref)}.`,
+      `📖 Cette semaine : *${nom}*${nomHe ? ` · ${nomHe}` : ""} · ${refFr(ref)}.`,
       ...(verset ? [``, `✨ « ${verset} »`, `(${refFr(versetRef)}, Bible du Rabbinat)`] : []),
       ...(horaires ? ["", horaires] : []),
       ``,
       `📚 Étudier la paracha : ${lien}`,
       ``,
-      `— mamash-ia.com`,
+      ` · mamash-ia.com`,
     ];
     const mot = lignes.filter((x, i, a) => !(x === "" && a[i - 1] === "")).join("\n");
 
@@ -518,7 +518,7 @@ export const limoudHandlers: Record<string, ToolHandler> = {
     const heSegs = aplatir(he?.text).map(stripHtml).filter(Boolean).slice(0, maxSeg);
     const enSegs = aplatir(en?.text).map(stripHtml).filter(Boolean).slice(0, maxSeg);
     if (heSegs.length === 0 && enSegs.length === 0) {
-      throw new Error(`Texte introuvable pour "${ref}" — vérifier la référence avec sefaria_search.`);
+      throw new Error(`Texte introuvable pour "${ref}", vérifier la référence avec sefaria_search.`);
     }
     const lien = `https://www.sefaria.org/${encoded}`;
     const lignes = [
@@ -532,7 +532,7 @@ export const limoudHandlers: Record<string, ToolHandler> = {
     return {
       fiche: lignes.join("\n"),
       licence_he: he?.license,
-      traduction: en ? `${en.actualLanguage || en.language} — ${en.versionTitle}` : "",
+      traduction: en ? `${en.actualLanguage || en.language} · ${en.versionTitle}` : "",
       licence_traduction: en?.license,
       note: "Prêt à coller dans WhatsApp (le *gras* et l'_italique_ y sont interprétés). Texte lu depuis Sefaria.",
     };

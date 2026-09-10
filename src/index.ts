@@ -1,5 +1,5 @@
 /**
- * torah-mcp — Cloudflare Worker MCP personnel.
+ * torah-mcp. Cloudflare Worker MCP personnel.
  *
  * Sefaria (textes, liens, recherche, calendriers) + skill hebrewbooks-source.
  * Transport MCP HTTP (JSON-RPC), même protocole que bensaid-mcp.
@@ -7,7 +7,7 @@
  * Auth : optionnelle. Sans secret BEARER_TOKENS, le serveur est public
  * (il ne proxifie que des API publiques, aucune clé côté serveur).
  * Avec BEARER_TOKENS (tokens séparés par des virgules) : accès sur
- * invitation — header `Authorization: Bearer <token>` ou URL /<token>/mcp.
+ * invitation, header `Authorization: Bearer <token>` ou URL /<token>/mcp.
  */
 
 import { sefariaTools, sefariaHandlers } from "./sefaria";
@@ -44,7 +44,7 @@ const ALLOWED_ORIGINS = new Set([
 ]);
 
 // ----------------------------------------------------------------------------
-// Garde-fou anti-abus — limiteur par IP, par isolate (best effort : chaque
+// Garde-fou anti-abus, limiteur par IP, par isolate (best effort : chaque
 // isolate a son compteur, mais un scraper mono-POP est efficacement freiné).
 // Le cache edge sur Sefaria fait le reste.
 // ----------------------------------------------------------------------------
@@ -137,16 +137,16 @@ const SERVER_INSTRUCTIONS = `${HEBREWBOOKS_INSTRUCTIONS}
 # Limoud au quotidien
 
 - \`havrouta_mode\` : quand l'utilisateur veut ÉTUDIER un texte (pas juste une
-  réponse), charger ce mode — Claude questionne et fait défendre les positions.
+  réponse), charger ce mode. Claude questionne et fait défendre les positions.
 - \`zmanim\` (zmanim du jour, horaires de Chabbat), \`date_hebraique\`
   (conversion civile/hébraïque) : toujours utiliser ces tools plutôt que la
   mémoire pour tout horaire ou date.
 - \`gematria\` (calcul local exact), \`nikoud\` (vocalisation Dicta),
   \`fiche_source\` (fiche partageable WhatsApp d'une référence lue via Sefaria),
-  \`mot_chabbat\` (le petit mot de Chabbat de la semaine, prêt pour WhatsApp —
+  \`mot_chabbat\` (le petit mot de Chabbat de la semaine, prêt pour WhatsApp
   paracha, verset en français, horaires d'allumage ; à proposer chaque fin de
   semaine, personnalisable),
-  \`hebrewbooks_search\` (recherche PLEIN TEXTE dans ~50 000 seforim océrisés : renvoie le passage, sa page et le fac-similé — pour localiser un texte, pas pour le citer).`;
+  \`hebrewbooks_search\` (recherche PLEIN TEXTE dans ~50 000 seforim océrisés : renvoie le passage, sa page et le fac-similé : pour localiser un texte, pas pour le citer).`;
 
 async function handleRpc(req: JsonRpcRequest, env: Env) {
   const id = req.id ?? null;
@@ -291,7 +291,7 @@ export default {
       const debut = Date.now();
       const r = await repondreQuestion(env, allTools, allHandlers as any, body, ip);
       if (r.meta) {
-        // Journal statistique privé (D1), hors du chemin de réponse — jamais l'IP.
+        // Journal statistique privé (D1), hors du chemin de réponse : jamais l'IP.
         ctx.waitUntil(journaliser(env, {
           meta: r.meta, status: r.status, body: r.body, duree_ms: Date.now() - debut,
           modele: env.ANTHROPIC_MODEL || "claude-sonnet-5",
@@ -314,7 +314,7 @@ export default {
     // GIF de Chabbat : sélection servie par le Worker (index borné).
     if (request.method === "GET" && url.pathname === "/api/gif") return servirGif(request);
 
-    // Compteur des feuilles de miel — côté serveur (les bloqueurs de pistage
+    // Compteur des feuilles de miel, côté serveur (les bloqueurs de pistage
     // rendent GA4 aveugle). Aucune donnée personnelle : jamais le prénom.
     if (request.method === "POST" && url.pathname === "/api/miel-compteur") {
       let corps: any = {};
@@ -396,7 +396,7 @@ export default {
       if (!toolName) return jsonResponse({ error: "Endpoint inconnu" }, 404);
       const ip = request.headers.get("CF-Connecting-IP") || "unknown";
       if (isRateLimited(ip)) {
-        return jsonResponse({ error: "Trop de requêtes — réessayez dans un instant." }, 429, { "Retry-After": "30" });
+        return jsonResponse({ error: "Trop de requêtes, réessayez dans un instant." }, 429, { "Retry-After": "30" });
       }
       let args: Record<string, unknown> = {};
       if (request.method === "POST") {

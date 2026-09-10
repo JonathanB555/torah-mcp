@@ -1,7 +1,7 @@
 /**
  * Identité Mamash IA : favicon (portrait flat du Rabbi, pastille jaune sur
  * bleu) sur /icon.png + /favicon.ico, carte de partage 1200x630 (sticker
- * MAMASH IA !) sur /og.png — servie en image/jpeg.
+ * MAMASH IA !) sur /og.png, servie en image/jpeg.
  * Générés via Nano Banana Pro le 04.09.2026 ; sources dans le scratchpad
  * de session (logo-ia/), regénérables au besoin.
  */

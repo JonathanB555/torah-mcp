@@ -1,14 +1,14 @@
 /**
- * Daf viewer — MCP App (spec ext-apps 2026-01-26).
+ * Daf viewer. MCP App (spec ext-apps 2026-01-26).
  *
  * Le tool `daf_viewer` charge une amoud de Guemara (par défaut : le daf yomi
  * du jour) avec Rachi et Tossafot, et renvoie un structuredContent que la
  * View HTML (ressource ui://) met en page façon Vilna : texte au centre,
  * commentateurs dépliables, traduction au clic. Les hôtes sans MCP Apps
- * reçoivent un résumé texte — dégradation gracieuse.
+ * reçoivent un résumé texte, dégradation gracieuse.
  *
  * La View est autonome (CSP restrictive par défaut : aucune ressource
- * externe) — toutes les données arrivent via ui/notifications/tool-result.
+ * externe), toutes les données arrivent via ui/notifications/tool-result.
  */
 
 import type { Env, ToolDefinition, ToolHandler } from "./sefaria";
@@ -81,7 +81,7 @@ export const dafViewerTools: ToolDefinition[] = [
         langue: {
           type: "string",
           enum: ["fr", "en"],
-          description: 'Langue de traduction souhaitée : "fr" (défaut — français si Sefaria en a une, sinon anglais) ou "en" (anglais en priorité).',
+          description: 'Langue de traduction souhaitée : "fr" (défaut : français si Sefaria en a une, sinon anglais) ou "en" (anglais en priorité).',
         },
       },
       required: [],
@@ -94,7 +94,7 @@ export const dafViewerTools: ToolDefinition[] = [
 ];
 
 /**
- * Renvoie un CallToolResult complet (content + structuredContent) — le
+ * Renvoie un CallToolResult complet (content + structuredContent), le
  * routeur le détecte via la clé __mcpResult.
  */
 export const dafViewerHandlers: Record<string, ToolHandler> = {
@@ -103,7 +103,7 @@ export const dafViewerHandlers: Record<string, ToolHandler> = {
     if (!ref) {
       const cal = await sefariaJson(env, "/calendars");
       const daf = (cal.calendar_items || []).find((i: any) => i.title?.en === "Daf Yomi");
-      if (!daf?.ref) throw new Error("Daf yomi du jour introuvable — préciser une référence.");
+      if (!daf?.ref) throw new Error("Daf yomi du jour introuvable, préciser une référence.");
       ref = daf.ref;
     }
 
@@ -118,7 +118,7 @@ export const dafViewerHandlers: Record<string, ToolHandler> = {
     const he = flatten(heV?.text).map(stripHtml);
     const en = flatten(trV?.text).map(stripHtml);
     if (he.length === 0) {
-      throw new Error(`Texte introuvable pour "${ref}" — vérifier la référence (ex : Berakhot 2a).`);
+      throw new Error(`Texte introuvable pour "${ref}", vérifier la référence (ex : Berakhot 2a).`);
     }
 
     const canonical = String(main.ref || ref);
@@ -140,7 +140,7 @@ export const dafViewerHandlers: Record<string, ToolHandler> = {
     };
 
     const resume =
-      `${canonical} — ${he.length} segments affichés dans le visualiseur` +
+      `${canonical} · ${he.length} segments affichés dans le visualiseur` +
       ` (Rachi : ${rashi.length}, Tossafot : ${tosafot.length}).` +
       ` Étudier en ligne : https://www.sefaria.org/${encoded}`;
 
@@ -153,7 +153,7 @@ export const dafViewerHandlers: Record<string, ToolHandler> = {
 };
 
 // ----------------------------------------------------------------------------
-// La View — page de Vilna autonome
+// La View, page de Vilna autonome
 // ----------------------------------------------------------------------------
 
 type Strings = {
@@ -165,7 +165,7 @@ type Strings = {
 /** Chaînes de l'interface. Le FR est la référence (identique au visualiseur historique). */
 const T: Record<Lang, Strings> = {
   fr: {
-    title: "Le daf du jour — Mamash IA",
+    title: "Le daf du jour · Mamash IA",
     description: "Visualiseur de daf façon Vilna : Guemara au centre, Rachi et Tossafot dépliables, traduction au clic.",
     open: "Ouvrir",
     today: "Daf du jour",
@@ -173,15 +173,15 @@ const T: Record<Lang, Strings> = {
     hideAll: "Masquer les traductions",
     back: "← mamash-ia.com",
     loading: "טוען את הדף…",
-    error: "Erreur de chargement — réessayez.",
-    hint: "לחיצה על קטע — תרגום. Un clic sur un segment affiche sa traduction.",
+    error: "Erreur de chargement, réessayez.",
+    hint: "לחיצה על קטע, תרגום. Un clic sur un segment affiche sa traduction.",
     rashi: "רש״י",
     tosafot: "תוספות",
     trFr: "Traduction française (Bible du Rabbinat).",
     trEn: "Traduction anglaise (pas de version française de ce texte sur Sefaria).",
   },
   en: {
-    title: "The daily daf — Mamash IA",
+    title: "The daily daf · Mamash IA",
     description: "Vilna-style daf viewer: Gemara in the centre, Rashi and Tosafot expandable, translation on click.",
     open: "Open",
     today: "Today's daf",
@@ -189,15 +189,15 @@ const T: Record<Lang, Strings> = {
     hideAll: "Hide translations",
     back: "← mamash-ia.com",
     loading: "Loading the daf…",
-    error: "Loading error — please try again.",
-    hint: "לחיצה על קטע — תרגום. Click a segment to show its translation.",
+    error: "Loading error, please try again.",
+    hint: "לחיצה על קטע, תרגום. Click a segment to show its translation.",
     rashi: "Rashi",
     tosafot: "Tosafot",
     trFr: "French translation (Bible du Rabbinat).",
     trEn: "English translation.",
   },
   he: {
-    title: "הדף היומי — Mamash IA",
+    title: "הדף היומי · Mamash IA",
     description: "צפייה בדף גמרא בפריסת וילנא: הגמרא במרכז, רש״י ותוספות נפתחים, תרגום בלחיצה.",
     open: "פתיחה",
     today: "הדף היומי",
@@ -205,7 +205,7 @@ const T: Record<Lang, Strings> = {
     hideAll: "הסתר תרגומים",
     back: "mamash-ia.com →",
     loading: "טוען את הדף…",
-    error: "שגיאה בטעינה — נסו שוב.",
+    error: "שגיאה בטעינה, נסו שוב.",
     hint: "לחיצה על קטע מציגה את תרגומו.",
     rashi: "רש״י",
     tosafot: "תוספות",
@@ -401,7 +401,7 @@ ${altLinks(lang, "/daf")}
   });
   var standalone = (window.parent === window);
   if (standalone) {
-    // Mesure d'audience uniquement sur le site web — jamais dans un hôte MCP.
+    // Mesure d'audience uniquement sur le site web, jamais dans un hôte MCP.
     var ga = document.createElement("script");
     ga.async = true;
     ga.src = "https://www.googletagmanager.com/gtag/js?id=G-NG6P5HPH9K";
@@ -410,7 +410,7 @@ ${altLinks(lang, "/daf")}
     function gtag(){ dataLayer.push(arguments); }
     gtag("js", new Date());
     gtag("config", "G-NG6P5HPH9K");
-    // Mode web : la page est servie sur mamash-ia.com/daf — on interroge l'API.
+    // Mode web : la page est servie sur mamash-ia.com/daf, on interroge l'API.
     document.getElementById("topbar").style.display = "block";
     if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) applyTheme("dark");
     var refQs = function (ref) { return ref ? "?ref=" + encodeURIComponent(ref) : ""; };
@@ -430,7 +430,7 @@ ${altLinks(lang, "/daf")}
           if (d.error) { l.textContent = d.error; return; }
           render({ structuredContent: d });
           var seg = (d.segments || []).length;
-          document.title = d.ref + " — Mamash IA";
+          document.title = d.ref + " · Mamash IA";
           if (history.replaceState) history.replaceState(null, "", PAGE + refQs(ref));
         })
         .catch(function () { l.textContent = S.error; });
@@ -465,5 +465,5 @@ ${retourTab(lang, "/daf")}
 </html>`;
 }
 
-/** Compatibilité : la ressource MCP App et /daf (FR) — identique au visualiseur historique. */
+/** Compatibilité : la ressource MCP App et /daf (FR), identique au visualiseur historique. */
 export const DAF_VIEWER_HTML = dafViewerHtml("fr");

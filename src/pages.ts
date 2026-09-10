@@ -53,47 +53,47 @@ const STYLE = `
 
 
 // ----------------------------------------------------------------------------
-// /daily — le limoud du jour
+// /daily, le limoud du jour
 // ----------------------------------------------------------------------------
 
 const DAILY_T = {
   fr: {
-    title: "Le limoud du jour — Mamash IA",
+    title: "Le limoud du jour · Mamash IA",
     desc: "Paracha, daf yomi, Rambam quotidien et tous les cycles d'étude du jour, avec liens directs vers les textes.",
-    ogTitle: "Mamash IA — la discipline des sources pour Claude",
+    ogTitle: "Mamash IA · la discipline des sources pour Claude",
     ogDesc: "Claude cite la Torah depuis les textes, plus jamais de mémoire. Méthode, havrouta, guide de paracha, daf interactif, zmanim, guematria. Gratuit.",
     h1: "Le limoud du jour",
     chapeau: (date: string, home: string) =>
-      `${date} — cycles d'étude du jour, textes servis par <a href="https://www.sefaria.org">Sefaria</a>. <a href="${home}">Qu'est-ce que Mamash IA ?</a>`,
-    unavailable: "Calendriers momentanément indisponibles — réessayez dans un instant.",
+      `${date}, cycles d'étude du jour, textes servis par <a href="https://www.sefaria.org">Sefaria</a>. <a href="${home}">Qu'est-ce que Mamash IA ?</a>`,
+    unavailable: "Calendriers momentanément indisponibles, réessayez dans un instant.",
     h2: "Étudier avec Claude",
     howto: "Ajoutez Torah MCP à claude.ai (Settings → Connectors → Add custom connector) et demandez « le daf du jour en havrouta » :",
     home: "Accueil",
     privacy: "Confidentialité",
   },
   en: {
-    title: "Today's learning — Mamash IA",
+    title: "Today's learning · Mamash IA",
     desc: "Parashah, daf yomi, daily Rambam and every study cycle of the day, with direct links to the texts.",
-    ogTitle: "Mamash IA — the discipline of sources for Claude",
+    ogTitle: "Mamash IA · the discipline of sources for Claude",
     ogDesc: "Claude quotes the Torah from the texts, never from memory. Method, chavruta, parashah guide, interactive daf, zmanim, gematria. Free.",
     h1: "Today's learning",
     chapeau: (date: string, home: string) =>
-      `${date} — today's study cycles, texts served by <a href="https://www.sefaria.org">Sefaria</a>. <a href="${home}">What is Mamash IA?</a>`,
-    unavailable: "Calendars temporarily unavailable — try again in a moment.",
+      `${date}, today's study cycles, texts served by <a href="https://www.sefaria.org">Sefaria</a>. <a href="${home}">What is Mamash IA?</a>`,
+    unavailable: "Calendars temporarily unavailable, try again in a moment.",
     h2: "Study with Claude",
     howto: "Add Torah MCP to claude.ai (Settings → Connectors → Add custom connector) and ask for “today's daf, in chavruta”:",
     home: "Home",
     privacy: "Privacy",
   },
   he: {
-    title: "הלימוד היומי — Mamash IA",
+    title: "הלימוד היומי · Mamash IA",
     desc: "פרשה, דף יומי, רמב\"ם יומי וכל מחזורי הלימוד של היום, עם קישורים ישירים לטקסטים.",
-    ogTitle: "Mamash IA — משמעת המקורות ל-Claude",
+    ogTitle: "Mamash IA · משמעת המקורות ל-Claude",
     ogDesc: "Claude מצטט את התורה מתוך הטקסטים, לעולם לא מהזיכרון. שיטה, חברותא, מדריך פרשה, דף אינטראקטיבי, זמנים, גימטריה. חינם.",
     h1: "הלימוד היומי",
     chapeau: (date: string, home: string) =>
-      `${date} — מחזורי הלימוד של היום, הטקסטים מוגשים דרך <a href="https://www.sefaria.org">ספריא</a>. <a href="${home}">מה זה Mamash IA?</a>`,
-    unavailable: "הלוחות אינם זמינים כרגע — נסו שוב בעוד רגע.",
+      `${date}, מחזורי הלימוד של היום, הטקסטים מוגשים דרך <a href="https://www.sefaria.org">ספריא</a>. <a href="${home}">מה זה Mamash IA?</a>`,
+    unavailable: "הלוחות אינם זמינים כרגע, נסו שוב בעוד רגע.",
     h2: "ללמוד עם Claude",
     howto: "הוסיפו את Torah MCP ל-claude.ai (Settings → Connectors → Add custom connector) ובקשו «את הדף היומי בחברותא»:",
     home: "דף הבית",
@@ -122,10 +122,10 @@ function dailyCard(i: any, lang: Lang): string {
     const title = i.title?.he || titleEn;
     const val = i.displayValue?.he || valEn;
     const en = i.displayValue?.he && valEn ? ` <span class="en" dir="ltr">· ${valEn}</span>` : "";
-    return `<div class="card"><span class="item-title">${title}</span> — <a href="${lien}">${val}</a>${en}</div>`;
+    return `<div class="card"><span class="item-title">${title}</span> · <a href="${lien}">${val}</a>${en}</div>`;
   }
   const he = i.displayValue?.he ? ` <span class="he" dir="rtl">· ${i.displayValue.he}</span>` : "";
-  return `<div class="card"><span class="item-title">${titleEn}</span> — <a href="${lien}">${valEn}</a>${he}</div>`;
+  return `<div class="card"><span class="item-title">${titleEn}</span> · <a href="${lien}">${valEn}</a>${he}</div>`;
 }
 
 export async function renderDaily(env: Env, lang: Lang = "fr"): Promise<string> {
@@ -184,7 +184,7 @@ ${retourTab(lang, path)}
 }
 
 // ----------------------------------------------------------------------------
-// /outils — les fonctions du MCP utilisables directement sur le site
+// /outils, les fonctions du MCP utilisables directement sur le site
 // ----------------------------------------------------------------------------
 
 type OutilsBooks = { group: string; books: [string, string][] }[];
@@ -225,57 +225,57 @@ const OUTILS_CITIES: Record<Lang, [string, string][]> = {
 const OUTILS_JS = {
   fr: {
     noms: { alotHaShachar: "Alot hachahar", sunrise: "Netz (lever)", sofZmanShma: "Sof zman Chema", sofZmanTfilla: "Sof zman tefila", chatzot: "Hatsot", minchaGedola: "Minha guedola", minchaKetana: "Minha ketana", plagHaMincha: "Plag haminha", sunset: "Chkia (coucher)", tzeit7083deg: "Tset hakokhavim" },
-    expl: { alotHaShachar: "l'aube — la journée halakhique commence", sunrise: "lever du soleil — début idéal de la prière du matin", sofZmanShma: "heure limite pour réciter le Chema du matin", sofZmanTfilla: "heure limite pour la prière du matin (Amida)", chatzot: "midi solaire", minchaGedola: "à partir de là, on peut prier Minha (l'après-midi)", minchaKetana: "moment préférable pour Minha", plagHaMincha: "dernière partie de l'après-midi — certains commencent Chabbat à partir de là", sunset: "coucher du soleil — fin de la journée", tzeit7083deg: "sortie des étoiles — la nuit, fin de Chabbat" },
-    legend: "<p style='margin-top:.6rem;font-size:.85rem;color:#6d675c'><strong>Hechrechi</strong> : la valeur classique (<bdi>א</bdi>=1 … <bdi>י</bdi>=10, <bdi>כ</bdi>=20 … <bdi>ק</bdi>=100 … <bdi>ת</bdi>=400) — c'est celle qu'on cite d'ordinaire. <strong>Gadol</strong> : les lettres finales (<bdi>ך ם ן ף ץ</bdi>) valent 500 à 900. <strong>Katan</strong> : on réduit chaque lettre à un chiffre (<bdi>י</bdi>=1, <bdi>כ</bdi>=2…). <strong>Siduri</strong> : le rang de la lettre dans l'alphabet (<bdi>א</bdi>=1 … <bdi>ת</bdi>=22). <strong>Atbash</strong> : chaque lettre est remplacée par sa symétrique (<bdi>א↔ת</bdi>, <bdi>ב↔ש</bdi>…) puis comptée.</p>",
+    expl: { alotHaShachar: "l'aube, la journée halakhique commence", sunrise: "lever du soleil, début idéal de la prière du matin", sofZmanShma: "heure limite pour réciter le Chema du matin", sofZmanTfilla: "heure limite pour la prière du matin (Amida)", chatzot: "midi solaire", minchaGedola: "à partir de là, on peut prier Minha (l'après-midi)", minchaKetana: "moment préférable pour Minha", plagHaMincha: "dernière partie de l'après-midi, certains commencent Chabbat à partir de là", sunset: "coucher du soleil, fin de la journée", tzeit7083deg: "sortie des étoiles, la nuit, fin de Chabbat" },
+    legend: "<p style='margin-top:.6rem;font-size:.85rem;color:#6d675c'><strong>Hechrechi</strong> : la valeur classique (<bdi>א</bdi>=1 … <bdi>י</bdi>=10, <bdi>כ</bdi>=20 … <bdi>ק</bdi>=100 … <bdi>ת</bdi>=400), c'est celle qu'on cite d'ordinaire. <strong>Gadol</strong> : les lettres finales (<bdi>ך ם ן ף ץ</bdi>) valent 500 à 900. <strong>Katan</strong> : on réduit chaque lettre à un chiffre (<bdi>י</bdi>=1, <bdi>כ</bdi>=2…). <strong>Siduri</strong> : le rang de la lettre dans l'alphabet (<bdi>א</bdi>=1 … <bdi>ת</bdi>=22). <strong>Atbash</strong> : chaque lettre est remplacée par sa symétrique (<bdi>א↔ת</bdi>, <bdi>ב↔ש</bdi>…) puis comptée.</p>",
     th: ["Mot", "Hechrechi", "Gadol", "Katan", "Siduri", "Atbash"],
     total: "Total",
     credit: "",
     copy: "Copier pour WhatsApp",
     copied: "Copié !",
-    help: { debutant: "Chaque outil est expliqué, avec un clavier hébreu à l'écran et les livres en français.", classique: "Les outils, sans explications — pour qui connaît déjà." },
+    help: { debutant: "Chaque outil est expliqué, avec un clavier hébreu à l'écran et les livres en français.", classique: "Les outils, sans explications : pour qui connaît déjà." },
     space: "espace",
     page: "page",
     chapter: "chapitre",
-    error: "Erreur — réessayez.",
+    error: "Erreur, réessayez.",
   },
   en: {
     noms: { alotHaShachar: "Alot hashachar", sunrise: "Netz (sunrise)", sofZmanShma: "Sof zman Shema", sofZmanTfilla: "Sof zman tefillah", chatzot: "Chatzot", minchaGedola: "Mincha gedolah", minchaKetana: "Mincha ketanah", plagHaMincha: "Plag hamincha", sunset: "Shkiah (sunset)", tzeit7083deg: "Tzeit hakochavim" },
-    expl: { alotHaShachar: "dawn — the halakhic day begins", sunrise: "sunrise — the ideal start of the morning prayer", sofZmanShma: "latest time to recite the morning Shema", sofZmanTfilla: "latest time for the morning prayer (Amidah)", chatzot: "solar noon", minchaGedola: "from this point on, one may pray Mincha (the afternoon prayer)", minchaKetana: "the preferable time for Mincha", plagHaMincha: "the last part of the afternoon — some begin Shabbat from this point", sunset: "sunset — the day ends", tzeit7083deg: "the stars come out — nightfall, the end of Shabbat" },
-    legend: "<p style='margin-top:.6rem;font-size:.85rem;color:#6d675c'><strong>Hechrechi</strong>: the standard value (<bdi>א</bdi>=1 … <bdi>י</bdi>=10, <bdi>כ</bdi>=20 … <bdi>ק</bdi>=100 … <bdi>ת</bdi>=400) — the one usually quoted. <strong>Gadol</strong>: the final letters (<bdi>ך ם ן ף ץ</bdi>) count 500 to 900. <strong>Katan</strong>: each letter is reduced to a single digit (<bdi>י</bdi>=1, <bdi>כ</bdi>=2…). <strong>Siduri</strong>: the letter's rank in the alphabet (<bdi>א</bdi>=1 … <bdi>ת</bdi>=22). <strong>Atbash</strong>: each letter is swapped for its mirror image (<bdi>א↔ת</bdi>, <bdi>ב↔ש</bdi>…) and then counted.</p>",
+    expl: { alotHaShachar: "dawn, the halakhic day begins", sunrise: "sunrise, the ideal start of the morning prayer", sofZmanShma: "latest time to recite the morning Shema", sofZmanTfilla: "latest time for the morning prayer (Amidah)", chatzot: "solar noon", minchaGedola: "from this point on, one may pray Mincha (the afternoon prayer)", minchaKetana: "the preferable time for Mincha", plagHaMincha: "the last part of the afternoon, some begin Shabbat from this point", sunset: "sunset, the day ends", tzeit7083deg: "the stars come out, nightfall, the end of Shabbat" },
+    legend: "<p style='margin-top:.6rem;font-size:.85rem;color:#6d675c'><strong>Hechrechi</strong>: the standard value (<bdi>א</bdi>=1 … <bdi>י</bdi>=10, <bdi>כ</bdi>=20 … <bdi>ק</bdi>=100 … <bdi>ת</bdi>=400), the one usually quoted. <strong>Gadol</strong>: the final letters (<bdi>ך ם ן ף ץ</bdi>) count 500 to 900. <strong>Katan</strong>: each letter is reduced to a single digit (<bdi>י</bdi>=1, <bdi>כ</bdi>=2…). <strong>Siduri</strong>: the letter's rank in the alphabet (<bdi>א</bdi>=1 … <bdi>ת</bdi>=22). <strong>Atbash</strong>: each letter is swapped for its mirror image (<bdi>א↔ת</bdi>, <bdi>ב↔ש</bdi>…) and then counted.</p>",
     th: ["Word", "Hechrechi", "Gadol", "Katan", "Siduri", "Atbash"],
     total: "Total",
     credit: "Vocalization: Dicta's nakdan (dicta.org.il).",
     copy: "Copy for WhatsApp",
     copied: "Copied!",
-    help: { debutant: "Every tool is explained, with an on-screen Hebrew keyboard and the books listed in English.", classique: "The tools, without explanations — for those who already know their way around." },
+    help: { debutant: "Every tool is explained, with an on-screen Hebrew keyboard and the books listed in English.", classique: "The tools, without explanations : for those who already know their way around." },
     space: "space",
     page: "page",
     chapter: "chapter",
-    error: "Error — please try again.",
+    error: "Error, please try again.",
   },
   he: {
     noms: { alotHaShachar: "עלות השחר", sunrise: "נץ החמה (זריחה)", sofZmanShma: "סוף זמן קריאת שמע", sofZmanTfilla: "סוף זמן תפילה", chatzot: "חצות", minchaGedola: "מנחה גדולה", minchaKetana: "מנחה קטנה", plagHaMincha: "פלג המנחה", sunset: "שקיעה", tzeit7083deg: "צאת הכוכבים" },
-    expl: { alotHaShachar: "עלות השחר — תחילת היום ההלכתי", sunrise: "זריחת החמה — הזמן המובחר לתחילת תפילת שחרית", sofZmanShma: "הזמן האחרון לקריאת שמע של שחרית", sofZmanTfilla: "הזמן האחרון לתפילת שחרית (עמידה)", chatzot: "חצות היום", minchaGedola: "מכאן ואילך אפשר להתפלל מנחה", minchaKetana: "הזמן המועדף לתפילת מנחה", plagHaMincha: "החלק האחרון של אחר הצהריים — יש המקבלים שבת מכאן", sunset: "שקיעת החמה — סוף היום", tzeit7083deg: "צאת הכוכבים — לילה, צאת השבת" },
-    legend: "<p style='margin-top:.6rem;font-size:.85rem;color:#6d675c'><strong>הכרחי</strong> — הערך הרגיל (<bdi>א</bdi>=1 … <bdi>י</bdi>=10, <bdi>כ</bdi>=20 … <bdi>ק</bdi>=100 … <bdi>ת</bdi>=400), זה שמצטטים בדרך כלל. <strong>גדול</strong> — האותיות הסופיות (<bdi>ך ם ן ף ץ</bdi>) שוות 500 עד 900. <strong>קטן</strong> — כל אות מצטמצמת לספרה אחת (<bdi>י</bdi>=1, <bdi>כ</bdi>=2…). <strong>סידורי</strong> — מקום האות באלף־בית (<bdi>א</bdi>=1 … <bdi>ת</bdi>=22). <strong>אתב\"ש</strong> — כל אות מוחלפת באות המקבילה לה מן הסוף (<bdi>א↔ת</bdi>, <bdi>ב↔ש</bdi>…) ואז נספרת.</p>",
+    expl: { alotHaShachar: "עלות השחר, תחילת היום ההלכתי", sunrise: "זריחת החמה, הזמן המובחר לתחילת תפילת שחרית", sofZmanShma: "הזמן האחרון לקריאת שמע של שחרית", sofZmanTfilla: "הזמן האחרון לתפילת שחרית (עמידה)", chatzot: "חצות היום", minchaGedola: "מכאן ואילך אפשר להתפלל מנחה", minchaKetana: "הזמן המועדף לתפילת מנחה", plagHaMincha: "החלק האחרון של אחר הצהריים, יש המקבלים שבת מכאן", sunset: "שקיעת החמה, סוף היום", tzeit7083deg: "צאת הכוכבים, לילה, צאת השבת" },
+    legend: "<p style='margin-top:.6rem;font-size:.85rem;color:#6d675c'><strong>הכרחי</strong>, הערך הרגיל (<bdi>א</bdi>=1 … <bdi>י</bdi>=10, <bdi>כ</bdi>=20 … <bdi>ק</bdi>=100 … <bdi>ת</bdi>=400), זה שמצטטים בדרך כלל. <strong>גדול</strong>, האותיות הסופיות (<bdi>ך ם ן ף ץ</bdi>) שוות 500 עד 900. <strong>קטן</strong>, כל אות מצטמצמת לספרה אחת (<bdi>י</bdi>=1, <bdi>כ</bdi>=2…). <strong>סידורי</strong>, מקום האות באלף־בית (<bdi>א</bdi>=1 … <bdi>ת</bdi>=22). <strong>אתב\"ש</strong>, כל אות מוחלפת באות המקבילה לה מן הסוף (<bdi>א↔ת</bdi>, <bdi>ב↔ש</bdi>…) ואז נספרת.</p>",
     th: ["מילה", "הכרחי", "גדול", "קטן", "סידורי", "אתב\"ש"],
     total: "סה\"כ",
     credit: "ניקוד: הנקדן של דיקטה (dicta.org.il).",
     copy: "העתקה לוואטסאפ",
     copied: "הועתק!",
-    help: { debutant: "כל כלי מוסבר, עם מקלדת עברית על המסך ושמות הספרים בעברית.", classique: "הכלים בלבד, בלי הסברים — למי שכבר מכיר." },
+    help: { debutant: "כל כלי מוסבר, עם מקלדת עברית על המסך ושמות הספרים בעברית.", classique: "הכלים בלבד, בלי הסברים : למי שכבר מכיר." },
     space: "רווח",
     page: "דף",
     chapter: "פרק",
-    error: "שגיאה — נסו שוב.",
+    error: "שגיאה, נסו שוב.",
   },
 } as const;
 
 /** Chaînes du gabarit HTML. */
 const OUTILS_T = {
   fr: {
-    title: "Outils — Mamash IA",
-    desc: "Zmanim, dates hébraïques, guematria, nikoud et fiches sources — utilisables directement, sans installation.",
-    ogTitle: "Mamash IA — la discipline des sources pour Claude",
+    title: "Outils · Mamash IA",
+    desc: "Zmanim, dates hébraïques, guematria, nikoud et fiches sources : utilisables directement, sans installation.",
+    ogTitle: "Mamash IA · la discipline des sources pour Claude",
     ogDesc: "Claude cite la Torah depuis les textes, plus jamais de mémoire. Méthode, havrouta, guide de paracha, daf interactif, zmanim, guematria. Gratuit.",
     chosen: "→ choisi",
     navHome: "← mamash-ia.com",
@@ -289,13 +289,13 @@ const OUTILS_T = {
     begH: "Débutant", begW: "Je débute, ou je ne lis pas l'hébreu", begD: "Chaque outil expliqué, clavier hébreu à l'écran, livres en français.",
     claH: "Classique", claW: "J'ai les bases", claD: "Les outils nus, sans explications.",
     step2: "Choisissez un outil",
-    ask: (q: string) => `Une question plutôt qu'un outil ? <a href="${q}">Posez-la en français</a> — la réponse est lue dans les textes.`,
+    ask: (q: string) => `Une question plutôt qu'un outil ? <a href="${q}">Posez-la en français</a>, la réponse est lue dans les textes.`,
     zH: "Zmanim et Chabbat",
     zD: "Les horaires du jour ou de Chabbat pour votre ville (données Hebcal).",
     zB: "Les <em>zmanim</em> sont les heures qui rythment la journée juive (lever, dernière heure du Chema, coucher…). En mode débutant, chaque horaire est expliqué. « Horaires de Chabbat » donne l'allumage des bougies et la sortie.",
     zDay: "Zmanim du jour", zShab: "Horaires de Chabbat", zBtn: "Afficher",
     dH: "Date hébraïque",
-    dD: "Convertit une date civile — avec les événements du jour (fêtes, paracha, Rosh Hodesh).",
+    dD: "Convertit une date civile, avec les événements du jour (fêtes, paracha, Rosh Hodesh).",
     dB: "Le calendrier hébraïque compte les années depuis la Création (2026 correspond à 5786–5787) et ses mois suivent la lune. Attention : le jour hébraïque commence la veille au soir.",
     dBtn: "Convertir",
     gH: "Guematria",
@@ -304,10 +304,10 @@ const OUTILS_T = {
     gBtn: "Calculer",
     nH: "Nikoud",
     nD: "Vocalisation d'un texte hébreu par le nakdan de Dicta.",
-    nB: "Le <em>nikoud</em>, ce sont les points-voyelles sous et sur les lettres : un texte hébreu s'écrit d'ordinaire sans, et cet outil les remet — précieux pour apprendre à lire. Saisissez avec le clavier ci-dessous si besoin.",
+    nB: "Le <em>nikoud</em>, ce sont les points-voyelles sous et sur les lettres : un texte hébreu s'écrit d'ordinaire sans, et cet outil les remet : précieux pour apprendre à lire. Saisissez avec le clavier ci-dessous si besoin.",
     nBtn: "Vocaliser",
     fH: "Fiche source",
-    fD: "Une carte hébreu + traduction + lien, prête à coller dans WhatsApp. Le texte est lu via Sefaria — en français quand la version existe (Bible du Rabbinat).",
+    fD: "Une carte hébreu + traduction + lien, prête à coller dans WhatsApp. Le texte est lu via Sefaria, en français quand la version existe (Bible du Rabbinat).",
     fB: "Choisissez le livre en français, puis le chapitre et le verset (ou la page pour le Talmud) : la référence se compose toute seule.",
     chapter: "chapitre", verse: "verset", amudA: "a (recto)", amudB: "b (verso)",
     fBtn: "Composer",
@@ -320,9 +320,9 @@ const OUTILS_T = {
     privacy: "Confidentialité",
   },
   en: {
-    title: "Tools — Mamash IA",
-    desc: "Zmanim, Hebrew dates, gematria, nikkud and source cards — usable directly, no installation needed.",
-    ogTitle: "Mamash IA — the discipline of sources for Claude",
+    title: "Tools · Mamash IA",
+    desc: "Zmanim, Hebrew dates, gematria, nikkud and source cards : usable directly, no installation needed.",
+    ogTitle: "Mamash IA · the discipline of sources for Claude",
     ogDesc: "Claude quotes the Torah from the texts, never from memory. Method, chavruta, parashah guide, interactive daf, zmanim, gematria. Free.",
     chosen: "→ chosen",
     navHome: "← mamash-ia.com",
@@ -336,13 +336,13 @@ const OUTILS_T = {
     begH: "Beginner", begW: "I'm starting out, or I don't read Hebrew", begD: "Every tool explained, on-screen Hebrew keyboard, books listed in English.",
     claH: "Classic", claW: "I know the basics", claD: "The bare tools, no explanations.",
     step2: "Choose a tool",
-    ask: (q: string) => `A question rather than a tool? <a href="${q}">Ask it in English</a> — the answer is read from the texts.`,
+    ask: (q: string) => `A question rather than a tool? <a href="${q}">Ask it in English</a>, the answer is read from the texts.`,
     zH: "Zmanim and Shabbat",
     zD: "Today's or Shabbat's times for your city (Hebcal data).",
     zB: "The <em>zmanim</em> are the hours that structure the Jewish day (sunrise, the latest time for the Shema, sunset…). In beginner mode, each time is explained. “Shabbat times” gives candle-lighting and the end of Shabbat.",
     zDay: "Today's zmanim", zShab: "Shabbat times", zBtn: "Show",
     dH: "Hebrew date",
-    dD: "Converts a civil date — with the day's events (holidays, parashah, Rosh Chodesh).",
+    dD: "Converts a civil date, with the day's events (holidays, parashah, Rosh Chodesh).",
     dB: "The Hebrew calendar counts the years from Creation (2026 corresponds to 5786–5787) and its months follow the moon. Note: the Hebrew day begins the evening before.",
     dBtn: "Convert",
     gH: "Gematria",
@@ -351,10 +351,10 @@ const OUTILS_T = {
     gBtn: "Compute",
     nH: "Nikkud",
     nD: "Vocalization of a Hebrew text by Dicta's nakdan.",
-    nB: "<em>Nikkud</em> is the system of vowel points beneath and above the letters: Hebrew is usually written without them, and this tool puts them back — precious for learning to read. Use the keyboard below if you need to.",
+    nB: "<em>Nikkud</em> is the system of vowel points beneath and above the letters: Hebrew is usually written without them, and this tool puts them back : precious for learning to read. Use the keyboard below if you need to.",
     nBtn: "Vocalize",
     fH: "Source card",
-    fD: "A card with Hebrew + translation + link, ready to paste into WhatsApp. The text is read via Sefaria — with a translation when one exists.",
+    fD: "A card with Hebrew + translation + link, ready to paste into WhatsApp. The text is read via Sefaria, with a translation when one exists.",
     fB: "Choose the book, then the chapter and verse (or the page for the Talmud): the reference builds itself.",
     chapter: "chapter", verse: "verse", amudA: "a (first side)", amudB: "b (second side)",
     fBtn: "Compose",
@@ -367,9 +367,9 @@ const OUTILS_T = {
     privacy: "Privacy",
   },
   he: {
-    title: "כלים — Mamash IA",
-    desc: "זמנים, תאריכים עבריים, גימטריה, ניקוד ודפי מקור — לשימוש ישיר, בלי התקנה.",
-    ogTitle: "Mamash IA — משמעת המקורות ל-Claude",
+    title: "כלים · Mamash IA",
+    desc: "זמנים, תאריכים עבריים, גימטריה, ניקוד ודפי מקור : לשימוש ישיר, בלי התקנה.",
+    ogTitle: "Mamash IA · משמעת המקורות ל-Claude",
     ogDesc: "Claude מצטט את התורה מתוך הטקסטים, לעולם לא מהזיכרון. שיטה, חברותא, מדריך פרשה, דף אינטראקטיבי, זמנים, גימטריה. חינם.",
     chosen: "← נבחר",
     navHome: "→ mamash-ia.com",
@@ -383,13 +383,13 @@ const OUTILS_T = {
     begH: "מתחילים", begW: "אני בתחילת הדרך", begD: "כל כלי מוסבר, מקלדת עברית על המסך, שמות הספרים בעברית.",
     claH: "קלאסי", claW: "יש לי את היסודות", claD: "הכלים בלבד, בלי הסברים.",
     step2: "בחרו כלי",
-    ask: (q: string) => `שאלה במקום כלי? <a href="${q}">שאלו בעברית</a> — התשובה נקראת מתוך הטקסטים.`,
+    ask: (q: string) => `שאלה במקום כלי? <a href="${q}">שאלו בעברית</a>, התשובה נקראת מתוך הטקסטים.`,
     zH: "זמנים ושבת",
     zD: "זמני היום או זמני השבת לעיר שלכם (נתוני Hebcal).",
     zB: "ה<em>זמנים</em> הם השעות שמסדרות את היום היהודי (זריחה, סוף זמן קריאת שמע, שקיעה…). במצב מתחילים כל זמן מוסבר. «זמני שבת» נותן את הדלקת הנרות ואת צאת השבת.",
     zDay: "זמני היום", zShab: "זמני שבת", zBtn: "הצגה",
     dH: "תאריך עברי",
-    dD: "ממיר תאריך לועזי — עם אירועי היום (חגים, פרשה, ראש חודש).",
+    dD: "ממיר תאריך לועזי, עם אירועי היום (חגים, פרשה, ראש חודש).",
     dB: "הלוח העברי מונה את השנים מבריאת העולם (2026 מקבילה לשנים תשפ\"ו–תשפ\"ז) וחודשיו הולכים אחר הירח. שימו לב: היום העברי מתחיל בערב שלפניו.",
     dBtn: "המרה",
     gH: "גימטריה",
@@ -398,10 +398,10 @@ const OUTILS_T = {
     gBtn: "חישוב",
     nH: "ניקוד",
     nD: "ניקוד של טקסט עברי באמצעות הנקדן של דיקטה.",
-    nB: "ה<em>ניקוד</em> הוא סימני התנועות שמתחת לאותיות ומעליהן: טקסט עברי נכתב בדרך כלל בלעדיהם, והכלי הזה מחזיר אותם — יקר ערך למי שלומד לקרוא. אפשר להקליד במקלדת שלמטה אם צריך.",
+    nB: "ה<em>ניקוד</em> הוא סימני התנועות שמתחת לאותיות ומעליהן: טקסט עברי נכתב בדרך כלל בלעדיהם, והכלי הזה מחזיר אותם : יקר ערך למי שלומד לקרוא. אפשר להקליד במקלדת שלמטה אם צריך.",
     nBtn: "ניקוד",
     fH: "דף מקור",
-    fD: "כרטיס עם עברית + תרגום + קישור, מוכן להדבקה בוואטסאפ. הטקסט נקרא דרך ספריא — עם תרגום כשקיים.",
+    fD: "כרטיס עם עברית + תרגום + קישור, מוכן להדבקה בוואטסאפ. הטקסט נקרא דרך ספריא, עם תרגום כשקיים.",
     fB: "בחרו את הספר, ואז את הפרק והפסוק (או את הדף בתלמוד): מראה המקום נבנה מעצמו.",
     chapter: "פרק", verse: "פסוק", amudA: "א (עמוד א)", amudB: "ב (עמוד ב)",
     fBtn: "חיבור",
@@ -622,7 +622,7 @@ ${GA_SNIPPET}
       var beg = document.body.classList.contains("mode-debutant");
       return "<table class='" + (beg ? "expl" : "") + "'>" + Object.keys(noms).filter(function(k){return t[k];}).map(function (k) {
         return "<tr><td>" + noms[k] + "</td><td dir=ltr>" + esc(String(t[k]).slice(11,16)) + "</td>" + (beg ? "<td>" + expl[k] + "</td>" : "") + "</tr>";
-      }).join("") + "</table><p style='margin-top:.5rem;color:#6d675c;font-size:.8rem'>" + esc(d.lieu||"") + " — " + esc(d.date||"") + "</p>";
+      }).join("") + "</table><p style='margin-top:.5rem;color:#6d675c;font-size:.8rem'>" + esc(d.lieu||"") + ", " + esc(d.date||"") + "</p>";
     },
     date: function (d) {
       var ev = (d.events||[]).map(esc).join(" · ");

@@ -1,5 +1,5 @@
 /**
- * Pages statiques du site : accueil (GET /), /install, /privacy — en trois
+ * Pages statiques du site : accueil (GET /), /install, /privacy : en trois
  * langues (fr à la racine, /en/…, /he/… en RTL). Le français reste la référence ;
  * le gabarit HTML/CSS/JS est unique, seules les chaînes changent.
  */
@@ -26,7 +26,7 @@ const LANG_CSS = `.lang { font-size:.82rem; letter-spacing:.08em; } .lang a { te
 const OG_IMAGE = `<meta property="og:image" content="https://mamash-ia.com/og.png?v=2">
 <meta name="twitter:card" content="summary_large_image">`;
 
-const ogTitle = { fr: "Mamash IA — la discipline des sources pour Claude", en: "Mamash IA — source discipline for Claude", he: "Mamash IA — משמעת מקורות ל-Claude" };
+const ogTitle = { fr: "Mamash IA · la discipline des sources pour Claude", en: "Mamash IA · source discipline for Claude", he: "Mamash IA · משמעת מקורות ל-Claude" };
 const ogDesc = {
   fr: "Claude cite la Torah depuis les textes, plus jamais de mémoire. Méthode, havrouta, guide de paracha, daf interactif, zmanim, guematria. Gratuit.",
   en: "Claude quotes the Torah from the texts, never again from memory. Method, chavruta, parashah guide, interactive daf, zmanim, gematria. Free.",
@@ -42,8 +42,8 @@ type PrivacyStrings = { title: string; h1: string; contact: string; body: string
 /** Le corps FR mêle déjà FR et EN ; l'EN ne garde que l'anglais ; l'HE traduit tout. `{Q}` = lien /question. */
 const PRIVACY_T: Record<Lang, PrivacyStrings> = {
   fr: {
-    title: "Mamash IA — Confidentialité / Privacy",
-    h1: "Confidentialité — Mamash IA",
+    title: "Mamash IA · Confidentialité / Privacy",
+    h1: "Confidentialité · Mamash IA",
     contact: "Contact :",
     body: `<p>Le service MCP ne collecte, ne stocke et ne partage aucune donnée personnelle.
   Il ne demande aucun compte, ne dépose aucun cookie, et ne conserve aucun
@@ -53,9 +53,9 @@ const PRIVACY_T: Record<Lang, PrivacyStrings> = {
   opérationnels de courte durée (adresse IP, horodatage) utilisés uniquement
   pour la sécurité et la limitation de débit.</p>
   <h2>« Poser une question » sur le site</h2>
-  <p>La page <a href="{Q}">/question</a> envoie votre question, telle que vous l'avez écrite, à l'API d'Anthropic (Claude) pour rédiger la réponse à partir des textes lus sur Sefaria. La réponse n'est pas conservée. Nous gardons en revanche un <strong>journal statistique privé</strong> de chaque question : son texte, le niveau choisi, la date, la durée du traitement, le nombre de sources lues, le volume de tokens et le pays d'origine (agrégat Cloudflare) — <strong>jamais l'adresse IP ni aucun identifiant</strong>, donc sans possibilité de relier une question à une personne. Ce journal sert uniquement à comprendre l'usage du service et à en suivre le coût ; il n'est ni publié ni partagé. L'adresse IP sert uniquement au limiteur de débit, en mémoire, sans journal. Le traitement par Anthropic relève de sa <a href="https://www.anthropic.com/legal/privacy">politique de confidentialité</a> (données d'API non utilisées pour l'entraînement). N'y écrivez pas d'informations personnelles.</p>
+  <p>La page <a href="{Q}">/question</a> envoie votre question, telle que vous l'avez écrite, à l'API d'Anthropic (Claude) pour rédiger la réponse à partir des textes lus sur Sefaria. La réponse n'est pas conservée. Nous gardons en revanche un <strong>journal statistique privé</strong> de chaque question : son texte, le niveau choisi, la date, la durée du traitement, le nombre de sources lues, le volume de tokens et le pays d'origine (agrégat Cloudflare), <strong>jamais l'adresse IP ni aucun identifiant</strong>, donc sans possibilité de relier une question à une personne. Ce journal sert uniquement à comprendre l'usage du service et à en suivre le coût ; il n'est ni publié ni partagé. L'adresse IP sert uniquement au limiteur de débit, en mémoire, sans journal. Le traitement par Anthropic relève de sa <a href="https://www.anthropic.com/legal/privacy">politique de confidentialité</a> (données d'API non utilisées pour l'entraînement). N'y écrivez pas d'informations personnelles.</p>
 
-  <h2>Privacy — English</h2>
+  <h2>Privacy · English</h2>
   <p>This server collects, stores and shares no personal data. No account, no
   cookies, no history of queries. Requests are forwarded to the public
   <a href="https://www.sefaria.org">Sefaria</a> API to fetch the requested
@@ -71,20 +71,20 @@ const PRIVACY_T: Record<Lang, PrivacyStrings> = {
   Voir les <a href="https://policies.google.com/privacy">règles de
   confidentialité de Google</a>.</p>
   <h2>Les chiourim en vidéo</h2>
-  <p>La page <a href="/chiourim">/chiourim</a> présente des vidéos hébergées par YouTube. Aucune ressource YouTube n'est chargée avant l'affichage de la page (les vignettes proviennent des serveurs de YouTube) et le lecteur ne se lance qu'au clic, via youtube-nocookie.com — le mode « confidentialité avancée » de YouTube, sans cookies avant la lecture. La consultation des vidéos relève des <a href="https://policies.google.com/privacy">règles de confidentialité de Google</a>.</p>
-  <h2>"Ask a question" on the website — English</h2>
-  <p>The <a href="{Q}">/question</a> page sends your question, as written, to Anthropic's API (Claude) to draft an answer from texts read on Sefaria. The answer is not stored. We do keep a <strong>private statistical log</strong> of each question: its text, the chosen level, date, processing time, number of sources read, token volume and country of origin (Cloudflare aggregate) — <strong>never the IP address nor any identifier</strong>, so a question cannot be linked to a person. This log is used only to understand usage and track cost; it is neither published nor shared. The IP address is only used by the in-memory rate limiter, without logs. Anthropic's processing is governed by its <a href="https://www.anthropic.com/legal/privacy">privacy policy</a> (API data is not used for training). Do not include personal information.</p>
+  <p>La page <a href="/chiourim">/chiourim</a> présente des vidéos hébergées par YouTube. Aucune ressource YouTube n'est chargée avant l'affichage de la page (les vignettes proviennent des serveurs de YouTube) et le lecteur ne se lance qu'au clic, via youtube-nocookie.com : le mode « confidentialité avancée » de YouTube, sans cookies avant la lecture. La consultation des vidéos relève des <a href="https://policies.google.com/privacy">règles de confidentialité de Google</a>.</p>
+  <h2>"Ask a question" on the website · English</h2>
+  <p>The <a href="{Q}">/question</a> page sends your question, as written, to Anthropic's API (Claude) to draft an answer from texts read on Sefaria. The answer is not stored. We do keep a <strong>private statistical log</strong> of each question: its text, the chosen level, date, processing time, number of sources read, token volume and country of origin (Cloudflare aggregate), <strong>never the IP address nor any identifier</strong>, so a question cannot be linked to a person. This log is used only to understand usage and track cost; it is neither published nor shared. The IP address is only used by the in-memory rate limiter, without logs. Anthropic's processing is governed by its <a href="https://www.anthropic.com/legal/privacy">privacy policy</a> (API data is not used for training). Do not include personal information.</p>
 
-  <h2>Website analytics — English</h2>
+  <h2>Website analytics · English</h2>
   <p>The website pages (mamash-ia.com) use Google Analytics 4 for aggregate
-  traffic measurement (page views, referrers) — browser visits only.
+  traffic measurement (page views, referrers), browser visits only.
   <strong>The MCP connector itself sends nothing to Google Analytics</strong>:
   no usage inside Claude or any assistant is measured, and the in-Claude daf
   viewer loads no tracker.</p>`,
   },
   en: {
-    title: "Mamash IA — Privacy",
-    h1: "Privacy — Mamash IA",
+    title: "Mamash IA · Privacy",
+    h1: "Privacy · Mamash IA",
     contact: "Contact:",
     body: `<p>This server collects, stores and shares no personal data. No account, no
   cookies, no history of queries. Requests are forwarded to the public
@@ -92,25 +92,25 @@ const PRIVACY_T: Record<Lang, PrivacyStrings> = {
   texts; Cloudflare's infrastructure produces short-lived operational logs
   (IP address, timestamp) used solely for security and rate limiting.</p>
   <h2>“Ask a question” on the website</h2>
-  <p>The <a href="{Q}">/question</a> page sends your question, as written, to Anthropic's API (Claude) to draft an answer from texts read on Sefaria. The answer is not stored. We do keep a <strong>private statistical log</strong> of each question: its text, the chosen level, date, processing time, number of sources read, token volume and country of origin (Cloudflare aggregate) — <strong>never the IP address nor any identifier</strong>, so a question cannot be linked to a person. This log is used only to understand usage and track cost; it is neither published nor shared. The IP address is only used by the in-memory rate limiter, without logs. Anthropic's processing is governed by its <a href="https://www.anthropic.com/legal/privacy">privacy policy</a> (API data is not used for training). Do not include personal information.</p>
+  <p>The <a href="{Q}">/question</a> page sends your question, as written, to Anthropic's API (Claude) to draft an answer from texts read on Sefaria. The answer is not stored. We do keep a <strong>private statistical log</strong> of each question: its text, the chosen level, date, processing time, number of sources read, token volume and country of origin (Cloudflare aggregate), <strong>never the IP address nor any identifier</strong>, so a question cannot be linked to a person. This log is used only to understand usage and track cost; it is neither published nor shared. The IP address is only used by the in-memory rate limiter, without logs. Anthropic's processing is governed by its <a href="https://www.anthropic.com/legal/privacy">privacy policy</a> (API data is not used for training). Do not include personal information.</p>
   <h2>Video shiurim</h2>
-  <p>The <a href="/en/chiourim">/chiourim</a> page presents videos hosted by YouTube. Thumbnails are served from YouTube's servers, and the player only loads when you click, via youtube-nocookie.com — YouTube's enhanced-privacy mode, with no cookies before playback. Watching the videos is governed by <a href="https://policies.google.com/privacy">Google's privacy policy</a>.</p>
+  <p>The <a href="/en/chiourim">/chiourim</a> page presents videos hosted by YouTube. Thumbnails are served from YouTube's servers, and the player only loads when you click, via youtube-nocookie.com. YouTube's enhanced-privacy mode, with no cookies before playback. Watching the videos is governed by <a href="https://policies.google.com/privacy">Google's privacy policy</a>.</p>
   <h2>Website analytics</h2>
   <p>The website pages (mamash-ia.com) use Google Analytics 4 for aggregate
-  traffic measurement (page views, referrers) — browser visits only.
+  traffic measurement (page views, referrers), browser visits only.
   <strong>The MCP connector itself sends nothing to Google Analytics</strong>:
   no usage inside Claude or any assistant is measured, and the in-Claude daf
   viewer loads no tracker. See <a href="https://policies.google.com/privacy">Google's privacy policy</a>.</p>`,
   },
   he: {
-    title: "Mamash IA — פרטיות",
-    h1: "פרטיות — Mamash IA",
+    title: "Mamash IA · פרטיות",
+    h1: "פרטיות · Mamash IA",
     contact: "יצירת קשר:",
     body: `<p>שירות ה-MCP אינו אוסף, אינו שומר ואינו משתף שום מידע אישי. הוא אינו דורש חשבון, אינו מציב עוגיות, ואינו שומר היסטוריה של השאלות שנשאלו. הבקשות עוברות ל-API הציבורי של <a href="https://www.sefaria.org">ספריא</a> כדי לאחזר את הטקסטים המבוקשים, ותשתית Cloudflare מפיקה יומנים טכניים תפעוליים קצרי מועד (כתובת IP, חותמת זמן) המשמשים אך ורק לאבטחה ולהגבלת קצב.</p>
   <h2>«שאלה» באתר</h2>
-  <p>העמוד <a href="{Q}" dir="ltr">/question</a> שולח את שאלתכם, כפי שכתבתם אותה, ל-API של Anthropic (Claude) כדי לנסח את התשובה מתוך הטקסטים שנקראו בספריא. התשובה אינה נשמרת. לעומת זאת, אנו שומרים <strong>יומן סטטיסטי פרטי</strong> של כל שאלה: הטקסט שלה, הרמה שנבחרה, התאריך, משך העיבוד, מספר המקורות שנקראו, נפח הטוקנים וארץ המוצא (נתון מצרפי של Cloudflare) — <strong>לעולם לא כתובת ה-IP ולא שום מזהה</strong>, כך שאי אפשר לקשר שאלה לאדם. היומן משמש אך ורק להבנת השימוש בשירות ולמעקב אחר עלותו; הוא אינו מתפרסם ואינו משותף. כתובת ה-IP משמשת רק את מגביל הקצב, בזיכרון, בלי יומן. העיבוד בידי Anthropic כפוף ל<a href="https://www.anthropic.com/legal/privacy">מדיניות הפרטיות</a> שלה (נתוני API אינם משמשים לאימון). אל תכתבו שם מידע אישי.</p>
+  <p>העמוד <a href="{Q}" dir="ltr">/question</a> שולח את שאלתכם, כפי שכתבתם אותה, ל-API של Anthropic (Claude) כדי לנסח את התשובה מתוך הטקסטים שנקראו בספריא. התשובה אינה נשמרת. לעומת זאת, אנו שומרים <strong>יומן סטטיסטי פרטי</strong> של כל שאלה: הטקסט שלה, הרמה שנבחרה, התאריך, משך העיבוד, מספר המקורות שנקראו, נפח הטוקנים וארץ המוצא (נתון מצרפי של Cloudflare), <strong>לעולם לא כתובת ה-IP ולא שום מזהה</strong>, כך שאי אפשר לקשר שאלה לאדם. היומן משמש אך ורק להבנת השימוש בשירות ולמעקב אחר עלותו; הוא אינו מתפרסם ואינו משותף. כתובת ה-IP משמשת רק את מגביל הקצב, בזיכרון, בלי יומן. העיבוד בידי Anthropic כפוף ל<a href="https://www.anthropic.com/legal/privacy">מדיניות הפרטיות</a> שלה (נתוני API אינם משמשים לאימון). אל תכתבו שם מידע אישי.</p>
   <h2>שיעורים בווידאו</h2>
-  <p>העמוד <a href="/he/chiourim" dir="ltr">/chiourim</a> מציג סרטונים המתארחים ביוטיוב. התמונות הממוזערות מוגשות משרתי יוטיוב, והנגן נטען רק בלחיצה, דרך youtube-nocookie.com — מצב הפרטיות המורחבת של יוטיוב, ללא עוגיות לפני הניגון. צפייה בסרטונים כפופה ל<a href="https://policies.google.com/privacy">מדיניות הפרטיות של Google</a>.</p>
+  <p>העמוד <a href="/he/chiourim" dir="ltr">/chiourim</a> מציג סרטונים המתארחים ביוטיוב. התמונות הממוזערות מוגשות משרתי יוטיוב, והנגן נטען רק בלחיצה, דרך youtube-nocookie.com : מצב הפרטיות המורחבת של יוטיוב, ללא עוגיות לפני הניגון. צפייה בסרטונים כפופה ל<a href="https://policies.google.com/privacy">מדיניות הפרטיות של Google</a>.</p>
   <h2>מדידת קהל באתר</h2>
   <p>עמודי האתר (mamash-ia.com) משתמשים ב-Google Analytics 4 למדידת התנועה באופן מצרפי (צפיות בעמודים, מקור ההגעה). הדבר נוגע רק לגלישה באתר בדפדפן. <strong>מחבר ה-MCP עצמו אינו שולח דבר ל-Google Analytics</strong>: שום נתון שימוש ב-Claude או בכל עוזר אחר אינו נמדד, ומציג הדף המשולב ב-Claude אינו טוען שום כלי מעקב. ראו את <a href="https://policies.google.com/privacy">מדיניות הפרטיות של Google</a>.</p>`,
   },
@@ -154,7 +154,7 @@ ${retourTab(lang, path)}
 }
 
 // ----------------------------------------------------------------------------
-// / — le daf
+// /, le daf
 // ----------------------------------------------------------------------------
 
 type Toc = { to: string; t: string; d: string };
@@ -188,300 +188,300 @@ type LandingStrings = {
 
 const LANDING_T: Record<Lang, LandingStrings> = {
   fr: {
-    title: "Mamash IA — la discipline des sources pour Claude",
+    title: "Mamash IA · la discipline des sources pour Claude",
     desc: "Claude cite la Torah depuis les textes, plus jamais de mémoire. Méthode d'étude, havrouta, guide de paracha, page de Vilna interactive, Sefaria, HebrewBooks, zmanim, guematria. Gratuit, sans compte.",
     chiourLab: "Le chiour de la semaine",
     chiourVoir: "Voir tous les chiourim",
     navMiel: "La feuille de miel", navRh: "Roch Hachana",
     badgeMielT: "La feuille de miel",
-    badgeMielS: "une par invité — créez la vôtre",
-    maisonLab: "770 Eastern Parkway · Brooklyn — photographie réelle",
+    badgeMielS: "une par invité, créez la vôtre",
+    maisonLab: "770 Eastern Parkway · Brooklyn, photographie réelle",
     maisonT: "La maison d'où vient le cri.",
-    maisonD: "C'est de cette maison de briques — le 770, la maison d'étude du Rabbi — qu'est parti le mot d'ordre que ce site reprend : la Torah avec chacun, vraiment, <strong>ממש</strong>. La photo est réelle. La discipline des sources aussi.",
-    bibLab: "Synagogue Yossef Karo · Safed — photographie réelle · photo Djampa, CC BY-SA 4.0",
+    maisonD: "C'est de cette maison de briques (le 770, la maison d'étude du Rabbi), qu'est parti le mot d'ordre que ce site reprend : la Torah avec chacun, vraiment, <strong>ממש</strong>. La photo est réelle. La discipline des sources aussi.",
+    bibLab: "Synagogue Yossef Karo · Safed, photographie réelle · photo Djampa, CC BY-SA 4.0",
     bibT: "Les livres sont réels aussi.",
-    bibD: "Dans la synagogue Yossef Karo, à Safed, les seforim attendent sur leurs étagères. C'est lui, l'auteur du <strong>Choulhan Aroukh</strong> — le code que ce site ouvre et cite, référence par référence, au lieu de le réciter de mémoire.",
+    bibD: "Dans la synagogue Yossef Karo, à Safed, les seforim attendent sur leurs étagères. C'est lui, l'auteur du <strong>Choulhan Aroukh</strong>, le code que ce site ouvre et cite, référence par référence, au lieu de le réciter de mémoire.",
     grpSite: "Sur le site", navQuestion: "Une question", navDaf: "Le daf", navOutils: "Outils", navDaily: "Limoud du jour", navChabbat: "Chabbat", navChiourim: "Chiourim", grpClaude: "Dans Claude", navInstall: "Installer le MCP",
-    h1: `La Torah <span class="no">de&nbsp;mémoire</span> — <strong>lue dans les textes</strong>.`,
-    deck: "Des réponses de halakha et de limoud citées depuis la Bible, le Talmud et leurs commentateurs — sur le site en trois langues, sur WhatsApp chaque vendredi, en vidéo avec le rav Attal, et dans Claude avec la bibliothèque entière. Gratuit, sans compte, sans collecte.",
-    act1: "Poser une question", act2: "Installer dans Claude — 2 min",
-    debloque: "Dans Claude, le connecteur débloque ce que le site n'a pas : la <b>havrouta</b> qui vous interroge et vous fait défendre Rachi contre Tossafot, le <b>daf en page de Vilna</b> ouvert dans la conversation, le <b>guide de paracha</b> complet, les fiches sources — et l'étude en continu, sans limite de questions. Seize outils, gratuits.",
+    h1: `La Torah <span class="no">de&nbsp;mémoire</span>, <strong>lue dans les textes</strong>.`,
+    deck: "Des réponses de halakha et de limoud citées depuis la Bible, le Talmud et leurs commentateurs, sur le site en trois langues, sur WhatsApp chaque vendredi, en vidéo avec le rav Attal, et dans Claude avec la bibliothèque entière. Gratuit, sans compte, sans collecte.",
+    act1: "Poser une question", act2: "Installer dans Claude · 2 min",
+    debloque: "Dans Claude, le connecteur débloque ce que le site n'a pas : la <b>havrouta</b> qui vous interroge et vous fait défendre Rachi contre Tossafot, le <b>daf en page de Vilna</b> ouvert dans la conversation, le <b>guide de paracha</b> complet, les fiches sources, et l'étude en continu, sans limite de questions. Seize outils, gratuits.",
     demos: [
       { q: "« Pourquoi allume-t-on deux bougies le vendredi soir ? »",
-        a: "Deux mèches : l'une pour <strong>Zakhor</strong>, « souviens-toi », l'autre pour <strong>Chamor</strong>, « garde » — les deux formulations du Chabbat dans la Torah, réunies dans la lumière.",
+        a: "Deux mèches : l'une pour <strong>Zakhor</strong>, « souviens-toi », l'autre pour <strong>Chamor</strong>, « garde » : les deux formulations du Chabbat dans la Torah, réunies dans la lumière.",
         src: "Choulhan Aroukh, Orah Hayim 263:1 · Exode 20, 8 · Deutéronome 5, 12" },
       { q: "« Pourquoi brise-t-on un verre au mariage ? »",
-        a: "Au festin de noces de son fils, <strong>Mar, fils de Ravina</strong>, voit les Sages rire aux éclats : il brise devant eux une coupe de quatre cents zouz — « là où il y a joie, qu'il y ait <strong>tremblement</strong> ».",
+        a: "Au festin de noces de son fils, <strong>Mar, fils de Ravina</strong>, voit les Sages rire aux éclats : il brise devant eux une coupe de quatre cents zouz, « là où il y a joie, qu'il y ait <strong>tremblement</strong> ».",
         src: "Berakhot 30b–31a · Psaumes 2, 11" },
       { q: "« D'où viennent les 613 mitsvot ? »",
-        a: "Rabbi Simlaï l'enseigne : <strong>365 interdits</strong> comme les jours de l'année solaire, <strong>248 commandements</strong> comme les membres du corps — l'année entière, le corps entier.",
+        a: "Rabbi Simlaï l'enseigne : <strong>365 interdits</strong> comme les jours de l'année solaire, <strong>248 commandements</strong> comme les membres du corps, l'année entière, le corps entier.",
         src: "Makkot 23b · Deutéronome 33, 4" },
       { q: "« Où la Torah interdit-elle viande et lait ? »",
-        a: "Trois fois elle répète « tu ne cuiras pas le chevreau dans le lait de sa mère » — une pour la <strong>cuisson</strong>, une pour la <strong>consommation</strong>, une pour le <strong>profit</strong>, enseigne la Guemara.",
+        a: "Trois fois elle répète « tu ne cuiras pas le chevreau dans le lait de sa mère », une pour la <strong>cuisson</strong>, une pour la <strong>consommation</strong>, une pour le <strong>profit</strong>, enseigne la Guemara.",
         src: "Exode 23, 19 · Houlin 115b" },
     ],
     demoSrcLab: "Textes lus",
-    demoTag: "Réponses réelles — lues sur Sefaria",
+    demoTag: "Réponses réelles, lues sur Sefaria",
     tuiles: [
-      { to: "/question", t: "Une question", d: "En français, à votre niveau — réponse sourcée." },
-      { to: "/chabbat", t: "Le WhatsApp de Chabbat", d: "Le message du vendredi — et le GIF qui va avec." },
+      { to: "/question", t: "Une question", d: "En français, à votre niveau : réponse sourcée." },
+      { to: "/chabbat", t: "Le WhatsApp de Chabbat", d: "Le message du vendredi, et le GIF qui va avec." },
       { to: "/chiourim", t: "Les chiourim", d: "Les cours en vidéo du rav Meir Attal." },
       { to: "/daf", t: "Le daf", d: "La page de Vilna, interactive et traduite." },
     ],
     kezAria: "En deux mots", kezId: "en-deux-mots",
-    fig1n: "6 600", fig1u: "titres", fig1t: "La bibliothèque Sefaria, lue en direct au moment de la question : Tanakh, Michna, Talmud, Midrach, Rambam, Choulhan Aroukh, responsa, hassidout — et leurs commentateurs.",
+    fig1n: "6 600", fig1u: "titres", fig1t: "La bibliothèque Sefaria, lue en direct au moment de la question : Tanakh, Michna, Talmud, Midrach, Rambam, Choulhan Aroukh, responsa, hassidout, et leurs commentateurs.",
     fig2n: "50 000", fig2u: "seforim", fig2t: "Le fonds HebrewBooks, cherché dans le texte et non plus seulement par titre : le passage, sa page, et le fac-similé à ouvrir.",
-    fig3n: "0", fig3u: "référence inventée", fig3t: "La règle est simple : ce qui n'a pas été lu n'est pas cité — et chaque citation vient avec le lien pour la vérifier.",
-    vsNonH: "Une IA ordinaire <em>— répond de mémoire</em>",
-    vsNonP: "Elle a croisé ces textes une fois, à l'entraînement, et les reconstitue : références approximatives, citations recomposées, parfois inventées de toutes pièces — avec la même assurance dans les deux cas, et sans jamais dire ce qu'elle n'a pas ouvert.",
-    vsYesH: "Mamash IA <em>— ouvre le livre</em>",
-    vsYesP: "La question déclenche une lecture : le texte est ouvert dans l'édition Sefaria, cité tel qu'il est écrit, avec sa référence exacte, relié à ses commentateurs et aux textes qui en dépendent. Une précision vérifiable, à un clic — et, quand une source manque, la réponse le dit.",
-    lblA: "Le manifeste, commenté en marge", ariaInner: "Commentaires — colonne intérieure", ariaOuter: "Commentaires — colonne extérieure",
+    fig3n: "0", fig3u: "référence inventée", fig3t: "La règle est simple : ce qui n'a pas été lu n'est pas cité, et chaque citation vient avec le lien pour la vérifier.",
+    vsNonH: "Une IA ordinaire <em> · répond de mémoire</em>",
+    vsNonP: "Elle a croisé ces textes une fois, à l'entraînement, et les reconstitue : références approximatives, citations recomposées, parfois inventées de toutes pièces, avec la même assurance dans les deux cas, et sans jamais dire ce qu'elle n'a pas ouvert.",
+    vsYesH: "Mamash IA <em> · ouvre le livre</em>",
+    vsYesP: "La question déclenche une lecture : le texte est ouvert dans l'édition Sefaria, cité tel qu'il est écrit, avec sa référence exacte, relié à ses commentateurs et aux textes qui en dépendent. Une précision vérifiable, à un clic : et, quand une source manque, la réponse le dit.",
+    lblA: "Le manifeste, commenté en marge", ariaInner: "Commentaires, colonne intérieure", ariaOuter: "Commentaires, colonne extérieure",
     gMethode: { h: "La méthode", p: "Chargée avant toute réponse religieuse : lire, citer depuis la lecture, signaler les mahloket, ne jamais fabriquer une référence.", try: "« Que dit la Guemara sur l'objet perdu ? Cite la sougya. »" },
     gHavrouta: { h: "La havrouta", p: "Claude questionne au lieu de répondre : une kouchia à la fois, Rachi à défendre contre Tossafot, récapitulatif des chidouchim.", try: "« Étudions Berakhot 2a en havrouta. »" },
     gParacha: { h: "Le guide de paracha", p: "Fil par aliya, trois questions du texte tranchées par deux commentateurs qui divergent, l'écho de la haftara, questions pour la table.", try: "« Prépare-moi la paracha. »" },
     gMemoire: { h: "Pourquoi c'est grave", p: "Une citation approximative est une citation fausse. La discipline du texte n'est pas un luxe : c'est la condition du limoud." },
     gQuotidien: { h: "Le quotidien", p: "Zmanim et horaires de Chabbat, dates hébraïques, guematria exacte, nikoud (Dicta), fiche source prête pour WhatsApp.", link: "Utilisables en ligne, sans installation" },
-    gModes: { h: "Trois modes", p: "Débutant, classique, avancé — le registre change, la discipline des sources jamais. Claude devine votre niveau à votre question, et vous changez de mode d'un mot.", try: "« Je n'y connais rien, explique-moi simplement. »", link: "Poser une question sur le site, sans Claude" },
-    gSources: { h: "Les sources", p: "Textes, commentateurs et recherche Sefaria — licences affichées — et la recherche plein texte du fonds HebrewBooks (~50 000 seforim océrisés).", link: "S'accorde avec le MCP officiel de Sefaria" },
-    guf1: `Les assistants répondent aux questions de Torah <mark data-ref="memoire">de mémoire</mark> — avec l'assurance de celui qui n'a pas ouvert le livre. Mamash IA renverse le geste : avant toute réponse, votre assistant charge <mark data-ref="methode">une méthode d'étude</mark> qui l'oblige à lire le texte, à le citer tel qu'il est écrit, et à dire où l'étudier.`,
-    guf2: `Parce qu'on n'apprend pas seul, il sait aussi devenir <mark data-ref="havrouta">partenaire de havrouta</mark> — celui qui pose les questions plutôt que d'y répondre — et préparer <mark data-ref="paracha">la paracha de la semaine</mark> comme un chantier : aliya par aliya, machloket comprises.`,
-    guf3: `Et parce que l'étude vit dans une journée juive, il porte <mark data-ref="quotidien">les outils du quotidien</mark> — zmanim, dates, guematria, nikoud, fiches à partager — et <mark data-ref="sources">toute la bibliothèque</mark> : Sefaria pour lire et relier, HebrewBooks pour étudier sur la page scannée.`,
+    gModes: { h: "Trois modes", p: "Débutant, classique, avancé : le registre change, la discipline des sources jamais. Claude devine votre niveau à votre question, et vous changez de mode d'un mot.", try: "« Je n'y connais rien, explique-moi simplement. »", link: "Poser une question sur le site, sans Claude" },
+    gSources: { h: "Les sources", p: "Textes, commentateurs et recherche Sefaria (licences affichées), et la recherche plein texte du fonds HebrewBooks (~50 000 seforim océrisés).", link: "S'accorde avec le MCP officiel de Sefaria" },
+    guf1: `Les assistants répondent aux questions de Torah <mark data-ref="memoire">de mémoire</mark>, avec l'assurance de celui qui n'a pas ouvert le livre. Mamash IA renverse le geste : avant toute réponse, votre assistant charge <mark data-ref="methode">une méthode d'étude</mark> qui l'oblige à lire le texte, à le citer tel qu'il est écrit, et à dire où l'étudier.`,
+    guf2: `Parce qu'on n'apprend pas seul, il sait aussi devenir <mark data-ref="havrouta">partenaire de havrouta</mark> (celui qui pose les questions plutôt que d'y répondre), et préparer <mark data-ref="paracha">la paracha de la semaine</mark> comme un chantier : aliya par aliya, machloket comprises.`,
+    guf3: `Et parce que l'étude vit dans une journée juive, il porte <mark data-ref="quotidien">les outils du quotidien</mark> (zmanim, dates, guematria, nikoud, fiches à partager), et <mark data-ref="sources">toute la bibliothèque</mark> : Sefaria pour lire et relier, HebrewBooks pour étudier sur la page scannée.`,
     guf4: `Et parce que la Torah n'appartient pas aux seuls savants, il parle <mark data-ref="modes">à chacun selon son niveau</mark> : tout en français et chaque mot expliqué pour qui débute, la source en langue originale et le lomdus pour qui la maîtrise.`,
-    lblB: "Trois modes — à chacun selon son niveau",
-    mDeb: { h: "Débutant", who: "Pas de culture religieuse, ou pas d'hébreu.", p: "Tout en français. Aucun mot hébreu sans sa traduction, le contexte avant la réponse, une idée à la fois — et jamais de question jugée naïve.", try: "« C'est quoi, la halakha ? »" },
-    mCla: { h: "Classique", who: "Culture de base, hébreu avec traduction.", p: "Bilingue : la source, puis sa traduction — française pour la Bible. Termes usuels supposés connus, références standard, mahloket signalées. Le mode par défaut.", try: "« Que dit Rachi sur ce verset ? »" },
+    lblB: "Trois modes, à chacun selon son niveau",
+    mDeb: { h: "Débutant", who: "Pas de culture religieuse, ou pas d'hébreu.", p: "Tout en français. Aucun mot hébreu sans sa traduction, le contexte avant la réponse, une idée à la fois, et jamais de question jugée naïve.", try: "« C'est quoi, la halakha ? »" },
+    mCla: { h: "Classique", who: "Culture de base, hébreu avec traduction.", p: "Bilingue : la source, puis sa traduction : française pour la Bible. Termes usuels supposés connus, références standard, mahloket signalées. Le mode par défaut.", try: "« Que dit Rachi sur ce verset ? »" },
     mAv: { h: "Avancé", who: "Le beit midrash.", p: "Source en langue originale, terminologie sans glose, richonim et poskim, girsaot quand elles pèsent, nafka mina, lomdus. Densité maximale, rien de lissé.", try: "« Chitat ha-Rambam contre Tossafot ici ? »" },
-    modesNote1: "Un même moteur, une même rigueur : les textes sont toujours réellement lus et cités exactement. Seul le registre s'adapte — et vous en changez d'un mot. Pas de Claude ? ",
+    modesNote1: "Un même moteur, une même rigueur : les textes sont toujours réellement lus et cités exactement. Seul le registre s'adapte, et vous en changez d'un mot. Pas de Claude ? ",
     modesNoteLink: "Posez votre question ici même", modesNote2: ", en français : la réponse est lue dans les textes, avec ses sources.",
     bandH2: "« Montre-moi le daf du jour. »",
     bandP: "Et une page de Vilna s'ouvre dans la conversation : la Guemara au centre, Rachi et Tossafot dépliables, la traduction au clic sur chaque segment. Sans référence, c'est le daf yomi qui s'ouvre.",
     bandAct1: "Ouvrir le daf en ligne", bandAct2: "Le limoud du jour",
-    lblC: "Mafteah — l'index des seize outils",
+    lblC: "Mafteah, l'index des seize outils",
     toc: [
       { to: "/install", t: "La méthode d'étude", d: "chargée avant toute réponse religieuse" },
-      { to: "/question", t: "Une question, en français", d: "sur le site, sans Claude — réponse lue dans les textes" },
+      { to: "/question", t: "Une question, en français", d: "sur le site, sans Claude : réponse lue dans les textes" },
       { to: "#modes", t: "Trois modes d'étude", d: "débutant · classique · avancé" },
       { to: "/install", t: "Havrouta", d: "le partenaire qui questionne" },
       { to: "/install", t: "Guide de paracha", d: "aliyot, mahloket, table de Chabbat" },
-      { to: "/daf", t: "Le daf — page de Vilna", d: "MCP App interactive, aussi en ligne" },
+      { to: "/daf", t: "Le daf, page de Vilna", d: "MCP App interactive, aussi en ligne" },
       { to: "/install", t: "Textes, commentateurs, recherche", d: "la bibliothèque Sefaria, vérifiable" },
       { to: "/install", t: "HebrewBooks en plein texte", d: "~50 000 seforim cherchés dans le texte" },
       { to: "/outils", t: "Zmanim et Chabbat", d: "Paris, Marseille, Genève, Jérusalem…" },
       { to: "/outils", t: "Dates hébraïques", d: "conversion, fêtes, Rosh Hodesh" },
       { to: "/outils", t: "Guematria", d: "cinq méthodes, calcul exact" },
       { to: "/outils", t: "Nikoud", d: "vocalisation par le nakdan de Dicta" },
-      { to: "/chabbat", t: "Le mot de Chabbat", d: "le WhatsApp de la semaine — personnalisable dans les outils" },
-      { to: "/outils", t: "Fiche source", d: "hébreu, traduction, lien — pour WhatsApp" },
+      { to: "/chabbat", t: "Le mot de Chabbat", d: "le WhatsApp de la semaine, personnalisable dans les outils" },
+      { to: "/outils", t: "Fiche source", d: "hébreu, traduction, lien : pour WhatsApp" },
       { to: "/daily", t: "Le limoud du jour", d: "paracha, daf yomi, Rambam quotidien" },
       { to: "/chiourim", t: "Les chiourim du rav Attal", d: "les cours en vidéo, classés par thèmes" },
     ],
     shoutWord: "MAMASH", shoutHe: false,
-    shoutLine: "Mamash, ממש — « vraiment, réellement ». Et les initiales de Menahem Mendel Schneerson, le Rabbi de Loubavitch. Tout le site tient dans ce nom : du vrai texte, vraiment lu.",
-    nameline: "ממש · « vraiment » · les initiales du Rabbi — Menahem Mendel Schneerson",
+    shoutLine: "Mamash, ממש : « vraiment, réellement ». Et les initiales de Menahem Mendel Schneerson, le Rabbi de Loubavitch. Tout le site tient dans ce nom : du vrai texte, vraiment lu.",
+    nameline: "ממש · « vraiment » · les initiales du Rabbi · Menahem Mendel Schneerson",
     inviteH2: "Une URL à coller dans claude.ai, et l'étude <strong>change de nature</strong>.",
-    inviteAct1: "Installer maintenant", inviteAct2: "Code source — MIT",
-    inviteNote: "Gratuit, sans compte, sans collecte de données. S'accorde avec le MCP officiel de Sefaria — installez les deux : l'officiel pour la profondeur de la bibliothèque, Torah MCP pour la discipline de citation, la havrouta et HebrewBooks.",
+    inviteAct1: "Installer maintenant", inviteAct2: "Code source · MIT",
+    inviteNote: "Gratuit, sans compte, sans collecte de données. S'accorde avec le MCP officiel de Sefaria, installez les deux : l'officiel pour la profondeur de la bibliothèque, Torah MCP pour la discipline de citation, la havrouta et HebrewBooks.",
     fDaf: "Le daf en ligne", fOutils: "Outils", fInstall: "Installation", fDaily: "Limoud du jour", fPrivacy: "Confidentialité",
-    credits1: "Textes servis par l'API publique de Sefaria — licences indiquées dans chaque réponse. Vocalisation par le nakdan de Dicta, calendriers Hebcal.",
+    credits1: "Textes servis par l'API publique de Sefaria, licences indiquées dans chaque réponse. Vocalisation par le nakdan de Dicta, calendriers Hebcal.",
     credits2: "Indépendant de Sefaria et de hebrewbooks.org.",
   },
   en: {
-    title: "Mamash IA — source discipline for Claude",
+    title: "Mamash IA · source discipline for Claude",
     desc: "Claude quotes the Torah from the texts, never again from memory. Study method, chavruta, parashah guide, interactive Vilna page, Sefaria, HebrewBooks, zmanim, gematria. Free, no account.",
     chiourLab: "This week's shiur",
     chiourVoir: "All the shiurim",
     navMiel: "The honey sheet", navRh: "Rosh Hashana",
     badgeMielT: "The honey sheet",
-    badgeMielS: "one per guest — make yours",
-    maisonLab: "770 Eastern Parkway · Brooklyn — a real photograph",
+    badgeMielS: "one per guest, make yours",
+    maisonLab: "770 Eastern Parkway · Brooklyn, a real photograph",
     maisonT: "The house the cry comes from.",
-    maisonD: "From this brick house — 770, the Rebbe's study hall — came the watchword this site takes up: Torah with everyone, truly, <strong>ממש</strong>. The photograph is real. So is the discipline of sources.",
-    bibLab: "Yosef Karo Synagogue · Safed — a real photograph · photo Djampa, CC BY-SA 4.0",
+    maisonD: "From this brick house (770, the Rebbe's study hall), came the watchword this site takes up: Torah with everyone, truly, <strong>ממש</strong>. The photograph is real. So is the discipline of sources.",
+    bibLab: "Yosef Karo Synagogue · Safed, a real photograph · photo Djampa, CC BY-SA 4.0",
     bibT: "The books are real too.",
-    bibD: "In the Yosef Karo synagogue in Safed, the sefarim wait on their shelves. He wrote the <strong>Shulchan Arukh</strong> — the code this site opens and quotes, reference by reference, instead of reciting it from memory.",
+    bibD: "In the Yosef Karo synagogue in Safed, the sefarim wait on their shelves. He wrote the <strong>Shulchan Arukh</strong>, the code this site opens and quotes, reference by reference, instead of reciting it from memory.",
     grpSite: "On the site", navQuestion: "Ask a question", navDaf: "The daf", navOutils: "Tools", navDaily: "Today's learning", navChabbat: "Shabbat", navChiourim: "Shiurim", grpClaude: "In Claude", navInstall: "Install the MCP",
-    h1: `Torah <span class="no">from&nbsp;memory</span> — <strong>read in the texts</strong>.`,
-    deck: "Halakha and limud answers quoted from the Bible, the Talmud and their commentators — on the site in three languages, on WhatsApp every Friday, on video with Rav Attal, and in Claude with the whole library. Free, no account, no data collection.",
-    act1: "Ask a question", act2: "Install in Claude — 2 min",
-    debloque: "In Claude, the connector unlocks what the site doesn't have: the <b>chavruta</b> that questions you and makes you defend Rashi against Tosafot, the <b>Vilna-page daf</b> opened right in the conversation, the full <b>parashah guide</b>, source sheets — and continuous study, with no question limit. Sixteen tools, free.",
+    h1: `Torah <span class="no">from&nbsp;memory</span>, <strong>read in the texts</strong>.`,
+    deck: "Halakha and limud answers quoted from the Bible, the Talmud and their commentators, on the site in three languages, on WhatsApp every Friday, on video with Rav Attal, and in Claude with the whole library. Free, no account, no data collection.",
+    act1: "Ask a question", act2: "Install in Claude · 2 min",
+    debloque: "In Claude, the connector unlocks what the site doesn't have: the <b>chavruta</b> that questions you and makes you defend Rashi against Tosafot, the <b>Vilna-page daf</b> opened right in the conversation, the full <b>parashah guide</b>, source sheets, and continuous study, with no question limit. Sixteen tools, free.",
     demos: [
       { q: "“Why do we light two candles on Friday night?”",
-        a: "Two wicks: one for <strong>Zachor</strong>, “remember”, and one for <strong>Shamor</strong>, “keep” — the Torah's two formulations of Shabbat, joined in the light.",
+        a: "Two wicks: one for <strong>Zachor</strong>, “remember”, and one for <strong>Shamor</strong>, “keep” : the Torah's two formulations of Shabbat, joined in the light.",
         src: "Shulchan Arukh, Orach Chayim 263:1 · Exodus 20:8 · Deuteronomy 5:12" },
       { q: "“Why do we break a glass at a wedding?”",
-        a: "At his son's wedding feast, <strong>Mar son of Ravina</strong> saw the Sages growing too merry: he broke a cup worth four hundred zuz before them — “where there is rejoicing, there should be <strong>trembling</strong>.”",
+        a: "At his son's wedding feast, <strong>Mar son of Ravina</strong> saw the Sages growing too merry: he broke a cup worth four hundred zuz before them, “where there is rejoicing, there should be <strong>trembling</strong>.”",
         src: "Berakhot 30b–31a · Psalms 2:11" },
       { q: "“Where do the 613 mitzvot come from?”",
-        a: "Rabbi Simlai taught: <strong>365 prohibitions</strong> like the days of the solar year, <strong>248 positive commands</strong> like the limbs of the body — the whole year, the whole body.",
+        a: "Rabbi Simlai taught: <strong>365 prohibitions</strong> like the days of the solar year, <strong>248 positive commands</strong> like the limbs of the body, the whole year, the whole body.",
         src: "Makkot 23b · Deuteronomy 33:4" },
       { q: "“Where does the Torah forbid meat and milk?”",
-        a: "Three times it repeats “you shall not cook a kid in its mother's milk” — one for <strong>cooking</strong>, one for <strong>eating</strong>, one for <strong>benefit</strong>, the Gemara teaches.",
+        a: "Three times it repeats “you shall not cook a kid in its mother's milk”, one for <strong>cooking</strong>, one for <strong>eating</strong>, one for <strong>benefit</strong>, the Gemara teaches.",
         src: "Exodus 23:19 · Chullin 115b" },
     ],
     demoSrcLab: "Texts read",
-    demoTag: "Real answers — read on Sefaria",
+    demoTag: "Real answers, read on Sefaria",
     tuiles: [
-      { to: "/question", t: "Ask a question", d: "At your level — with the sources." },
-      { to: "/chabbat", t: "The Shabbat WhatsApp", d: "Friday's message — with its GIF." },
+      { to: "/question", t: "Ask a question", d: "At your level, with the sources." },
+      { to: "/chabbat", t: "The Shabbat WhatsApp", d: "Friday's message, with its GIF." },
       { to: "/chiourim", t: "The shiurim", d: "Rav Meir Attal's video classes." },
       { to: "/daf", t: "The daf", d: "The Vilna page, interactive and translated." },
     ],
     kezAria: "In brief", kezId: "in-brief",
-    fig1n: "6,600", fig1u: "titles", fig1t: "The Sefaria library, read live at the moment of the question: Tanakh, Mishnah, Talmud, Midrash, Rambam, Shulchan Arukh, responsa, chasidut — and their commentators.",
+    fig1n: "6,600", fig1u: "titles", fig1t: "The Sefaria library, read live at the moment of the question: Tanakh, Mishnah, Talmud, Midrash, Rambam, Shulchan Arukh, responsa, chasidut, and their commentators.",
     fig2n: "50,000", fig2u: "seforim", fig2t: "The HebrewBooks corpus, searched inside the text and no longer by title alone: the passage, its page, and the facsimile to open.",
-    fig3n: "0", fig3u: "invented references", fig3t: "The rule is simple: what has not been read is not quoted — and every quotation comes with the link to check it.",
-    vsNonH: "An ordinary AI <em>— answers from memory</em>",
-    vsNonP: "It crossed these texts once, during training, and reconstructs them: approximate references, recomposed quotations, sometimes invented outright — with the same confidence in both cases, and without ever saying what it did not open.",
-    vsYesH: "Mamash IA <em>— opens the book</em>",
-    vsYesP: "The question triggers a reading: the text is opened in the Sefaria edition, quoted as it is written, with its exact reference, linked to its commentators and to the texts that depend on it. Verifiable precision, one click away — and, when a source is missing, the answer says so.",
-    lblA: "The manifesto, annotated in the margin", ariaInner: "Commentaries — inner column", ariaOuter: "Commentaries — outer column",
+    fig3n: "0", fig3u: "invented references", fig3t: "The rule is simple: what has not been read is not quoted, and every quotation comes with the link to check it.",
+    vsNonH: "An ordinary AI <em> · answers from memory</em>",
+    vsNonP: "It crossed these texts once, during training, and reconstructs them: approximate references, recomposed quotations, sometimes invented outright : with the same confidence in both cases, and without ever saying what it did not open.",
+    vsYesH: "Mamash IA <em> · opens the book</em>",
+    vsYesP: "The question triggers a reading: the text is opened in the Sefaria edition, quoted as it is written, with its exact reference, linked to its commentators and to the texts that depend on it. Verifiable precision, one click away : and, when a source is missing, the answer says so.",
+    lblA: "The manifesto, annotated in the margin", ariaInner: "Commentaries, inner column", ariaOuter: "Commentaries, outer column",
     gMethode: { h: "The method", p: "Loaded before any religious answer: read, quote from the reading, flag the machloket, never fabricate a reference.", try: "“What does the Gemara say about lost objects? Quote the sugya.”" },
     gHavrouta: { h: "The chavruta", p: "Claude questions instead of answering: one kushya at a time, Rashi to defend against Tosafot, a recap of the chiddushim.", try: "“Let's study Berakhot 2a in chavruta.”" },
     gParacha: { h: "The parashah guide", p: "A thread aliyah by aliyah, three questions from the text settled by two commentators who disagree, the echo of the haftarah, questions for the table.", try: "“Prepare the parashah for me.”" },
     gMemoire: { h: "Why it matters", p: "An approximate quotation is a false quotation. The discipline of the text is not a luxury: it is the condition of limud." },
     gQuotidien: { h: "Everyday", p: "Zmanim and Shabbat times, Hebrew dates, exact gematria, nikkud (Dicta), a source sheet ready for WhatsApp.", link: "Usable online, no installation" },
-    gModes: { h: "Three modes", p: "Beginner, classic, advanced — the register changes, the source discipline never does. Claude guesses your level from your question, and you switch modes with a word.", try: "“I know nothing about this, explain it simply.”", link: "Ask a question on the site, without Claude" },
-    gSources: { h: "The sources", p: "Texts, commentators and Sefaria search — licences displayed — and full-text search of the HebrewBooks corpus (~50,000 OCR'd seforim).", link: "Works alongside Sefaria's official MCP" },
-    guf1: `Assistants answer Torah questions <mark data-ref="memoire">from memory</mark> — with the confidence of one who has not opened the book. Mamash IA reverses the gesture: before any answer, your assistant loads <mark data-ref="methode">a study method</mark> that obliges it to read the text, to quote it as it is written, and to say where to study it.`,
-    guf2: `Because one does not learn alone, it also knows how to become <mark data-ref="havrouta">a chavruta partner</mark> — the one who asks the questions rather than answering them — and to prepare <mark data-ref="paracha">the week's parashah</mark> like a worksite: aliyah by aliyah, machloket included.`,
-    guf3: `And because study lives inside a Jewish day, it carries <mark data-ref="quotidien">the everyday tools</mark> — zmanim, dates, gematria, nikkud, source sheets to share — and <mark data-ref="sources">the whole library</mark>: Sefaria to read and connect, HebrewBooks to study from the scanned page.`,
+    gModes: { h: "Three modes", p: "Beginner, classic, advanced : the register changes, the source discipline never does. Claude guesses your level from your question, and you switch modes with a word.", try: "“I know nothing about this, explain it simply.”", link: "Ask a question on the site, without Claude" },
+    gSources: { h: "The sources", p: "Texts, commentators and Sefaria search (licences displayed), and full-text search of the HebrewBooks corpus (~50,000 OCR'd seforim).", link: "Works alongside Sefaria's official MCP" },
+    guf1: `Assistants answer Torah questions <mark data-ref="memoire">from memory</mark>, with the confidence of one who has not opened the book. Mamash IA reverses the gesture: before any answer, your assistant loads <mark data-ref="methode">a study method</mark> that obliges it to read the text, to quote it as it is written, and to say where to study it.`,
+    guf2: `Because one does not learn alone, it also knows how to become <mark data-ref="havrouta">a chavruta partner</mark> (the one who asks the questions rather than answering them), and to prepare <mark data-ref="paracha">the week's parashah</mark> like a worksite: aliyah by aliyah, machloket included.`,
+    guf3: `And because study lives inside a Jewish day, it carries <mark data-ref="quotidien">the everyday tools</mark> (zmanim, dates, gematria, nikkud, source sheets to share), and <mark data-ref="sources">the whole library</mark>: Sefaria to read and connect, HebrewBooks to study from the scanned page.`,
     guf4: `And because the Torah does not belong to scholars alone, it speaks <mark data-ref="modes">to each at their level</mark>: everything in plain English and every word explained for the beginner, the source in the original language and the lomdus for the one who has mastered it.`,
-    lblB: "Three modes — to each at their level",
-    mDeb: { h: "Beginner", who: "No religious background, or no Hebrew.", p: "Everything in English. No Hebrew word without its translation, context before the answer, one idea at a time — and no question ever judged naive.", try: "“What is halakha, exactly?”" },
-    mCla: { h: "Classic", who: "Basic background, Hebrew with translation.", p: "Bilingual: the source, then its translation — English for the Bible. Common terms assumed known, standard references, machloket flagged. The default mode.", try: "“What does Rashi say on this verse?”" },
+    lblB: "Three modes, to each at their level",
+    mDeb: { h: "Beginner", who: "No religious background, or no Hebrew.", p: "Everything in English. No Hebrew word without its translation, context before the answer, one idea at a time, and no question ever judged naive.", try: "“What is halakha, exactly?”" },
+    mCla: { h: "Classic", who: "Basic background, Hebrew with translation.", p: "Bilingual: the source, then its translation. English for the Bible. Common terms assumed known, standard references, machloket flagged. The default mode.", try: "“What does Rashi say on this verse?”" },
     mAv: { h: "Advanced", who: "The beit midrash.", p: "Source in the original language, terminology without gloss, rishonim and poskim, girsaot when they weigh, nafka mina, lomdus. Maximum density, nothing smoothed over.", try: "“Shitat ha-Rambam against Tosafot here?”" },
-    modesNote1: "One engine, one rigour: the texts are always actually read and quoted exactly. Only the register adapts — and you change it with a word. No Claude? ",
+    modesNote1: "One engine, one rigour: the texts are always actually read and quoted exactly. Only the register adapts, and you change it with a word. No Claude? ",
     modesNoteLink: "Ask your question right here", modesNote2: ", in English: the answer is read in the texts, with its sources.",
     bandH2: "“Show me today's daf.”",
     bandP: "And a Vilna page opens in the conversation: the Gemara in the centre, Rashi and Tosafot unfoldable, the translation one click away on each segment. Without a reference, it is the daf yomi that opens.",
     bandAct1: "Open the daf online", bandAct2: "Today's learning",
-    lblC: "Mafteach — the index of the sixteen tools",
+    lblC: "Mafteach, the index of the sixteen tools",
     toc: [
       { to: "/install", t: "The study method", d: "loaded before any religious answer" },
-      { to: "/question", t: "A question, in English", d: "on the site, without Claude — answer read in the texts" },
+      { to: "/question", t: "A question, in English", d: "on the site, without Claude : answer read in the texts" },
       { to: "#modes", t: "Three study modes", d: "beginner · classic · advanced" },
       { to: "/install", t: "Chavruta", d: "the partner who questions" },
       { to: "/install", t: "Parashah guide", d: "aliyot, machloket, Shabbat table" },
-      { to: "/daf", t: "The daf — Vilna page", d: "interactive MCP App, also online" },
+      { to: "/daf", t: "The daf, Vilna page", d: "interactive MCP App, also online" },
       { to: "/install", t: "Texts, commentators, search", d: "the Sefaria library, verifiable" },
       { to: "/install", t: "HebrewBooks full text", d: "~50,000 seforim searched inside the text" },
       { to: "/outils", t: "Zmanim and Shabbat", d: "London, New York, Paris, Jerusalem…" },
       { to: "/outils", t: "Hebrew dates", d: "conversion, festivals, Rosh Chodesh" },
       { to: "/outils", t: "Gematria", d: "five methods, exact calculation" },
       { to: "/outils", t: "Nikkud", d: "vocalisation by Dicta's nakdan" },
-      { to: "/chabbat", t: "The Shabbat note", d: "the weekly WhatsApp — personalizable in the tools" },
-      { to: "/outils", t: "Source sheet", d: "Hebrew, translation, link — for WhatsApp" },
+      { to: "/chabbat", t: "The Shabbat note", d: "the weekly WhatsApp, personalizable in the tools" },
+      { to: "/outils", t: "Source sheet", d: "Hebrew, translation, link : for WhatsApp" },
       { to: "/daily", t: "Today's learning", d: "parashah, daf yomi, daily Rambam" },
       { to: "/chiourim", t: "Rav Attal's shiurim", d: "video classes (in French), by theme" },
     ],
     shoutWord: "MAMASH", shoutHe: false,
-    shoutLine: "Mamash, ממש — “really, truly”. And the initials of Menachem Mendel Schneerson, the Lubavitcher Rebbe. The whole site fits in that name: real texts, truly read.",
-    nameline: "ממש · “truly” · the Rebbe's initials — Menachem Mendel Schneerson",
+    shoutLine: "Mamash, ממש : “really, truly”. And the initials of Menachem Mendel Schneerson, the Lubavitcher Rebbe. The whole site fits in that name: real texts, truly read.",
+    nameline: "ממש · “truly” · the Rebbe's initials · Menachem Mendel Schneerson",
     inviteH2: "One URL to paste into claude.ai, and study <strong>changes in nature</strong>.",
-    inviteAct1: "Install now", inviteAct2: "Source code — MIT",
-    inviteNote: "Free, no account, no data collection. Works alongside Sefaria's official MCP — install both: the official one for the depth of the library, Torah MCP for citation discipline, chavruta and HebrewBooks.",
+    inviteAct1: "Install now", inviteAct2: "Source code · MIT",
+    inviteNote: "Free, no account, no data collection. Works alongside Sefaria's official MCP, install both: the official one for the depth of the library, Torah MCP for citation discipline, chavruta and HebrewBooks.",
     fDaf: "The daf online", fOutils: "Tools", fInstall: "Installation", fDaily: "Today's learning", fPrivacy: "Privacy",
-    credits1: "Texts served by Sefaria's public API — licences indicated in each answer. Vocalisation by Dicta's nakdan, calendars by Hebcal.",
+    credits1: "Texts served by Sefaria's public API, licences indicated in each answer. Vocalisation by Dicta's nakdan, calendars by Hebcal.",
     credits2: "Independent of Sefaria and of hebrewbooks.org.",
   },
   he: {
-    title: "Mamash IA — משמעת מקורות ל-Claude",
+    title: "Mamash IA · משמעת מקורות ל-Claude",
     desc: "Claude מצטט את התורה מתוך הטקסטים, לעולם לא מהזיכרון. שיטת לימוד, חברותא, מדריך לפרשה, דף וילנא אינטראקטיבי, ספריא, HebrewBooks, זמנים, גימטריה. חינם, בלי חשבון.",
     chiourLab: "השיעור של השבוע",
     chiourVoir: "כל השיעורים",
     navMiel: "דף הדבש", navRh: "ראש השנה",
     badgeMielT: "דף הדבש",
-    badgeMielS: "אחד לכל אורח — צרו את שלכם",
-    maisonLab: "איסטרן פארקוויי 770 · ברוקלין — צילום אמיתי",
+    badgeMielS: "אחד לכל אורח, צרו את שלכם",
+    maisonLab: "איסטרן פארקוויי 770 · ברוקלין, צילום אמיתי",
     maisonT: "הבית שממנו בא הקול.",
-    maisonD: "מהבית הזה — 770, בית מדרשו של הרבי — יצאה הקריאה שהאתר נושא: תורה עם כל אחד, באמת, <strong>ממש</strong>. הצילום אמיתי. וכך גם משמעת המקורות.",
-    bibLab: "בית הכנסת יוסף קארו · צפת — צילום אמיתי · צילום Djampa, CC BY-SA 4.0",
+    maisonD: "מהבית הזה (770, בית מדרשו של הרבי) יצאה הקריאה שהאתר נושא: תורה עם כל אחד, באמת, <strong>ממש</strong>. הצילום אמיתי. וכך גם משמעת המקורות.",
+    bibLab: "בית הכנסת יוסף קארו · צפת, צילום אמיתי · צילום Djampa, CC BY-SA 4.0",
     bibT: "גם הספרים אמיתיים.",
-    bibD: "בבית הכנסת יוסף קארו בצפת ממתינים הספרים על מדפיהם. הוא מחבר <strong>השולחן ערוך</strong> — הקוד שהאתר פותח ומצטט, מראה מקום אחרי מראה מקום, במקום לדקלם מן הזיכרון.",
+    bibD: "בבית הכנסת יוסף קארו בצפת ממתינים הספרים על מדפיהם. הוא מחבר <strong>השולחן ערוך</strong>, הקוד שהאתר פותח ומצטט, מראה מקום אחרי מראה מקום, במקום לדקלם מן הזיכרון.",
     grpSite: "באתר", navQuestion: "שאלה", navDaf: "הדף", navOutils: "כלים", navDaily: "הלימוד היומי", navChabbat: "שבת", navChiourim: "שיעורים", grpClaude: "ב-Claude", navInstall: "התקנת ה-MCP",
-    h1: `תורה <span class="no">מהזיכרון</span> — <strong>נקראת מתוך הטקסטים</strong>.`,
-    deck: "תשובות בהלכה ובלימוד, מצוטטות מהתנ\"ך, מהתלמוד וממפרשיהם — באתר בשלוש שפות, בוואטסאפ בכל יום שישי, בווידאו עם הרב אטל, וב-Claude עם הספרייה כולה. חינם, בלי חשבון, בלי איסוף נתונים.",
-    act1: "לשאול שאלה", act2: "התקנה ב-Claude — 2 דקות",
-    debloque: "ב-Claude המחבר פותח את מה שאין באתר: ה<b>חברותא</b> ששואלת אתכם ומעמידה אתכם להגן על רש\"י מול תוספות, <b>דף וילנא</b> שנפתח בתוך השיחה, <b>מדריך הפרשה</b> המלא, דפי מקורות — ולימוד רציף, בלי הגבלת שאלות. שישה־עשר כלים, חינם.",
+    h1: `תורה <span class="no">מהזיכרון</span>, <strong>נקראת מתוך הטקסטים</strong>.`,
+    deck: "תשובות בהלכה ובלימוד, מצוטטות מהתנ\"ך, מהתלמוד וממפרשיהם : באתר בשלוש שפות, בוואטסאפ בכל יום שישי, בווידאו עם הרב אטל, וב-Claude עם הספרייה כולה. חינם, בלי חשבון, בלי איסוף נתונים.",
+    act1: "לשאול שאלה", act2: "התקנה ב-Claude · 2 דקות",
+    debloque: "ב-Claude המחבר פותח את מה שאין באתר: ה<b>חברותא</b> ששואלת אתכם ומעמידה אתכם להגן על רש\"י מול תוספות, <b>דף וילנא</b> שנפתח בתוך השיחה, <b>מדריך הפרשה</b> המלא, דפי מקורות : ולימוד רציף, בלי הגבלת שאלות. שישה־עשר כלים, חינם.",
     demos: [
       { q: "«למה מדליקים שני נרות בערב שבת?»",
-        a: "שתי פתילות: אחת כנגד <strong>זכור</strong> ואחת כנגד <strong>שמור</strong> — שתי לשונות השבת בתורה, מתאחדות באור.",
+        a: "שתי פתילות: אחת כנגד <strong>זכור</strong> ואחת כנגד <strong>שמור</strong>, שתי לשונות השבת בתורה, מתאחדות באור.",
         src: "שולחן ערוך, אורח חיים רסג:א · שמות כ, ח · דברים ה, יב" },
       { q: "«למה שוברים כוס בחתונה?»",
-        a: "במשתה בנו ראה <strong>מר בריה דרבינא</strong> את החכמים שמחים יותר מדי: הביא כוס יקרה בת ארבע מאות זוז ושבר לפניהם — «במקום גילה שם תהא <strong>רעדה</strong>».",
+        a: "במשתה בנו ראה <strong>מר בריה דרבינא</strong> את החכמים שמחים יותר מדי: הביא כוס יקרה בת ארבע מאות זוז ושבר לפניהם, «במקום גילה שם תהא <strong>רעדה</strong>».",
         src: "ברכות ל ב–לא א · תהלים ב, יא" },
       { q: "«מניין תרי\"ג מצוות?»",
-        a: "דרש רבי שמלאי: <strong>שס\"ה לאוין</strong> כמניין ימות החמה, <strong>רמ\"ח עשה</strong> כנגד איבריו של אדם — השנה כולה, הגוף כולו.",
+        a: "דרש רבי שמלאי: <strong>שס\"ה לאוין</strong> כמניין ימות החמה, <strong>רמ\"ח עשה</strong> כנגד איבריו של אדם, השנה כולה, הגוף כולו.",
         src: "מכות כג ב · דברים לג, ד" },
       { q: "«היכן אוסרת התורה בשר בחלב?»",
-        a: "שלוש פעמים נאמר «לא תבשל גדי בחלב אמו» — אחת ל<strong>בישול</strong>, אחת ל<strong>אכילה</strong>, אחת ל<strong>הנאה</strong>, מלמדת הגמרא.",
+        a: "שלוש פעמים נאמר «לא תבשל גדי בחלב אמו», אחת ל<strong>בישול</strong>, אחת ל<strong>אכילה</strong>, אחת ל<strong>הנאה</strong>, מלמדת הגמרא.",
         src: "שמות כג, יט · חולין קטו ב" },
     ],
     demoSrcLab: "טקסטים שנקראו",
-    demoTag: "תשובות אמיתיות — נקראו בספריא",
+    demoTag: "תשובות אמיתיות, נקראו בספריא",
     tuiles: [
-      { to: "/question", t: "שאלה", d: "ברמה שלכם — עם המקורות." },
-      { to: "/chabbat", t: "הוואטסאפ של שבת", d: "מסר יום שישי — והגיף שמתלווה." },
+      { to: "/question", t: "שאלה", d: "ברמה שלכם, עם המקורות." },
+      { to: "/chabbat", t: "הוואטסאפ של שבת", d: "מסר יום שישי, והגיף שמתלווה." },
       { to: "/chiourim", t: "השיעורים", d: "שיעורי הווידאו של הרב מאיר אטל." },
       { to: "/daf", t: "הדף", d: "דף וילנא, אינטראקטיבי ומתורגם." },
     ],
     kezAria: "בשתי מילים", kezId: "bishtei-milim",
-    fig1n: "6,600", fig1u: "כותרים", fig1t: "ספריית ספריא, נקראת בזמן אמת ברגע השאלה: תנ\"ך, משנה, תלמוד, מדרש, רמב\"ם, שולחן ערוך, שו\"ת, חסידות — ומפרשיהם.",
+    fig1n: "6,600", fig1u: "כותרים", fig1t: "ספריית ספריא, נקראת בזמן אמת ברגע השאלה: תנ\"ך, משנה, תלמוד, מדרש, רמב\"ם, שולחן ערוך, שו\"ת, חסידות : ומפרשיהם.",
     fig2n: "50,000", fig2u: "ספרים", fig2t: "אוצר HebrewBooks, בחיפוש בתוך הטקסט ולא רק לפי כותר: הקטע, העמוד, והדף הסרוק.",
-    fig3n: "0", fig3u: "מקורות בדויים", fig3t: "הכלל פשוט: מה שלא נקרא — לא מצוטט. וכל ציטוט מגיע עם קישור לבדיקה.",
-    vsNonH: "AI רגיל <em>— עונה מהזיכרון</em>",
-    vsNonP: "הוא נתקל בטקסטים האלה פעם אחת, באימון, ומשחזר אותם: מראי מקומות משוערים, ציטוטים מורכבים מחדש ולעתים בדויים לגמרי — באותו ביטחון בשני המקרים, ובלי לומר לעולם מה לא פתח.",
-    vsYesH: "Mamash IA <em>— פותח את הספר</em>",
-    vsYesP: "השאלה מפעילה קריאה: הטקסט נפתח במהדורת ספריא, מצוטט כלשונו, עם מראה מקום מדויק, מקושר למפרשיו ולטקסטים התלויים בו. דיוק שאפשר לבדוק בלחיצה — וכשמקור חסר, התשובה אומרת זאת.",
-    lblA: "המניפסט, עם הערות בשוליים", ariaInner: "פירושים — הטור הפנימי", ariaOuter: "פירושים — הטור החיצוני",
+    fig3n: "0", fig3u: "מקורות בדויים", fig3t: "הכלל פשוט: מה שלא נקרא : לא מצוטט. וכל ציטוט מגיע עם קישור לבדיקה.",
+    vsNonH: "AI רגיל <em> · עונה מהזיכרון</em>",
+    vsNonP: "הוא נתקל בטקסטים האלה פעם אחת, באימון, ומשחזר אותם: מראי מקומות משוערים, ציטוטים מורכבים מחדש ולעתים בדויים לגמרי, באותו ביטחון בשני המקרים, ובלי לומר לעולם מה לא פתח.",
+    vsYesH: "Mamash IA <em> · פותח את הספר</em>",
+    vsYesP: "השאלה מפעילה קריאה: הטקסט נפתח במהדורת ספריא, מצוטט כלשונו, עם מראה מקום מדויק, מקושר למפרשיו ולטקסטים התלויים בו. דיוק שאפשר לבדוק בלחיצה, וכשמקור חסר, התשובה אומרת זאת.",
+    lblA: "המניפסט, עם הערות בשוליים", ariaInner: "פירושים, הטור הפנימי", ariaOuter: "פירושים, הטור החיצוני",
     gMethode: { h: "השיטה", p: "נטענת לפני כל תשובה תורנית: לקרוא, לצטט מתוך הקריאה, לציין מחלוקות, לעולם לא לבדות מראה מקום.", try: "«מה אומרת הגמרא על אבדה? צטט את הסוגיה.»" },
     gHavrouta: { h: "החברותא", p: "Claude מקשה במקום לענות: קושיה אחת בכל פעם, רש\"י שיש להגן עליו מפני תוספות, סיכום החידושים.", try: "«נלמד ברכות ב ע\"א בחברותא.»" },
     gParacha: { h: "מדריך הפרשה", p: "חוט מנחה לפי עליות, שלוש שאלות מן הכתוב שמוכרעות בידי שני מפרשים חולקים, הד ההפטרה, שאלות לשולחן.", try: "«הכן לי את הפרשה.»" },
     gMemoire: { h: "למה זה חמור", p: "ציטוט משוער הוא ציטוט שגוי. משמעת הטקסט אינה מותרות: היא תנאי הלימוד." },
     gQuotidien: { h: "היומיום", p: "זמני היום וזמני שבת, תאריכים עבריים, גימטריה מדויקת, ניקוד (דיקטה), דף מקורות מוכן לוואטסאפ.", link: "לשימוש מקוון, בלי התקנה" },
-    gModes: { h: "שלושה מצבים", p: "מתחיל, קלאסי, מתקדם — המשלב משתנה, משמעת המקורות לעולם לא. Claude מנחש את רמתכם מתוך השאלה, ואתם מחליפים מצב במילה אחת.", try: "«אני לא מבין בזה כלום, תסביר לי בפשטות.»", link: "לשאול שאלה באתר, בלי Claude" },
-    gSources: { h: "המקורות", p: "טקסטים, מפרשים וחיפוש בספריא — הרישיונות מוצגים — וחיפוש בטקסט המלא של אוצר HebrewBooks (כ-50,000 ספרים סרוקים).", link: "משתלב עם ה-MCP הרשמי של ספריא" },
-    guf1: `עוזרי AI עונים על שאלות בתורה <mark data-ref="memoire">מהזיכרון</mark> — בביטחון של מי שלא פתח את הספר. Mamash IA הופך את המהלך: לפני כל תשובה, העוזר שלכם טוען <mark data-ref="methode">שיטת לימוד</mark> שמחייבת אותו לקרוא את הטקסט, לצטט אותו כלשונו, ולומר היכן ללמוד אותו.`,
-    guf2: `ומכיוון שאין לומדים לבד, הוא יודע גם להיות <mark data-ref="havrouta">חברותא</mark> — זה ששואל את השאלות במקום לענות עליהן — ולהכין את <mark data-ref="paracha">פרשת השבוע</mark> כמו אתר בנייה: עלייה אחר עלייה, כולל המחלוקות.`,
-    guf3: `ומכיוון שהלימוד חי בתוך יום יהודי, הוא נושא <mark data-ref="quotidien">את כלי היומיום</mark> — זמנים, תאריכים, גימטריה, ניקוד, דפי מקורות לשיתוף — ו<mark data-ref="sources">את הספרייה כולה</mark>: ספריא לקריאה ולקישור, HebrewBooks ללימוד מן הדף הסרוק.`,
+    gModes: { h: "שלושה מצבים", p: "מתחיל, קלאסי, מתקדם : המשלב משתנה, משמעת המקורות לעולם לא. Claude מנחש את רמתכם מתוך השאלה, ואתם מחליפים מצב במילה אחת.", try: "«אני לא מבין בזה כלום, תסביר לי בפשטות.»", link: "לשאול שאלה באתר, בלי Claude" },
+    gSources: { h: "המקורות", p: "טקסטים, מפרשים וחיפוש בספריא (הרישיונות מוצגים) וחיפוש בטקסט המלא של אוצר HebrewBooks (כ-50,000 ספרים סרוקים).", link: "משתלב עם ה-MCP הרשמי של ספריא" },
+    guf1: `עוזרי AI עונים על שאלות בתורה <mark data-ref="memoire">מהזיכרון</mark>, בביטחון של מי שלא פתח את הספר. Mamash IA הופך את המהלך: לפני כל תשובה, העוזר שלכם טוען <mark data-ref="methode">שיטת לימוד</mark> שמחייבת אותו לקרוא את הטקסט, לצטט אותו כלשונו, ולומר היכן ללמוד אותו.`,
+    guf2: `ומכיוון שאין לומדים לבד, הוא יודע גם להיות <mark data-ref="havrouta">חברותא</mark> (זה ששואל את השאלות במקום לענות עליהן) ולהכין את <mark data-ref="paracha">פרשת השבוע</mark> כמו אתר בנייה: עלייה אחר עלייה, כולל המחלוקות.`,
+    guf3: `ומכיוון שהלימוד חי בתוך יום יהודי, הוא נושא <mark data-ref="quotidien">את כלי היומיום</mark> (זמנים, תאריכים, גימטריה, ניקוד, דפי מקורות לשיתוף) ו<mark data-ref="sources">את הספרייה כולה</mark>: ספריא לקריאה ולקישור, HebrewBooks ללימוד מן הדף הסרוק.`,
     guf4: `ומכיוון שהתורה אינה שייכת לחכמים בלבד, הוא מדבר <mark data-ref="modes">אל כל אחד לפי רמתו</mark>: הכול בעברית פשוטה וכל מונח מוסבר למי שמתחיל, המקור בלשונו והלמדנות למי ששולט בו.`,
-    lblB: "שלושה מצבים — לכל אחד לפי רמתו",
-    mDeb: { h: "מתחיל", who: "בלי רקע דתי, או בלי עברית של בית המדרש.", p: "הכול בעברית פשוטה. אף מונח תורני בלי הסבר, ההקשר לפני התשובה, רעיון אחד בכל פעם — ואף שאלה אינה נחשבת תמימה.", try: "«מה זה בעצם הלכה?»" },
+    lblB: "שלושה מצבים, לכל אחד לפי רמתו",
+    mDeb: { h: "מתחיל", who: "בלי רקע דתי, או בלי עברית של בית המדרש.", p: "הכול בעברית פשוטה. אף מונח תורני בלי הסבר, ההקשר לפני התשובה, רעיון אחד בכל פעם : ואף שאלה אינה נחשבת תמימה.", try: "«מה זה בעצם הלכה?»" },
     mCla: { h: "קלאסי", who: "רקע בסיסי, המקורות עם ביאור.", p: "דו-לשוני: המקור, ואז ביאורו בעברית בת ימינו. מונחים שגורים נחשבים ידועים, מראי מקומות סטנדרטיים, מחלוקות מצוינות. מצב ברירת המחדל.", try: "«מה אומר רש\"י על הפסוק הזה?»" },
     mAv: { h: "מתקדם", who: "בית המדרש.", p: "המקור בלשונו, מינוח בלי ביאור, ראשונים ופוסקים, גרסאות כשהן מכריעות, נפקא מינה, למדנות. צפיפות מרבית, שום דבר לא מוחלק.", try: "«שיטת הרמב\"ם מול תוספות כאן?»" },
-    modesNote1: "מנוע אחד, קפדנות אחת: הטקסטים תמיד נקראים באמת ומצוטטים במדויק. רק המשלב מסתגל — ואתם מחליפים אותו במילה אחת. אין לכם Claude? ",
+    modesNote1: "מנוע אחד, קפדנות אחת: הטקסטים תמיד נקראים באמת ומצוטטים במדויק. רק המשלב מסתגל, ואתם מחליפים אותו במילה אחת. אין לכם Claude? ",
     modesNoteLink: "שאלו את שאלתכם כאן", modesNote2: ", בעברית: התשובה נקראת מתוך הטקסטים, עם מקורותיה.",
     bandH2: "«הראה לי את הדף היומי.»",
-    bandP: "ודף וילנא נפתח בתוך השיחה: הגמרא במרכז, רש\"י ותוספות נפתחים בלחיצה, התרגום בלחיצה על כל קטע. בלי מראה מקום — נפתח הדף היומי.",
+    bandP: "ודף וילנא נפתח בתוך השיחה: הגמרא במרכז, רש\"י ותוספות נפתחים בלחיצה, התרגום בלחיצה על כל קטע. בלי מראה מקום, נפתח הדף היומי.",
     bandAct1: "לפתוח את הדף באינטרנט", bandAct2: "הלימוד היומי",
-    lblC: "מפתח — אינדקס שישה־עשר הכלים",
+    lblC: "מפתח, אינדקס שישה־עשר הכלים",
     toc: [
       { to: "/install", t: "שיטת הלימוד", d: "נטענת לפני כל תשובה תורנית" },
-      { to: "/question", t: "שאלה, בעברית", d: "באתר, בלי Claude — תשובה שנקראת מתוך הטקסטים" },
+      { to: "/question", t: "שאלה, בעברית", d: "באתר, בלי Claude : תשובה שנקראת מתוך הטקסטים" },
       { to: "#modes", t: "שלושה מצבי לימוד", d: "מתחיל · קלאסי · מתקדם" },
       { to: "/install", t: "חברותא", d: "השותף שמקשה" },
       { to: "/install", t: "מדריך הפרשה", d: "עליות, מחלוקות, שולחן שבת" },
-      { to: "/daf", t: "הדף — דף וילנא", d: "MCP App אינטראקטיבית, גם באינטרנט" },
+      { to: "/daf", t: "הדף, דף וילנא", d: "MCP App אינטראקטיבית, גם באינטרנט" },
       { to: "/install", t: "טקסטים, מפרשים, חיפוש", d: "ספריית ספריא, ניתנת לבדיקה" },
       { to: "/install", t: "HebrewBooks בטקסט מלא", d: "כ-50,000 ספרים, חיפוש בתוך הטקסט" },
       { to: "/outils", t: "זמנים ושבת", d: "ירושלים, תל אביב, פריז, ניו יורק…" },
       { to: "/outils", t: "תאריכים עבריים", d: "המרה, חגים, ראש חודש" },
       { to: "/outils", t: "גימטריה", d: "חמש שיטות, חישוב מדויק" },
       { to: "/outils", t: "ניקוד", d: "ניקוד בנקדן של דיקטה" },
-      { to: "/chabbat", t: "מילה לשבת", d: "הוואטסאפ השבועי — ניתן להתאמה בכלים" },
-      { to: "/outils", t: "דף מקורות", d: "עברית, תרגום, קישור — לוואטסאפ" },
+      { to: "/chabbat", t: "מילה לשבת", d: "הוואטסאפ השבועי, ניתן להתאמה בכלים" },
+      { to: "/outils", t: "דף מקורות", d: "עברית, תרגום, קישור : לוואטסאפ" },
       { to: "/daily", t: "הלימוד היומי", d: "פרשה, דף יומי, רמב\"ם יומי" },
       { to: "/chiourim", t: "השיעורים של הרב אטל", d: "שיעורי וידאו (בצרפתית), לפי נושאים" },
     ],
     shoutWord: "ממש", shoutHe: true,
-    shoutLine: "ממש — «באמת, לגמרי». וגם ראשי התיבות של מנחם מנדל שניאורסון, הרבי מליובאוויטש. כל האתר טמון בשם הזה: טקסט אמיתי, שנקרא באמת.",
-    nameline: "«באמת, ממש» · ראשי התיבות של הרבי — מנחם מנדל שניאורסון",
+    shoutLine: "ממש, «באמת, לגמרי». וגם ראשי התיבות של מנחם מנדל שניאורסון, הרבי מליובאוויטש. כל האתר טמון בשם הזה: טקסט אמיתי, שנקרא באמת.",
+    nameline: "«באמת, ממש» · ראשי התיבות של הרבי : מנחם מנדל שניאורסון",
     inviteH2: "כתובת אחת להדביק ב-claude.ai, והלימוד <strong>משנה את טבעו</strong>.",
-    inviteAct1: "להתקין עכשיו", inviteAct2: "קוד מקור — MIT",
-    inviteNote: "חינם, בלי חשבון, בלי איסוף נתונים. משתלב עם ה-MCP הרשמי של ספריא — התקינו את שניהם: הרשמי לעומק הספרייה, Torah MCP למשמעת הציטוט, לחברותא ול-HebrewBooks.",
+    inviteAct1: "להתקין עכשיו", inviteAct2: "קוד מקור · MIT",
+    inviteNote: "חינם, בלי חשבון, בלי איסוף נתונים. משתלב עם ה-MCP הרשמי של ספריא, התקינו את שניהם: הרשמי לעומק הספרייה, Torah MCP למשמעת הציטוט, לחברותא ול-HebrewBooks.",
     fDaf: "הדף באינטרנט", fOutils: "כלים", fInstall: "התקנה", fDaily: "הלימוד היומי", fPrivacy: "פרטיות",
-    credits1: "הטקסטים מוגשים דרך ה-API הציבורי של ספריא — הרישיונות מצוינים בכל תשובה. ניקוד בנקדן של דיקטה, לוחות Hebcal.",
+    credits1: "הטקסטים מוגשים דרך ה-API הציבורי של ספריא, הרישיונות מצוינים בכל תשובה. ניקוד בנקדן של דיקטה, לוחות Hebcal.",
     credits2: "הפרויקט עצמאי ואינו קשור לספריא או ל-hebrewbooks.org.",
   },
 };
@@ -743,7 +743,7 @@ ${GA}
 
   /* ---- section daf : le manifeste commenté ---- */
   .amud { padding:9rem 4vw 5rem; max-width:1200px; margin:0 auto; }
-  /* En deux mots — chiffres + face-à-face */
+  /* En deux mots, chiffres + face-à-face */
   .kez { max-width:1200px; margin:0 auto; padding:5rem 4vw 2rem; }
   .kez .figs { display:grid; grid-template-columns:repeat(3,1fr); gap:2.5rem 3rem; border-top:2px solid var(--ink); border-bottom:1px solid var(--ink-15); padding:2.4rem 0 2.2rem; }
   .kez .fig b { display:inline-block; background:linear-gradient(transparent 68%, var(--pop) 68% 94%, transparent 94%); padding:0 .12em; font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(2.6rem, 5vw, 4.2rem); line-height:1; letter-spacing:-.03em; font-variant-numeric:tabular-nums; }
@@ -892,7 +892,7 @@ ${GA}
       <img class="sceau" src="/icon.png" alt="">
       <figcaption class="dq">${s.demos[0].q}</figcaption>
       <p class="da">${s.demos[0].a}</p>
-      <p class="ds"><span>${s.demoSrcLab}</span> — ${s.demos[0].src}</p>
+      <p class="ds"><span>${s.demoSrcLab}</span> · ${s.demos[0].src}</p>
       <span class="dtag">${s.demoTag}</span>
     </figure>
   </div>
@@ -1065,7 +1065,7 @@ ${chiour ? `<section class="chiousem rv" aria-label="${s.chiourLab}">
         di = (di + 1) % demos.length;
         carte.querySelector(".dq").innerHTML = demos[di].q;
         carte.querySelector(".da").innerHTML = demos[di].a;
-        carte.querySelector(".ds").innerHTML = "<span>" + srcLab + "</span> — " + demos[di].src;
+        carte.querySelector(".ds").innerHTML = "<span>" + srcLab + "</span>, " + demos[di].src;
         carte.classList.remove("sw");
       }, 470);
     }, 8500);
@@ -1092,7 +1092,7 @@ type InstallStrings = {
 
 const INSTALL_T: Record<Lang, InstallStrings> = {
   fr: {
-    title: "Installation — Mamash IA",
+    title: "Installation · Mamash IA",
     desc: "Installer Torah MCP dans claude.ai, Claude Code ou tout client MCP : le guide technique complet.",
     back: "← l'accueil",
     h1: "L'installation, en deux minutes.",
@@ -1100,17 +1100,17 @@ const INSTALL_T: Record<Lang, InstallStrings> = {
     lblA: "claude.ai",
     step1: `Ouvrez <a href="https://claude.ai/settings/connectors">claude.ai → Settings → Connectors</a>`,
     step2: `Cliquez sur <strong>Add custom connector</strong>`,
-    step3: "Collez cette URL, nommez-le « Torah », validez — l'app mobile suit toute seule :",
+    step3: "Collez cette URL, nommez-le « Torah », validez : l'app mobile suit toute seule :",
     ccIntro: "Dans un terminal (pas dans la conversation Claude) :",
-    ccVerif: `Vérifiez ensuite avec <code>claude mcp list</code> — la ligne doit se terminer par <strong>✔ Connected</strong>.`,
+    ccVerif: `Vérifiez ensuite avec <code>claude mcp list</code>, la ligne doit se terminer par <strong>✔ Connected</strong>.`,
     ccPiege: `Le <code>https://</code> est indispensable : sans lui la commande est acceptée mais la connexion échoue.`,
     vidLegende: "Trente secondes, les deux chemins, et les deux erreurs les plus fréquentes. Le son n'est pas nécessaire.",
     copier: "copier", copie: "copié",
     lblC: "Autres clients MCP",
-    pC: `Tout client compatible (transport HTTP streamable) fonctionne avec la même URL. Le serveur expose 16 outils en lecture seule, 5 prompts (<code>hebrewbooks</code>, <code>havrouta</code>, <code>paracha</code>, <code>debutant</code>, <code>avance</code>) et une MCP App — le visualiseur de daf.`,
+    pC: `Tout client compatible (transport HTTP streamable) fonctionne avec la même URL. Le serveur expose 16 outils en lecture seule, 5 prompts (<code>hebrewbooks</code>, <code>havrouta</code>, <code>paracha</code>, <code>debutant</code>, <code>avance</code>) et une MCP App, le visualiseur de daf.`,
     lblD: "Votre niveau",
-    pD: `Dites-le simplement au début de la conversation — « je débute, je ne lis pas l'hébreu » ou « mode avancé » — ou laissez Claude le déduire de votre question. Le tool <code>mode_etude</code> règle le registre (débutant / classique / avancé) sans rien changer à la discipline des sources ; vous en changez à tout moment.`,
-    lblE: "Accès sur invitation — optionnel",
+    pD: `Dites-le simplement au début de la conversation (« je débute, je ne lis pas l'hébreu » ou « mode avancé »), ou laissez Claude le déduire de votre question. Le tool <code>mode_etude</code> règle le registre (débutant / classique / avancé) sans rien changer à la discipline des sources ; vous en changez à tout moment.`,
+    lblE: "Accès sur invitation, optionnel",
     pE: `Par défaut le serveur est public. Pour un accès sur invitation, l'hébergeur pose le secret <code>BEARER_TOKENS</code> (un token par invité, séparés par des virgules) ; chacun utilise alors <code>https://…/&lt;token&gt;/mcp</code>, et l'on révoque en retirant le token.`,
     lblF: "Héberger votre propre instance",
     pF: `Le code est libre (MIT), sans aucun secret requis. Optionnel : <code>BEARER_TOKENS</code>. La recherche plein texte passe par hebrewbooks.ai, sans authentification.`,
@@ -1122,7 +1122,7 @@ const INSTALL_T: Record<Lang, InstallStrings> = {
     home: "Retour à l'accueil",
   },
   en: {
-    title: "Install — Mamash IA",
+    title: "Install · Mamash IA",
     desc: "Install Torah MCP in claude.ai, Claude Code or any MCP client: the complete technical guide.",
     back: "← home",
     h1: "Installation, in two minutes.",
@@ -1130,17 +1130,17 @@ const INSTALL_T: Record<Lang, InstallStrings> = {
     lblA: "claude.ai",
     step1: `Open <a href="https://claude.ai/settings/connectors">claude.ai → Settings → Connectors</a>`,
     step2: `Click <strong>Add custom connector</strong>`,
-    step3: "Paste this URL, name it “Torah”, confirm — the mobile app follows on its own:",
+    step3: "Paste this URL, name it “Torah”, confirm : the mobile app follows on its own:",
     ccIntro: "In a terminal (not in the Claude conversation):",
-    ccVerif: `Then check with <code>claude mcp list</code> — the line must end with <strong>✔ Connected</strong>.`,
+    ccVerif: `Then check with <code>claude mcp list</code>, the line must end with <strong>✔ Connected</strong>.`,
     ccPiege: `The <code>https://</code> is required: without it the command is accepted but the connection fails.`,
     vidLegende: "Thirty seconds, both routes, and the two most common mistakes. Sound is not required.",
     copier: "copy", copie: "copied",
     lblC: "Other MCP clients",
-    pC: `Any compatible client (streamable HTTP transport) works with the same URL. The server exposes 16 read-only tools, 5 prompts (<code>hebrewbooks</code>, <code>havrouta</code>, <code>paracha</code>, <code>debutant</code>, <code>avance</code>) and one MCP App — the daf viewer.`,
+    pC: `Any compatible client (streamable HTTP transport) works with the same URL. The server exposes 16 read-only tools, 5 prompts (<code>hebrewbooks</code>, <code>havrouta</code>, <code>paracha</code>, <code>debutant</code>, <code>avance</code>) and one MCP App, the daf viewer.`,
     lblD: "Your level",
-    pD: `Simply say so at the start of the conversation — “I'm a beginner, I don't read Hebrew” or “advanced mode” — or let Claude infer it from your question. The <code>mode_etude</code> tool sets the register (beginner / classic / advanced) without changing anything about the source discipline; you can switch at any time.`,
-    lblE: "Access by invitation — optional",
+    pD: `Simply say so at the start of the conversation (“I'm a beginner, I don't read Hebrew” or “advanced mode”), or let Claude infer it from your question. The <code>mode_etude</code> tool sets the register (beginner / classic / advanced) without changing anything about the source discipline; you can switch at any time.`,
+    lblE: "Access by invitation, optional",
     pE: `By default the server is public. For invitation-only access, the host sets the <code>BEARER_TOKENS</code> secret (one token per guest, comma-separated); each guest then uses <code>https://…/&lt;token&gt;/mcp</code>, and access is revoked by removing the token.`,
     lblF: "Host your own instance",
     pF: `The code is free (MIT), with no secret required. Optional: <code>BEARER_TOKENS</code>. Full-text search goes through hebrewbooks.ai, with no authentication.`,
@@ -1152,25 +1152,25 @@ const INSTALL_T: Record<Lang, InstallStrings> = {
     home: "Back to home",
   },
   he: {
-    title: "התקנה — Mamash IA",
+    title: "התקנה · Mamash IA",
     desc: "התקנת Torah MCP ב-claude.ai, ב-Claude Code או בכל לקוח MCP: המדריך הטכני המלא.",
     back: "→ לעמוד הבית",
     h1: "ההתקנה, בשתי דקות.",
     muted: "Torah MCP הוא שרת MCP מרוחק (HTTP streamable). חינם, בלי חשבון, בלי איסוף נתונים.",
     ccIntro: "בטרמינל (לא בשיחה עם Claude):",
-    ccVerif: `אחר כך בדקו עם <code>claude mcp list</code> — השורה צריכה להסתיים ב-<strong>✔ Connected</strong>.`,
+    ccVerif: `אחר כך בדקו עם <code>claude mcp list</code>, השורה צריכה להסתיים ב-<strong>✔ Connected</strong>.`,
     ccPiege: `ה-<code>https://</code> הכרחי: בלעדיו הפקודה מתקבלת אך החיבור נכשל.`,
     vidLegende: "שלושים שניות, שתי הדרכים, ושתי הטעויות הנפוצות. אין צורך בקול.",
     copier: "העתקה", copie: "הועתק",
     lblA: "claude.ai",
     step1: `פתחו <a href="https://claude.ai/settings/connectors" dir="ltr">claude.ai → Settings → Connectors</a>`,
     step2: `לחצו על <strong>Add custom connector</strong>`,
-    step3: "הדביקו את הכתובת הזאת, קראו לה «Torah» ואשרו — האפליקציה בנייד מתעדכנת מעצמה:",
+    step3: "הדביקו את הכתובת הזאת, קראו לה «Torah» ואשרו : האפליקציה בנייד מתעדכנת מעצמה:",
     lblC: "לקוחות MCP אחרים",
-    pC: `כל לקוח תואם (תעבורת HTTP streamable) עובד עם אותה כתובת. השרת חושף 16 כלים לקריאה בלבד, 5 פרומפטים (<code>hebrewbooks</code>, <code>havrouta</code>, <code>paracha</code>, <code>debutant</code>, <code>avance</code>) ו-MCP App אחת — מציג הדף.`,
+    pC: `כל לקוח תואם (תעבורת HTTP streamable) עובד עם אותה כתובת. השרת חושף 16 כלים לקריאה בלבד, 5 פרומפטים (<code>hebrewbooks</code>, <code>havrouta</code>, <code>paracha</code>, <code>debutant</code>, <code>avance</code>) ו-MCP App אחת, מציג הדף.`,
     lblD: "הרמה שלכם",
-    pD: `פשוט אמרו זאת בתחילת השיחה — «אני מתחיל, אין לי רקע» או «מצב מתקדם» — או תנו ל-Claude להסיק זאת מהשאלה. הכלי <code>mode_etude</code> קובע את המשלב (מתחיל / קלאסי / מתקדם) בלי לשנות דבר במשמעת המקורות; אפשר להחליף בכל רגע.`,
-    lblE: "גישה בהזמנה — אופציונלי",
+    pD: `פשוט אמרו זאת בתחילת השיחה («אני מתחיל, אין לי רקע» או «מצב מתקדם») או תנו ל-Claude להסיק זאת מהשאלה. הכלי <code>mode_etude</code> קובע את המשלב (מתחיל / קלאסי / מתקדם) בלי לשנות דבר במשמעת המקורות; אפשר להחליף בכל רגע.`,
+    lblE: "גישה בהזמנה, אופציונלי",
     pE: `כברירת מחדל השרת ציבורי. לגישה בהזמנה בלבד, המארח מגדיר את הסוד <code>BEARER_TOKENS</code> (טוקן אחד לכל מוזמן, מופרדים בפסיקים); כל אחד משתמש אז ב-<code dir="ltr">https://…/&lt;token&gt;/mcp</code>, ומבטלים גישה בהסרת הטוקן.`,
     lblF: "לארח מופע משלכם",
     pF: `הקוד חופשי (MIT), בלי שום סוד נדרש. אופציונלי: <code>BEARER_TOKENS</code>. החיפוש בטקסט המלא עובר דרך hebrewbooks.ai, בלי אימות.`,
@@ -1237,7 +1237,7 @@ ${GA}
   .url .cop:hover { filter:brightness(1.08); }
   p.apres { margin-top:-.3rem; }
   /* Le tutoriel : vertical, donc borné en hauteur, et jamais en lecture
-     automatique — c'est une explication, pas un décor. */
+     automatique, c'est une explication, pas un décor. */
   figure.demo { margin:1.8rem 0 2.4rem; display:flex; flex-direction:column; align-items:flex-start; gap:.7rem; }
   figure.demo video { width:auto; max-width:min(100%,320px); max-height:70vh; height:auto; display:block;
     border:1.5px solid var(--ink-15); background:var(--ink); }

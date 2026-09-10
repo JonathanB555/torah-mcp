@@ -1,11 +1,11 @@
 /**
- * Le WhatsApp de Chabbat — généré chaque vendredi matin (cron), publié sur
+ * Le WhatsApp de Chabbat, généré chaque vendredi matin (cron), publié sur
  * /chabbat en trois langues avec [ Copier ] et [ Partager sur WhatsApp ].
  *
  * Génération : les données réelles (paracha, haftara, daf yomi, zmanim
  * Paris/Marseille/Genève, date hébraïque) sont rassemblées côté serveur, puis
- * Claude compose le message français — avec le tool sefaria_text pour LIRE la
- * haftara avant d'en parler — sur le gabarit validé par Jonathan (un fil, une
+ * Claude compose le message français, avec le tool sefaria_text pour LIRE la
+ * haftara avant d'en parler, sur le gabarit validé par Jonathan (un fil, une
  * morale, pas de catalogue). Un second appel traduit en anglais et en hébreu.
  * Stockage D1 (table chabbat), une ligne par vendredi.
  */
@@ -32,13 +32,13 @@ const GABARIT = `🕯️ *Chabbat Ki Tétsé* · כי תצא
 
 La paracha la plus riche de la Torah en mitsvot. Et regardez lesquelles : rendre un objet perdu, relever l'âne qui plie, poser une rambarde sur son toit, payer l'ouvrier le jour même.
 
-Pas une seule ne se passe à la synagogue. Toutes se passent sur la route, au chantier, au marché — là où personne ne regarde.
+Pas une seule ne se passe à la synagogue. Toutes se passent sur la route, au chantier, au marché : là où personne ne regarde.
 
-💡 *La grandeur ne se joue pas dans les grands moments — elle se construit dans les petits.*
+💡 *La grandeur ne se joue pas dans les grands moments, elle se construit dans les petits.*
 
 On ne devient pas quelqu'un de bien en pensant de belles choses. On le devient en posant une rambarde pour que l'autre ne tombe pas.
 
-Et la haftara (Isaïe 54) murmure la même chose : les montagnes peuvent chanceler — Son attachement, lui, ne bouge pas.
+Et la haftara (Isaïe 54) murmure la même chose : les montagnes peuvent chanceler. Son attachement, lui, ne bouge pas.
 
 📚 Le limoud du jour : mamash-ia.com/daily
 💬 Une question ? mamash-ia.com/question
@@ -52,11 +52,11 @@ Règles absolues :
   sefaria_text (et, si utile, le début de la paracha). Aucun verset, aucun
   midrach, aucune citation de mémoire. Le contenu général de la paracha
   (ses thèmes connus) peut être évoqué sans citation textuelle.
-- Translittération française séfarade : ch (pas sh), t (pas th), h, ts, k —
+- Translittération française séfarade : ch (pas sh), t (pas th), h, ts, k
   Chabbat, paracha, mitsvot, Houlin, Tétsé.
 - Un seul fil et une vraie morale : choisis UNE idée de la paracha, développe-la,
   et fais servir la haftara (et le daf yomi seulement si le lien est réel et
-  naturel — sinon ne le mentionne pas) à cette même idée. Pas de catalogue.
+  naturel, sinon ne le mentionne pas) à cette même idée. Pas de catalogue.
 - PENSÉ POUR UN TÉLÉPHONE : message court (nettement plus court qu'un article),
   paragraphes de 2-3 phrases brèves maximum, une ligne vide entre chaque bloc.
   Première phrase du corps = une accroche qui donne envie de lire.
@@ -94,7 +94,7 @@ function nettoyerWhatsApp(t: string): string {
   return t
     .replace(/\*\*+/g, "*")
     .replace(/^#+\s*/gm, "")
-    .replace(/\[([^\]]+)\]\((https?:[^\s)]+)\)/g, "$1 — $2")
+    .replace(/\[([^\]]+)\]\((https?:[^\s)]+)\)/g, "$1 : $2")
     .replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]\uFE0F?/gu, (m) => (EMOJIS_CHARTE.has(m.replace(/\uFE0F/g, "")) ? m : ""))
     .replace(/[ \t]+\n/g, "\n")
     .replace(/\n{3,}/g, "\n\n")
@@ -126,7 +126,7 @@ export async function genererChabbat(env: Env): Promise<{ vendredi: string; ok: 
   const toolDefs = sefariaTools
     .filter((t) => t.name === "sefaria_text")
     .map((t) => ({ name: t.name, description: t.description || t.name, input_schema: t.inputSchema }));
-  const system = `${CONSIGNES}\n\n# Gabarit (semaine précédente — structure et ton à reproduire, contenu à renouveler)\n\n${GABARIT}`;
+  const system = `${CONSIGNES}\n\n# Gabarit (semaine précédente, structure et ton à reproduire, contenu à renouveler)\n\n${GABARIT}`;
   const messages: any[] = [{ role: "user", content: `Données du jour (calendriers Sefaria, date hébraïque, zmanim de Chabbat) :\n${donnees}\n\nLis la haftara, puis rédige le message de cette semaine.` }];
   let fr = "";
   for (let tour = 0; tour < 5; tour++) {
@@ -168,7 +168,7 @@ Conserve la structure, les *gras* WhatsApp et les émojis-repères de début de 
   );
   const trText = (trData.content || []).filter((b: any) => b.type === "text").map((b: any) => b.text).join("\n");
   // Analyse tolérante : si une balise fermante manque (réponse tronquée), on
-  // prend jusqu'à la balise suivante ou la fin — le message doit rester valide
+  // prend jusqu'à la balise suivante ou la fin, le message doit rester valide
   // (présence du « Chabbat chalom » final de chaque langue).
   const extraire = (tag: string): string => {
     const m = trText.match(new RegExp(`<${tag}>([\\s\\S]*?)(?:</${tag}>|<(?:EN|HE)>|$)`));
@@ -188,7 +188,7 @@ Conserve la structure, les *gras* WhatsApp et les émojis-repères de début de 
 
 
 // ---------------------------------------------------------------------------
-// Les GIF de Chabbat — une sélection kitsch assumée (via Tenor), servie par
+// Les GIF de Chabbat, une sélection kitsch assumée (via Tenor), servie par
 // le Worker (/api/gif?i=N, cache edge 24 h) : le navigateur du visiteur ne
 // contacte jamais Tenor, et le partage direct du fichier devient possible.
 // Trois GIF par semaine, rotation déterministe sur la sélection.
@@ -219,7 +219,7 @@ export function gifsDeLaSemaine(vendredi: string): number[] {
   return [0, 1, 2].map((k) => (semaine * 3 + k) % GIFS.length);
 }
 
-/** GET /api/gif?i=N — sert un GIF de la sélection (index borné, jamais d'URL libre). */
+/** GET /api/gif?i=N, sert un GIF de la sélection (index borné, jamais d'URL libre). */
 export async function servirGif(request: Request): Promise<Response> {
   const i = Number(new URL(request.url).searchParams.get("i"));
   if (!Number.isInteger(i) || i < 0 || i >= GIFS.length) return new Response("Introuvable", { status: 404 });
@@ -244,85 +244,85 @@ export async function servirGif(request: Request): Promise<Response> {
 
 const T = {
   fr: {
-    title: "Le WhatsApp de Chabbat — Mamash IA",
-    desc: "Le message de Chabbat de la semaine — paracha, horaires, un fil et une morale — prêt à copier dans WhatsApp.",
+    title: "Le WhatsApp de Chabbat · Mamash IA",
+    desc: "Le message de Chabbat de la semaine (paracha, horaires, un fil et une morale), prêt à copier dans WhatsApp.",
     h1: 'Le <strong>WhatsApp</strong> de Chabbat.',
-    chapeau: "Chaque vendredi matin, le site compose le message de la semaine : la paracha, les horaires de Paris, Marseille et Genève, un fil, une morale — la haftara réellement lue avant d'être citée. Copiez, envoyez.",
+    chapeau: "Chaque vendredi matin, le site compose le message de la semaine : la paracha, les horaires de Paris, Marseille et Genève, un fil, une morale : la haftara réellement lue avant d'être citée. Copiez, envoyez.",
     copier: "Copier le message",
     partager: "Partager sur WhatsApp",
     copie: "Copié.",
-    copieErr: "Copie impossible ici — sélectionnez le texte à la main.",
+    copieErr: "Copie impossible ici, sélectionnez le texte à la main.",
     gifLab: "Le GIF qui va avec",
-    gifNote: "Ils partent ensemble : sur téléphone via la feuille de partage ; sur ordinateur, le texte est copié et le GIF téléchargé — collez le texte, glissez le GIF.",
+    gifNote: "Ils partent ensemble : sur téléphone via la feuille de partage ; sur ordinateur, le texte est copié et le GIF téléchargé, collez le texte, glissez le GIF.",
     gifGo: "Envoyer les deux sur WhatsApp",
     envMsgLab: "Le message de la semaine",
     mielLien: "Nouveau : la feuille de miel personnalisée, à imprimer",
     envLire: "Lire en entier",
-    envChoix: "Trois au choix, renouvelés chaque vendredi — cliquez pour changer.",
-    vidLab: "Deux flammes : Zakhor et Chamor — illustration",
-    gifOk: "Parti ! Si seul le GIF a été envoyé, le message est déjà copié — collez-le à la suite.",
-    gifDesk: "Message copié et GIF téléchargé — collez le texte (Cmd+V), puis glissez le GIF dans la conversation.",
+    envChoix: "Trois au choix, renouvelés chaque vendredi : cliquez pour changer.",
+    vidLab: "Deux flammes : Zakhor et Chamor : illustration",
+    gifOk: "Parti ! Si seul le GIF a été envoyé, le message est déjà copié : collez-le à la suite.",
+    gifDesk: "Message copié et GIF téléchargé, collez le texte (Cmd+V), puis glissez le GIF dans la conversation.",
     gifErr: "GIF momentanément indisponible.",
     gifCredit: "GIF via Tenor.",
-    colle: "Message copié — collez-le dans la conversation (Cmd+V ou Ctrl+V).",
-    ouvert: "WhatsApp Web s'ouvre avec le message déjà écrit — choisissez le destinataire. (Il est aussi copié : Cmd+V si besoin.)",
-    vide: "Le premier message sera composé vendredi matin — revenez alors, ou recevez-le en installant Torah MCP dans Claude.",
+    colle: "Message copié, collez-le dans la conversation (Cmd+V ou Ctrl+V).",
+    ouvert: "WhatsApp Web s'ouvre avec le message déjà écrit, choisissez le destinataire. (Il est aussi copié : Cmd+V si besoin.)",
+    vide: "Le premier message sera composé vendredi matin, revenez alors, ou recevez-le en installant Torah MCP dans Claude.",
     genere: "Composé le",
     nav: { question: "Une question", daf: "Le daf", outils: "Outils", install: "Installer le MCP" },
     foot: { accueil: "Accueil", daily: "Limoud du jour", privacy: "Confidentialité" },
   },
   en: {
-    title: "The Shabbat WhatsApp — Mamash IA",
-    desc: "This week's Shabbat message — parashah, candle-lighting times, one thread and one lesson — ready to paste into WhatsApp.",
+    title: "The Shabbat WhatsApp · Mamash IA",
+    desc: "This week's Shabbat message (parashah, candle-lighting times, one thread and one lesson), ready to paste into WhatsApp.",
     h1: 'The Shabbat <strong>WhatsApp</strong>.',
-    chapeau: "Every Friday morning the site composes the week's message: the parashah, times for Paris, Marseille and Geneva, one thread, one lesson — the haftarah actually read before being quoted. Copy it, send it.",
+    chapeau: "Every Friday morning the site composes the week's message: the parashah, times for Paris, Marseille and Geneva, one thread, one lesson : the haftarah actually read before being quoted. Copy it, send it.",
     copier: "Copy the message",
     partager: "Share on WhatsApp",
     copie: "Copied.",
-    copieErr: "Copying failed here — select the text by hand.",
+    copieErr: "Copying failed here, select the text by hand.",
     gifLab: "The GIF to go with it",
-    gifNote: "They leave together: on a phone via the share sheet; on a computer the text is copied and the GIF downloaded — paste the text, drag the GIF.",
+    gifNote: "They leave together: on a phone via the share sheet; on a computer the text is copied and the GIF downloaded, paste the text, drag the GIF.",
     gifGo: "Send both on WhatsApp",
     envMsgLab: "This week's message",
     mielLien: "New: the personalized honey sheet, ready to print",
     envLire: "Read in full",
-    envChoix: "Three to pick from, renewed every Friday — click to change.",
-    vidLab: "Two flames: Zachor and Shamor — an illustration",
-    gifOk: "Sent! If only the GIF went through, the message is already copied — paste it right after.",
-    gifDesk: "Message copied and GIF downloaded — paste the text (Cmd+V), then drag the GIF into the conversation.",
+    envChoix: "Three to pick from, renewed every Friday : click to change.",
+    vidLab: "Two flames: Zachor and Shamor : an illustration",
+    gifOk: "Sent! If only the GIF went through, the message is already copied, paste it right after.",
+    gifDesk: "Message copied and GIF downloaded, paste the text (Cmd+V), then drag the GIF into the conversation.",
     gifErr: "GIF temporarily unavailable.",
     gifCredit: "GIFs via Tenor.",
-    colle: "Message copied — paste it into the conversation (Cmd+V or Ctrl+V).",
-    ouvert: "WhatsApp Web opens with the message already written — just pick the recipient. (It is copied too: Cmd+V if needed.)",
-    vide: "The first message will be composed on Friday morning — come back then, or get it by installing Torah MCP in Claude.",
+    colle: "Message copied, paste it into the conversation (Cmd+V or Ctrl+V).",
+    ouvert: "WhatsApp Web opens with the message already written, just pick the recipient. (It is copied too: Cmd+V if needed.)",
+    vide: "The first message will be composed on Friday morning, come back then, or get it by installing Torah MCP in Claude.",
     genere: "Composed on",
     nav: { question: "Ask a question", daf: "The daf", outils: "Tools", install: "Install the MCP" },
     foot: { accueil: "Home", daily: "Today's learning", privacy: "Privacy" },
   },
   he: {
-    title: "הוואטסאפ של שבת — Mamash IA",
-    desc: "מסר השבת של השבוע — פרשה, זמני הדלקת נרות, חוט אחד ומוסר אחד — מוכן להדבקה בוואטסאפ.",
+    title: "הוואטסאפ של שבת · Mamash IA",
+    desc: "מסר השבת של השבוע (פרשה, זמני הדלקת נרות, חוט אחד ומוסר אחד) מוכן להדבקה בוואטסאפ.",
     h1: 'הוואטסאפ של <strong>שבת</strong>.',
-    chapeau: "בכל יום שישי בבוקר האתר מחבר את מסר השבוע: הפרשה, זמני פריז, מרסיי וז'נבה, חוט אחד, מוסר אחד — ההפטרה נקראת באמת לפני שהיא מצוטטת. העתיקו ושלחו.",
+    chapeau: "בכל יום שישי בבוקר האתר מחבר את מסר השבוע: הפרשה, זמני פריז, מרסיי וז'נבה, חוט אחד, מוסר אחד : ההפטרה נקראת באמת לפני שהיא מצוטטת. העתיקו ושלחו.",
     copier: "העתקת המסר",
     partager: "שיתוף בוואטסאפ",
     copie: "הועתק.",
-    copieErr: "ההעתקה נכשלה — סמנו את הטקסט ידנית.",
+    copieErr: "ההעתקה נכשלה, סמנו את הטקסט ידנית.",
     gifLab: "הגיף שמתלווה",
-    gifNote: "הם נשלחים יחד: בטלפון דרך חלון השיתוף; במחשב הטקסט מועתק והגיף יורד — הדביקו את הטקסט וגררו את הגיף.",
+    gifNote: "הם נשלחים יחד: בטלפון דרך חלון השיתוף; במחשב הטקסט מועתק והגיף יורד, הדביקו את הטקסט וגררו את הגיף.",
     gifGo: "שליחת שניהם בוואטסאפ",
     envMsgLab: "מסר השבוע",
     mielLien: "חדש: דף הדבש האישי, מוכן להדפסה",
     envLire: "לקריאה מלאה",
-    envChoix: "שלושה לבחירה, מתחדשים בכל יום שישי — הקישו להחלפה.",
-    vidLab: "שתי להבות: זכור ושמור — אילוסטרציה",
-    gifOk: "נשלח! אם רק הגיף עבר, ההודעה כבר הועתקה — הדביקו אותה מיד אחריו.",
-    gifDesk: "ההודעה הועתקה והגיף ירד — הדביקו את הטקסט (Cmd+V) וגררו את הגיף לשיחה.",
+    envChoix: "שלושה לבחירה, מתחדשים בכל יום שישי : הקישו להחלפה.",
+    vidLab: "שתי להבות: זכור ושמור : אילוסטרציה",
+    gifOk: "נשלח! אם רק הגיף עבר, ההודעה כבר הועתקה : הדביקו אותה מיד אחריו.",
+    gifDesk: "ההודעה הועתקה והגיף ירד, הדביקו את הטקסט (Cmd+V) וגררו את הגיף לשיחה.",
     gifErr: "הגיף אינו זמין כרגע.",
     gifCredit: "גיפים דרך Tenor.",
-    colle: "ההודעה הועתקה — הדביקו אותה בשיחה (Cmd+V או Ctrl+V).",
-    ouvert: "וואטסאפ ווב נפתח וההודעה כבר כתובה — בחרו נמען. (היא גם הועתקה: Cmd+V במידת הצורך.)",
-    vide: "המסר הראשון יחובר ביום שישי בבוקר — חזרו אז, או קבלו אותו בהתקנת Torah MCP ב-Claude.",
+    colle: "ההודעה הועתקה, הדביקו אותה בשיחה (Cmd+V או Ctrl+V).",
+    ouvert: "וואטסאפ ווב נפתח וההודעה כבר כתובה, בחרו נמען. (היא גם הועתקה: Cmd+V במידת הצורך.)",
+    vide: "המסר הראשון יחובר ביום שישי בבוקר, חזרו אז, או קבלו אותו בהתקנת Torah MCP ב-Claude.",
     genere: "חובר בתאריך",
     nav: { question: "שאלה", daf: "הדף", outils: "כלים", install: "התקנת ה-MCP" },
     foot: { accueil: "עמוד הבית", daily: "הלימוד היומי", privacy: "פרטיות" },
@@ -512,7 +512,7 @@ ${altLinks(lang, "/chabbat")}
   var texte = ${JSON.stringify(texte)};
   // Safari et Chrome sur Mac exposent navigator.share, mais la feuille de
   // partage du système ne liste pas WhatsApp : le bouton semblait alors ne
-  // rien faire. On ne se fie donc pas à navigator.share seul — on exige un
+  // rien faire. On ne se fie donc pas à navigator.share seul, on exige un
   // vrai appareil tactile (téléphone, tablette).
   var surMobile = (navigator.maxTouchPoints || 0) > 1 && matchMedia("(pointer: coarse)").matches;
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -575,7 +575,7 @@ ${altLinks(lang, "/chabbat")}
     // au cas où la session WhatsApp Web demanderait d'abord le QR code.
     // On ouvre d'abord (le geste de l'utilisateur est encore actif, sinon le
     // navigateur bloque la fenêtre), et la copie n'est qu'un filet : si elle
-    // échoue, WhatsApp Web a quand même le message — on ne crie pas à l'erreur.
+    // échoue, WhatsApp Web a quand même le message, on ne crie pas à l'erreur.
     window.open("https://web.whatsapp.com/send?text=" + encodeURIComponent(texte), "_blank", "noopener");
     feedback("${s.ouvert}");
     copier(texte).catch(function () {});

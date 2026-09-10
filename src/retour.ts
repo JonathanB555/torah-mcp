@@ -76,23 +76,23 @@ async function envoyerCourrier(
 ): Promise<void> {
   if (!env.COURRIER) return;
   try {
-    const sujet = (r.genre === "bug" ? "Bug" : "Idée") + " sur mamash-ia.com" + (r.page ? ` — ${r.page}` : "");
+    const sujet = (r.genre === "bug" ? "Bug" : "Idée") + " sur mamash-ia.com" + (r.page ? ` · ${r.page}` : "");
     const corps = [
       r.genre === "bug" ? "Quelqu'un signale un bug." : "Quelqu'un propose une amélioration.",
       "",
       r.message,
       "",
-      "———",
+      " ·  ·  · ",
       `Page : ${r.page || "non précisée"}`,
       `Langue : ${r.langue || "?"}${r.pays ? ` · ${r.pays}` : ""}`,
-      r.contact ? `Contact laissé : ${r.contact}` : "Aucun contact laissé — pas de réponse possible.",
+      r.contact ? `Contact laissé : ${r.contact}` : "Aucun contact laissé, pas de réponse possible.",
       "",
       "Tous les retours : https://mamash-ia.com/stats",
     ].join("\n");
 
     const mim = createMimeMessage();
     // L'expéditeur doit appartenir au domaine dont l'acheminement est activé.
-    mim.setSender({ name: "Mamash IA — retours", addr: "retours@mamash-ia.com" });
+    mim.setSender({ name: "Mamash IA · retours", addr: "retours@mamash-ia.com" });
     mim.setRecipient(DESTINATAIRE);
     mim.setSubject(sujet);
     mim.addMessage({ contentType: "text/plain", data: corps });
@@ -185,7 +185,7 @@ const S = {
   fr: {
     titre: "Un bug ? Une idée ?",
     meta: "Signaler un bug ou proposer une amélioration sur Mamash IA.",
-    chapeau: "Le site est jeune et je le corrige à la main. Dites-moi ce qui coince, ou ce qui manque — c'est lu, vraiment.",
+    chapeau: "Le site est jeune et je le corrige à la main. Dites-moi ce qui coince, ou ce qui manque : c'est lu, vraiment.",
     genreLabel: "De quoi s'agit-il ?",
     bug: "Quelque chose ne marche pas",
     idee: "J'aimerais quelque chose en plus",
@@ -210,7 +210,7 @@ const S = {
   en: {
     titre: "A bug? An idea?",
     meta: "Report a bug or suggest an improvement on Mamash IA.",
-    chapeau: "The site is young and I fix it by hand. Tell me what breaks, or what is missing — it really does get read.",
+    chapeau: "The site is young and I fix it by hand. Tell me what breaks, or what is missing : it really does get read.",
     genreLabel: "What is it about?",
     bug: "Something does not work",
     idee: "I would like something more",
@@ -235,7 +235,7 @@ const S = {
   he: {
     titre: "באג? רעיון?",
     meta: "דיווח על תקלה או הצעת שיפור ב־Mamash IA.",
-    chapeau: "האתר צעיר ואני מתקן אותו ביד. ספרו לי מה נתקע או מה חסר — זה באמת נקרא.",
+    chapeau: "האתר צעיר ואני מתקן אותו ביד. ספרו לי מה נתקע או מה חסר, זה באמת נקרא.",
     genreLabel: "במה מדובר?",
     bug: "משהו לא עובד",
     idee: "הייתי רוצה עוד משהו",
@@ -278,7 +278,7 @@ export function retourHtml(lang: Lang): string {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${s.titre} — Mamash IA</title>
+<title>${s.titre} · Mamash IA</title>
 <meta name="description" content="${s.meta}">
 <meta name="robots" content="noindex">
 ${altLinks(lang, PATH)}

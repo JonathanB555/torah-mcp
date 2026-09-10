@@ -1,9 +1,9 @@
 /**
- * /roch-hachana — le sédèr des simanim, rite par rite.
+ * /roch-hachana, le sédèr des simanim, rite par rite.
  *
  * L'idée de la page : montrer que l'ordre change d'une communauté à l'autre.
  * On choisit un rite, et les aliments se replacent sous les yeux. L'animation
- * n'est pas décorative — c'est elle qui rend la différence visible.
+ * n'est pas décorative, c'est elle qui rend la différence visible.
  *
  * Les sédarim viennent de miel-sedarim.ts, donc la page et la feuille
  * imprimable ne peuvent pas diverger.
@@ -25,19 +25,19 @@ const S = {
     talmudIntro: "Abayé, dans le Talmud, à propos des signes qu'on prend au sérieux :",
     talmudHeb: "לְעוֹלָם יְהֵא רָגִיל לְמִיחְזֵי בְּרֵישׁ שַׁתָּא קָרָא וְרוּבְּיָא, כַּרָּתֵי וְסִילְקָא וְתַמְרֵי",
     talmudFr: "« Qu'on prenne toujours l'habitude de voir, à la tête de l'année, la courge et la roubia, le poireau, la blette et les dattes. »",
-    talmudRef: "Talmud, Horayot 12a — lu sur Sefaria",
+    talmudRef: "Talmud, Horayot 12a : lu sur Sefaria",
     compTitre: "Choisissez un rite",
     compAide: "Les aliments se replacent dans l'ordre où ce rite les mange. Ce qui n'en fait pas partie s'efface.",
     compOrdre: "Dans cet ordre",
     fichesTitre: "Chaque siman, et ce qu'il fait entendre",
     dossierTitre: "La roubia : fenugrec ou loubia ?",
-    dossierP1: "C'est la question qui revient le plus souvent, et les textes ne disent pas tous la même chose. Le Choulhan Aroukh écrit « roubia, c'est-à-dire tiltan » — le fenugrec — et Rachi dit de même sur Horayot 12a. Le mahzor Koren le glose « חילבה », qui est le même mot.",
+    dossierP1: "C'est la question qui revient le plus souvent, et les textes ne disent pas tous la même chose. Le Choulhan Aroukh écrit « roubia, c'est-à-dire tiltan » (le fenugrec), et Rachi dit de même sur Horayot 12a. Le mahzor Koren le glose « חילבה », qui est le même mot.",
     dossierP2: "Mais les autorités qui écrivent en pays arabophone lisent autrement. Le Ben Ich Haï, à Bagdad, écrit que la roubia est « ce qu'on appelle loubia en arabe ». Rav Moché Khalfon HaCohen, à Djerba, écrit exactement pareil : « et en arabe, loubia ». Pour une famille tunisienne, la réponse est donc la loubia, et elle vient d'un décisionnaire tunisien.",
     dossierP3: "Les deux lectures sont anciennes et défendues. Ce n'est pas une erreur d'un côté ou de l'autre, c'est le mot roubia qui porte les deux.",
     citTitre: "Rav Moché Khalfon HaCohen, Djerba",
     citHeb: "וכן רוביא (ובערבי לוביא) ואומרים יה״ר וגו׳ שירבו זכיותינו",
-    citTrad: "« Et de même la roubia — et en arabe, loubia — et l'on dit : que se multiplient nos mérites. »",
-    citRef: "Brit Kehouna, Orah Hayim, Roch Hachana § 12, pages 209-210 — Djerba, 1941",
+    citTrad: "« Et de même la roubia (et en arabe, loubia), et l'on dit : que se multiplient nos mérites. »",
+    citRef: "Brit Kehouna, Orah Hayim, Roch Hachana § 12, pages 209-210 · Djerba, 1941",
     citVoir: "voir le fac-similé",
     citNote: "Lu dans le fac-similé de la page, envoyé par un lecteur. C'est un décisionnaire de Djerba qui écrit ici, pour ses propres fidèles, que la roubia du Talmud est la loubia. Sur la même page il ajoute le poumon, le cœur et l'œuf à son sédèr, puis précise qu'on n'est pas regardant sur leur ordre : on prend ce qui est prêt.",
     sourcesTitre: "Les sources, rite par rite",
@@ -58,19 +58,19 @@ const S = {
     talmudIntro: "Abaye, in the Talmud, on omens taken seriously:",
     talmudHeb: "לְעוֹלָם יְהֵא רָגִיל לְמִיחְזֵי בְּרֵישׁ שַׁתָּא קָרָא וְרוּבְּיָא, כַּרָּתֵי וְסִילְקָא וְתַמְרֵי",
     talmudFr: "“A person should always be accustomed to seeing, at the head of the year, squash and rubia, leeks and chard and dates.”",
-    talmudRef: "Talmud, Horayot 12a — read on Sefaria",
+    talmudRef: "Talmud, Horayot 12a : read on Sefaria",
     compTitre: "Choose a rite",
     compAide: "The foods rearrange into the order this rite eats them. What it does not include fades away.",
     compOrdre: "In this order",
     fichesTitre: "Each siman, and what its name sounds of",
     dossierTitre: "Rubia: fenugreek or black-eyed peas?",
-    dossierP1: "This is the question that comes up most, and the texts do not all say the same thing. The Shulchan Arukh writes “rubia, that is tiltan” — fenugreek — and Rashi says the same on Horayot 12a. The Koren mahzor glosses it “חילבה”, the same word.",
+    dossierP1: "This is the question that comes up most, and the texts do not all say the same thing. The Shulchan Arukh writes “rubia, that is tiltan” (fenugreek), and Rashi says the same on Horayot 12a. The Koren mahzor glosses it “חילבה”, the same word.",
     dossierP2: "But the authorities writing in Arabic-speaking lands read it otherwise. The Ben Ish Hai, in Baghdad, writes that rubia is “what we call lubia in Arabic”. Rabbi Moshe Khalfon HaCohen, in Djerba, writes exactly the same: “and in Arabic, lubia”. For a Tunisian family the answer is therefore lubia, and it comes from a Tunisian authority.",
     dossierP3: "Both readings are old and defensible. It is not a mistake on either side; the word rubia carries both.",
     citTitre: "Rabbi Moshe Khalfon HaCohen, Djerba",
     citHeb: "וכן רוביא (ובערבי לוביא) ואומרים יה״ר וגו׳ שירבו זכיותינו",
-    citTrad: "“And likewise the rubia — and in Arabic, lubia — and one says: may our merits multiply.”",
-    citRef: "Brit Kehuna, Orach Chayim, Rosh Hashana § 12, pages 209-210 — Djerba, 1941",
+    citTrad: "“And likewise the rubia (and in Arabic, lubia), and one says: may our merits multiply.”",
+    citRef: "Brit Kehuna, Orach Chayim, Rosh Hashana § 12, pages 209-210 · Djerba, 1941",
     citVoir: "see the facsimile",
     citNote: "Read in the facsimile of the page. It is an authority of Djerba writing here, for his own community, that the Talmud's rubia is the lubia. On the same page he adds the lung, the heart and the egg to his seder, then notes that their order is not insisted upon: one takes what is ready.",
     sourcesTitre: "The sources, rite by rite",
@@ -91,19 +91,19 @@ const S = {
     talmudIntro: "אביי, בתלמוד, על סימנא מילתא היא:",
     talmudHeb: "לְעוֹלָם יְהֵא רָגִיל לְמִיחְזֵי בְּרֵישׁ שַׁתָּא קָרָא וְרוּבְּיָא, כַּרָּתֵי וְסִילְקָא וְתַמְרֵי",
     talmudFr: "",
-    talmudRef: "תלמוד, הוריות יב ע״א — נקרא בספריא",
+    talmudRef: "תלמוד, הוריות יב ע״א : נקרא בספריא",
     compTitre: "בחרו מנהג",
-    compAide: "הסימנים מסתדרים בסדר שבו המנהג הזה אוכל אותם. מה שאינו נכלל — נעלם.",
+    compAide: "הסימנים מסתדרים בסדר שבו המנהג הזה אוכל אותם. מה שאינו נכלל, נעלם.",
     compOrdre: "בסדר הזה",
     fichesTitre: "כל סימן, ומה שמו מזכיר",
     dossierTitre: "הרוביא: תלתן או לוביא?",
     dossierP1: "זו השאלה החוזרת, והמקורות אינם אומרים דבר אחד. השולחן ערוך כותב ״רוביא דהיינו תלתן״, וכן רש״י בהוריות יב ע״א. מחזור קורן מגלה ״חילבה״, אותה מילה.",
-    dossierP2: "אך הפוסקים שכתבו בארצות דוברות ערבית קראו אחרת. הבן איש חי בבגדאד כותב שהרוביא היא ״מה שקורין בלשון ערבי לוביא״. הרב משה כלפון הכהן בג׳רבה כותב בדיוק כך: ״ובערבי לוביא״. למשפחה תוניסאית, אם כן, התשובה היא לוביא — מפי פוסק תוניסאי.",
+    dossierP2: "אך הפוסקים שכתבו בארצות דוברות ערבית קראו אחרת. הבן איש חי בבגדאד כותב שהרוביא היא ״מה שקורין בלשון ערבי לוביא״. הרב משה כלפון הכהן בג׳רבה כותב בדיוק כך: ״ובערבי לוביא״. למשפחה תוניסאית, אם כן, התשובה היא לוביא : מפי פוסק תוניסאי.",
     dossierP3: "שתי הקריאות עתיקות ומיוסדות. אין כאן טעות מצד אחד; המילה רוביא נושאת את שתיהן.",
     citTitre: "הרב משה כלפון הכהן, ג׳רבה",
     citHeb: "וכן רוביא (ובערבי לוביא) ואומרים יה״ר וגו׳ שירבו זכיותינו",
     citTrad: "",
-    citRef: "ברית כהונה, אורח חיים, ראש השנה סי׳ יב, עמ׳ 209-210 — ג׳רבה, תש״א",
+    citRef: "ברית כהונה, אורח חיים, ראש השנה סי׳ יב, עמ׳ 209-210 : ג׳רבה, תש״א",
     citVoir: "לצפייה בדף הסרוק",
     citNote: "נקרא מתוך הדף הסרוק. פוסק מג׳רבה כותב כאן, לבני קהילתו, שהרוביא שבתלמוד היא הלוביא. באותו עמוד הוא מוסיף ריאה, לב וביצה, וכותב ״ואין קפידא בסידורם״.",
     sourcesTitre: "המקורות, מנהג אחר מנהג",
@@ -176,9 +176,9 @@ export function rochHachanaHtml(lang: Lang): string {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${s.titre} — ${s.sur} — Mamash IA</title>
+<title>${s.titre} · ${s.sur} · Mamash IA</title>
 <meta name="description" content="${s.meta}">
-<meta property="og:title" content="${s.titre} — ${s.sur}">
+<meta property="og:title" content="${s.titre} · ${s.sur}">
 <meta property="og:description" content="${s.meta}">
 <meta property="og:image" content="${SITE}/og.png?v=2">
 <meta property="og:url" content="${SITE}${href(lang, PATH)}">

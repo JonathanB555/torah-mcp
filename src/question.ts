@@ -1,5 +1,5 @@
 /**
- * « Poser une question » — la discipline des sources sans Claude installé.
+ * « Poser une question », la discipline des sources sans Claude installé.
  *
  * Le site envoie une question en français ; le Worker fait tourner Claude
  * côté serveur (API Anthropic) avec les mêmes tools que le MCP, la même
@@ -50,7 +50,7 @@ français, en Markdown simple (titres ##, gras, listes, liens).
   sources, puis rappelle qu'une décision concrète se prend avec un rabbin.
 - Cite en langue originale les mots et la phrase décisive de chaque source,
   pas des paragraphes entiers : les liens Sefaria renvoient au texte intégral.
-  Vise une réponse complète mais dense — le budget est limité et l'hébreu
+  Vise une réponse complète mais dense, le budget est limité et l'hébreu
   coûte cher.
 - Commence directement par la réponse : pas de phrase d'annonce (« j'ai trouvé
   les sources », « voici la réponse »), pas de récit de ta recherche.
@@ -95,9 +95,9 @@ function limited(ip: string, cap: number): string | null {
   else if (++m.n > PER_MINUTE) return "Une question à la fois : réessayez dans une minute.";
   const d = day.get(ip);
   if (!d || now - d.t > 86_400_000) day.set(ip, { n: 1, t: now });
-  else if (++d.n > PER_DAY_PER_IP) return "Vous avez atteint le nombre de questions pour aujourd'hui — installez Torah MCP dans Claude pour continuer sans limite.";
+  else if (++d.n > PER_DAY_PER_IP) return "Vous avez atteint le nombre de questions pour aujourd'hui, installez Torah MCP dans Claude pour continuer sans limite.";
   if (now - dayTotal.t > 86_400_000) dayTotal = { n: 0, t: now };
-  if (++dayTotal.n > cap) return "Le service a atteint son quota du jour — réessayez demain, ou installez Torah MCP dans Claude.";
+  if (++dayTotal.n > cap) return "Le service a atteint son quota du jour, réessayez demain, ou installez Torah MCP dans Claude.";
   if (minute.size > 5000) minute.clear();
   if (day.size > 5000) day.clear();
   return null;
@@ -128,7 +128,7 @@ export interface QuestionResult {
   tours: number;
 }
 
-/** Données internes pour le journal statistique — jamais renvoyées au client. */
+/** Données internes pour le journal statistique, jamais renvoyées au client. */
 export interface QuestionMeta {
   question: string;
   mode: string;
@@ -211,11 +211,11 @@ approfondis. Relis un texte si la précision demandée l'exige.`;
       const auth = resp.status === 401;
       const overload = resp.status === 429 || resp.status === 529;
       const error = credit
-        ? "Le service de questions est en pause : le quota du serveur est épuisé. Les outils, le daf et l'installation dans Claude restent disponibles — réessayez plus tard."
+        ? "Le service de questions est en pause : le quota du serveur est épuisé. Les outils, le daf et l'installation dans Claude restent disponibles, réessayez plus tard."
         : auth
         ? "Le service de questions est mal configuré côté serveur (clé API refusée). Les autres fonctions du site restent disponibles."
         : overload
-        ? "Le service de réponse est saturé pour l'instant — réessayez dans une minute."
+        ? "Le service de réponse est saturé pour l'instant, réessayez dans une minute."
         : `Le service de réponse est momentanément indisponible (${resp.status}).`;
       return { status: credit || auth ? 503 : 502, body: { error, cause: credit ? "credit_epuise" : auth ? "cle_refusee" : overload ? "saturation" : "api_" + resp.status }, meta: meta() };
     }
@@ -227,7 +227,7 @@ approfondis. Relis un texte si la précision demandée l'exige.`;
 
     if (data.stop_reason !== "tool_use" || uses.length === 0) {
       final = texts.join("\n").trim();
-      if (final && data.stop_reason === "max_tokens") final += "\n\n*[Réponse tronquée : le développement dépassait la longueur maximale — reposez la question en la ciblant.]*";
+      if (final && data.stop_reason === "max_tokens") final += "\n\n*[Réponse tronquée : le développement dépassait la longueur maximale, reposez la question en la ciblant.]*";
       break;
     }
     // Dernier tour autorisé : on ne relance pas d'outils, on force la synthèse.
@@ -260,7 +260,7 @@ approfondis. Relis un texte si la précision demandée l'exige.`;
 
   if (!final) {
     // Synthèse de secours, sans tools : la consigne s'ajoute au DERNIER message
-    // (qui est déjà un message user de tool_results) — l'API refuse deux
+    // (qui est déjà un message user de tool_results), l'API refuse deux
     // messages user consécutifs.
     const consigne = { type: "text", text: "Le budget de lecture est épuisé. Rédige maintenant la réponse finale à partir de tout ce qui a été lu ci-dessus, avec la section Sources." };
     const last = messages[messages.length - 1];
@@ -280,7 +280,7 @@ approfondis. Relis un texte si la précision demandée l'exige.`;
   return {
     status: 200,
     body: {
-      reponse: final || "Je n'ai pas réussi à formuler une réponse — reformulez la question.",
+      reponse: final || "Je n'ai pas réussi à formuler une réponse, reformulez la question.",
       sources: [...sources.entries()].map(([ref, url]) => ({ ref, url })),
       mode,
       modele: model,

@@ -1,12 +1,12 @@
 /**
- * /chiourim — les cours en vidéo du rav Meir Attal (chaîne YouTube publique),
+ * /chiourim, les cours en vidéo du rav Meir Attal (chaîne YouTube publique),
  * intégrés au site : le dernier chiour à jour tout seul (flux RSS de la chaîne,
  * cache edge 1 h), le catalogue classé par thèmes, lecture au clic seulement
- * (youtube-nocookie — aucun cookie ni lecteur chargé avant le clic).
+ * (youtube-nocookie, aucun cookie ni lecteur chargé avant le clic).
  *
  * Le catalogue est figé au build (doublons de ré-upload retirés, classement
  * par mots-clés des titres) ; les vidéos publiées depuis apparaissent via le
- * RSS en tête de page — la page vit donc seule, sans maintenance.
+ * RSS en tête de page, la page vit donc seule, sans maintenance.
  */
 
 import type { Env } from "./sefaria";
@@ -19,7 +19,7 @@ const RSS_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_I
 type Groupe = "fetes" | "torah" | "emouna" | "moussar" | "courts";
 interface Video { id: string; d: number; g: Groupe; t: string }
 
-/** Catalogue au 04.09.2026 — 97 vidéos uniques (yt-dlp, doublons retirés). */
+/** Catalogue au 04.09.2026, 97 vidéos uniques (yt-dlp, doublons retirés). */
 const CATALOGUE: Video[] = [
   { id: "wvvWlilgQeI", d: 1786, g: "fetes", t: "En route vers Rosh Hashana : Le véritable secret pour être écouté de Dieu" },
   { id: "MuspjCHLnLk", d: 1913, g: "fetes", t: "Le secret de la justice : Comment transformer la rigueur en miséricorde pour Roch Hachana ?" },
@@ -124,8 +124,8 @@ const GROUPES: readonly Groupe[] = ["fetes", "torah", "emouna", "moussar", "cour
 
 const T = {
   fr: {
-    title: "Chiourim — Mamash IA",
-    desc: "Les chiourim en vidéo du rav Meir Attal : moussar, émouna, fêtes — en français. Le dernier cours et le catalogue par thèmes.",
+    title: "Chiourim · Mamash IA",
+    desc: "Les chiourim en vidéo du rav Meir Attal : moussar, émouna, fêtes : en français. Le dernier cours et le catalogue par thèmes.",
     h1: "Les <strong>chiourim</strong> du rav Attal.",
     lead: "Du moussar enraciné dans les textes, une trentaine de minutes chacun. Rien ne se charge depuis YouTube avant votre clic.",
     courtsG: { fetes: "Fêtes", torah: "Textes", emouna: "Émouna", moussar: "Moussar", courts: "Courts" } as Record<Groupe, string>,
@@ -136,16 +136,16 @@ const T = {
     lire: "lire",
     min: "min",
     chaine: "Toute la chaîne sur YouTube",
-    note: "Les vidéos sont hébergées par YouTube (lecture via youtube-nocookie.com, sans cookies avant le clic) — voir la",
+    note: "Les vidéos sont hébergées par YouTube (lecture via youtube-nocookie.com, sans cookies avant le clic) : voir la",
     notePrivacy: "page confidentialité",
     nav: { question: "Une question", daf: "Le daf", outils: "Outils", install: "Installer le MCP" },
     foot: { accueil: "Accueil", daily: "Limoud du jour", privacy: "Confidentialité" },
   },
   en: {
-    title: "Video shiurim — Mamash IA",
-    desc: "Rav Meir Attal's video shiurim: mussar, emunah, festivals — in French. The latest class and the catalogue by theme.",
+    title: "Video shiurim · Mamash IA",
+    desc: "Rav Meir Attal's video shiurim: mussar, emunah, festivals : in French. The latest class and the catalogue by theme.",
     h1: "Rav Attal's <strong>shiurim</strong>.",
-    lead: "Mussar rooted in the texts, about thirty minutes each — in French. Nothing loads from YouTube until you click.",
+    lead: "Mussar rooted in the texts, about thirty minutes each : in French. Nothing loads from YouTube until you click.",
     courtsG: { fetes: "Festivals", torah: "Texts", emouna: "Emunah", moussar: "Mussar", courts: "Short" } as Record<Groupe, string>,
     toutVoir: "The whole catalogue",
     dernier: "The latest shiur",
@@ -154,16 +154,16 @@ const T = {
     lire: "play",
     min: "min",
     chaine: "The full channel on YouTube",
-    note: "Videos are hosted by YouTube (played via youtube-nocookie.com, no cookies before you click) — see the",
+    note: "Videos are hosted by YouTube (played via youtube-nocookie.com, no cookies before you click) : see the",
     notePrivacy: "privacy page",
     nav: { question: "Ask a question", daf: "The daf", outils: "Tools", install: "Install the MCP" },
     foot: { accueil: "Home", daily: "Today's learning", privacy: "Privacy" },
   },
   he: {
-    title: "שיעורים בווידאו — Mamash IA",
-    desc: "השיעורים של הרב מאיר אטל: מוסר, אמונה, חגים — בצרפתית. השיעור האחרון והקטלוג לפי נושאים.",
+    title: "שיעורים בווידאו · Mamash IA",
+    desc: "השיעורים של הרב מאיר אטל: מוסר, אמונה, חגים : בצרפתית. השיעור האחרון והקטלוג לפי נושאים.",
     h1: "השיעורים של <strong>הרב אטל</strong>.",
-    lead: "מוסר מושרש בטקסטים, כחצי שעה כל אחד — בצרפתית. שום דבר לא נטען מיוטיוב לפני הלחיצה.",
+    lead: "מוסר מושרש בטקסטים, כחצי שעה כל אחד : בצרפתית. שום דבר לא נטען מיוטיוב לפני הלחיצה.",
     courtsG: { fetes: "חגים", torah: "טקסטים", emouna: "אמונה", moussar: "מוסר", courts: "קצרים" } as Record<Groupe, string>,
     toutVoir: "כל הקטלוג",
     dernier: "השיעור האחרון",
@@ -172,7 +172,7 @@ const T = {
     lire: "נגן",
     min: "דק'",
     chaine: "הערוץ המלא ביוטיוב",
-    note: "הסרטונים מתארחים ביוטיוב (ניגון דרך youtube-nocookie.com, ללא עוגיות לפני הלחיצה) — ראו את",
+    note: "הסרטונים מתארחים ביוטיוב (ניגון דרך youtube-nocookie.com, ללא עוגיות לפני הלחיצה) : ראו את",
     notePrivacy: "עמוד הפרטיות",
     nav: { question: "שאלה", daf: "הדף", outils: "כלים", install: "התקנת ה-MCP" },
     foot: { accueil: "עמוד הבית", daily: "הלימוד היומי", privacy: "פרטיות" },

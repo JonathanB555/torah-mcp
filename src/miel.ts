@@ -1,5 +1,5 @@
 /**
- * /miel — le générateur de feuilles de miel de Roch Hachana.
+ * /miel, le générateur de feuilles de miel de Roch Hachana.
  * Tout se passe dans le navigateur : aucun envoi de données, aucun appel IA.
  * La feuille (gabarit « périodique vintage ») se personnalise (prénom, ville)
  * et s'imprime via l'impression du navigateur (le même moteur qui a produit
@@ -9,7 +9,7 @@
 import { Lang, href, altLinks, htmlAttrs, langSwitcher, colophon, t, retourTab } from "./i18n";
 import { SEDARIM, RITES, RITE_DEFAUT, type Rite } from "./miel-sedarim";
 
-/** Villes proposées — geonameids vérifiés un à un sur l'API Hebcal (08.09.2026). */
+/** Villes proposées, geonameids vérifiés un à un sur l'API Hebcal (08.09.2026). */
 export const VILLES_MIEL: Record<string, { g: number; nom: string }> = {
   paris: { g: 2988507, nom: "Paris" },
   marseille: { g: 2995469, nom: "Marseille" },
@@ -65,35 +65,35 @@ interface StringsMiel {
 /* Les 9 simanim : hébreu et phonétique identiques dans les trois langues. */
 const T: Record<Lang, StringsMiel> = {
   fr: {
-    title: "La feuille de miel — Mamash IA",
-    desc: "Générez votre feuille de miel de Roch Hachana 5787 : prénom, ville, toutes les berakhot en hébreu et en phonétique — à imprimer gratuitement.",
+    title: "La feuille de miel · Mamash IA",
+    desc: "Générez votre feuille de miel de Roch Hachana 5787 : prénom, ville, toutes les berakhot en hébreu et en phonétique, à imprimer gratuitement.",
     h1: "La feuille de <strong>miel</strong>.",
-    chapeau: "Chaque convive mérite la sienne. Un prénom, une ville — et la feuille se compose : les dates de Tichri 5787, les horaires de chez vous, toutes les berakhot des simanim en hébreu et en phonétique. Imprimez, posez près du miel.",
+    chapeau: "Chaque convive mérite la sienne. Un prénom, une ville, et la feuille se compose : les dates de Tichri 5787, les horaires de chez vous, toutes les berakhot des simanim en hébreu et en phonétique. Imprimez, posez près du miel.",
     labPrenom: "Le prénom", phPrenom: "Esther, David, Jonathan…",
     labHeb: "En hébreu (modifiable)", phHeb: "אסתר",
-    labVille: "La ville — pour les horaires", autreVille: "Autre ville (sans horaires)",
-    labRite: "Le rite — pour le sédèr des simanim",
+    labVille: "La ville, pour les horaires", autreVille: "Autre ville (sans horaires)",
+    labRite: "Le rite, pour le sédèr des simanim",
     btnImprimer: "Imprimer / enregistrer en PDF",
-    btnImage: "Télécharger en image — pour WhatsApp ou Photos",
-    imgOk: "Image prête !", imgErr: "Échec de l'image — utilisez l'impression.",
+    btnImage: "Télécharger en image, pour WhatsApp ou Photos",
+    imgOk: "Image prête !", imgErr: "Échec de l'image, utilisez l'impression.",
     btnWa: "Partager sur WhatsApp",
     waTexte: "La feuille de miel de Roch Hachana - cree la tienne, avec les horaires de ta ville :",
     notePrint: "Dans la fenêtre d'impression, activez « Imprimer les arrière-plans » et choisissez A4 sans marges.",
     notePrivee: "Tout se passe dans votre navigateur : rien n'est envoyé, rien n'est conservé.",
     datesTitre: "Dates des Fêtes de Tichri de l'année",
-    regleAvec: "LES FÊTES COMMENCENT TOUJOURS LA VEILLE AU SOIR — HORAIRES DE ",
+    regleAvec: "LES FÊTES COMMENCENT TOUJOURS LA VEILLE AU SOIR · HORAIRES DE ",
     regleSans: "LES FÊTES COMMENCENT TOUJOURS LA VEILLE AU SOIR",
     lignes: [
-      { f: "VEILLE DE ROCH-HACHANA", i: "— Nouvel An, 1<sup>er</sup> Sédèr<span class=\"avech\"> · allumage <b data-k=\"veille\"></b></span>", d: "vendredi soir 11 sept. 2026" },
-      { f: "ROCH-HACHANA", i: "— Chabbat (pas de chofar), 2<sup>e</sup> Sédèr<span class=\"avech\"> · allumage après <b data-k=\"soir2\"></b></span>", d: "1<sup>er</sup> jour : samedi 12 sept." },
-      { f: "ROCH-HACHANA", i: "— Chofar et Tachlikh<span class=\"avech\"> · fin de fête <b data-k=\"sortieRH\"></b></span>", d: "2<sup>e</sup> jour : dimanche 13 sept." },
+      { f: "VEILLE DE ROCH-HACHANA", i: " · Nouvel An, 1<sup>er</sup> Sédèr<span class=\"avech\"> · allumage <b data-k=\"veille\"></b></span>", d: "vendredi soir 11 sept. 2026" },
+      { f: "ROCH-HACHANA", i: " · Chabbat (pas de chofar), 2<sup>e</sup> Sédèr<span class=\"avech\"> · allumage après <b data-k=\"soir2\"></b></span>", d: "1<sup>er</sup> jour : samedi 12 sept." },
+      { f: "ROCH-HACHANA", i: " · Chofar et Tachlikh<span class=\"avech\"> · fin de fête <b data-k=\"sortieRH\"></b></span>", d: "2<sup>e</sup> jour : dimanche 13 sept." },
       { f: "JEÛNE DE GUEDALIA", i: "<i>(reporté)</i>", d: "lundi 14 sept." },
-      { f: "KOL-NIDRÉ", i: "— veille de Yom Kippour<span class=\"avech\"> · allumage <b data-k=\"kolnidre\"></b></span>", d: "dimanche soir 20 sept." },
-      { f: "YOM KIPPOUR", i: "— Grand Pardon, Yzkor<span class=\"avech\"> · fin du jeûne <b data-k=\"sortieYK\"></b></span>", d: "lundi 21 sept." },
-      { f: "SOUCCOT", i: "<span class=\"avech\">— allumage <b data-k=\"souccot\"></b> la veille</span> · « préparez votre soucca »", d: "samedi 26 et dimanche 27 sept." },
+      { f: "KOL-NIDRÉ", i: " · veille de Yom Kippour<span class=\"avech\"> · allumage <b data-k=\"kolnidre\"></b></span>", d: "dimanche soir 20 sept." },
+      { f: "YOM KIPPOUR", i: " · Grand Pardon, Yzkor<span class=\"avech\"> · fin du jeûne <b data-k=\"sortieYK\"></b></span>", d: "lundi 21 sept." },
+      { f: "SOUCCOT", i: "<span class=\"avech\"> · allumage <b data-k=\"souccot\"></b> la veille</span> · « préparez votre soucca »", d: "samedi 26 et dimanche 27 sept." },
       { f: "HOCHANA RABBA", i: "", d: "vendredi 2 octobre" },
-      { f: "CHEMINI ATSÉRET", i: "— Yzkor", d: "samedi 3 octobre" },
-      { f: "SIMHAT TORAH", i: "<span class=\"avech\">— fin des fêtes <b data-k=\"finFetes\"></b></span>", d: "dimanche 4 octobre" },
+      { f: "CHEMINI ATSÉRET", i: " · Yzkor", d: "samedi 3 octobre" },
+      { f: "SIMHAT TORAH", i: "<span class=\"avech\"> · fin des fêtes <b data-k=\"finFetes\"></b></span>", d: "dimanche 4 octobre" },
     ],
     nomLab: "Cet exemplaire est celui de",
     introB1: "On trempe le pain du Motsi dans le miel. Sur le premier fruit, on bénit",
@@ -103,35 +103,35 @@ const T: Record<Lang, StringsMiel> = {
     nav: { question: "Une question", chabbat: "Chabbat", install: "Installer le MCP" },
   },
   en: {
-    title: "The honey sheet — Mamash IA",
-    desc: "Generate your Rosh Hashana 5787 honey sheet: a name, a city, every simanim blessing in Hebrew and transliteration — free to print.",
+    title: "The honey sheet · Mamash IA",
+    desc: "Generate your Rosh Hashana 5787 honey sheet: a name, a city, every simanim blessing in Hebrew and transliteration, free to print.",
     h1: "The <strong>honey</strong> sheet.",
-    chapeau: "Every guest deserves their own. A name, a city — and the sheet composes itself: the Tishrei 5787 dates, your local times, every simanim blessing in Hebrew and transliteration. Print it, set it by the honey.",
+    chapeau: "Every guest deserves their own. A name, a city, and the sheet composes itself: the Tishrei 5787 dates, your local times, every simanim blessing in Hebrew and transliteration. Print it, set it by the honey.",
     labPrenom: "First name", phPrenom: "Esther, David, Jonathan…",
     labHeb: "In Hebrew (editable)", phHeb: "אסתר",
-    labVille: "City — for the times", autreVille: "Other city (no times)",
-    labRite: "Rite — for the simanim seder",
+    labVille: "City, for the times", autreVille: "Other city (no times)",
+    labRite: "Rite, for the simanim seder",
     btnImprimer: "Print / save as PDF",
-    btnImage: "Download as an image — for WhatsApp or Photos",
-    imgOk: "Image ready!", imgErr: "Image failed — use print instead.",
+    btnImage: "Download as an image, for WhatsApp or Photos",
+    imgOk: "Image ready!", imgErr: "Image failed, use print instead.",
     btnWa: "Share on WhatsApp",
     waTexte: "The Rosh Hashana honey sheet - make yours, with your city's times:",
     notePrint: "In the print dialog, enable “Background graphics” and choose A4 with no margins.",
     notePrivee: "Everything happens in your browser: nothing is sent, nothing is stored.",
     datesTitre: "Dates of the Tishrei Holidays",
-    regleAvec: "HOLIDAYS ALWAYS BEGIN THE PRIOR EVENING — TIMES FOR ",
+    regleAvec: "HOLIDAYS ALWAYS BEGIN THE PRIOR EVENING · TIMES FOR ",
     regleSans: "HOLIDAYS ALWAYS BEGIN THE PRIOR EVENING",
     lignes: [
-      { f: "EREV ROSH HASHANA", i: "— New Year, 1<sup>st</sup> Seder<span class=\"avech\"> · candle-lighting <b data-k=\"veille\"></b></span>", d: "Friday evening, Sept. 11, 2026" },
-      { f: "ROSH HASHANA", i: "— Shabbat (no shofar), 2<sup>nd</sup> Seder<span class=\"avech\"> · candles after <b data-k=\"soir2\"></b></span>", d: "1<sup>st</sup> day: Saturday, Sept. 12" },
-      { f: "ROSH HASHANA", i: "— Shofar and Tashlich<span class=\"avech\"> · ends <b data-k=\"sortieRH\"></b></span>", d: "2<sup>nd</sup> day: Sunday, Sept. 13" },
+      { f: "EREV ROSH HASHANA", i: " · New Year, 1<sup>st</sup> Seder<span class=\"avech\"> · candle-lighting <b data-k=\"veille\"></b></span>", d: "Friday evening, Sept. 11, 2026" },
+      { f: "ROSH HASHANA", i: " · Shabbat (no shofar), 2<sup>nd</sup> Seder<span class=\"avech\"> · candles after <b data-k=\"soir2\"></b></span>", d: "1<sup>st</sup> day: Saturday, Sept. 12" },
+      { f: "ROSH HASHANA", i: " · Shofar and Tashlich<span class=\"avech\"> · ends <b data-k=\"sortieRH\"></b></span>", d: "2<sup>nd</sup> day: Sunday, Sept. 13" },
       { f: "FAST OF GEDALIA", i: "<i>(postponed)</i>", d: "Monday, Sept. 14" },
-      { f: "KOL NIDREI", i: "— Yom Kippur eve<span class=\"avech\"> · candle-lighting <b data-k=\"kolnidre\"></b></span>", d: "Sunday evening, Sept. 20" },
-      { f: "YOM KIPPUR", i: "— Yizkor<span class=\"avech\"> · fast ends <b data-k=\"sortieYK\"></b></span>", d: "Monday, Sept. 21" },
-      { f: "SUKKOT", i: "<span class=\"avech\">— candles <b data-k=\"souccot\"></b> the eve before</span> · “prepare your sukka”", d: "Saturday 26 & Sunday 27 Sept." },
+      { f: "KOL NIDREI", i: " · Yom Kippur eve<span class=\"avech\"> · candle-lighting <b data-k=\"kolnidre\"></b></span>", d: "Sunday evening, Sept. 20" },
+      { f: "YOM KIPPUR", i: " · Yizkor<span class=\"avech\"> · fast ends <b data-k=\"sortieYK\"></b></span>", d: "Monday, Sept. 21" },
+      { f: "SUKKOT", i: "<span class=\"avech\"> · candles <b data-k=\"souccot\"></b> the eve before</span> · “prepare your sukka”", d: "Saturday 26 & Sunday 27 Sept." },
       { f: "HOSHANA RABBA", i: "", d: "Friday, October 2" },
-      { f: "SHEMINI ATZERET", i: "— Yizkor", d: "Saturday, October 3" },
-      { f: "SIMCHAT TORAH", i: "<span class=\"avech\">— holidays end <b data-k=\"finFetes\"></b></span>", d: "Sunday, October 4" },
+      { f: "SHEMINI ATZERET", i: " · Yizkor", d: "Saturday, October 3" },
+      { f: "SIMCHAT TORAH", i: "<span class=\"avech\"> · holidays end <b data-k=\"finFetes\"></b></span>", d: "Sunday, October 4" },
     ],
     nomLab: "This copy belongs to",
     introB1: "Dip the Motzi bread in honey. Over the first fruit, say",
@@ -141,35 +141,35 @@ const T: Record<Lang, StringsMiel> = {
     nav: { question: "Ask a question", chabbat: "Shabbat", install: "Install the MCP" },
   },
   he: {
-    title: "דף הדבש — Mamash IA",
-    desc: "צרו את דף הדבש שלכם לראש השנה תשפ״ז: שם, עיר, כל ברכות הסימנים — להדפסה חינם.",
+    title: "דף הדבש · Mamash IA",
+    desc: "צרו את דף הדבש שלכם לראש השנה תשפ״ז: שם, עיר, כל ברכות הסימנים : להדפסה חינם.",
     h1: "דף <strong>הדבש</strong>.",
-    chapeau: "לכל אורח מגיע דף משלו. שם ועיר — והדף נערך מעצמו: תאריכי תשרי תשפ״ז, זמני העיר שלכם, וכל ברכות הסימנים. מדפיסים ומניחים ליד הדבש.",
+    chapeau: "לכל אורח מגיע דף משלו. שם ועיר, והדף נערך מעצמו: תאריכי תשרי תשפ״ז, זמני העיר שלכם, וכל ברכות הסימנים. מדפיסים ומניחים ליד הדבש.",
     labPrenom: "השם הפרטי", phPrenom: "אסתר, דוד, יונתן…",
     labHeb: "בעברית (ניתן לעריכה)", phHeb: "אסתר",
-    labVille: "העיר — לזמנים", autreVille: "עיר אחרת (בלי זמנים)",
-    labRite: "הנוסח — לסדר הסימנים",
+    labVille: "העיר, לזמנים", autreVille: "עיר אחרת (בלי זמנים)",
+    labRite: "הנוסח, לסדר הסימנים",
     btnImprimer: "הדפסה / שמירה כ-PDF",
-    btnImage: "הורדה כתמונה — לוואטסאפ או לתמונות",
-    imgOk: "התמונה מוכנה!", imgErr: "יצירת התמונה נכשלה — השתמשו בהדפסה.",
+    btnImage: "הורדה כתמונה, לוואטסאפ או לתמונות",
+    imgOk: "התמונה מוכנה!", imgErr: "יצירת התמונה נכשלה, השתמשו בהדפסה.",
     btnWa: "שיתוף בוואטסאפ",
     waTexte: "דף הדבש לראש השנה - צרו את שלכם, עם זמני העיר שלכם:",
     notePrint: "בחלון ההדפסה הפעילו « רקעים » ובחרו A4 בלי שוליים.",
     notePrivee: "הכול קורה בדפדפן שלכם: שום דבר לא נשלח ולא נשמר.",
     datesTitre: "מועדי חודש תשרי",
-    regleAvec: "החגים נכנסים תמיד בערב שלפני — זמני ",
+    regleAvec: "החגים נכנסים תמיד בערב שלפני, זמני ",
     regleSans: "החגים נכנסים תמיד בערב שלפני",
     lignes: [
-      { f: "ערב ראש השנה", i: "— סדר ראשון<span class=\"avech\"> · הדלקת נרות <b data-k=\"veille\"></b></span>", d: "יום שישי בערב, 11.9.2026" },
-      { f: "ראש השנה", i: "— שבת (אין שופר), סדר שני<span class=\"avech\"> · הדלקה אחרי <b data-k=\"soir2\"></b></span>", d: "יום א׳ של החג: שבת, 12.9" },
-      { f: "ראש השנה", i: "— שופר ותשליך<span class=\"avech\"> · צאת החג <b data-k=\"sortieRH\"></b></span>", d: "יום ב׳ של החג: ראשון, 13.9" },
+      { f: "ערב ראש השנה", i: " · סדר ראשון<span class=\"avech\"> · הדלקת נרות <b data-k=\"veille\"></b></span>", d: "יום שישי בערב, 11.9.2026" },
+      { f: "ראש השנה", i: " · שבת (אין שופר), סדר שני<span class=\"avech\"> · הדלקה אחרי <b data-k=\"soir2\"></b></span>", d: "יום א׳ של החג: שבת, 12.9" },
+      { f: "ראש השנה", i: " · שופר ותשליך<span class=\"avech\"> · צאת החג <b data-k=\"sortieRH\"></b></span>", d: "יום ב׳ של החג: ראשון, 13.9" },
       { f: "צום גדליה", i: "<i>(נדחה)</i>", d: "שני, 14.9" },
-      { f: "כל נדרי", i: "— ערב יום כיפור<span class=\"avech\"> · הדלקת נרות <b data-k=\"kolnidre\"></b></span>", d: "ראשון בערב, 20.9" },
-      { f: "יום כיפור", i: "— יזכור<span class=\"avech\"> · צאת הצום <b data-k=\"sortieYK\"></b></span>", d: "שני, 21.9" },
-      { f: "סוכות", i: "<span class=\"avech\">— הדלקה <b data-k=\"souccot\"></b> בערב שלפני</span>", d: "שבת 26.9 וראשון 27.9" },
+      { f: "כל נדרי", i: " · ערב יום כיפור<span class=\"avech\"> · הדלקת נרות <b data-k=\"kolnidre\"></b></span>", d: "ראשון בערב, 20.9" },
+      { f: "יום כיפור", i: " · יזכור<span class=\"avech\"> · צאת הצום <b data-k=\"sortieYK\"></b></span>", d: "שני, 21.9" },
+      { f: "סוכות", i: "<span class=\"avech\"> · הדלקה <b data-k=\"souccot\"></b> בערב שלפני</span>", d: "שבת 26.9 וראשון 27.9" },
       { f: "הושענא רבה", i: "", d: "שישי, 2.10" },
-      { f: "שמיני עצרת", i: "— יזכור", d: "שבת, 3.10" },
-      { f: "שמחת תורה", i: "<span class=\"avech\">— צאת החגים <b data-k=\"finFetes\"></b></span>", d: "ראשון, 4.10" },
+      { f: "שמיני עצרת", i: " · יזכור", d: "שבת, 3.10" },
+      { f: "שמחת תורה", i: "<span class=\"avech\"> · צאת החגים <b data-k=\"finFetes\"></b></span>", d: "ראשון, 4.10" },
     ],
     nomLab: "הדף הזה שייך ל",
     introB1: "טובלים את פרוסת המוציא בדבש. על הפרי הראשון מברכים",
@@ -192,7 +192,7 @@ export function mielPage(lang: Lang): string {
     .join("\n    ");
   // Un bloc complet par rite : bandeau, introduction, simanim, avertissement.
   // Tous sont dans la page, un seul est visible. L'impression et html2canvas
-  // restent simples — rien n'est reconstruit, on bascule un attribut hidden.
+  // restent simples, rien n'est reconstruit, on bascule un attribut hidden.
   const blocRite = (r: Rite): string => {
     const sd = SEDARIM[r];
     const sims = sd.simanim
@@ -202,7 +202,7 @@ export function mielPage(lang: Lang): string {
         // L'hébreu quand la source lue le donne vocalisé ; sinon le sens, pour
         // que la formule reste compréhensible sans nikoud inventé.
         const corps = si.heb
-          ? `<div class="simheb">${si.heb}</div><div class="simph">${si.phon}${si.trad && s.trad ? " — " + s.trad : ""}</div>`
+          ? `<div class="simheb">${si.heb}</div><div class="simph">${si.phon}${si.trad && s.trad ? ", " + s.trad : ""}</div>`
           : `<div class="simph forte">${si.phon}</div>${si.sens ? `<div class="simsens">${si.sens[lang]}</div>` : ""}`;
         return `${tete}<div class="sim"><div class="simt">☞ ${si.lab[lang]}${si.bpe ? ' <span class="bpe">בורא פרי העץ</span>' : ""}</div>${corps}</div>`;
       })
@@ -319,7 +319,7 @@ ${altLinks(lang, "/miel")}
   .dates .d { font-weight:700; white-space:nowrap; text-align:right; padding-left:1.5mm; }
   .sansh .avech { display:none; }
   /* Feuille hébreu : la page reste le gabarit LTR de référence, mais chaque bloc de prose
-     hébreu se lit de droite à gauche — sinon l'algorithme bidi éclate « 19 h 54 » autour du texte. */
+     hébreu se lit de droite à gauche, sinon l'algorithme bidi éclate « 19 h 54 » autour du texte. */
   [dir="rtl"] .rouge1, [dir="rtl"] .regle, [dir="rtl"] .dates, [dir="rtl"] .intro, [dir="rtl"] .simt, [dir="rtl"] .pied { direction:rtl; }
   [dir="rtl"] .dates td { text-align:right; }
   [dir="rtl"] .dates .d { text-align:left; padding-left:0; padding-right:1.5mm; }
@@ -399,7 +399,7 @@ ${altLinks(lang, "/miel")}
     </form>
     <div class="cadre-apercu" id="capercu"><div class="apercu" id="apercu">
       <div class="page"><div class="cadre">
-        <div class="bande"><span>PÉRIODIQUE FAMILIAL — N° 1</span><span class="bh">בס״ד · שנת התשפ״ז</span><span>© mamash-ia.com</span></div>
+        <div class="bande"><span>PÉRIODIQUE FAMILIAL · N° 1</span><span class="bh">בס״ד · שנת התשפ״ז</span><span>© mamash-ia.com</span></div>
         <div class="titre">LA FEUILLE<br>DE «&nbsp;MIEL&nbsp;»</div>
         <div class="ligne-annee"><img class="sceau" src="/icon.png" alt=""><span class="annee">Année 2026 – 2027</span><span class="main">☞</span></div>
         <div class="rouge1">${s.datesTitre}</div>

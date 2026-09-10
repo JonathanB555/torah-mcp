@@ -2,7 +2,7 @@
  * Journal statistique privé des questions posées sur /question.
  *
  * - `journaliser()` : une ligne par question dans D1 (binding STATS_DB),
- *   sans adresse IP ni identifiant de visiteur — seulement ce qu'il faut pour
+ *   sans adresse IP ni identifiant de visiteur, seulement ce qu'il faut pour
  *   comprendre l'usage (quand, quel niveau, quelle question, combien de temps,
  *   combien de tokens, quel pays en agrégat). Sans binding : no-op.
  * - `pageStats()` : GET /stats, protégé par HTTP Basic auth (secret
@@ -84,7 +84,7 @@ function tempsConstant(a: string, b: string): boolean {
 function demanderAuth(): Response {
   return new Response("Authentification requise.", {
     status: 401,
-    headers: { "WWW-Authenticate": 'Basic realm="Mamash IA — statistiques", charset="UTF-8"', "Cache-Control": "no-store" },
+    headers: { "WWW-Authenticate": 'Basic realm="Mamash IA · statistiques", charset="UTF-8"', "Cache-Control": "no-store" },
   });
 }
 
@@ -111,7 +111,7 @@ async function totaux(db: D1Database, depuisISO: string | null): Promise<Totaux>
 async function repartition(db: D1Database, col: "mode" | "pays" | "cause" | "lang", depuisISO: string, limite = 12): Promise<{ k: string; n: number }[]> {
   const extra = col === "cause" ? "AND statut <> 'ok'" : "";
   const { results } = await db
-    .prepare(`SELECT COALESCE(${col},'—') AS k, COUNT(*) AS n FROM questions WHERE ts >= ?1 ${extra} GROUP BY k ORDER BY n DESC LIMIT ${limite}`)
+    .prepare(`SELECT COALESCE(${col},' · ') AS k, COUNT(*) AS n FROM questions WHERE ts >= ?1 ${extra} GROUP BY k ORDER BY n DESC LIMIT ${limite}`)
     .bind(depuisISO)
     .all<any>();
   return (results || []).map((r) => ({ k: String(r.k), n: Number(r.n) }));
@@ -146,10 +146,10 @@ async function dernieres(db: D1Database, limite: number): Promise<any[]> {
 
 const esc = (s: unknown) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const nf = new Intl.NumberFormat("fr-FR");
-const num = (n: number | null | undefined) => (n == null ? "—" : nf.format(Math.round(n)));
-const sec = (ms: number | null) => (ms == null ? "—" : (ms / 1000).toFixed(0) + " s");
+const num = (n: number | null | undefined) => (n == null ? " · " : nf.format(Math.round(n)));
+const sec = (ms: number | null) => (ms == null ? " · " : (ms / 1000).toFixed(0) + " s");
 const NIV: Record<string, string> = { debutant: "débutant", classique: "classique", avance: "avancé" };
-// Ordre de grandeur, prix publics Sonnet (3 $/M entrée, 15 $/M sortie) — indicatif.
+// Ordre de grandeur, prix publics Sonnet (3 $/M entrée, 15 $/M sortie) : indicatif.
 const cout = (tin: number, tout: number) => ((tin * 3 + tout * 15) / 1_000_000).toFixed(2) + " $";
 
 function dateFr(iso: string): string {
@@ -158,7 +158,7 @@ function dateFr(iso: string): string {
 }
 
 function bloc(titre: string, t: Totaux): string {
-  return `<div class="k"><span class="lab">${titre}</span><b>${num(t.n)}</b><span class="d">${num(t.ok)} réponses · ${num(t.refus)} refus · ${num(t.erreur)} erreurs<br>${sec(t.duree)} en moyenne · ${t.sources == null ? "—" : t.sources.toFixed(1)} sources<br>${num(t.tin + t.tout)} tokens ≈ ${cout(t.tin, t.tout)}</span></div>`;
+  return `<div class="k"><span class="lab">${titre}</span><b>${num(t.n)}</b><span class="d">${num(t.ok)} réponses · ${num(t.refus)} refus · ${num(t.erreur)} erreurs<br>${sec(t.duree)} en moyenne · ${t.sources == null ? " · " : t.sources.toFixed(1)} sources<br>${num(t.tin + t.tout)} tokens ≈ ${cout(t.tin, t.tout)}</span></div>`;
 }
 
 function liste(titre: string, rows: { k: string; n: number }[], total: number, libelle: (k: string) => string = (k) => k): string {
@@ -172,12 +172,12 @@ function liste(titre: string, rows: { k: string; n: number }[], total: number, l
 function courbe(jours: { j: string; n: number; ok: number }[]): string {
   if (!jours.length) return "";
   const max = Math.max(...jours.map((d) => d.n), 1);
-  return `<div class="jours"><span class="lab">Par jour — 30 derniers</span><div class="cols">${jours
+  return `<div class="jours"><span class="lab">Par jour · 30 derniers</span><div class="cols">${jours
     .map((d) => `<div class="col" title="${d.j} : ${d.n} questions, ${d.ok} réponses"><i style="height:${Math.round((d.n / max) * 100)}%"></i><em>${d.j.slice(8)}</em></div>`)
     .join("")}</div></div>`;
 }
 
-/** Compteur des feuilles de miel — côté serveur, aucune donnée personnelle. */
+/** Compteur des feuilles de miel, côté serveur, aucune donnée personnelle. */
 export async function journaliserFeuille(
   env: Env,
   e: { mode: string; ville: string | null; langue: string | null; pays: string | null }
@@ -257,7 +257,7 @@ export async function pageStats(request: Request, env: Env): Promise<Response> {
 
   const html = `<!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">
-<title>Statistiques — Mamash IA</title>
+<title>Statistiques · Mamash IA</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600;7..72,700&family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Frank+Ruhl+Libre:wght@400;700&display=swap');
   :root { --paper:#f7f6f1; --ink:#082a99; --ink-40:rgba(8,42,153,.4); --ink-15:rgba(8,42,153,.14); --muted:rgba(8,42,153,.65); --hl:#dbe3ff; }
@@ -294,12 +294,12 @@ export async function pageStats(request: Request, env: Env): Promise<Response> {
 <body><main>
   <nav><a class="wm" href="/"><b>Mamash</b>&nbsp;IA</a><span class="r"><a href="/question">La question</a><a href="/outils">Outils</a><a href="/install">Installer</a></span></nav>
   <h1>Les <strong>questions</strong> posées.</h1>
-  <p class="muted">Journal privé de <code>/question</code> — sans adresse IP ni identifiant. Heures de Paris. Coût indicatif aux prix publics Sonnet.</p>
+  <p class="muted">Journal privé de <code>/question</code>, sans adresse IP ni identifiant. Heures de Paris. Coût indicatif aux prix publics Sonnet.</p>
   <div class="ks">${bloc("Depuis le début", tout)}${bloc("30 jours", j30)}${bloc("7 jours", j7)}${bloc("24 heures", j1)}</div>
-  <div class="grid">${liste("Niveau — 30 j", modes, j30.n, (k) => NIV[k] || k)}${liste("Pays — 30 j", pays, j30.n)}${liste("Échecs — 30 j", causes, 0)}${liste("Langue — 30 j", langs, j30.n)}</div>
+  <div class="grid">${liste("Niveau · 30 j", modes, j30.n, (k) => NIV[k] || k)}${liste("Pays · 30 j", pays, j30.n)}${liste("Échecs · 30 j", causes, 0)}${liste("Langue · 30 j", langs, j30.n)}</div>
   ${courbe(jours)}
   <h2>Les <strong>feuilles de miel</strong> éditées</h2>
-  <p class="muted">Comptage côté serveur de <code>/miel</code> — insensible aux bloqueurs de pistage, sans prénom ni adresse IP.</p>
+  <p class="muted">Comptage côté serveur de <code>/miel</code>, insensible aux bloqueurs de pistage, sans prénom ni adresse IP.</p>
   <div class="ks">
     <div class="k"><span class="lab">Depuis le début</span><b>${num(feuilles.total)}</b></div>
     <div class="k"><span class="lab">7 jours</span><b>${num(feuilles.j7)}</b></div>
@@ -323,7 +323,7 @@ export async function pageStats(request: Request, env: Env): Promise<Response> {
           <td class="q">${dateFr(r.ts)}</td>
           <td class="q">${r.genre === "bug" ? "🐞 bug" : "💡 idée"}</td>
           <td>${esc(r.message)}${r.contact ? `<br><span class="ct">${esc(r.contact)}</span>` : ""}</td>
-          <td class="q">${r.page ? esc(r.page) : "—"}<br>${r.langue || "?"}${r.pays ? " · " + r.pays : ""}</td>
+          <td class="q">${r.page ? esc(r.page) : " · "}<br>${r.langue || "?"}${r.pays ? " · " + r.pays : ""}</td>
         </tr>`).join("")
       : '<tr><td colspan="4">Aucun retour pour l’instant.</td></tr>'
   }</tbody></table>`}

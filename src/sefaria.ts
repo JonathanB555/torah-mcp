@@ -1,5 +1,5 @@
 /**
- * Tools Sefaria — bibliothèque juive numérique (sefaria.org), API publique.
+ * Tools Sefaria, bibliothèque juive numérique (sefaria.org), API publique.
  * Textes (Tanakh, Talmud, Choulhan Aroukh, responsa…), liens/commentaires,
  * recherche plein texte et calendriers d'étude.
  */
@@ -12,7 +12,7 @@ export interface Env {
   /** Clé API HebrewBooks (accordée sur demande à developers@hebrewbooks.org). */
   HEBREWBOOKS_API_KEY?: string;
   HEBREWBOOKS_API_URL?: string;
-  /** Question en français sur le site : clé API Anthropic (secret) — sans elle, /api/question répond 503. */
+  /** Question en français sur le site : clé API Anthropic (secret) : sans elle, /api/question répond 503. */
   ANTHROPIC_API_KEY?: string;
   ANTHROPIC_MODEL?: string;
   QUESTION_DAILY_CAP?: string;
@@ -22,7 +22,7 @@ export interface Env {
   DEV?: string;
   /** Mot de passe de la page privée /stats (Basic auth, utilisateur libre). Absent = page désactivée. */
   STATS_PASSWORD?: string;
-  /** Notification des retours des visiteurs (/retour). URL d'un webhook —
+  /** Notification des retours des visiteurs (/retour). URL d'un webhook
    *  Slack, Discord, Make, n8n… Absent = les retours restent lisibles sur /stats. */
   RETOUR_WEBHOOK_URL?: string;
   /** Envoi des retours par courrier (liaison send_email de wrangler.jsonc),
@@ -45,7 +45,7 @@ export type ToolHandler = (args: any, env: Env) => Promise<any>;
 const USER_AGENT = "torah-mcp/1.0 (+https://github.com/JonathanB555/torah-mcp)";
 
 /**
- * GET JSON avec cache edge Cloudflare — un même daf demandé cent fois ne
+ * GET JSON avec cache edge Cloudflare, un même daf demandé cent fois ne
  * coûte qu'un appel à Sefaria. TTL par type de ressource (les textes sont
  * quasi immuables, les calendriers changent chaque jour).
  */
@@ -67,8 +67,8 @@ function encodeRef(ref: string): string {
 export const sefariaTools: ToolDefinition[] = [
   {
     name: "sefaria_text",
-    title: "Sefaria — texte d'une référence",
-    annotations: { title: "Sefaria — texte d'une référence", readOnlyHint: true },
+    title: "Sefaria, texte d'une référence",
+    annotations: { title: "Sefaria, texte d'une référence", readOnlyHint: true },
     description:
       "Texte d'une référence Sefaria (hébreu + traduction anglaise si disponible). " +
       'Réfs : "Genesis 1:1", "Berakhot 2a", "Shulchan Arukh, Orach Chayim 1:1", ' +
@@ -84,11 +84,11 @@ export const sefariaTools: ToolDefinition[] = [
   },
   {
     name: "sefaria_links",
-    title: "Sefaria — commentaires liés",
-    annotations: { title: "Sefaria — commentaires liés", readOnlyHint: true },
+    title: "Sefaria, commentaires liés",
+    annotations: { title: "Sefaria, commentaires liés", readOnlyHint: true },
     description:
       "Commentaires et textes liés à une référence (Rachi, Tossafot, midrachim, " +
-      "halakha, responsa…). Renvoie les réfs liées par catégorie — charger ensuite " +
+      "halakha, responsa…). Renvoie les réfs liées par catégorie, charger ensuite " +
       "le texte voulu avec sefaria_text.",
     inputSchema: {
       type: "object",
@@ -104,8 +104,8 @@ export const sefariaTools: ToolDefinition[] = [
   },
   {
     name: "sefaria_search",
-    title: "Sefaria — recherche",
-    annotations: { title: "Sefaria — recherche", readOnlyHint: true },
+    title: "Sefaria, recherche",
+    annotations: { title: "Sefaria, recherche", readOnlyHint: true },
     description:
       "Recherche plein texte dans toute la bibliothèque Sefaria (hébreu ou anglais). " +
       "Utile pour retrouver une source dont on connaît les mots mais pas la référence.",
@@ -120,8 +120,8 @@ export const sefariaTools: ToolDefinition[] = [
   },
   {
     name: "sefaria_calendar",
-    title: "Sefaria — calendriers d'étude",
-    annotations: { title: "Sefaria — calendriers d'étude", readOnlyHint: true },
+    title: "Sefaria, calendriers d'étude",
+    annotations: { title: "Sefaria, calendriers d'étude", readOnlyHint: true },
     description:
       "Calendriers d'étude du jour : parachat hachavoua, haftara, daf yomi, " +
       "Rambam quotidien, halakha quotidienne… Sans argument : aujourd'hui.",

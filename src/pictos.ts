@@ -1,5 +1,5 @@
 /**
- * Pictos des niveaux de /question — pastilles jaunes au style du logo
+ * Pictos des niveaux de /question, pastilles jaunes au style du logo
  * (générées via nano_banana à partir de /icon.png, détourées en PNG8 alpha).
  * Servies sur /picto-<niveau>.png.
  */

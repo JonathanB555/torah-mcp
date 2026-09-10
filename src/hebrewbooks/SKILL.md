@@ -34,7 +34,7 @@ Skip if the question is purely cultural/historical with no halachic or textual d
 
 ## Workflow
 
-### Step 1 — Resolve the exact reference
+### Step 1. Resolve the exact reference
 
 Guessing a Sefaria ref wastes a round-trip. Resolve it:
 
@@ -44,7 +44,7 @@ curl -s "https://www.sefaria.org/api/name/<title>"
 
 The response gives `is_ref` and `completions`, which show the exact node names (e.g. `Chovot HaLevavot, Fourth Treatise on Trust`, `Tanya, Part IV; Iggeret HaKodesh`, `Ben Ish Hai, Halachot 1st Year, <Parasha>`). For a chapter structure, `https://www.sefaria.org/api/v2/index/<title>` returns the full tree.
 
-### Step 2 — Download and read the source text yourself
+### Step 2. Download and read the source text yourself
 
 ```
 curl -s "https://www.sefaria.org/api/v3/texts/<REF>?version=source" -o out.json
@@ -59,12 +59,12 @@ Two traps, both of which have already produced wrong Hebrew:
 
 For Talmud, `Berakhot.5b`; for Shulchan Aruch, `Shulchan_Arukh,_Orach_Chayim.131.6`; for Mishna Berura, `Mishnah_Berurah.131`.
 
-### Step 3 — Answer with citations
+### Step 3. Answer with citations
 
 Structure the answer:
 
-1. **Réponse courte** (2–4 lignes) — the halachic/textual conclusion
-2. **Source(s)** — for each source cited:
+1. **Réponse courte** (2–4 lignes), the halachic/textual conclusion
+2. **Source(s)**, for each source cited:
    - Sefer + author + reference (siman/perek/daf)
    - Short quote (≤15 words, in quotation marks) if directly relevant
    - Markdown link to the Sefaria ref that was actually read
@@ -74,7 +74,7 @@ Structure the answer:
 
 Do not append a standing note explaining the hebrewbooks 403. It is the permanent, normal state of affairs, not an incident, and repeating it every time is noise. Mention it only if the user asks.
 
-### Step 4 — When the text cannot be found
+### Step 4. When the text cannot be found
 
 If Sefaria does not have the text (some acharonim, most responsa, Kaf HaChaim, Yabia Omer):
 - Say so explicitly: *"Je n'ai pas trouvé ce texte en version vérifiable ; voici ce que j'en sais, sans citation hébraïque."*
@@ -82,7 +82,7 @@ If Sefaria does not have the text (some acharonim, most responsa, Kaf HaChaim, Y
 - Other machine-readable options worth trying: he.wikisource.org, AlHaTorah, Dicta.
 - Never fabricate a hebrewbooks.org identifier, a page number, or a Sefaria ref.
 
-## Chabad sources — the Rebbe's torah
+## Chabad sources, the Rebbe's torah
 
 **Likkutei Sichot is copyrighted (© Kehot Publication Society). Never reproduce a sicha in full**, whatever the user asks: summarize its argument, quote at most a few short lines with the volume and page, and send the reader to the official scan for the full text.
 
@@ -104,34 +104,34 @@ The complete set is hosted on hebrewbooks.org (verified 2026-09-04, sefer detail
 | 12 | 14937 | 25 | 14948 | 38 | 14961 |
 | 13 | 14938 | 26 | 14949 | 39 | 14962 |
 
-(ids are NOT in volume order — trust this table, never extrapolate). Cite as: `Likkutei Sichot vol. 29 — hebrewbooks.org/14952` (sefer link only, still no pdfpager page numbers). French adapted sichot: fr.chabad.org.
+(ids are NOT in volume order, trust this table, never extrapolate). Cite as: `Likkutei Sichot vol. 29 : hebrewbooks.org/14952` (sefer link only, still no pdfpager page numbers). French adapted sichot: fr.chabad.org.
 
-An **English rendition** also sits on hebrewbooks.org ("Likkutei Sichos — An Anthology of Talks", English rendition by Rabbi Eliyahu Touger, © Kehot). Verified volumes (title pages checked 2026-09-04):
-- Vol. VI (Bereishis) — hebrewbooks.org/15455
-- Vol. VII (Shmos) — hebrewbooks.org/15456
-- Vol. VIII (Vayikra) — hebrewbooks.org/15457
-- Vol. IX (Bamidbar) — hebrewbooks.org/15458
-- Vol. X (Devarim) — hebrewbooks.org/15454
+An **English rendition** also sits on hebrewbooks.org ("Likkutei Sichos. An Anthology of Talks", English rendition by Rabbi Eliyahu Touger, © Kehot). Verified volumes (title pages checked 2026-09-04):
+- Vol. VI (Bereishis), hebrewbooks.org/15455
+- Vol. VII (Shmos), hebrewbooks.org/15456
+- Vol. VIII (Vayikra), hebrewbooks.org/15457
+- Vol. IX (Bamidbar), hebrewbooks.org/15458
+- Vol. X (Devarim), hebrewbooks.org/15454
 
-Other English volumes may exist nearby, but their ids are UNVERIFIED — never cite an id you have not checked; offer a hebrewbooks.org title search instead. Same copyright rule as the Hebrew set: link for reading, never reproduce.
+Other English volumes may exist nearby, but their ids are UNVERIFIED : never cite an id you have not checked; offer a hebrewbooks.org title search instead. Same copyright rule as the Hebrew set: link for reading, never reproduce.
 
-**The Tanya, by contrast, is readable in full through Sefaria** (license CC-BY-NC granted by Kehot) — quote it like any other source text. Exact ref syntax (the index is complex, plain "Tanya 1" fails):
+**The Tanya, by contrast, is readable in full through Sefaria** (license CC-BY-NC granted by Kehot), quote it like any other source text. Exact ref syntax (the index is complex, plain "Tanya 1" fails):
 - `Tanya, Part I; Likkutei Amarim 41` (chapters 1-53)
 - `Tanya, Part II; Shaar HaYichud VehaEmunah 3`
 - `Tanya, Part III; Iggeret HaTeshuvah 4`
 - `Tanya, Part IV; Iggeret HaKodesh 12`
 - `Tanya, Part V; Kuntres Acharon 5`
 
-Likkutei Torah (the Alter Rebbe's) exists on Sefaria as a complex index — resolve the exact section (e.g. via sefaria_search) before quoting. Torah Or is NOT on Sefaria (verified 2026-09-04): send readers to hebrewbooks.org.
+Likkutei Torah (the Alter Rebbe's) exists on Sefaria as a complex index, resolve the exact section (e.g. via sefaria_search) before quoting. Torah Or is NOT on Sefaria (verified 2026-09-04): send readers to hebrewbooks.org.
 
 ## Quality rules
 
 - **Never invent** a sefer reference, page number, or URL. If unsure, omit.
-- **Quote sparingly** — copyright-safe excerpts only (<15 words per quote, max 1 quote per source).
-- **Hebrew + French/English** — give the Hebrew term once, then use the translation.
-- **Transliteration (French answers)** — always French Sephardic spelling, never mixed with Ashkenazi/English forms: Chabbat, halakha, mitsva, berakha, Choulhan Aroukh, Orah Haïm, Michna Beroura, Tossafot, Rachi, sougya, mahloket (ש→ch, ת→t, ח→h, צ→ts, ק→k ; jamais sh/tz/os). The `mode_etude` tool carries the full table.
-- **Multiple opinions** — when poskim disagree, present both sides with sources, don't pick a winner.
-- **No psak** — you are a research assistant, not a posek. Always end halachic answers with the disclaimer.
+- **Quote sparingly**, copyright-safe excerpts only (<15 words per quote, max 1 quote per source).
+- **Hebrew + French/English**, give the Hebrew term once, then use the translation.
+- **Transliteration (French answers)**, always French Sephardic spelling, never mixed with Ashkenazi/English forms: Chabbat, halakha, mitsva, berakha, Choulhan Aroukh, Orah Haïm, Michna Beroura, Tossafot, Rachi, sougya, mahloket (ש→ch, ת→t, ח→h, צ→ts, ק→k ; jamais sh/tz/os). The `mode_etude` tool carries the full table.
+- **Multiple opinions**, when poskim disagree, present both sides with sources, don't pick a winner.
+- **No psak**, you are a research assistant, not a posek. Always end halachic answers with the disclaimer.
 
 ## Example skeleton
 
