@@ -168,16 +168,16 @@ export const SEDARIM: Record<Rite, Seder> = {
   // nikoud reconstitué, qui n'aurait aucune source.
   // ---------------------------------------------------------------------
   tn: {
-    nom: { fr: "Tunisie — Tunis et Djerba", en: "Tunisia — Tunis and Djerba", he: "תוניסיה — תוניס וג׳רבה" },
+    nom: { fr: "Tunisie — l'usage de la feuille de miel", en: "Tunisia — the honey sheet custom", he: "תוניסיה — מנהג דף הדבש" },
     bandeau: {
       fr: "LES BERAKHOT DU SOIR DE ROCH-HACHANA — LE SÉDÈR DES SIMANIM DU RITE TUNISIEN",
       en: "THE ROSH HASHANA EVENING BLESSINGS — THE SIMANIM SEDER OF THE TUNISIAN RITE",
       he: "ברכות ליל ראש השנה — סדר הסימנים כמנהג תוניסיה",
     },
     source: {
-      fr: "Sédèr tunisien · feuille imprimée « Séder pour les deux soirées » et « La page de miel », concordantes",
-      en: "Tunisian seder · printed sheet “Séder pour les deux soirées” and “La page de miel”, in agreement",
-      he: "סדר תוניסאי · דף מודפס ״Séder pour les deux soirées״ ו״La page de miel״ (harissa.com), תואמים",
+      fr: "Sédèr de Tunis · feuille imprimée « Séder pour les deux soirées » et « La page de miel », concordantes · à Djerba, le Brit Kehouna suit l'ordre du Choulhan Aroukh",
+      en: "Tunis seder · printed sheet “Séder pour les deux soirées” and “La page de miel”, in agreement · in Djerba, Brit Kehuna follows the Shulchan Arukh order",
+      he: "סדר תוניס · דף מודפס ״Séder pour les deux soirées״ ו״La page de miel״, תואמים · בג׳רבה, ברית כהונה הולך אחר סדר השולחן ערוך",
     },
     note: {
       fr: "Recueil de coutumes, non un livre de décisionnaire — l'hébreu se lit dans le siddour de votre famille. En Tunisie, le pain du Motsi se trempe dans le sucre, et Chéhé'héyanou se dit une fois sur un fruit nouveau.",

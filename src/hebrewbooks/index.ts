@@ -11,67 +11,82 @@ import type { Env, ToolDefinition, ToolHandler } from "../sefaria";
 export const SKILL_MD = skillMd as unknown as string;
 
 // ----------------------------------------------------------------------------
-// Recherche catalogue HebrewBooks — via leur API officielle sur clé
-// (accordée aux développeurs sur demande : developers@hebrewbooks.org).
-// Le site public est derrière un challenge Cloudflare qu'on ne contourne pas ;
-// sans clé, le tool explique la marche à suivre.
+// Recherche plein texte dans le corpus HebrewBooks — via hebrewbooks.ai.
+//
+// L'API officielle de hebrewbooks.org est hors d'atteinte : le site entier,
+// www comme beta, est derrière un challenge Cloudflare qu'aucun client HTTP
+// ne franchit, avec ou sans clé — vérifié depuis une connexion résidentielle
+// en présentant un en-tête de navigateur complet. On ne contourne pas une
+// protection posée volontairement.
+//
+// hebrewbooks.ai (Roman Kagan) indexe le même corpus océrisé, environ 50 000
+// ouvrages, et expose une recherche morphologique hébraïque sans
+// authentification. Elle rend ce que l'API officielle ne rendait pas : le
+// passage lui-même, avec sa page et le lien vers le fac-similé.
+//
+// Service tiers et bénévole : on met la réponse en cache six heures en
+// périphérie plutôt que de le solliciter à chaque appel, et une panne se dit
+// clairement au lieu de faire croire à un serveur cassé.
 // ----------------------------------------------------------------------------
 
-const DEFAULT_HB_API_URL = "https://beta.hebrewbooks.org";
-
-/** Décapsule une réponse JSONP `cb({...});` → objet JSON. */
-function unwrapJsonp(text: string): any {
-  const start = text.indexOf("{");
-  const end = text.lastIndexOf("}");
-  if (start === -1 || end === -1) throw new Error("Réponse HebrewBooks illisible.");
-  return JSON.parse(text.slice(start, end + 1));
-}
+const HB_AI_URL = "https://hebrewbooks.ai/api/search";
 
 async function hebrewbooksSearch(env: Env, args: any): Promise<any> {
-  if (!env.HEBREWBOOKS_API_KEY) {
-    throw new Error(
-      "La recherche dans le catalogue HebrewBooks n'est pas disponible sur ce " +
-        "serveur : l'API officielle de hebrewbooks.org exige une clé, qui n'a " +
-        "pas encore été accordée. Utilisez sefaria_search pour trouver le texte, " +
-        "puis lisez le sefer sur hebrewbooks.org. Tous les autres outils " +
-        "fonctionnent normalement. — HebrewBooks catalogue search is unavailable " +
-        "on this server: the official hebrewbooks.org API requires a key that " +
-        "has not been granted yet. Use sefaria_search to find the text, then read " +
-        "the sefer on hebrewbooks.org. Every other tool works normally."
-    );
-  }
-  const title = String(args?.titre || "").trim();
-  const author = String(args?.auteur || "").trim();
-  if (!title && !author) throw new Error("Indiquer au moins un titre ou un auteur.");
+  const q = String(args?.q ?? args?.titre ?? "").trim();
+  const auteur = String(args?.auteur ?? "").trim();
+  if (!q && !auteur) throw new Error("Indiquer au moins une recherche (q) ou un auteur.");
   const limit = Math.min(Math.max(Number(args?.limit) || 10, 1), 30);
 
-  const params = new URLSearchParams({
-    title_search: title,
-    author_search: author,
-    start: "0",
-    length: String(limit),
-    callback: "cb",
-    api_key: env.HEBREWBOOKS_API_KEY,
-  });
-  const base = env.HEBREWBOOKS_API_URL || DEFAULT_HB_API_URL;
-  const resp = await fetch(`${base}/api/api.ashx?${params}`, {
-    headers: { "User-Agent": "torah-mcp/1.3 (+https://torah-mcp.com)" },
-  });
-  const text = await resp.text();
-  if (!resp.ok) throw new Error(`HebrewBooks ${resp.status}: ${text.slice(0, 200)}`);
-  const data = unwrapJsonp(text);
+  const params = new URLSearchParams({ q, size: String(limit), scope: "all" });
+  if (auteur) params.set("author", auteur);
+  if (args?.livre) params.set("book", String(args.livre));
+  // La traduction automatique vers l'hébreu coûte un appel LLM chez eux :
+  // on ne la demande que si la recherche n'est pas déjà en hébreu.
+  params.set("translate", /[\u0590-\u05FF]/.test(q) ? "false" : "true");
+
+  let resp: Response;
+  try {
+    resp = await fetch(`${HB_AI_URL}?${params}`, {
+      headers: { "User-Agent": "torah-mcp (+https://mamash-ia.com)" },
+      cf: { cacheTtl: 21600, cacheEverything: true },
+    } as RequestInit);
+  } catch {
+    throw new Error(
+      "Le service de recherche hebrewbooks.ai est injoignable pour l'instant. " +
+        "Utilisez sefaria_search, puis la lecture sur hebrewbooks.org."
+    );
+  }
+  if (!resp.ok) {
+    throw new Error(
+      `Le service de recherche hebrewbooks.ai a répondu ${resp.status}. ` +
+        "Réessayez, ou passez par sefaria_search."
+    );
+  }
+  const data: any = await resp.json();
 
   return {
-    total: data.total ?? 0,
-    livres: (data.data || []).map((b: any) => ({
-      id: b.id ?? b.ID,
-      titre: b.title ?? b.Title,
-      auteur: b.author ?? b.Author,
-      annee: b.year ?? b.Year,
-      lieu: b.city ?? b.City,
-      lecture: `https://hebrewbooks.org/${b.id ?? b.ID}`,
+    recherche: data.query ?? q,
+    total_passages: data.total_chunks ?? 0,
+    total_livres: data.total_books ?? 0,
+    livres: (data.results || []).map((b: any) => ({
+      id: b.book_id,
+      titre: b.title_he,
+      auteur: b.author_he,
+      annee: b.year,
+      sujet: b.topic,
+      lecture: `https://hebrewbooks.org/${b.book_id}`,
+      passages: (b.pages || []).map((p: any) => ({
+        page: p.pgnum,
+        extrait: p.snippet,
+        facsimile: p.source_url,
+      })),
     })),
-    note: "Liens à ouvrir dans le navigateur (lecture humaine). Ne jamais citer un numéro de page non vérifié.",
+    source: "hebrewbooks.ai (Roman Kagan), corpus océrisé de hebrewbooks.org",
+    note:
+      "Les extraits viennent d'une reconnaissance optique : ils comportent des " +
+      "erreurs de lecture et ne sont pas vocalisés. Ils servent à localiser un " +
+      "passage, jamais à le citer mot pour mot — ouvrir le fac-similé pour cela. " +
+      "Pour un texte à citer, préférer sefaria_text.",
   };
 }
 
@@ -277,17 +292,23 @@ export const hebrewbooksTools: ToolDefinition[] = [
   },
   {
     name: "hebrewbooks_search",
-    title: "HebrewBooks — recherche catalogue",
-    annotations: { title: "HebrewBooks — recherche catalogue", readOnlyHint: true },
+    title: "HebrewBooks — recherche plein texte",
+    annotations: { title: "HebrewBooks — recherche plein texte", readOnlyHint: true },
     description:
-      "Recherche dans le catalogue HebrewBooks.org (~65 000 seforim scannés) par titre " +
-      "et/ou auteur, via leur API officielle. Renvoie les références vérifiées avec le " +
-      "lien de lecture hebrewbooks.org/<id> à ouvrir dans le navigateur.",
+      "Recherche PLEIN TEXTE dans le corpus océrisé de HebrewBooks.org (~50 000 seforim, " +
+      "via hebrewbooks.ai). Cherche dans le contenu des livres, pas seulement les titres : " +
+      "renvoie le passage trouvé, son numéro de page et le lien vers le fac-similé. " +
+      "L'hébreu est cherché par lemme (préfixes et flexions gérés) ; une recherche dans une " +
+      "autre langue est traduite automatiquement. Indispensable pour les ouvrages absents de " +
+      "Sefaria — minhagim locaux, responsa, ouvrages nord-africains et orientaux. " +
+      "Les extraits sont océrisés donc fautifs et non vocalisés : s'en servir pour LOCALISER " +
+      "un passage, puis ouvrir le fac-similé ; pour un texte à citer, utiliser sefaria_text.",
     inputSchema: {
       type: "object",
       properties: {
-        titre: { type: "string", description: "Titre (hébreu ou translittéré)." },
-        auteur: { type: "string", description: "Auteur." },
+        q: { type: "string", description: "Ce que l'on cherche, dans le texte des livres. Hébreu de préférence." },
+        auteur: { type: "string", description: "Restreindre à un auteur." },
+        livre: { type: "number", description: "Restreindre à un livre, par son identifiant HebrewBooks." },
         limit: { type: "number", description: "Nombre de résultats (défaut 10, max 30)." },
       },
       required: [],
