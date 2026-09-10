@@ -10,7 +10,7 @@
 
 import type { Lang } from "./i18n";
 
-export type Rite = "sa" | "bih" | "tn";
+export type Rite = "sa" | "ash" | "bih" | "djerba" | "tn";
 
 /** L'invariant du yehi ratsone, pour ne pas le retaper à chaque siman. */
 const YR = (queue: string): string =>
@@ -30,6 +30,12 @@ const Q = {
   silka:   { h: "שֶׁיִּסְתַּלְּקוּ אוֹיְבֵינוּ וְשׂוֹנְאֵינוּ וְכָל מְבַקְשֵׁי רָעָתֵנוּ", p: "chéyistalkou oyevénou vésonénou vékhol mevakché raaténou" },
   roch:    { h: "שֶׁנִּהְיֶה לְרֹאשׁ וְלֹא לְזָנָב", p: "chénihyé leroch vélo lezanav" },
   daguim:  { h: "שֶׁנִּפְרֶה וְנִרְבֶּה כַּדָּגִים", p: "chénifré vénirbé kadaguim" },
+  // Le mahzor Koren abrège : « nos ennemis » sans la suite.
+  tamarK:  { h: "שֶׁיִּתַּמּוּ שׂוֹנְאֵינוּ", p: "chéyitamou sonénou" },
+  rimonK:  { h: "שֶׁנַּרְבֶּה זְכֻיּוֹת כְּרִמּוֹן", p: "chénarbé zekhouyot kerimone" },
+  rubiaK:  { h: "שֶׁיִּרְבּוּ זְכֻיּוֹתֵינוּ", p: "chéyirbou zekhouyoténou" },
+  kartiK:  { h: "שֶׁיִּכָּרְתוּ שׂוֹנְאֵינוּ", p: "chéyikartou sonénou" },
+  silkaK:  { h: "שֶׁיִּסְתַּלְּקוּ שׂוֹנְאֵינוּ", p: "chéyistalkou sonénou" },
 } as const;
 
 export interface Siman {
@@ -154,6 +160,78 @@ export const SEDARIM: Record<Rite, Seder> = {
     ],
   },
 
+
+  // ---------------------------------------------------------------------
+  // Le rite achkénaze, tel que le donne le mahzor Koren — les formules y
+  // sont plus courtes qu'en séfarade, et le mahzor glose la roubia par
+  // « חילבה », le fenugrec, comme le Choulhan Aroukh.
+  // ---------------------------------------------------------------------
+  ash: {
+    nom: { fr: "Achkénaze — mahzor Koren", en: "Ashkenaz — Koren mahzor", he: "אשכנז — מחזור קורן" },
+    bandeau: {
+      fr: "LES BERAKHOT DU SOIR DE ROCH-HACHANA — LE SÉDÈR DES SIMANIM DU RITE ACHKÉNAZE",
+      en: "THE ROSH HASHANA EVENING BLESSINGS — THE SIMANIM SEDER OF THE ASHKENAZI RITE",
+      he: "ברכות ליל ראש השנה — סדר הסימנים כמנהג אשכנז",
+    },
+    source: {
+      fr: "Sources lues sur Sefaria : Talmud, Horayot 12a (Abayé) · Mahzor Koren pour Roch Hachana, rite achkénaze",
+      en: "Sources read on Sefaria: Talmud, Horayot 12a (Abaye) · The Koren Rosh HaShana Mahzor, Ashkenaz",
+      he: "מקורות שנקראו בספריא: הוריות יב ע״א (אביי) · מחזור קורן לראש השנה, נוסח אשכנז",
+    },
+    note: {
+      fr: "Le mahzor précise que la berakha « bore peri haadama » se dit sur la roubia, qu'il glose « חילבה » — le fenugrec, comme le Choulhan Aroukh.",
+      en: "The mahzor places “borei peri ha'adama” over the rubia, which it glosses “חילבה”, fenugreek, as the Shulchan Arukh does.",
+      he: "המחזור קובע ״בורא פרי האדמה״ על הרוביא, שאותה הוא מגלה ״חילבה״ — תלתן, כדעת השולחן ערוך.",
+    },
+    simanim: [
+      sim("La pomme trempée dans le miel", "The apple dipped in honey", "התפוח בדבש", Q.annee, { bpe: true, trad: true }),
+      sim("La datte — tamar", "The date — tamar", "התמר", Q.tamarK),
+      sim("La grenade — rimone", "The pomegranate — rimon", "הרימון", Q.rimonK),
+      sim("Le fenugrec — roubia (חילבה)", "Fenugreek — rubia (חילבה)", "הרוביא (חילבה)", Q.rubiaK),
+      sim("Le poireau — karti", "The leek — karti", "הכרתי (כרישה)", Q.kartiK),
+      sim("La betterave — silka", "The beet — silka", "הסלק", Q.silkaK),
+      sim("La courge — kra", "The gourd — kra", "הקרא (דלעת קטנה)", Q.kra),
+      sim("La tête de mouton, ou un poisson", "A sheep's head, or a fish", "ראש כבש, או דג", Q.roch),
+      sim("Le poisson", "The fish", "הדגים", Q.daguim),
+    ],
+  },
+
+  // ---------------------------------------------------------------------
+  // Djerba, d'après le Brit Kehouna de Rav Moché Khalfon HaCohen — retrouvé
+  // par la recherche plein texte, pages 209 et 210. Son sédèr suit l'ordre
+  // du Choulhan Aroukh, mais chaque siman porte son nom judéo-arabe, et il
+  // ouvre par la courge et non par la pomme. C'est lui qui écrit, pour un
+  // lecteur tunisien, « roubia, et en arabe loubia ».
+  // ---------------------------------------------------------------------
+  djerba: {
+    nom: { fr: "Djerba — Brit Kehouna", en: "Djerba — Brit Kehuna", he: "ג׳רבה — ברית כהונה" },
+    bandeau: {
+      fr: "LES BERAKHOT DU SOIR DE ROCH-HACHANA — LE SÉDÈR DES SIMANIM DE DJERBA",
+      en: "THE ROSH HASHANA EVENING BLESSINGS — THE SIMANIM SEDER OF DJERBA",
+      he: "ברכות ליל ראש השנה — סדר הסימנים כמנהג ג׳רבה",
+    },
+    source: {
+      fr: "Brit Kehouna, Orah Hayim, Roch Hachana § 12 — Rav Moché Khalfon HaCohen de Djerba (1874-1950), pages 209-210, lues sur hebrewbooks.org/8751",
+      en: "Brit Kehuna, Orach Chayim, Rosh Hashana § 12 — Rabbi Moshe Khalfon HaCohen of Djerba (1874-1950), pages 209-210, read on hebrewbooks.org/8751",
+      he: "ברית כהונה, אורח חיים, ראש השנה סי׳ יב — הרב משה כלפון הכהן מג׳רבה (1874-1950), עמ׳ 209-210, hebrewbooks.org/8751",
+    },
+    note: {
+      fr: "Chaque siman porte son nom judéo-arabe : la kra est la « kar'a », la roubia la « loubia », la silka le « salq », le karti le « karat ». S'il n'y a pas de pommes, on prend un autre fruit doux.",
+      en: "Each siman carries its Judeo-Arabic name: kra is “qar'a”, rubia is “lubia”, silka is “salq”, karti is “karat”. If no apples are to be had, another sweet fruit is taken.",
+      he: "כל סימן נושא את שמו הערבי־יהודי: הקרא ״קרעא״, הרוביא ״לוביא״, הסלקא ״סלק״, הכרתי ״כראת״. אם אין תפוחים, לוקחים פרי מתוק אחר.",
+    },
+    simanim: [
+      sim("La courge — kra, « kar'a »", "The gourd — kra, “qar'a”", "הקרא (ובערבי קרעא)", Q.kra, { bpe: true, trad: true }),
+      sim("La tête de mouton — avec le souvenir de la ligature d'Its'hak", "The sheep's head — with the remembrance of the binding of Isaac", "ראש כבש — וזכר עקדת יצחק", Q.roch),
+      sim("La loubia — roubia, « et en arabe loubia »", "Black-eyed peas — rubia, “and in Arabic lubia”", "הרוביא (ובערבי לוביא)", Q.rubia),
+      sim("La blette — silka, « salq »", "The chard — silka, “salq”", "הסלקא (ובערבי סלק)", Q.silka),
+      sim("Le poireau — karti, « karat »", "The leek — karti, “karat”", "הכרתי (ובערבי כראת)", Q.karti),
+      sim("La datte — tamar", "The date — tamar", "התמר", Q.tamar),
+      sim("La grenade — rimone", "The pomegranate — rimon", "הרימון", Q.rimon),
+      sim("La pomme trempée dans le miel — « douce sur nous comme le miel »", "The apple dipped in honey — “sweet upon us as honey”", "תפוח מטובל בדבש", Q.annee),
+    ],
+  },
+
   // ---------------------------------------------------------------------
   // La Tunisie. Rien à voir avec les deux précédents : le sédèr n'est pas une
   // liste plate mais trois séries, une par bénédiction — fruits de l'arbre,
@@ -253,4 +331,4 @@ export const SEDARIM: Record<Rite, Seder> = {
 };
 
 export const RITE_DEFAUT: Rite = "sa";
-export const RITES: Rite[] = ["sa", "bih", "tn"];
+export const RITES: Rite[] = ["sa", "ash", "bih", "djerba", "tn"];

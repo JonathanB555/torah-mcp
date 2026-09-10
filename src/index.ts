@@ -30,6 +30,7 @@ import { limoudTools, limoudHandlers } from "./limoud";
 import { renderDaily, outilsHtml } from "./pages";
 import { mielPage, VILLES_MIEL } from "./miel";
 import { retourHtml, enregistrerRetour } from "./retour";
+import { rochHachanaHtml } from "./rochhachana";
 import { dafViewerTools, dafViewerHandlers, DAF_VIEWER_URI, DAF_VIEWER_HTML, dafViewerHtml, MCP_APP_MIME } from "./dafviewer";
 import { ICON_PNG_BASE64, OG_JPEG_BASE64 } from "./icon";
 import { PICTOS_PNG_BASE64 } from "./pictos";
@@ -145,7 +146,7 @@ const SERVER_INSTRUCTIONS = `${HEBREWBOOKS_INSTRUCTIONS}
   \`mot_chabbat\` (le petit mot de Chabbat de la semaine, prêt pour WhatsApp —
   paracha, verset en français, horaires d'allumage ; à proposer chaque fin de
   semaine, personnalisable),
-  \`hebrewbooks_search\` (catalogue ~65k seforim).`;
+  \`hebrewbooks_search\` (recherche PLEIN TEXTE dans ~50 000 seforim océrisés : renvoie le passage, sa page et le fac-similé — pour localiser un texte, pas pour le citer).`;
 
 async function handleRpc(req: JsonRpcRequest, env: Env) {
   const id = req.id ?? null;
@@ -430,6 +431,7 @@ export default {
         case "/outils": return html(outilsHtml(lang));
         case "/miel": return html(mielPage(lang));
         case "/retour": return html(retourHtml(lang));
+        case "/roch-hachana": return html(rochHachanaHtml(lang), { "Cache-Control": "public, max-age=3600" });
         case "/install": return html(installHtml(lang));
         case "/privacy": return html(privacyHtml(lang));
         case "/daily": return html(await renderDaily(env, lang), { "Cache-Control": "public, max-age=900" });

@@ -388,6 +388,7 @@ ${altLinks(lang, "/miel")}
       <div class="champ"><label for="heb">${s.labHeb}</label><input id="heb" placeholder="${s.phHeb}" maxlength="24" autocomplete="off"></div>
       <div class="champ"><label for="ville">${s.labVille}</label><select id="ville">${villesOpts}<option value="autre">${s.autreVille}</option></select></div>
       <div class="champ"><label for="rite">${s.labRite}</label><select id="rite">${ritesOpts}</select></div>
+      <p class="note"><a href="${href(lang, "/roch-hachana")}">${t(lang, { fr: "Comparer les cinq sédarim, rite par rite →", en: "Compare the five sedarim, rite by rite →", he: "להשוות בין חמשת הסדרים ←" })}</a></p>
       <button id="telecharger" type="button">${s.btnImage}</button>
       <button id="imprimer" type="button" class="btn2">${s.btnImprimer}</button>
       <a id="btnwa" class="btnwa" href="https://wa.me/?text=${encodeURIComponent(s.waTexte + " https://mamash-ia.com" + href(lang, "/miel"))}" target="_blank" rel="noopener">${s.btnWa}</a>

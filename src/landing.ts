@@ -168,7 +168,8 @@ type LandingStrings = {
   demos: { q: string; a: string; src: string }[]; demoSrcLab: string; demoTag: string;
   tuiles: { to: string; t: string; d: string }[];
   maisonLab: string; maisonT: string; maisonD: string;
-  navMiel: string; badgeMielT: string; badgeMielS: string;
+  navMiel: string;
+  navRh: string; badgeMielT: string; badgeMielS: string;
   chiourLab: string; chiourVoir: string;
   bibLab: string; bibT: string; bibD: string;
   kezAria: string; kezId: string;
@@ -191,7 +192,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     desc: "Claude cite la Torah depuis les textes, plus jamais de mémoire. Méthode d'étude, havrouta, guide de paracha, page de Vilna interactive, Sefaria, HebrewBooks, zmanim, guematria. Gratuit, sans compte.",
     chiourLab: "Le chiour de la semaine",
     chiourVoir: "Voir tous les chiourim",
-    navMiel: "La feuille de miel",
+    navMiel: "La feuille de miel", navRh: "Roch Hachana",
     badgeMielT: "La feuille de miel",
     badgeMielS: "une par invité — créez la vôtre",
     maisonLab: "770 Eastern Parkway · Brooklyn — photographie réelle",
@@ -229,7 +230,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     ],
     kezAria: "En deux mots", kezId: "en-deux-mots",
     fig1n: "6 600", fig1u: "titres", fig1t: "La bibliothèque Sefaria, lue en direct au moment de la question : Tanakh, Michna, Talmud, Midrach, Rambam, Choulhan Aroukh, responsa, hassidout — et leurs commentateurs.",
-    fig2n: "65 000", fig2u: "seforim", fig2t: "Le catalogue HebrewBooks, pour étudier sur la page scannée quand le texte n'existe pas ailleurs.",
+    fig2n: "50 000", fig2u: "seforim", fig2t: "Le fonds HebrewBooks, cherché dans le texte et non plus seulement par titre : le passage, sa page, et le fac-similé à ouvrir.",
     fig3n: "0", fig3u: "référence inventée", fig3t: "La règle est simple : ce qui n'a pas été lu n'est pas cité — et chaque citation vient avec le lien pour la vérifier.",
     vsNonH: "Une IA ordinaire <em>— répond de mémoire</em>",
     vsNonP: "Elle a croisé ces textes une fois, à l'entraînement, et les reconstitue : références approximatives, citations recomposées, parfois inventées de toutes pièces — avec la même assurance dans les deux cas, et sans jamais dire ce qu'elle n'a pas ouvert.",
@@ -242,7 +243,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     gMemoire: { h: "Pourquoi c'est grave", p: "Une citation approximative est une citation fausse. La discipline du texte n'est pas un luxe : c'est la condition du limoud." },
     gQuotidien: { h: "Le quotidien", p: "Zmanim et horaires de Chabbat, dates hébraïques, guematria exacte, nikoud (Dicta), fiche source prête pour WhatsApp.", link: "Utilisables en ligne, sans installation" },
     gModes: { h: "Trois modes", p: "Débutant, classique, avancé — le registre change, la discipline des sources jamais. Claude devine votre niveau à votre question, et vous changez de mode d'un mot.", try: "« Je n'y connais rien, explique-moi simplement. »", link: "Poser une question sur le site, sans Claude" },
-    gSources: { h: "Les sources", p: "Textes, commentateurs et recherche Sefaria — licences affichées — et le catalogue HebrewBooks (~65 000 seforim).", link: "S'accorde avec le MCP officiel de Sefaria" },
+    gSources: { h: "Les sources", p: "Textes, commentateurs et recherche Sefaria — licences affichées — et la recherche plein texte du fonds HebrewBooks (~50 000 seforim océrisés).", link: "S'accorde avec le MCP officiel de Sefaria" },
     guf1: `Les assistants répondent aux questions de Torah <mark data-ref="memoire">de mémoire</mark> — avec l'assurance de celui qui n'a pas ouvert le livre. Mamash IA renverse le geste : avant toute réponse, votre assistant charge <mark data-ref="methode">une méthode d'étude</mark> qui l'oblige à lire le texte, à le citer tel qu'il est écrit, et à dire où l'étudier.`,
     guf2: `Parce qu'on n'apprend pas seul, il sait aussi devenir <mark data-ref="havrouta">partenaire de havrouta</mark> — celui qui pose les questions plutôt que d'y répondre — et préparer <mark data-ref="paracha">la paracha de la semaine</mark> comme un chantier : aliya par aliya, machloket comprises.`,
     guf3: `Et parce que l'étude vit dans une journée juive, il porte <mark data-ref="quotidien">les outils du quotidien</mark> — zmanim, dates, guematria, nikoud, fiches à partager — et <mark data-ref="sources">toute la bibliothèque</mark> : Sefaria pour lire et relier, HebrewBooks pour étudier sur la page scannée.`,
@@ -265,7 +266,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
       { to: "/install", t: "Guide de paracha", d: "aliyot, mahloket, table de Chabbat" },
       { to: "/daf", t: "Le daf — page de Vilna", d: "MCP App interactive, aussi en ligne" },
       { to: "/install", t: "Textes, commentateurs, recherche", d: "la bibliothèque Sefaria, vérifiable" },
-      { to: "/install", t: "Catalogue HebrewBooks", d: "~65 000 seforim par titre et auteur" },
+      { to: "/install", t: "HebrewBooks en plein texte", d: "~50 000 seforim cherchés dans le texte" },
       { to: "/outils", t: "Zmanim et Chabbat", d: "Paris, Marseille, Genève, Jérusalem…" },
       { to: "/outils", t: "Dates hébraïques", d: "conversion, fêtes, Rosh Hodesh" },
       { to: "/outils", t: "Guematria", d: "cinq méthodes, calcul exact" },
@@ -290,7 +291,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     desc: "Claude quotes the Torah from the texts, never again from memory. Study method, chavruta, parashah guide, interactive Vilna page, Sefaria, HebrewBooks, zmanim, gematria. Free, no account.",
     chiourLab: "This week's shiur",
     chiourVoir: "All the shiurim",
-    navMiel: "The honey sheet",
+    navMiel: "The honey sheet", navRh: "Rosh Hashana",
     badgeMielT: "The honey sheet",
     badgeMielS: "one per guest — make yours",
     maisonLab: "770 Eastern Parkway · Brooklyn — a real photograph",
@@ -328,7 +329,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     ],
     kezAria: "In brief", kezId: "in-brief",
     fig1n: "6,600", fig1u: "titles", fig1t: "The Sefaria library, read live at the moment of the question: Tanakh, Mishnah, Talmud, Midrash, Rambam, Shulchan Arukh, responsa, chasidut — and their commentators.",
-    fig2n: "65,000", fig2u: "seforim", fig2t: "The HebrewBooks catalogue, to study from the scanned page when the text exists nowhere else.",
+    fig2n: "50,000", fig2u: "seforim", fig2t: "The HebrewBooks corpus, searched inside the text and no longer by title alone: the passage, its page, and the facsimile to open.",
     fig3n: "0", fig3u: "invented references", fig3t: "The rule is simple: what has not been read is not quoted — and every quotation comes with the link to check it.",
     vsNonH: "An ordinary AI <em>— answers from memory</em>",
     vsNonP: "It crossed these texts once, during training, and reconstructs them: approximate references, recomposed quotations, sometimes invented outright — with the same confidence in both cases, and without ever saying what it did not open.",
@@ -341,7 +342,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     gMemoire: { h: "Why it matters", p: "An approximate quotation is a false quotation. The discipline of the text is not a luxury: it is the condition of limud." },
     gQuotidien: { h: "Everyday", p: "Zmanim and Shabbat times, Hebrew dates, exact gematria, nikkud (Dicta), a source sheet ready for WhatsApp.", link: "Usable online, no installation" },
     gModes: { h: "Three modes", p: "Beginner, classic, advanced — the register changes, the source discipline never does. Claude guesses your level from your question, and you switch modes with a word.", try: "“I know nothing about this, explain it simply.”", link: "Ask a question on the site, without Claude" },
-    gSources: { h: "The sources", p: "Texts, commentators and Sefaria search — licences displayed — and the HebrewBooks catalogue (~65,000 seforim).", link: "Works alongside Sefaria's official MCP" },
+    gSources: { h: "The sources", p: "Texts, commentators and Sefaria search — licences displayed — and full-text search of the HebrewBooks corpus (~50,000 OCR'd seforim).", link: "Works alongside Sefaria's official MCP" },
     guf1: `Assistants answer Torah questions <mark data-ref="memoire">from memory</mark> — with the confidence of one who has not opened the book. Mamash IA reverses the gesture: before any answer, your assistant loads <mark data-ref="methode">a study method</mark> that obliges it to read the text, to quote it as it is written, and to say where to study it.`,
     guf2: `Because one does not learn alone, it also knows how to become <mark data-ref="havrouta">a chavruta partner</mark> — the one who asks the questions rather than answering them — and to prepare <mark data-ref="paracha">the week's parashah</mark> like a worksite: aliyah by aliyah, machloket included.`,
     guf3: `And because study lives inside a Jewish day, it carries <mark data-ref="quotidien">the everyday tools</mark> — zmanim, dates, gematria, nikkud, source sheets to share — and <mark data-ref="sources">the whole library</mark>: Sefaria to read and connect, HebrewBooks to study from the scanned page.`,
@@ -364,7 +365,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
       { to: "/install", t: "Parashah guide", d: "aliyot, machloket, Shabbat table" },
       { to: "/daf", t: "The daf — Vilna page", d: "interactive MCP App, also online" },
       { to: "/install", t: "Texts, commentators, search", d: "the Sefaria library, verifiable" },
-      { to: "/install", t: "HebrewBooks catalogue", d: "~65,000 seforim by title and author" },
+      { to: "/install", t: "HebrewBooks full text", d: "~50,000 seforim searched inside the text" },
       { to: "/outils", t: "Zmanim and Shabbat", d: "London, New York, Paris, Jerusalem…" },
       { to: "/outils", t: "Hebrew dates", d: "conversion, festivals, Rosh Chodesh" },
       { to: "/outils", t: "Gematria", d: "five methods, exact calculation" },
@@ -389,7 +390,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     desc: "Claude מצטט את התורה מתוך הטקסטים, לעולם לא מהזיכרון. שיטת לימוד, חברותא, מדריך לפרשה, דף וילנא אינטראקטיבי, ספריא, HebrewBooks, זמנים, גימטריה. חינם, בלי חשבון.",
     chiourLab: "השיעור של השבוע",
     chiourVoir: "כל השיעורים",
-    navMiel: "דף הדבש",
+    navMiel: "דף הדבש", navRh: "ראש השנה",
     badgeMielT: "דף הדבש",
     badgeMielS: "אחד לכל אורח — צרו את שלכם",
     maisonLab: "איסטרן פארקוויי 770 · ברוקלין — צילום אמיתי",
@@ -427,7 +428,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     ],
     kezAria: "בשתי מילים", kezId: "bishtei-milim",
     fig1n: "6,600", fig1u: "כותרים", fig1t: "ספריית ספריא, נקראת בזמן אמת ברגע השאלה: תנ\"ך, משנה, תלמוד, מדרש, רמב\"ם, שולחן ערוך, שו\"ת, חסידות — ומפרשיהם.",
-    fig2n: "65,000", fig2u: "ספרים", fig2t: "קטלוג HebrewBooks, ללימוד מן הדף הסרוק כשהטקסט אינו זמין במקום אחר.",
+    fig2n: "50,000", fig2u: "ספרים", fig2t: "אוצר HebrewBooks, בחיפוש בתוך הטקסט ולא רק לפי כותר: הקטע, העמוד, והדף הסרוק.",
     fig3n: "0", fig3u: "מקורות בדויים", fig3t: "הכלל פשוט: מה שלא נקרא — לא מצוטט. וכל ציטוט מגיע עם קישור לבדיקה.",
     vsNonH: "AI רגיל <em>— עונה מהזיכרון</em>",
     vsNonP: "הוא נתקל בטקסטים האלה פעם אחת, באימון, ומשחזר אותם: מראי מקומות משוערים, ציטוטים מורכבים מחדש ולעתים בדויים לגמרי — באותו ביטחון בשני המקרים, ובלי לומר לעולם מה לא פתח.",
@@ -440,7 +441,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     gMemoire: { h: "למה זה חמור", p: "ציטוט משוער הוא ציטוט שגוי. משמעת הטקסט אינה מותרות: היא תנאי הלימוד." },
     gQuotidien: { h: "היומיום", p: "זמני היום וזמני שבת, תאריכים עבריים, גימטריה מדויקת, ניקוד (דיקטה), דף מקורות מוכן לוואטסאפ.", link: "לשימוש מקוון, בלי התקנה" },
     gModes: { h: "שלושה מצבים", p: "מתחיל, קלאסי, מתקדם — המשלב משתנה, משמעת המקורות לעולם לא. Claude מנחש את רמתכם מתוך השאלה, ואתם מחליפים מצב במילה אחת.", try: "«אני לא מבין בזה כלום, תסביר לי בפשטות.»", link: "לשאול שאלה באתר, בלי Claude" },
-    gSources: { h: "המקורות", p: "טקסטים, מפרשים וחיפוש בספריא — הרישיונות מוצגים — וקטלוג HebrewBooks (כ-65,000 ספרים).", link: "משתלב עם ה-MCP הרשמי של ספריא" },
+    gSources: { h: "המקורות", p: "טקסטים, מפרשים וחיפוש בספריא — הרישיונות מוצגים — וחיפוש בטקסט המלא של אוצר HebrewBooks (כ-50,000 ספרים סרוקים).", link: "משתלב עם ה-MCP הרשמי של ספריא" },
     guf1: `עוזרי AI עונים על שאלות בתורה <mark data-ref="memoire">מהזיכרון</mark> — בביטחון של מי שלא פתח את הספר. Mamash IA הופך את המהלך: לפני כל תשובה, העוזר שלכם טוען <mark data-ref="methode">שיטת לימוד</mark> שמחייבת אותו לקרוא את הטקסט, לצטט אותו כלשונו, ולומר היכן ללמוד אותו.`,
     guf2: `ומכיוון שאין לומדים לבד, הוא יודע גם להיות <mark data-ref="havrouta">חברותא</mark> — זה ששואל את השאלות במקום לענות עליהן — ולהכין את <mark data-ref="paracha">פרשת השבוע</mark> כמו אתר בנייה: עלייה אחר עלייה, כולל המחלוקות.`,
     guf3: `ומכיוון שהלימוד חי בתוך יום יהודי, הוא נושא <mark data-ref="quotidien">את כלי היומיום</mark> — זמנים, תאריכים, גימטריה, ניקוד, דפי מקורות לשיתוף — ו<mark data-ref="sources">את הספרייה כולה</mark>: ספריא לקריאה ולקישור, HebrewBooks ללימוד מן הדף הסרוק.`,
@@ -463,7 +464,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
       { to: "/install", t: "מדריך הפרשה", d: "עליות, מחלוקות, שולחן שבת" },
       { to: "/daf", t: "הדף — דף וילנא", d: "MCP App אינטראקטיבית, גם באינטרנט" },
       { to: "/install", t: "טקסטים, מפרשים, חיפוש", d: "ספריית ספריא, ניתנת לבדיקה" },
-      { to: "/install", t: "קטלוג HebrewBooks", d: "כ-65,000 ספרים לפי כותר ומחבר" },
+      { to: "/install", t: "HebrewBooks בטקסט מלא", d: "כ-50,000 ספרים, חיפוש בתוך הטקסט" },
       { to: "/outils", t: "זמנים ושבת", d: "ירושלים, תל אביב, פריז, ניו יורק…" },
       { to: "/outils", t: "תאריכים עבריים", d: "המרה, חגים, ראש חודש" },
       { to: "/outils", t: "גימטריה", d: "חמש שיטות, חישוב מדויק" },
@@ -862,6 +863,7 @@ ${GA}
   <a class="wm" href="${href(lang, "/")}" dir="ltr"><img src="/icon.png" alt="" width="34" height="34"><b>Mamash</b>&nbsp;IA</a>
   <div class="r">
     ${saisonMiel() ? `<a href="${href(lang, "/miel")}" class="navmiel hide-m">${s.navMiel}</a>` : ""}
+    ${saisonMiel() ? `<a href="${href(lang, "/roch-hachana")}" class="hide-m">${s.navRh}</a>` : ""}
     <a href="${href(lang, "/question")}" class="hide-m">${s.navQuestion}</a>
     <a href="${href(lang, "/chabbat")}" class="hide-m">${s.navChabbat}</a>
     <a href="${href(lang, "/chiourim")}" class="hide-m">${s.navChiourim}</a>
