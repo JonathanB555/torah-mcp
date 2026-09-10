@@ -5,6 +5,8 @@
  */
 
 import { type Lang, SITE, href, altLinks, langSwitcher, htmlAttrs, colophon, saisonMiel } from "./i18n";
+import type { Env } from "./sefaria";
+import { chiourSemaine } from "./chiourim";
 
 // ----------------------------------------------------------------------------
 // Fragments communs
@@ -166,6 +168,7 @@ type LandingStrings = {
   tuiles: { to: string; t: string; d: string }[];
   maisonLab: string; maisonT: string; maisonD: string;
   navMiel: string; badgeMielT: string; badgeMielS: string;
+  chiourLab: string; chiourVoir: string;
   bibLab: string; bibT: string; bibD: string;
   kezAria: string; kezId: string;
   fig1n: string; fig1u: string; fig1t: string; fig2n: string; fig2u: string; fig2t: string; fig3n: string; fig3u: string; fig3t: string;
@@ -185,6 +188,8 @@ const LANDING_T: Record<Lang, LandingStrings> = {
   fr: {
     title: "Mamash IA — la discipline des sources pour Claude",
     desc: "Claude cite la Torah depuis les textes, plus jamais de mémoire. Méthode d'étude, havrouta, guide de paracha, page de Vilna interactive, Sefaria, HebrewBooks, zmanim, guematria. Gratuit, sans compte.",
+    chiourLab: "Le chiour de la semaine",
+    chiourVoir: "Voir tous les chiourim",
     navMiel: "La feuille de miel",
     badgeMielT: "La feuille de miel",
     badgeMielS: "une par invité — créez la vôtre",
@@ -282,6 +287,8 @@ const LANDING_T: Record<Lang, LandingStrings> = {
   en: {
     title: "Mamash IA — source discipline for Claude",
     desc: "Claude quotes the Torah from the texts, never again from memory. Study method, chavruta, parashah guide, interactive Vilna page, Sefaria, HebrewBooks, zmanim, gematria. Free, no account.",
+    chiourLab: "This week's shiur",
+    chiourVoir: "All the shiurim",
     navMiel: "The honey sheet",
     badgeMielT: "The honey sheet",
     badgeMielS: "one per guest — make yours",
@@ -379,6 +386,8 @@ const LANDING_T: Record<Lang, LandingStrings> = {
   he: {
     title: "Mamash IA — משמעת מקורות ל-Claude",
     desc: "Claude מצטט את התורה מתוך הטקסטים, לעולם לא מהזיכרון. שיטת לימוד, חברותא, מדריך לפרשה, דף וילנא אינטראקטיבי, ספריא, HebrewBooks, זמנים, גימטריה. חינם, בלי חשבון.",
+    chiourLab: "השיעור של השבוע",
+    chiourVoir: "כל השיעורים",
     navMiel: "דף הדבש",
     badgeMielT: "דף הדבש",
     badgeMielS: "אחד לכל אורח — צרו את שלכם",
@@ -489,7 +498,8 @@ const modeCol = (m: Mode, d: string) => `<div class="col rv ${d}">
       <span class="try">${m.try}</span>
     </div>`;
 
-export function landingHtml(lang: Lang): string {
+export async function landingHtml(lang: Lang, env?: Env): Promise<string> {
+  const chiour = env ? await chiourSemaine(env).catch(() => null) : null;
   const s = LANDING_T[lang];
   const path = "/";
   const h = (p: string) => (p.startsWith("#") ? p : href(lang, p));
@@ -612,6 +622,27 @@ ${GA}
   .tuile b { display:block; font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.02rem; }
   [dir="rtl"] .tuile b { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:700; }
   .tuile span { display:block; margin-top:.15rem; font-size:.82rem; color:rgba(247,246,241,.65); line-height:1.45; }
+  /* ---- la vignette du chiour de la semaine ---- */
+  .chiousem { max-width:1200px; margin:0 auto; padding:2.6rem 4vw 0; }
+  .csvig { display:flex; align-items:center; gap:1.4rem; text-decoration:none; color:var(--ink);
+    border:1.5px solid var(--ink-15); background:#fff; padding:1rem 1.3rem 1rem 1rem;
+    transition:border-color .3s var(--ease), transform .3s var(--ease); }
+  .csvig:hover { border-color:var(--ink); transform:translateY(-2px); }
+  .csth { position:relative; flex:none; width:190px; line-height:0; }
+  .csth img { width:100%; height:auto; border:1px solid var(--ink-15); }
+  .cspl { position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    color:#fff; font-size:2rem; text-shadow:0 2px 10px rgba(0,0,0,.6); }
+  .cstxt { display:flex; flex-direction:column; gap:.3rem; min-width:0; }
+  .cslab { font-size:.7rem; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); }
+  [dir="rtl"] .cslab { letter-spacing:.05em; }
+  .cstitre { font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.12rem; line-height:1.3; overflow-wrap:anywhere; }
+  [dir="rtl"] .cstitre { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:700; }
+  .csvoir { font-size:.86rem; color:var(--muted); }
+  .csvoir::before { content:"[ "; } .csvoir::after { content:" ]"; }
+  .csvig:hover .csvoir::before { content:"[ → "; }
+  [dir="rtl"] .csvig:hover .csvoir::before { content:"[ ← "; }
+  @media (max-width:640px) { .csvig { flex-direction:column; align-items:flex-start; gap:.9rem; } .csth { width:100%; } }
+
   /* ---- la maison du cri : le 770, photographie réelle animée ---- */
   .maison { display:grid; grid-template-columns:1.15fr .85fr; gap:3rem; align-items:center; padding:4.5rem 4vw; max-width:1200px; margin:0 auto; }
   .maison .mvid { margin:0; transform:rotate(-1.4deg); }
@@ -866,6 +897,17 @@ ${GA}
     ${s.tuiles.map((t2) => `<a class="tuile" href="${href(lang, t2.to)}"><b>${t2.t}</b><span>${t2.d}</span></a>`).join("\n    ")}
   </div>
 </header>
+
+${chiour ? `<section class="chiousem rv" aria-label="${s.chiourLab}">
+  <a class="csvig" href="${href(lang, "/chiourim")}">
+    <span class="csth"><img src="https://i.ytimg.com/vi/${chiour.id}/mqdefault.jpg" alt="" width="320" height="180" loading="lazy"><span class="cspl">▶</span></span>
+    <span class="cstxt">
+      <span class="cslab">${s.chiourLab}</span>
+      <span class="cstitre">${chiour.t.replace(/&/g, "&amp;").replace(/</g, "&lt;")}</span>
+      <span class="csvoir">${s.chiourVoir}</span>
+    </span>
+  </a>
+</section>` : ""}
 
 <section class="maison rv" aria-label="770 Eastern Parkway">
   <figure class="mvid">

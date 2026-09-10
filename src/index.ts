@@ -25,7 +25,7 @@ import { questionHtml } from "./question-page";
 import { parseLang } from "./i18n";
 import { journaliser, pageStats, csvStats } from "./stats";
 import { genererChabbat, chabbatPage, servirGif } from "./chabbat";
-import { chiourimPage } from "./chiourim";
+import { chiourimPage, rafraichirChiourim, chiourSemaine } from "./chiourim";
 import { limoudTools, limoudHandlers } from "./limoud";
 import { renderDaily, outilsHtml } from "./pages";
 import { mielPage, VILLES_MIEL } from "./miel";
@@ -249,6 +249,7 @@ export default {
   // Cron du vendredi matin : composer le WhatsApp de Chabbat de la semaine.
   async scheduled(_controller: ScheduledController, env: Env, ctx: ExecutionContext): Promise<void> {
     ctx.waitUntil(genererChabbat(env).then((r) => console.log("chabbat:", JSON.stringify(r))));
+    ctx.waitUntil(rafraichirChiourim(env).then((r) => console.log("chiourim:", JSON.stringify(r))));
   },
 
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
@@ -386,7 +387,7 @@ export default {
       const html = (body: string, extra: Record<string, string> = {}) =>
         new Response(body, { headers: { "Content-Type": "text/html; charset=utf-8", "Content-Language": lang, ...extra, ...CORS_HEADERS } });
       switch (path) {
-        case "/": return html(landingHtml(lang));
+        case "/": return html(await landingHtml(lang, env));
         case "/question": return html(questionHtml(lang));
         case "/daf": return html(dafViewerHtml(lang));
         case "/outils": return html(outilsHtml(lang));

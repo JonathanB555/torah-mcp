@@ -199,6 +199,35 @@ async function fluxRecent(): Promise<RssEntry[]> {
   }
 }
 
+/** Cron du vendredi : verse le RSS dans l'archive D1 (INSERT OR IGNORE). */
+export async function rafraichirChiourim(env: Env): Promise<{ vus: number; nouveaux: number }> {
+  const rss = await fluxRecent();
+  if (!env.STATS_DB || rss.length === 0) return { vus: rss.length, nouveaux: 0 };
+  let nouveaux = 0;
+  for (const e of rss) {
+    const r = await env.STATS_DB
+      .prepare(`INSERT OR IGNORE INTO chiourim (id, titre, publie) VALUES (?, ?, ?)`)
+      .bind(e.id, e.t, e.date)
+      .run();
+    nouveaux += r.meta.changes || 0;
+  }
+  return { vus: rss.length, nouveaux };
+}
+
+/** Le chiour de la semaine, pour la vignette de l'accueil (RSS, repli D1). */
+export async function chiourSemaine(env: Env): Promise<RssEntry | null> {
+  const rss = await fluxRecent();
+  if (rss[0]) return rss[0];
+  try {
+    const row: any = env.STATS_DB
+      ? await env.STATS_DB.prepare(`SELECT id, titre, publie FROM chiourim ORDER BY publie DESC LIMIT 1`).first()
+      : null;
+    return row ? { id: row.id, t: row.titre, date: row.publie } : null;
+  } catch {
+    return null;
+  }
+}
+
 function carte(v: { id: string; t: string; d?: number }, s: (typeof T)[Lang], grande = false): string {
   const duree = v.d ? `<span class="vd">${mins(v.d)} ${s.min}</span>` : "";
   return `<figure class="v${grande ? " big" : ""}" data-id="${esc(v.id)}">
@@ -211,9 +240,18 @@ export async function chiourimPage(env: Env, lang: Lang): Promise<string> {
   const s = T[lang];
   const rss = await fluxRecent();
   const dernier = rss[0];
-  const recents = rss.slice(1, 5);
-  const dejaMontres = new Set(rss.slice(0, 5).map((e) => e.id));
   const catalogueParId = new Map(CATALOGUE.map((v) => [v.id, v]));
+  let archive: RssEntry[] = [];
+  try {
+    const rows: any = env.STATS_DB
+      ? await env.STATS_DB.prepare(`SELECT id, titre, publie FROM chiourim ORDER BY publie DESC LIMIT 60`).all()
+      : null;
+    archive = (rows?.results || []).map((r: any) => ({ id: r.id, t: r.titre, date: r.publie }));
+  } catch {}
+  const rssIds = new Set(rss.map((e) => e.id));
+  const horsRss = archive.filter((e) => !rssIds.has(e.id) && !catalogueParId.has(e.id));
+  const recents = [...rss.slice(1), ...horsRss].slice(0, 12);
+  const dejaMontres = new Set([dernier?.id, ...recents.map((e) => e.id)].filter(Boolean) as string[]);
   const dureeDe = (id: string) => catalogueParId.get(id)?.d;
 
   const sections = GROUPES.map((g) => {
