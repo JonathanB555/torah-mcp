@@ -12,7 +12,7 @@
  */
 
 import type { Env, ToolDefinition, ToolHandler } from "./sefaria";
-import { type Lang, href, altLinks, langSwitcher, retourTab } from "./i18n";
+import { type Lang, href, altLinks, langSwitcher, retourTab, colophon } from "./i18n";
 
 export const DAF_VIEWER_URI = "ui://torah-mcp/daf-viewer.html";
 export const MCP_APP_MIME = "text/html;profile=mcp-app";
@@ -302,7 +302,7 @@ ${altLinks(lang, "/daf")}
     <div id="gemara"></div>
     <details id="rashi-box"><summary>${s.rashi}</summary><div class="comm" id="rashi"></div></details>
     <details id="tosafot-box"><summary>${s.tosafot}</summary><div class="comm" id="tosafot"></div></details>
-    <footer><span id="lic"></span><span>Sefaria · Torah MCP</span></footer>
+    <footer><span id="lic"></span><span>${colophon(lang)}</span></footer>
   </div>
 <script>
 (function () {
