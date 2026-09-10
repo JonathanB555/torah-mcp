@@ -25,6 +25,9 @@ export interface Env {
   /** Notification des retours des visiteurs (/retour). URL d'un webhook —
    *  Slack, Discord, Make, n8n… Absent = les retours restent lisibles sur /stats. */
   RETOUR_WEBHOOK_URL?: string;
+  /** Envoi des retours par courrier (liaison send_email de wrangler.jsonc),
+   *  vers une adresse de destination vérifiée du compte Cloudflare. */
+  COURRIER?: { send(message: unknown): Promise<void> };
 }
 
 export interface ToolDefinition {

@@ -10,6 +10,10 @@
 
 import type { Env } from "./sefaria";
 import { type Lang, href, altLinks, langSwitcher, htmlAttrs, colophon, t } from "./i18n";
+// Imports statiques : le module intégré cloudflare:email et mimetext ne
+// survivent pas à un import() dynamique dans le bundle du Worker.
+import { EmailMessage } from "cloudflare:email";
+import { createMimeMessage } from "mimetext";
 
 export const GENRES = ["bug", "idee"] as const;
 export type Genre = (typeof GENRES)[number];
@@ -18,6 +22,8 @@ const MAX_MESSAGE = 2000;
 const MAX_CONTACT = 120;
 /** Garde-fou global : au-delà, on répond poliment sans écrire (anti-flot). */
 const MAX_PAR_HEURE = 40;
+/** L'adresse de destination, vérifiée sur le compte Cloudflare. */
+const DESTINATAIRE = "jonathan@bensaid-avocats.fr";
 
 /** Les pages du site, pour proposer un endroit plutôt qu'un champ libre. */
 const PAGES_SITE = [
@@ -57,8 +63,49 @@ export async function enregistrerRetour(
     return { ok: false, raison: "base" };
   }
 
-  await pousserWebhook(env, { genre, message, page, contact, langue, pays: e.pays });
+  const notif = { genre, message, page, contact, langue, pays: e.pays };
+  await Promise.allSettled([pousserWebhook(env, notif), envoyerCourrier(env, notif)]);
   return { ok: true };
+}
+
+/** Le retour part aussi par courrier, via la liaison send_email du Worker.
+ *  Comme le webhook, l'envoi est silencieux : le retour est déjà en base. */
+async function envoyerCourrier(
+  env: Env,
+  r: { genre: Genre; message: string; page: string | null; contact: string | null; langue: string | null; pays: string | null }
+): Promise<void> {
+  if (!env.COURRIER) return;
+  try {
+    const sujet = (r.genre === "bug" ? "Bug" : "Idée") + " sur mamash-ia.com" + (r.page ? ` — ${r.page}` : "");
+    const corps = [
+      r.genre === "bug" ? "Quelqu'un signale un bug." : "Quelqu'un propose une amélioration.",
+      "",
+      r.message,
+      "",
+      "———",
+      `Page : ${r.page || "non précisée"}`,
+      `Langue : ${r.langue || "?"}${r.pays ? ` · ${r.pays}` : ""}`,
+      r.contact ? `Contact laissé : ${r.contact}` : "Aucun contact laissé — pas de réponse possible.",
+      "",
+      "Tous les retours : https://mamash-ia.com/stats",
+    ].join("\n");
+
+    const mim = createMimeMessage();
+    // L'expéditeur doit appartenir au domaine dont l'acheminement est activé.
+    mim.setSender({ name: "Mamash IA — retours", addr: "retours@mamash-ia.com" });
+    mim.setRecipient(DESTINATAIRE);
+    mim.setSubject(sujet);
+    mim.addMessage({ contentType: "text/plain", data: corps });
+    // Répondre au message écrit directement à la personne, quand elle a laissé
+    // de quoi la joindre.
+    if (r.contact && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(r.contact)) {
+      mim.setHeader("Reply-To", r.contact);
+    }
+
+    await env.COURRIER.send(new EmailMessage("retours@mamash-ia.com", DESTINATAIRE, mim.asRaw()));
+  } catch {
+    // le retour est déjà enregistré : un courrier qui ne part pas reste muet
+  }
 }
 
 /** Notification immédiate. Silencieuse : un webhook muet ne doit jamais faire
