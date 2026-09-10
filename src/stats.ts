@@ -176,12 +176,64 @@ function courbe(jours: { j: string; n: number; ok: number }[]): string {
     .join("")}</div></div>`;
 }
 
+/** Compteur des feuilles de miel — côté serveur, aucune donnée personnelle. */
+export async function journaliserFeuille(
+  env: Env,
+  e: { mode: string; ville: string | null; langue: string | null; pays: string | null }
+): Promise<void> {
+  if (!env.STATS_DB) return;
+  try {
+    await env.STATS_DB.prepare(
+      `INSERT INTO feuilles (ts, mode, ville, langue, pays) VALUES (?1, ?2, ?3, ?4, ?5)`
+    )
+      .bind(
+        new Date().toISOString(),
+        String(e.mode || "?").slice(0, 20),
+        e.ville ? String(e.ville).slice(0, 30) : null,
+        e.langue ? String(e.langue).slice(0, 5) : null,
+        e.pays
+      )
+      .run();
+  } catch {
+    // le comptage ne doit jamais gêner le visiteur
+  }
+}
+
+/** Les chiffres des feuilles de miel, pour la page /stats. */
+export async function chiffresFeuilles(env: Env): Promise<{
+  total: number; j7: number; j1: number;
+  modes: { k: string; n: number }[]; villes: { k: string; n: number }[]; jours: { k: string; n: number }[];
+}> {
+  const vide = { total: 0, j7: 0, j1: 0, modes: [], villes: [], jours: [] };
+  if (!env.STATS_DB) return vide;
+  const db = env.STATS_DB;
+  const now = Date.now();
+  const iso = (ms: number) => new Date(now - ms).toISOString();
+  try {
+    const un = async (sql: string, ...b: any[]) => ((await db.prepare(sql).bind(...b).first()) as any)?.n || 0;
+    const liste = async (sql: string, ...b: any[]) =>
+      (((await db.prepare(sql).bind(...b).all()) as any).results || []).map((r: any) => ({ k: r.k ?? "?", n: r.n }));
+    const [total, j7, j1, modes, villes, jours] = await Promise.all([
+      un(`SELECT COUNT(*) n FROM feuilles`),
+      un(`SELECT COUNT(*) n FROM feuilles WHERE ts >= ?1`, iso(7 * 86_400_000)),
+      un(`SELECT COUNT(*) n FROM feuilles WHERE ts >= ?1`, iso(86_400_000)),
+      liste(`SELECT mode k, COUNT(*) n FROM feuilles GROUP BY mode ORDER BY n DESC`),
+      liste(`SELECT ville k, COUNT(*) n FROM feuilles GROUP BY ville ORDER BY n DESC LIMIT 12`),
+      liste(`SELECT substr(ts,1,10) k, COUNT(*) n FROM feuilles GROUP BY k ORDER BY k DESC LIMIT 14`),
+    ]);
+    return { total, j7, j1, modes, villes, jours };
+  } catch {
+    return vide;
+  }
+}
+
 export async function pageStats(request: Request, env: Env): Promise<Response> {
   if (!env.STATS_PASSWORD || !env.STATS_DB) return new Response("Introuvable", { status: 404 });
   if (!autorise(request, env)) return demanderAuth();
   const db = env.STATS_DB;
   const now = Date.now();
   const iso = (ms: number) => new Date(now - ms).toISOString();
+  const feuilles = await chiffresFeuilles(env);
   const [tout, j30, j7, j1, modes, pays, causes, langs, jours, recentes] = await Promise.all([
     totaux(db, null),
     totaux(db, iso(30 * 86_400_000)),
@@ -239,6 +291,16 @@ export async function pageStats(request: Request, env: Env): Promise<Response> {
   <div class="ks">${bloc("Depuis le début", tout)}${bloc("30 jours", j30)}${bloc("7 jours", j7)}${bloc("24 heures", j1)}</div>
   <div class="grid">${liste("Niveau — 30 j", modes, j30.n, (k) => NIV[k] || k)}${liste("Pays — 30 j", pays, j30.n)}${liste("Échecs — 30 j", causes, 0)}${liste("Langue — 30 j", langs, j30.n)}</div>
   ${courbe(jours)}
+  <h2>Les <strong>feuilles de miel</strong> éditées</h2>
+  <p class="muted">Comptage côté serveur de <code>/miel</code> — insensible aux bloqueurs de pistage, sans prénom ni adresse IP.</p>
+  <div class="ks">
+    <div class="k"><span class="lab">Depuis le début</span><b>${num(feuilles.total)}</b></div>
+    <div class="k"><span class="lab">7 jours</span><b>${num(feuilles.j7)}</b></div>
+    <div class="k"><span class="lab">24 heures</span><b>${num(feuilles.j1)}</b></div>
+    <div class="k"><span class="lab">Villes distinctes</span><b>${num(feuilles.villes.length)}</b></div>
+  </div>
+  <div class="grid">${liste("Comment", feuilles.modes, feuilles.total)}${liste("Villes", feuilles.villes, feuilles.total)}${liste("Par jour", feuilles.jours, feuilles.total)}</div>
+
   <h2>Les 200 dernières</h2>
   <table><tbody>${lignes || '<tr><td colspan="5">Aucune question enregistrée pour l’instant.</td></tr>'}</tbody></table>
   <p class="exp"><a href="/stats.csv">Exporter tout en CSV</a></p>

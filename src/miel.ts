@@ -464,6 +464,17 @@ ${altLinks(lang, "/miel")}
     var t = Date.now();
     if (t - derniereMarque < 3000) return; // clic + beforeprint = une seule feuille
     derniereMarque = t;
+    var mode = origine === "image" ? "image" : origine === "whatsapp" ? "whatsapp" : "impression";
+    // Comptage côté serveur : fiable même avec un bloqueur de pistage.
+    // Le prénom ne quitte jamais le navigateur.
+    try {
+      var charge = JSON.stringify({ mode: mode, ville: ville.value, langue: document.documentElement.lang });
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon("/api/miel-compteur", new Blob([charge], { type: "application/json" }));
+      } else {
+        fetch("/api/miel-compteur", { method: "POST", body: charge, headers: { "Content-Type": "application/json" }, keepalive: true });
+      }
+    } catch (e) {}
     if (typeof gtag === "function") {
       gtag("event", "feuille_miel", { ville: ville.value, langue: document.documentElement.lang, origine: origine });
     }

@@ -23,7 +23,7 @@ import { landingHtml, privacyHtml, installHtml } from "./landing";
 import { repondreQuestion } from "./question";
 import { questionHtml } from "./question-page";
 import { parseLang } from "./i18n";
-import { journaliser, pageStats, csvStats } from "./stats";
+import { journaliser, pageStats, csvStats, journaliserFeuille } from "./stats";
 import { genererChabbat, chabbatPage, servirGif } from "./chabbat";
 import { chiourimPage, rafraichirChiourim, chiourSemaine } from "./chiourim";
 import { limoudTools, limoudHandlers } from "./limoud";
@@ -310,6 +310,21 @@ export default {
 
     // GIF de Chabbat : sélection servie par le Worker (index borné).
     if (request.method === "GET" && url.pathname === "/api/gif") return servirGif(request);
+
+    // Compteur des feuilles de miel — côté serveur (les bloqueurs de pistage
+    // rendent GA4 aveugle). Aucune donnée personnelle : jamais le prénom.
+    if (request.method === "POST" && url.pathname === "/api/miel-compteur") {
+      let corps: any = {};
+      try { corps = await request.json(); } catch {}
+      const mode = ["impression", "image", "whatsapp"].includes(corps?.mode) ? corps.mode : "impression";
+      const ville = typeof corps?.ville === "string" && VILLES_MIEL[corps.ville] ? corps.ville
+        : corps?.ville === "autre" ? "autre" : null;
+      const langue = ["fr", "en", "he"].includes(corps?.langue) ? corps.langue : null;
+      ctx.waitUntil(
+        journaliserFeuille(env, { mode, ville, langue, pays: request.headers.get("cf-ipcountry") })
+      );
+      return new Response(null, { status: 204, headers: CORS_HEADERS });
+    }
 
     // Horaires de Tichri 5787 pour le générateur de feuilles de miel (/miel).
     // Villes en liste fermée (pas de proxy ouvert) ; réponse cachée 6 h en périphérie.
