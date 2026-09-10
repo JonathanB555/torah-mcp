@@ -1080,6 +1080,7 @@ ${chiour ? `<section class="chiousem rv" aria-label="${s.chiourLab}">
 type InstallStrings = {
   title: string; desc: string; back: string; h1: string; muted: string;
   lblA: string; step1: string; step2: string; step3: string;
+  ccIntro: string; ccVerif: string; ccPiege: string; copier: string; copie: string;
   lblC: string; pC: string; lblD: string; pD: string; lblE: string; pE: string;
   lblF: string; pF: string; srcCode: string; lblG: string; g1: string; g2: string; g3: string; home: string;
 };
@@ -1095,6 +1096,10 @@ const INSTALL_T: Record<Lang, InstallStrings> = {
     step1: `Ouvrez <a href="https://claude.ai/settings/connectors">claude.ai → Settings → Connectors</a>`,
     step2: `Cliquez sur <strong>Add custom connector</strong>`,
     step3: "Collez cette URL, nommez-le « Torah », validez — l'app mobile suit toute seule :",
+    ccIntro: "Dans un terminal (pas dans la conversation Claude) :",
+    ccVerif: `Vérifiez ensuite avec <code>claude mcp list</code> — la ligne doit se terminer par <strong>✔ Connected</strong>.`,
+    ccPiege: `Le <code>https://</code> est indispensable : sans lui la commande est acceptée mais la connexion échoue.`,
+    copier: "copier", copie: "copié",
     lblC: "Autres clients MCP",
     pC: `Tout client compatible (transport HTTP streamable) fonctionne avec la même URL. Le serveur expose 16 outils en lecture seule, 5 prompts (<code>hebrewbooks</code>, <code>havrouta</code>, <code>paracha</code>, <code>debutant</code>, <code>avance</code>) et une MCP App — le visualiseur de daf.`,
     lblD: "Votre niveau",
@@ -1120,6 +1125,10 @@ const INSTALL_T: Record<Lang, InstallStrings> = {
     step1: `Open <a href="https://claude.ai/settings/connectors">claude.ai → Settings → Connectors</a>`,
     step2: `Click <strong>Add custom connector</strong>`,
     step3: "Paste this URL, name it “Torah”, confirm — the mobile app follows on its own:",
+    ccIntro: "In a terminal (not in the Claude conversation):",
+    ccVerif: `Then check with <code>claude mcp list</code> — the line must end with <strong>✔ Connected</strong>.`,
+    ccPiege: `The <code>https://</code> is required: without it the command is accepted but the connection fails.`,
+    copier: "copy", copie: "copied",
     lblC: "Other MCP clients",
     pC: `Any compatible client (streamable HTTP transport) works with the same URL. The server exposes 16 read-only tools, 5 prompts (<code>hebrewbooks</code>, <code>havrouta</code>, <code>paracha</code>, <code>debutant</code>, <code>avance</code>) and one MCP App — the daf viewer.`,
     lblD: "Your level",
@@ -1141,6 +1150,10 @@ const INSTALL_T: Record<Lang, InstallStrings> = {
     back: "→ לעמוד הבית",
     h1: "ההתקנה, בשתי דקות.",
     muted: "Torah MCP הוא שרת MCP מרוחק (HTTP streamable). חינם, בלי חשבון, בלי איסוף נתונים.",
+    ccIntro: "בטרמינל (לא בשיחה עם Claude):",
+    ccVerif: `אחר כך בדקו עם <code>claude mcp list</code> — השורה צריכה להסתיים ב-<strong>✔ Connected</strong>.`,
+    ccPiege: `ה-<code>https://</code> הכרחי: בלעדיו הפקודה מתקבלת אך החיבור נכשל.`,
+    copier: "העתקה", copie: "הועתק",
     lblA: "claude.ai",
     step1: `פתחו <a href="https://claude.ai/settings/connectors" dir="ltr">claude.ai → Settings → Connectors</a>`,
     step2: `לחצו על <strong>Add custom connector</strong>`,
@@ -1209,6 +1222,13 @@ ${GA}
   p.muted { opacity:.75; max-width:38rem; }
   ol, ul { padding-inline-start:1.3rem; } li { margin:.35rem 0; }
   .url { display:block; background:var(--ink); color:var(--paper); padding:.85rem 1.1rem; font-family:ui-monospace, Menlo, monospace; font-size:.92rem; margin:1rem 0; word-break:break-all; direction:ltr; text-align:left; }
+  .url.copiable { position:relative; padding-inline-end:5.4rem; }
+  .url .cop { position:absolute; top:50%; inset-inline-end:.6rem; transform:translateY(-50%); background:var(--pop); color:var(--ink);
+    border:none; cursor:pointer; font:700 .74rem/1 "Fraunces", Georgia, serif; letter-spacing:.06em; text-transform:uppercase;
+    padding:.42rem .62rem .46rem; transition:filter .2s; }
+  .url .cop:hover { filter:brightness(1.08); }
+  p.apres { margin-top:-.3rem; }
+  p.piege { background:#fff6d6; border-inline-start:3px solid var(--pop); padding:.6rem .9rem; margin-top:.9rem; font-size:.94rem; }
   .url::selection { background:var(--paper); color:var(--ink); }
   code { border-bottom:1px dotted var(--ink-40); font-family:ui-monospace, Menlo, monospace; font-size:.9em; direction:ltr; unicode-bidi:isolate; }
   .lnk { font-family:"Fraunces", Georgia, serif; font-weight:600; text-decoration:none; }
@@ -1228,10 +1248,13 @@ ${GA}
     <li>${s.step2}</li>
     <li>${s.step3}</li>
   </ol>
-  <span class="url" dir="ltr">https://torah-mcp.com/mcp</span>
+  <span class="url copiable" dir="ltr" data-copie="${s.copie}">https://torah-mcp.com/mcp<button type="button" class="cop">${s.copier}</button></span>
 
   <div class="amud-head"><span class="ot">ב</span><span class="rule"></span><span class="lbl">Claude Code</span></div>
-  <span class="url" dir="ltr">claude mcp add --transport http torah https://torah-mcp.com/mcp</span>
+  <p>${s.ccIntro}</p>
+  <span class="url copiable" dir="ltr" data-copie="${s.copie}">claude mcp add --transport http torah https://torah-mcp.com/mcp<button type="button" class="cop">${s.copier}</button></span>
+  <p class="apres">${s.ccVerif}</p>
+  <p class="piege">${s.ccPiege}</p>
 
   <div class="amud-head"><span class="ot">ג</span><span class="rule"></span><span class="lbl">${s.lblC}</span></div>
   <p>${s.pC}</p>
@@ -1254,6 +1277,22 @@ ${GA}
   </ul>
 
   <p style="margin-top:3rem"><a class="lnk" href="${href(lang, "/")}">${s.home}</a></p>
+<script>
+(function () {
+  document.querySelectorAll(".url .cop").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var boite = b.parentNode;
+      var texte = boite.textContent.replace(b.textContent, "").trim();
+      if (!navigator.clipboard || !navigator.clipboard.writeText) return;
+      navigator.clipboard.writeText(texte).then(function () {
+        var avant = b.textContent;
+        b.textContent = boite.getAttribute("data-copie") || "ok";
+        setTimeout(function () { b.textContent = avant; }, 1800);
+      }, function () {});
+    });
+  });
+})();
+</script>
   <footer style="margin-top:2.5rem;font-size:.88rem;opacity:.65"><p><img class="fsceau" src="/icon.png" alt="" style="width:26px;height:26px;border-radius:50%;vertical-align:-8px;margin-inline-end:.45rem">${colophon(lang)}</p><p style="margin-top:.6rem">${langSwitcher(lang, path)}</p></footer>
 </main>
 </body>
