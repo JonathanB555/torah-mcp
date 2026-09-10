@@ -7,6 +7,7 @@
  */
 
 import { Lang, href, altLinks, htmlAttrs, langSwitcher, colophon, t, retourTab } from "./i18n";
+import { SEDARIM, RITES, RITE_DEFAUT, type Rite } from "./miel-sedarim";
 
 /** Villes proposées — geonameids vérifiés un à un sur l'API Hebcal (08.09.2026). */
 export const VILLES_MIEL: Record<string, { g: number; nom: string }> = {
@@ -51,41 +52,17 @@ interface StringsMiel {
   title: string; desc: string;
   h1: string; chapeau: string;
   labPrenom: string; phPrenom: string; labHeb: string; phHeb: string;
-  labVille: string; autreVille: string; btnImprimer: string;
+  labVille: string; autreVille: string; labRite: string; btnImprimer: string;
   btnImage: string; imgOk: string; imgErr: string; btnWa: string; waTexte: string;
   notePrint: string; notePrivee: string;
   datesTitre: string; regleAvec: string; regleSans: string;
   lignes: { f: string; i: string; d: string }[];
-  nomLab: string; berakhotTitre: string; introB1: string; introB2: string;
-  noteMinhag: string;
-  simLabels: string[]; trad: string; src: string; offert: string;
+  nomLab: string; introB1: string; introB2: string;
+  trad: string; offert: string;
   nav: { question: string; chabbat: string; install: string };
 }
 
 /* Les 9 simanim : hébreu et phonétique identiques dans les trois langues. */
-const SIM_HEB = [
-  "יְהִי רָצוֹן מִלְּפָנֶיךָ ה׳ אֱלֹקֵינוּ וֵאלֹקֵי אֲבוֹתֵינוּ, שֶׁתְּחַדֵּשׁ עָלֵינוּ שָׁנָה טוֹבָה וּמְתוּקָה",
-  "יְהִי רָצוֹן מִלְּפָנֶיךָ ה׳ אֱלֹקֵינוּ וֵאלֹקֵי אֲבוֹתֵינוּ, שֶׁיִּתַּמּוּ אוֹיְבֵינוּ וְשׂוֹנְאֵינוּ וְכָל מְבַקְשֵׁי רָעָתֵנוּ",
-  "יְהִי רָצוֹן מִלְּפָנֶיךָ ה׳ אֱלֹקֵינוּ וֵאלֹקֵי אֲבוֹתֵינוּ, שֶׁנִּהְיֶה מְלֵאִים מִצְוֹת כָּרִמּוֹן",
-  "יְהִי רָצוֹן מִלְּפָנֶיךָ ה׳ אֱלֹקֵינוּ וֵאלֹקֵי אֲבוֹתֵינוּ, שֶׁתִּקְרַע רֹעַ גְּזַר דִּינֵנוּ, וְיִקָּרְאוּ לְפָנֶיךָ זָכִיּוֹתֵינוּ",
-  "יְהִי רָצוֹן מִלְּפָנֶיךָ ה׳ אֱלֹקֵינוּ וֵאלֹקֵי אֲבוֹתֵינוּ, שֶׁיִּרְבּוּ זָכִיּוֹתֵינוּ וּתְלַבְּבֵנוּ",
-  "יְהִי רָצוֹן מִלְּפָנֶיךָ ה׳ אֱלֹקֵינוּ וֵאלֹקֵי אֲבוֹתֵינוּ, שֶׁיִּכָּרְתוּ אוֹיְבֵינוּ וְשׂוֹנְאֵינוּ וְכָל מְבַקְשֵׁי רָעָתֵנוּ",
-  "יְהִי רָצוֹן מִלְּפָנֶיךָ ה׳ אֱלֹקֵינוּ וֵאלֹקֵי אֲבוֹתֵינוּ, שֶׁיִּסְתַּלְּקוּ אוֹיְבֵינוּ וְשׂוֹנְאֵינוּ וְכָל מְבַקְשֵׁי רָעָתֵנוּ",
-  "יְהִי רָצוֹן מִלְּפָנֶיךָ ה׳ אֱלֹקֵינוּ וֵאלֹקֵי אֲבוֹתֵינוּ, שֶׁנִּהְיֶה לְרֹאשׁ וְלֹא לְזָנָב",
-  "יְהִי רָצוֹן מִלְּפָנֶיךָ ה׳ אֱלֹקֵינוּ וֵאלֹקֵי אֲבוֹתֵינוּ, שֶׁנִּפְרֶה וְנִרְבֶּה כַּדָּגִים",
-];
-const SIM_PHON = [
-  "Yehi ratsone milefanékha Ado-naï Élo-hénou vé-Élo-hé avoténou, chéte'hadech alénou chana tova oumetouka",
-  "Yehi ratsone milefanékha Ado-naï Élo-hénou vé-Élo-hé avoténou, chéyitamou oyevénou vésonénou vékhol mevakché raaténou",
-  "Yehi ratsone milefanékha Ado-naï Élo-hénou vé-Élo-hé avoténou, chénihyé meléïm mitsvot karimone",
-  "Yehi ratsone milefanékha Ado-naï Élo-hénou vé-Élo-hé avoténou, chétikra roa guezar dinénou, véyikarou lefanékha zakhiyoténou",
-  "Yehi ratsone milefanékha Ado-naï Élo-hénou vé-Élo-hé avoténou, chéyirbou zakhiyoténou outelabevénou",
-  "Yehi ratsone milefanékha Ado-naï Élo-hénou vé-Élo-hé avoténou, chéyikartou oyevénou vésonénou vékhol mevakché raaténou",
-  "Yehi ratsone milefanékha Ado-naï Élo-hénou vé-Élo-hé avoténou, chéyistalkou oyevénou vésonénou vékhol mevakché raaténou",
-  "Yehi ratsone milefanékha Ado-naï Élo-hénou vé-Élo-hé avoténou, chénihyé leroch vélo lezanav",
-  "Yehi ratsone milefanékha Ado-naï Élo-hénou vé-Élo-hé avoténou, chénifré vénirbé kadaguim",
-];
-
 const T: Record<Lang, StringsMiel> = {
   fr: {
     title: "La feuille de miel — Mamash IA",
@@ -95,6 +72,7 @@ const T: Record<Lang, StringsMiel> = {
     labPrenom: "Le prénom", phPrenom: "Esther, David, Jonathan…",
     labHeb: "En hébreu (modifiable)", phHeb: "אסתר",
     labVille: "La ville — pour les horaires", autreVille: "Autre ville (sans horaires)",
+    labRite: "Le rite — pour le sédèr des simanim",
     btnImprimer: "Imprimer / enregistrer en PDF",
     btnImage: "Télécharger en image — pour WhatsApp ou Photos",
     imgOk: "Image prête !", imgErr: "Échec de l'image — utilisez l'impression.",
@@ -118,14 +96,9 @@ const T: Record<Lang, StringsMiel> = {
       { f: "SIMHAT TORAH", i: "<span class=\"avech\">— fin des fêtes <b data-k=\"finFetes\"></b></span>", d: "dimanche 4 octobre" },
     ],
     nomLab: "Cet exemplaire est celui de",
-    berakhotTitre: "LES BERAKHOT DU SOIR DE ROCH-HACHANA — LE SÉDÈR DES SIMANIM DU CHOULHAN AROUKH",
     introB1: "On trempe le pain du Motsi dans le miel. Sur le premier fruit, on bénit",
     introB2: ", puis, pour chaque siman :",
-    simLabels: ["La pomme trempée dans le miel", "La datte — tamar", "La grenade — rimone", "La courge — kra",
-      "Le fenugrec — roubia (ou la loubia)", "Le poireau — karti", "La blette — silka", "La tête (poisson ou agneau)", "Le poisson"],
-    noteMinhag: "L'ordre des simanim varie selon les communautés — les familles tunisiennes ont le leur. Suivez l'usage de votre famille.",
     trad: "« Que ce soit Ta volonté de renouveler pour nous une année bonne et douce. »",
-    src: "Sources lues sur Sefaria : Talmud, Horayot 12a (Abayé) · Choulhan Aroukh, Orah Hayim 583, 1",
     offert: "offert par",
     nav: { question: "Une question", chabbat: "Chabbat", install: "Installer le MCP" },
   },
@@ -137,6 +110,7 @@ const T: Record<Lang, StringsMiel> = {
     labPrenom: "First name", phPrenom: "Esther, David, Jonathan…",
     labHeb: "In Hebrew (editable)", phHeb: "אסתר",
     labVille: "City — for the times", autreVille: "Other city (no times)",
+    labRite: "Rite — for the simanim seder",
     btnImprimer: "Print / save as PDF",
     btnImage: "Download as an image — for WhatsApp or Photos",
     imgOk: "Image ready!", imgErr: "Image failed — use print instead.",
@@ -160,14 +134,9 @@ const T: Record<Lang, StringsMiel> = {
       { f: "SIMCHAT TORAH", i: "<span class=\"avech\">— holidays end <b data-k=\"finFetes\"></b></span>", d: "Sunday, October 4" },
     ],
     nomLab: "This copy belongs to",
-    berakhotTitre: "THE ROSH HASHANA EVENING BLESSINGS — THE SIMANIM SEDER OF THE SHULCHAN ARUKH",
     introB1: "Dip the Motzi bread in honey. Over the first fruit, say",
     introB2: ", then, for each siman:",
-    simLabels: ["The apple dipped in honey", "The date — tamar", "The pomegranate — rimon", "The gourd — kra",
-      "The fenugreek — rubia (or black-eyed peas)", "The leek — karti", "The chard — silka", "The head (fish or lamb)", "The fish"],
-    noteMinhag: "The order of the simanim varies between communities — Tunisian families have their own. Follow your family's custom.",
     trad: "“May it be Your will to renew for us a good and sweet year.”",
-    src: "Sources read on Sefaria: Talmud, Horayot 12a (Abaye) · Shulchan Arukh, Orach Chayim 583:1",
     offert: "offered by",
     nav: { question: "Ask a question", chabbat: "Shabbat", install: "Install the MCP" },
   },
@@ -179,6 +148,7 @@ const T: Record<Lang, StringsMiel> = {
     labPrenom: "השם הפרטי", phPrenom: "אסתר, דוד, יונתן…",
     labHeb: "בעברית (ניתן לעריכה)", phHeb: "אסתר",
     labVille: "העיר — לזמנים", autreVille: "עיר אחרת (בלי זמנים)",
+    labRite: "הנוסח — לסדר הסימנים",
     btnImprimer: "הדפסה / שמירה כ-PDF",
     btnImage: "הורדה כתמונה — לוואטסאפ או לתמונות",
     imgOk: "התמונה מוכנה!", imgErr: "יצירת התמונה נכשלה — השתמשו בהדפסה.",
@@ -202,13 +172,9 @@ const T: Record<Lang, StringsMiel> = {
       { f: "שמחת תורה", i: "<span class=\"avech\">— צאת החגים <b data-k=\"finFetes\"></b></span>", d: "ראשון, 4.10" },
     ],
     nomLab: "הדף הזה שייך ל",
-    berakhotTitre: "ברכות ליל ראש השנה — סדר הסימנים שבשולחן ערוך",
     introB1: "טובלים את פרוסת המוציא בדבש. על הפרי הראשון מברכים",
     introB2: ", ואחר כך, לכל סימן:",
-    simLabels: ["התפוח בדבש", "התמר", "הרימון", "הקרא (דלעת)", "הרוביא (תלתן)", "הכרתי", "הסלקא", "הראש (דג או כבש)", "הדגים"],
-    noteMinhag: "סדר הסימנים משתנה מקהילה לקהילה — למשפחות מתוניסיה יש סדר משלהן. לכו אחר מנהג משפחתכם.",
     trad: "",
-    src: "מקורות שנקראו בספריא: הוריות יב ע״א (אביי) · שולחן ערוך אורח חיים תקפג, א",
     offert: "מוגש על ידי",
     nav: { question: "שאלה", chabbat: "שבת", install: "התקנת ה-MCP" },
   },
@@ -224,9 +190,30 @@ export function mielPage(lang: Lang): string {
   const lignes = s.lignes
     .map((l) => `<tr><td class="f">${l.f} <i>${l.i}</i></td><td class="pts"></td><td class="d">${l.d}</td></tr>`)
     .join("\n    ");
-  const sims = s.simLabels
-    .map((lab, i) => `<div class="sim"><div class="simt">☞ ${lab}${i === 0 ? ' <span class="bpe">בורא פרי העץ</span>' : ""}</div><div class="simheb">${SIM_HEB[i]}</div><div class="simph">${SIM_PHON[i]}${i === 0 && s.trad ? " — " + s.trad : ""}</div></div>`)
-    .join("\n");
+  // Un bloc complet par rite : bandeau, introduction, simanim, avertissement.
+  // Tous sont dans la page, un seul est visible. L'impression et html2canvas
+  // restent simples — rien n'est reconstruit, on bascule un attribut hidden.
+  const blocRite = (r: Rite): string => {
+    const sd = SEDARIM[r];
+    const sims = sd.simanim
+      .map((si) => `<div class="sim"><div class="simt">☞ ${si.lab[lang]}${si.bpe ? ' <span class="bpe">בורא פרי העץ</span>' : ""}</div><div class="simheb">${si.heb}</div><div class="simph">${si.phon}${si.trad && s.trad ? " — " + s.trad : ""}</div></div>`)
+      .join("\n");
+    return `<div class="rbloc" data-rite="${r}"${r === RITE_DEFAUT ? "" : " hidden"}>
+        <div class="regle r2">${sd.bandeau[lang]}</div>
+        <div class="intro">${s.introB1}
+          <span class="hebin">בָּרוּךְ אַתָּה ה׳ אֱלֹקֵינוּ מֶלֶךְ הָעוֹלָם בּוֹרֵא פְּרִי הָעֵץ</span>
+          <span class="ph">(Baroukh ata Ado-naï Élo-hénou mélekh haolam, boré peri haets)</span>${s.introB2}</div>
+        <div class="sims">${sims}</div>
+        <div class="minhag">${sd.note[lang]}</div>
+      </div>`;
+  };
+  const blocsRites = RITES.map(blocRite).join("\n");
+  const sourcesRites = RITES
+    .map((r) => `<span class="rsrc" data-rite="${r}"${r === RITE_DEFAUT ? "" : " hidden"}>${SEDARIM[r].source[lang]}</span>`)
+    .join("");
+  const ritesOpts = RITES
+    .map((r) => `<option value="${r}"${r === RITE_DEFAUT ? " selected" : ""}>${SEDARIM[r].nom[lang]}</option>`)
+    .join("");
   return `<!doctype html>
 <html ${htmlAttrs(lang)}>
 <head>
@@ -379,6 +366,7 @@ ${altLinks(lang, "/miel")}
       <div class="champ"><label for="prenom">${s.labPrenom}</label><input id="prenom" placeholder="${s.phPrenom}" maxlength="24" autocomplete="off"></div>
       <div class="champ"><label for="heb">${s.labHeb}</label><input id="heb" placeholder="${s.phHeb}" maxlength="24" autocomplete="off"></div>
       <div class="champ"><label for="ville">${s.labVille}</label><select id="ville">${villesOpts}<option value="autre">${s.autreVille}</option></select></div>
+      <div class="champ"><label for="rite">${s.labRite}</label><select id="rite">${ritesOpts}</select></div>
       <button id="telecharger" type="button">${s.btnImage}</button>
       <button id="imprimer" type="button" class="btn2">${s.btnImprimer}</button>
       <a id="btnwa" class="btnwa" href="https://wa.me/?text=${encodeURIComponent(s.waTexte + " https://mamash-ia.com" + href(lang, "/miel"))}" target="_blank" rel="noopener">${s.btnWa}</a>
@@ -396,13 +384,8 @@ ${altLinks(lang, "/miel")}
         <div class="regle" id="regleh">${s.regleSans}</div>
         <table class="dates" id="tdates">${lignes}</table>
         <div class="nomrow"><span class="nomlab">${s.nomLab}</span><span class="lenom creux" id="fnom">&nbsp;</span><span class="nomheb" id="fheb"></span></div>
-        <div class="regle r2">${s.berakhotTitre}</div>
-        <div class="intro">${s.introB1}
-          <span class="hebin">בָּרוּךְ אַתָּה ה׳ אֱלֹקֵינוּ מֶלֶךְ הָעוֹלָם בּוֹרֵא פְּרִי הָעֵץ</span>
-          <span class="ph">(Baroukh ata Ado-naï Élo-hénou mélekh haolam, boré peri haets)</span>${s.introB2}</div>
-        <div class="sims">${sims}</div>
-        <div class="minhag">${s.noteMinhag}</div>
-        <div class="pied"><span>${s.src}</span><span class="pm">${s.offert} mamash-ia.com</span></div>
+        ${blocsRites}
+        <div class="pied"><span>${sourcesRites}</span><span class="pm">${s.offert} mamash-ia.com</span></div>
       </div></div>
     </div></div>
   </div>
@@ -457,6 +440,17 @@ ${altLinks(lang, "/miel")}
       .catch(function () { tdates.classList.add("sansh"); regleh.textContent = REGLE_SANS; });
   }
   ville.addEventListener("change", majVille);
+
+  // Le rite : on bascule le bloc de berakhot et sa ligne de sources. Rien
+  // n'est reconstruit, ce qui garde l'impression et l'image identiques.
+  var rite = document.getElementById("rite");
+  function majRite() {
+    var r = rite.value;
+    document.querySelectorAll(".rbloc, .rsrc").forEach(function (el) {
+      el.hidden = el.getAttribute("data-rite") !== r;
+    });
+  }
+  if (rite) { rite.addEventListener("change", majRite); majRite(); }
 
   // Aperçu à l'échelle du conteneur
   var capercu = document.getElementById("capercu");
