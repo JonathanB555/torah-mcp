@@ -13,6 +13,7 @@
 
 import type { Env } from "./sefaria";
 import type { QuestionMeta } from "./question";
+import { chiffresRetours } from "./retour";
 
 export interface JournalEntry {
   meta: QuestionMeta;
@@ -234,6 +235,7 @@ export async function pageStats(request: Request, env: Env): Promise<Response> {
   const now = Date.now();
   const iso = (ms: number) => new Date(now - ms).toISOString();
   const feuilles = await chiffresFeuilles(env);
+  const retours = await chiffresRetours(env);
   const [tout, j30, j7, j1, modes, pays, causes, langs, jours, recentes] = await Promise.all([
     totaux(db, null),
     totaux(db, iso(30 * 86_400_000)),
@@ -283,6 +285,11 @@ export async function pageStats(request: Request, env: Env): Promise<Response> {
   .exp { margin-top:1.4rem; font-size:.9rem; } .exp a { text-decoration:none; } .exp a::before { content:"[ "; color:var(--ink-40); } .exp a::after { content:" ]"; color:var(--ink-40); } .exp a:hover::before { content:"[ → "; }
   footer { margin-top:4rem; font-size:.85rem; color:var(--muted); border-top:1px solid var(--ink-15); padding-top:1.2rem; }
   @media (max-width:900px) { .ks { grid-template-columns:1fr 1fr; } .grid { grid-template-columns:1fr; } td.p { display:none; } }
+  .pastille { display:inline-block; background:#ffd23f; color:#082a99; font-size:.6em; letter-spacing:.08em; text-transform:uppercase; padding:.22em .55em .3em; vertical-align:.35em; }
+  table.ret td { vertical-align:top; }
+  table.ret td.q { white-space:nowrap; font-size:.82rem; opacity:.7; }
+  table.ret tr.neuf td { background:rgba(255,210,63,.16); }
+  table.ret .ct { font-size:.82rem; opacity:.7; }
 </style></head>
 <body><main>
   <nav><a class="wm" href="/"><b>Mamash</b>&nbsp;IA</a><span class="r"><a href="/question">La question</a><a href="/outils">Outils</a><a href="/install">Installer</a></span></nav>
@@ -300,6 +307,26 @@ export async function pageStats(request: Request, env: Env): Promise<Response> {
     <div class="k"><span class="lab">Villes distinctes</span><b>${num(feuilles.villes.length)}</b></div>
   </div>
   <div class="grid">${liste("Comment", feuilles.modes, feuilles.total)}${liste("Villes", feuilles.villes, feuilles.total)}${liste("Par jour", feuilles.jours, feuilles.total)}</div>
+
+  <h2>Les <strong>retours</strong> des visiteurs${retours && retours.nonLus ? ` <span class="pastille">${retours.nonLus} non lu${retours.nonLus > 1 ? "s" : ""}</span>` : ""}</h2>
+  <p class="muted">Formulaire <code>/retour</code>, accessible par l'onglet en bas de chaque page. Le contact est facultatif ; ni identité ni adresse IP.</p>
+  ${!retours ? '<p class="muted">Base indisponible.</p>' : `
+  <div class="ks">
+    <div class="k"><span class="lab">Depuis le début</span><b>${num(retours.total)}</b></div>
+    <div class="k"><span class="lab">Bugs</span><b>${num(retours.bugs)}</b></div>
+    <div class="k"><span class="lab">Idées</span><b>${num(retours.idees)}</b></div>
+    <div class="k"><span class="lab">Non lus</span><b>${num(retours.nonLus)}</b></div>
+  </div>
+  <table class="ret"><tbody>${
+    retours.derniers.length
+      ? retours.derniers.map((r) => `<tr${r.lu ? "" : ' class="neuf"'}>
+          <td class="q">${dateFr(r.ts)}</td>
+          <td class="q">${r.genre === "bug" ? "🐞 bug" : "💡 idée"}</td>
+          <td>${esc(r.message)}${r.contact ? `<br><span class="ct">${esc(r.contact)}</span>` : ""}</td>
+          <td class="q">${r.page ? esc(r.page) : "—"}<br>${r.langue || "?"}${r.pays ? " · " + r.pays : ""}</td>
+        </tr>`).join("")
+      : '<tr><td colspan="4">Aucun retour pour l’instant.</td></tr>'
+  }</tbody></table>`}
 
   <h2>Les 200 dernières</h2>
   <table><tbody>${lignes || '<tr><td colspan="5">Aucune question enregistrée pour l’instant.</td></tr>'}</tbody></table>

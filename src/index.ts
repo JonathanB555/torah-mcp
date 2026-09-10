@@ -29,6 +29,7 @@ import { chiourimPage, rafraichirChiourim, chiourSemaine } from "./chiourim";
 import { limoudTools, limoudHandlers } from "./limoud";
 import { renderDaily, outilsHtml } from "./pages";
 import { mielPage, VILLES_MIEL } from "./miel";
+import { retourHtml, enregistrerRetour } from "./retour";
 import { dafViewerTools, dafViewerHandlers, DAF_VIEWER_URI, DAF_VIEWER_HTML, dafViewerHtml, MCP_APP_MIME } from "./dafviewer";
 import { ICON_PNG_BASE64, OG_JPEG_BASE64 } from "./icon";
 import { PICTOS_PNG_BASE64 } from "./pictos";
@@ -326,6 +327,26 @@ export default {
       return new Response(null, { status: 204, headers: CORS_HEADERS });
     }
 
+    // Retour d'un visiteur : un bug rencontré, une amélioration souhaitée.
+    // Aucune donnée personnelle n'est exigée et l'IP n'est jamais conservée ;
+    // le champ « site » est un piège à robots, il doit rester vide.
+    if (request.method === "POST" && url.pathname === "/api/retour") {
+      let corps: any = {};
+      try { corps = await request.json(); } catch {}
+      if (typeof corps?.site === "string" && corps.site.trim() !== "") {
+        return jsonResponse({ ok: true }, 200); // robot : on acquiesce sans écrire
+      }
+      const r = await enregistrerRetour(env, {
+        genre: String(corps?.genre || "idee"),
+        message: String(corps?.message || ""),
+        page: typeof corps?.page === "string" ? corps.page : null,
+        contact: typeof corps?.contact === "string" ? corps.contact : null,
+        langue: typeof corps?.langue === "string" ? corps.langue : null,
+        pays: request.headers.get("cf-ipcountry"),
+      });
+      return jsonResponse(r, r.ok ? 200 : 400);
+    }
+
     // Horaires de Tichri 5787 pour le générateur de feuilles de miel (/miel).
     // Villes en liste fermée (pas de proxy ouvert) ; réponse cachée 6 h en périphérie.
     if (request.method === "GET" && url.pathname === "/api/miel-horaires") {
@@ -407,6 +428,7 @@ export default {
         case "/daf": return html(dafViewerHtml(lang));
         case "/outils": return html(outilsHtml(lang));
         case "/miel": return html(mielPage(lang));
+        case "/retour": return html(retourHtml(lang));
         case "/install": return html(installHtml(lang));
         case "/privacy": return html(privacyHtml(lang));
         case "/daily": return html(await renderDaily(env, lang), { "Cache-Control": "public, max-age=900" });

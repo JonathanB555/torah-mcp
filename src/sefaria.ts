@@ -22,6 +22,9 @@ export interface Env {
   DEV?: string;
   /** Mot de passe de la page privée /stats (Basic auth, utilisateur libre). Absent = page désactivée. */
   STATS_PASSWORD?: string;
+  /** Notification des retours des visiteurs (/retour). URL d'un webhook —
+   *  Slack, Discord, Make, n8n… Absent = les retours restent lisibles sur /stats. */
+  RETOUR_WEBHOOK_URL?: string;
 }
 
 export interface ToolDefinition {

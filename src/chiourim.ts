@@ -10,7 +10,7 @@
  */
 
 import type { Env } from "./sefaria";
-import { type Lang, altLinks, htmlAttrs, href, langSwitcher, colophon, t, saisonMiel } from "./i18n";
+import { type Lang, altLinks, htmlAttrs, href, langSwitcher, colophon, t, saisonMiel, retourTab } from "./i18n";
 
 const CHANNEL_ID = "UCtqyBROvt1svSBieQqDAUBA";
 const CHANNEL_URL = "https://www.youtube.com/@meirattal6523";
@@ -462,6 +462,7 @@ ${altLinks(lang, "/chiourim")}
   });
 })();
 </script>
+${retourTab(lang, "/chiourim")}
 </body>
 </html>`;
 }

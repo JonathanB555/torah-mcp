@@ -4,7 +4,7 @@
  */
 
 import type { Env } from "./sefaria";
-import { type Lang, href, altLinks, langSwitcher, htmlAttrs, colophon } from "./i18n";
+import { type Lang, href, altLinks, langSwitcher, htmlAttrs, colophon, retourTab } from "./i18n";
 
 const GA_SNIPPET = `<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-NG6P5HPH9K"></script>
@@ -178,6 +178,7 @@ ${GA_SNIPPET}
   </div>
   <footer><p><a href="${href(lang, "/")}">${s.home}</a> · ${langSwitcher(lang, path)} · <a href="${href(lang, "/privacy")}">${s.privacy}</a></p><p>${colophon(lang)}</p></footer>
 </main>
+${retourTab(lang, path)}
 </body>
 </html>`;
 }
@@ -719,6 +720,7 @@ ${GA_SNIPPET}
   });
 })();
 </script>
+${retourTab(lang, path)}
 </body>
 </html>`;
 }

@@ -12,7 +12,7 @@
  */
 
 import type { Env, ToolDefinition, ToolHandler } from "./sefaria";
-import { type Lang, href, altLinks, langSwitcher } from "./i18n";
+import { type Lang, href, altLinks, langSwitcher, retourTab } from "./i18n";
 
 export const DAF_VIEWER_URI = "ui://torah-mcp/daf-viewer.html";
 export const MCP_APP_MIME = "text/html;profile=mcp-app";
@@ -460,6 +460,7 @@ ${altLinks(lang, "/daf")}
   }
 })();
 </script>
+${retourTab(lang, "/daf")}
 </body>
 </html>`;
 }

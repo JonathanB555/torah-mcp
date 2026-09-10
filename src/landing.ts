@@ -4,7 +4,7 @@
  * le gabarit HTML/CSS/JS est unique, seules les chaînes changent.
  */
 
-import { type Lang, SITE, href, altLinks, langSwitcher, htmlAttrs, colophon, saisonMiel } from "./i18n";
+import { type Lang, SITE, href, altLinks, langSwitcher, htmlAttrs, colophon, saisonMiel, retourTab } from "./i18n";
 import type { Env } from "./sefaria";
 import { chiourSemaine } from "./chiourim";
 
@@ -148,6 +148,7 @@ ${GA}
   <p>${s.contact} <a href="https://github.com/JonathanB555/torah-mcp/issues" dir="ltr">github.com/JonathanB555/torah-mcp/issues</a></p>
   <footer><a href="${href(lang, "/")}"><img src="/icon.png" alt="" style="width:26px;height:26px;border-radius:50%;vertical-align:-8px;margin-inline-end:.45rem">Mamash IA</a>${langSwitcher(lang, path)}</footer>
 </main>
+${retourTab(lang, path)}
 </body>
 </html>`;
 }
@@ -1069,6 +1070,7 @@ ${chiour ? `<section class="chiousem rv" aria-label="${s.chiourLab}">
   }
 })();
 </script>
+${retourTab(lang, path)}
 </body>
 </html>`;
 }
@@ -1295,6 +1297,7 @@ ${GA}
 </script>
   <footer style="margin-top:2.5rem;font-size:.88rem;opacity:.65"><p><img class="fsceau" src="/icon.png" alt="" style="width:26px;height:26px;border-radius:50%;vertical-align:-8px;margin-inline-end:.45rem">${colophon(lang)}</p><p style="margin-top:.6rem">${langSwitcher(lang, path)}</p></footer>
 </main>
+${retourTab(lang, path)}
 </body>
 </html>`;
 }

@@ -6,7 +6,7 @@
  * les PDF de référence). Horaires : /api/miel-horaires (proxy Hebcal, worker).
  */
 
-import { Lang, href, altLinks, htmlAttrs, langSwitcher, colophon, t } from "./i18n";
+import { Lang, href, altLinks, htmlAttrs, langSwitcher, colophon, t, retourTab } from "./i18n";
 
 /** Villes proposées — geonameids vérifiés un à un sur l'API Hebcal (08.09.2026). */
 export const VILLES_MIEL: Record<string, { g: number; nom: string }> = {
@@ -559,6 +559,7 @@ ${altLinks(lang, "/miel")}
   });
 })();
 </script>
+${retourTab(lang, "/miel")}
 </body>
 </html>`;
 }

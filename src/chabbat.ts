@@ -13,7 +13,7 @@
 import type { Env } from "./sefaria";
 import { sefariaHandlers, sefariaTools } from "./sefaria";
 import { limoudHandlers } from "./limoud";
-import { type Lang, altLinks, htmlAttrs, href, langSwitcher, colophon, t, saisonMiel } from "./i18n";
+import { type Lang, altLinks, htmlAttrs, href, langSwitcher, colophon, t, saisonMiel, retourTab } from "./i18n";
 
 const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
 const ANTHROPIC_VERSION = "2023-06-01";
@@ -586,6 +586,7 @@ ${altLinks(lang, "/chabbat")}
   });
 })();
 </script>
+${retourTab(lang, "/chabbat")}
 </body>
 </html>`;
 }

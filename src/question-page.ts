@@ -8,7 +8,7 @@
  * du dictionnaire `T`, et celles utilisées par le script sont injectées dans `S`.
  */
 
-import { type Lang, href, altLinks, langSwitcher, htmlAttrs, colophon, saisonMiel, t } from "./i18n";
+import { type Lang, href, altLinks, langSwitcher, htmlAttrs, colophon, saisonMiel, t, retourTab } from "./i18n";
 
 const PATH = "/question";
 
@@ -718,6 +718,7 @@ ${altLinks(lang, PATH)}
   });
 })();
 </script>
+${retourTab(lang, PATH)}
 </body>
 </html>`;
 }

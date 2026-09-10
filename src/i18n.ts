@@ -67,5 +67,38 @@ export const colophon = (lang: Lang) =>
  * saisonnières (nav, badge) disparaissent d'elles-mêmes. */
 export const saisonMiel = (): boolean => Date.now() < Date.parse("2026-10-05T00:00:00Z");
 
+/** L'onglet « un bug ? une idée ? », posé en bas de chaque page.
+ *  Il emporte la page d'origine dans ?de= pour que le formulaire sache de quoi
+ *  l'on parle. Styles inclus : le composant doit tenir seul, quelle que soit
+ *  la feuille de style de la page qui l'appelle. */
+export const retourTab = (lang: Lang, depuis: string): string => {
+  const mot = t(lang, { fr: "Un bug ? Une idée ?", en: "A bug? An idea?", he: "באג? רעיון?" });
+  const dest = href(lang, "/retour") + "?de=" + encodeURIComponent(depuis);
+  return `<style>
+  /* Propriétés physiques et non logiques : le writing-mode vertical de
+     l'onglet brouille la résolution de inset-inline-end, qui se retrouvait
+     du mauvais côté dans les deux sens de lecture. */
+  .rtab { position:fixed; right:0; left:auto; bottom:22vh; z-index:60; display:block;
+    background:#082a99; color:#ffd23f; text-decoration:none;
+    font:900 .68rem/1 "Rubik","Arial Black",sans-serif; letter-spacing:.1em; text-transform:uppercase;
+    padding:.85rem .7rem; writing-mode:vertical-rl; box-shadow:-3px 3px 12px rgba(8,42,153,.28);
+    border:0; transition:background .25s, color .25s; }
+  [dir="rtl"] .rtab { writing-mode:vertical-lr; right:auto; left:0; box-shadow:3px 3px 12px rgba(8,42,153,.28); }
+  .rcale { display:none; }
+  .rtab:hover, .rtab:focus-visible { background:#ffd23f; color:#082a99; text-decoration:none; }
+  @media (max-width:760px) {
+    .rtab, [dir="rtl"] .rtab { writing-mode:horizontal-tb; right:auto; left:50%;
+      transform:translateX(-50%); bottom:0; padding:.55rem 1rem .6rem; font-size:.62rem;
+      box-shadow:0 -3px 12px rgba(8,42,153,.24); }
+    /* Le bandeau du bas recouvrirait le dernier bouton de la page (celui de
+       /miel, par exemple) : on rend sa hauteur à la page par une cale. */
+    .rcale { display:block; height:3.4rem; }
+  }
+  @media print { .rtab, .rcale { display:none; } }
+</style>
+<div class="rcale" aria-hidden="true"></div>
+<a class="rtab" href="${dest}">${mot}</a>`;
+};
+
 /** Marqueur de langue à passer au serveur (/api/question). */
 export const langLabel = (lang: Lang) => t(lang, { fr: "français", en: "anglais", he: "hébreu" });
