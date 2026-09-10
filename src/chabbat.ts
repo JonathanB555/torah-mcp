@@ -52,6 +52,8 @@ Règles absolues :
   sefaria_text (et, si utile, le début de la paracha). Aucun verset, aucun
   midrach, aucune citation de mémoire. Le contenu général de la paracha
   (ses thèmes connus) peut être évoqué sans citation textuelle.
+- Jamais de tiret cadratin (\u2014) ni de tiret demi-cadratin (\u2013). Une virgule,
+  un deux-points ou un point, selon le sens.
 - Translittération française séfarade : ch (pas sh), t (pas th), h, ts, k
   Chabbat, paracha, mitsvot, Houlin, Tétsé.
 - Un seul fil et une vraie morale : choisis UNE idée de la paracha, développe-la,
