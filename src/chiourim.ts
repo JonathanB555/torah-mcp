@@ -354,7 +354,7 @@ ${altLinks(lang, "/chiourim")}
     .lang .dot { margin:0 .3em; }
   }
   footer img.fsceau { width:30px; height:30px; border-radius:50%; vertical-align:-9px; margin-inline-end:.5rem; }
-  h1 { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(1.9rem,3.6vw,2.6rem); line-height:1.05; letter-spacing:-.02em; margin:1.6rem 0 .5rem; }
+  h1 { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(1.8rem,3.2vw,2.3rem); line-height:1.05; letter-spacing:-.02em; margin:1.1rem 0 .4rem; }
   h1 strong { font-weight:600; }
   [dir="rtl"] h1 { font-family:"Frank Ruhl Libre", Georgia, serif; letter-spacing:0; }
   p.muted { color:var(--muted); max-width:46rem; font-size:.92rem; line-height:1.55; }
@@ -377,7 +377,7 @@ ${altLinks(lang, "/chiourim")}
   .v .vt { font-size:.95rem; line-height:1.45; flex:1; min-width:0; overflow-wrap:anywhere; }
   .v .vd { font-size:.78rem; letter-spacing:.1em; opacity:.55; white-space:nowrap; font-variant-numeric:tabular-nums; }
   /* ---- la barre de thèmes : l'ampleur du catalogue, visible d'emblée ---- */
-  .themes { display:flex; flex-wrap:wrap; gap:.5rem; margin:1.1rem 0 .2rem; }
+  .themes { display:flex; flex-wrap:wrap; gap:.5rem; margin:.85rem 0 .1rem; }
   .themes a { display:flex; align-items:baseline; gap:.45rem; text-decoration:none; color:var(--ink);
     border:1.5px solid var(--ink-15); padding:.32rem .7rem .38rem; transition:border-color .25s var(--ease), background .25s var(--ease); }
   .themes a:hover { border-color:var(--ink); background:var(--pop); }
@@ -386,7 +386,7 @@ ${altLinks(lang, "/chiourim")}
 
   /* ---- la une : dernier chiour à gauche, récents en liste à droite ---- */
   .une { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(0,1fr); gap:2rem; align-items:start; margin-top:.4rem; }
-  .une .ghead { margin-top:1.2rem; }
+  .une .ghead { margin-top:.9rem; margin-bottom:.6rem; }
   .rlist { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.65rem; }
   .v.rl { display:flex; gap:.8rem; align-items:flex-start; }
   .v.rl .th { flex:none; width:124px; aspect-ratio:16/9; }
@@ -394,6 +394,9 @@ ${altLinks(lang, "/chiourim")}
   .v.rl .rt { display:flex; flex-direction:column; gap:.2rem; min-width:0; padding-top:.1rem; }
   .v.rl .vt { font-size:.88rem; line-height:1.35; }
   .v.rl .vd { font-size:.72rem; }
+  @media (max-height:840px) { .une { grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); } }
+  @media (max-height:760px) { .une { grid-template-columns:minmax(0,.85fr) minmax(0,1fr); }
+    h1 { margin-top:.8rem; } .themes { margin-top:.7rem; } .une .ghead { margin-top:.7rem; } }
   @media (max-width:900px) { .une { grid-template-columns:minmax(0,1fr); gap:.6rem; } }
 
   .v.big { max-width:none; }
