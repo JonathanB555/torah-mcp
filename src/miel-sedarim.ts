@@ -10,7 +10,7 @@
 
 import type { Lang } from "./i18n";
 
-export type Rite = "sa" | "bih";
+export type Rite = "sa" | "bih" | "tn";
 
 /** L'invariant du yehi ratsone, pour ne pas le retaper à chaque siman. */
 const YR = (queue: string): string =>
@@ -34,8 +34,13 @@ const Q = {
 
 export interface Siman {
   lab: Record<Lang, string>;
+  /** Vide quand aucun texte vocalisé n'a pu être lu : on n'invente pas de nikoud. */
   heb: string;
   phon: string;
+  /** Sens de la formule, imprimé quand l'hébreu manque. */
+  sens?: Record<Lang, string>;
+  /** Intertitre ouvrant une bénédiction (bore peri haets, haadama, chéhakol). */
+  section?: Record<Lang, string>;
   /** Le fruit sur lequel on dit « bore peri haets ». */
   bpe?: boolean;
   /** Traduction française du yehi ratsone, imprimée sur le premier siman. */
@@ -51,6 +56,8 @@ export interface Seder {
   source: Record<Lang, string>;
   /** L'avertissement sur la variété des usages. */
   note: Record<Lang, string>;
+  /** Première phrase de l'introduction, quand le rite ne trempe pas dans le miel. */
+  intro?: Record<Lang, string>;
   simanim: Siman[];
 }
 
@@ -59,6 +66,21 @@ const sim = (fr: string, en: string, he: string, q: { h: string; p: string }, ex
   heb: YR(q.h),
   phon: YRP(q.p),
   ...extra,
+});
+
+
+/** Un siman tunisien : la formule est donnée en phonétique et en sens, sans
+ *  hébreu — la source lue ne le donne pas vocalisé, et on n'en invente pas. */
+const tnSim = (
+  fr: string, en: string, he: string,
+  phon: string, sensFr: string, sensEn: string, sensHe: string,
+  section?: Record<Lang, string>,
+): Siman => ({
+  lab: { fr, en, he },
+  heb: "",
+  phon: YRP(phon),
+  sens: { fr: sensFr, en: sensEn, he: sensHe },
+  ...(section ? { section } : {}),
 });
 
 export const SEDARIM: Record<Rite, Seder> = {
@@ -131,7 +153,104 @@ export const SEDARIM: Record<Rite, Seder> = {
       sim("La tête d'agneau — on ajoute le souvenir de la ligature d'Its'hak", "The lamb's head — one adds the remembrance of the binding of Isaac", "ראש כבש — ומוסיפים זכר עקדת יצחק", Q.roch),
     ],
   },
+
+  // ---------------------------------------------------------------------
+  // La Tunisie. Rien à voir avec les deux précédents : le sédèr n'est pas une
+  // liste plate mais trois séries, une par bénédiction — fruits de l'arbre,
+  // fruits de la terre, puis chéhakol. La figue ouvre, le sésame et l'ail en
+  // sont, la pomme est douce « comme la pomme » et non « comme le miel »,
+  // lequel a sa propre place et sa propre formule.
+  //
+  // Transcrit depuis « La page de miel — sédèr de Roch Hachana » (harissa.com,
+  // recueil des coutumes des Juifs de Tunisie), lue en entier. Ce document
+  // donne la phonétique française et non l'hébreu vocalisé : les formules sont
+  // donc imprimées telles qu'elles se disent, sans hébreu — plutôt qu'avec un
+  // nikoud reconstitué, qui n'aurait aucune source.
+  // ---------------------------------------------------------------------
+  tn: {
+    nom: { fr: "Tunisie — Tunis et Djerba", en: "Tunisia — Tunis and Djerba", he: "תוניסיה — תוניס וג׳רבה" },
+    bandeau: {
+      fr: "LES BERAKHOT DU SOIR DE ROCH-HACHANA — LE SÉDÈR DES SIMANIM DU RITE TUNISIEN",
+      en: "THE ROSH HASHANA EVENING BLESSINGS — THE SIMANIM SEDER OF THE TUNISIAN RITE",
+      he: "ברכות ליל ראש השנה — סדר הסימנים כמנהג תוניסיה",
+    },
+    source: {
+      fr: "Sédèr tunisien d'après « La page de miel » (harissa.com) · formules en phonétique",
+      en: "Tunisian seder after “La page de miel” (harissa.com) · formulas transliterated",
+      he: "סדר תוניסאי לפי ״La page de miel״ (harissa.com) · הנוסח בתעתיק",
+    },
+    note: {
+      fr: "Recueil de coutumes, non un livre de décisionnaire — l'hébreu se lit dans le siddour de votre famille. En Tunisie, le pain du Motsi se trempe dans le sucre, et Chéhé'héyanou se dit une fois sur un fruit nouveau.",
+      en: "A collection of customs, not a book of rulings — the Hebrew is in your family's siddur. In Tunisia the Motzi bread is dipped in sugar, and Shehecheyanu is said once over a new fruit.",
+      he: "אוסף מנהגים, לא ספר פוסקים — ההברה העברית בסידור של משפחתכם. בתוניסיה טובלים את פרוסת המוציא בסוכר, ואומרים שהחיינו פעם אחת על פרי חדש.",
+    },
+    intro: {
+      fr: "On trempe le pain du Motsi dans le sucre. Sur le premier fruit de l'arbre, on bénit",
+      en: "The Motzi bread is dipped in sugar. Over the first fruit of the tree, one says",
+      he: "טובלים את פרוסת המוציא בסוכר. על הפרי הראשון של העץ מברכים",
+    },
+    simanim: [
+      tnSim("La figue", "The fig", "התאנה",
+        "chetehé chana zo habaa alénou tova oumetouka kadevela",
+        "Une année bonne et douce comme la figue.",
+        "A good and sweet year, as the fig.",
+        "שתהא השנה הזאת טובה ומתוקה כדבלה.",
+        { fr: "FRUITS DE L'ARBRE — bore peri haets, sur le premier fruit seulement", en: "FRUITS OF THE TREE — borei peri ha'etz, on the first fruit only", he: "פרי העץ — בורא פרי העץ, על הפרי הראשון בלבד" }),
+      tnSim("La grenade", "The pomegranate", "הרימון",
+        "chéyirbou zakhiyoténou karimone",
+        "Que nos mérites se multiplient comme les grains de la grenade.",
+        "May our merits multiply like pomegranate seeds.",
+        "שירבו זכיותינו כרימון."),
+      tnSim("La pomme", "The apple", "התפוח",
+        "chetehé chana zo habaa alénou tova oumetouka katapouah",
+        "Une année bonne et douce comme la pomme, et non « comme le miel ».",
+        "A good and sweet year, as the apple, not “as honey”.",
+        "שתהא השנה הזאת טובה ומתוקה כתפוח."),
+      tnSim("Les graines de sésame", "Sesame seeds", "השומשום",
+        "chéyirbou zakhiyoténou kachoumchemine",
+        "Que nos mérites se multiplient comme les graines de sésame.",
+        "May our merits multiply like sesame seeds.",
+        "שירבו זכיותינו כשומשמין.",
+        { fr: "FRUITS DE LA TERRE — bore peri haadama", en: "FRUITS OF THE GROUND — borei peri ha'adama", he: "פרי האדמה — בורא פרי האדמה" }),
+      tnSim("La courge — en beignets au miel", "The gourd — as honey fritters", "הקרא — בלביבות בדבש",
+        "chétikra roa guezar dinénou véyikarou lefanékha zakhiyoténou",
+        "Que soit déchiré le mauvais décret, et nos mérites lus devant Toi.",
+        "May the evil decree be torn up, our merits read before You.",
+        "שתקרע רוע גזר דיננו ויקראו לפניך זכיותינו."),
+      tnSim("Les épinards — en beignets au miel", "Spinach — as honey fritters", "התרד — בלביבות בדבש",
+        "chéyistalkou oyevénou vésonénou vékhol mevakché raaténou mipanénou",
+        "Que s'écartent nos ennemis et ceux qui nous veulent du mal.",
+        "May our enemies and ill-wishers depart.",
+        "שיסתלקו אויבינו ושונאינו וכל מבקשי רעתנו מפנינו."),
+      tnSim("Les fèves", "Broad beans", "הפול",
+        "chéyipelou sonénou lefanénou",
+        "Que nos ennemis tombent devant nous.",
+        "May our enemies fall before us.",
+        "שיפלו שונאינו לפנינו."),
+      tnSim("L'ail", "Garlic", "השום",
+        "chéyitamou oyevénou vésonénou vékhol mevakché raaténou mipanénou",
+        "Que disparaissent nos ennemis et ceux qui nous veulent du mal.",
+        "May our enemies and ill-wishers vanish.",
+        "שיתמו אויבינו ושונאינו וכל מבקשי רעתנו מפנינו."),
+      tnSim("Le miel", "Honey", "הדבש",
+        "chetehé chana zo habaa alénou tova oumetouka kadevach, mérechit hachana véad aharit chana",
+        "Douce comme le miel, du début de l'année jusqu'à sa fin.",
+        "Sweet as honey, from the start of the year to its end.",
+        "שתהא השנה הזאת טובה ומתוקה כדבש, מראשית השנה ועד אחרית שנה.",
+        { fr: "CHÉHAKOL — chéhakol nihyé bidvaro", en: "SHEHAKOL — shehakol nihyeh bidvaro", he: "שהכל — שהכל נהיה בדברו" }),
+      tnSim("La tête de mouton", "The sheep's head", "ראש כבש",
+        "chénihyé leroch vélo lezanav, vétizkor lanou élo chel Its'hak avinou alav hachalom",
+        "À la tête et non à la queue ; souviens-Toi du bélier d'Its'hak.",
+        "The head and not the tail; remember the ram of Isaac.",
+        "שנהיה לראש ולא לזנב, ותזכור לנו אילו של יצחק אבינו עליו השלום."),
+      tnSim("Le poisson", "The fish", "הדגים",
+        "chénifré vénirbé kadaguim, vétichgah alénou beéna pekiha",
+        "Féconds comme les poissons ; veille sur nous d'un œil ouvert.",
+        "Fruitful as fish; watch over us with an open eye.",
+        "שנפרה ונרבה כדגים, ותשגח עלינו בעינא פקיחא."),
+    ],
+  },
 };
 
 export const RITE_DEFAUT: Rite = "sa";
-export const RITES: Rite[] = ["sa", "bih"];
+export const RITES: Rite[] = ["sa", "bih", "tn"];

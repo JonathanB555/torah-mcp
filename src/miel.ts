@@ -196,14 +196,23 @@ export function mielPage(lang: Lang): string {
   const blocRite = (r: Rite): string => {
     const sd = SEDARIM[r];
     const sims = sd.simanim
-      .map((si) => `<div class="sim"><div class="simt">☞ ${si.lab[lang]}${si.bpe ? ' <span class="bpe">בורא פרי העץ</span>' : ""}</div><div class="simheb">${si.heb}</div><div class="simph">${si.phon}${si.trad && s.trad ? " — " + s.trad : ""}</div></div>`)
+      .map((si) => {
+        // Un intertitre ouvre chaque bénédiction, quand le rite en distingue.
+        const tete = si.section ? `<div class="ssect">${si.section[lang]}</div>` : "";
+        // L'hébreu quand la source lue le donne vocalisé ; sinon le sens, pour
+        // que la formule reste compréhensible sans nikoud inventé.
+        const corps = si.heb
+          ? `<div class="simheb">${si.heb}</div><div class="simph">${si.phon}${si.trad && s.trad ? " — " + s.trad : ""}</div>`
+          : `<div class="simph forte">${si.phon}</div>${si.sens ? `<div class="simsens">${si.sens[lang]}</div>` : ""}`;
+        return `${tete}<div class="sim"><div class="simt">☞ ${si.lab[lang]}${si.bpe ? ' <span class="bpe">בורא פרי העץ</span>' : ""}</div>${corps}</div>`;
+      })
       .join("\n");
     return `<div class="rbloc" data-rite="${r}"${r === RITE_DEFAUT ? "" : " hidden"}>
         <div class="regle r2">${sd.bandeau[lang]}</div>
-        <div class="intro">${s.introB1}
+        <div class="intro">${sd.intro ? sd.intro[lang] : s.introB1}
           <span class="hebin">בָּרוּךְ אַתָּה ה׳ אֱלֹקֵינוּ מֶלֶךְ הָעוֹלָם בּוֹרֵא פְּרִי הָעֵץ</span>
           <span class="ph">(Baroukh ata Ado-naï Élo-hénou mélekh haolam, boré peri haets)</span>${s.introB2}</div>
-        <div class="sims">${sims}</div>
+        <div class="sims sims-${r}">${sims}</div>
         <div class="minhag">${sd.note[lang]}</div>
       </div>`;
   };
@@ -326,6 +335,18 @@ ${altLinks(lang, "/miel")}
   .ph { font-style:italic; }
   .sims { width:100%; display:grid; grid-template-columns:1fr 1fr; gap:.2mm 4mm; margin-top:.6mm; text-align:left; }
   .simt { font-weight:700; font-size:2.8mm; color:var(--rouge); }
+  .ssect { grid-column:1 / -1; margin-top:1.2mm; font-weight:700; font-size:2.5mm; letter-spacing:.25mm;
+           color:var(--rouge); border-bottom:.2mm solid rgba(155,26,42,.4); padding-bottom:.5mm; }
+  .ssect:first-child { margin-top:0; }
+  .simph.forte { font-style:normal; color:#1a1a2e; }
+  .simsens { font-size:2.3mm; line-height:1.25; font-style:italic; color:#4a4a63; }
+  /* Onze simanim et trois intertitres : le rite tunisien demande un corps
+     plus serré pour tenir sur la même page A4 que les autres. */
+  .sims-tn { font-size:.78em; gap:0 4mm; line-height:1.14; }
+  .sims-tn .sim { margin-bottom:0; }
+  .sims-tn .simsens { font-size:2.05mm; line-height:1.18; }
+  .sims-tn .simph { line-height:1.2; }
+  .sims-tn .ssect { margin-top:.7mm; padding-bottom:.3mm; }
   .minhag { width:100%; margin-top:.8mm; font-size:2.4mm; line-height:1.25; font-style:italic; color:#3a3a52; border-top:.2mm solid rgba(26,26,46,.25); padding-top:.9mm; text-align:left; }
   [dir="rtl"] .minhag { direction:rtl; text-align:right; }
   .simt .bpe { color:#1a1a2e; font-weight:400; font-style:italic; font-family:"Frank Ruhl Libre", serif; }
