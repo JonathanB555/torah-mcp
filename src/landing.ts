@@ -146,7 +146,7 @@ ${GA}
   <h1>${s.h1}</h1>
   ${s.body.replace(/\{Q\}/g, href(lang, "/question"))}
   <p>${s.contact} <a href="https://github.com/JonathanB555/torah-mcp/issues" dir="ltr">github.com/JonathanB555/torah-mcp/issues</a></p>
-  <footer><a href="${href(lang, "/")}"><img src="/icon.png" alt="" style="width:26px;height:26px;border-radius:50%;vertical-align:-8px;margin-inline-end:.45rem">Mamash IA</a>${langSwitcher(lang, path)}</footer>
+  <footer><a href="${href(lang, "/")}"><img src="/icon.png" alt="" style="width:26px;height:26px;border-radius:50%;vertical-align:-8px;margin-inline-end:.45rem">Mamash IA</a>${langSwitcher(lang, path)}<p style="margin-top:.8rem;font-size:.88rem;opacity:.7">${colophon(lang)}</p></footer>
 </main>
 ${retourTab(lang, path)}
 </body>

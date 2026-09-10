@@ -58,9 +58,20 @@ export function t<T>(lang: Lang, v: { fr: T; en: T; he: T }): T {
 /** Attributs de la balise <html>. */
 export const htmlAttrs = (lang: Lang) => `lang="${lang}" dir="${dirOf(lang)}"`;
 
-/** Le colophon, signé dans la langue de la page. */
+/** Le colophon, signé dans la langue de la page, suivi de la dédicace.
+ *  Les trois noms sont écrits partout tels que Jonathan les a donnés — sur une
+ *  dédicace, on ne translittère pas de sa propre main. */
+/** Les trois noms, isolés en dir="ltr" : dans la page hébraïque, une suite
+ *  latine non isolée se réordonne au rendu bidirectionnel. */
+const NOMS = (liaison: string) =>
+  `<span dir="ltr">Myriam bat Hanina, Yaacov ben Julie${liaison} Yudi Sternfeld</span>`;
+
 export const colophon = (lang: Lang) =>
-  t(lang, { fr: "Un projet personnel de Jonathan Bensaid.", en: "A personal project by Jonathan Bensaid.", he: "נעשה בידי יונתן בן־סעיד." });
+  t(lang, {
+    fr: `Un projet personnel de Jonathan Bensaid, <em>à la mémoire de ${NOMS(" et")}</em>.`,
+    en: `A personal project by Jonathan Bensaid, <em>in memory of ${NOMS(" and")}</em>.`,
+    he: `נעשה בידי יונתן בן־סעיד, <em>לעילוי נשמת ${NOMS(",")}</em>.`,
+  });
 
 /** La saison des feuilles de miel : de maintenant à la fin des fêtes de Tichri
  * (Simhat Torah 5787 s'achève le 4 octobre 2026 au soir). Après, les entrées
