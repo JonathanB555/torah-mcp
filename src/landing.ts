@@ -1085,6 +1085,7 @@ type InstallStrings = {
   title: string; desc: string; back: string; h1: string; muted: string;
   lblA: string; step1: string; step2: string; step3: string;
   ccIntro: string; ccVerif: string; ccPiege: string; copier: string; copie: string;
+  vidLegende: string;
   lblC: string; pC: string; lblD: string; pD: string; lblE: string; pE: string;
   lblF: string; pF: string; srcCode: string; lblG: string; g1: string; g2: string; g3: string; home: string;
 };
@@ -1103,6 +1104,7 @@ const INSTALL_T: Record<Lang, InstallStrings> = {
     ccIntro: "Dans un terminal (pas dans la conversation Claude) :",
     ccVerif: `Vérifiez ensuite avec <code>claude mcp list</code> — la ligne doit se terminer par <strong>✔ Connected</strong>.`,
     ccPiege: `Le <code>https://</code> est indispensable : sans lui la commande est acceptée mais la connexion échoue.`,
+    vidLegende: "Trente secondes, les deux chemins, et les deux erreurs les plus fréquentes. Le son n'est pas nécessaire.",
     copier: "copier", copie: "copié",
     lblC: "Autres clients MCP",
     pC: `Tout client compatible (transport HTTP streamable) fonctionne avec la même URL. Le serveur expose 16 outils en lecture seule, 5 prompts (<code>hebrewbooks</code>, <code>havrouta</code>, <code>paracha</code>, <code>debutant</code>, <code>avance</code>) et une MCP App — le visualiseur de daf.`,
@@ -1132,6 +1134,7 @@ const INSTALL_T: Record<Lang, InstallStrings> = {
     ccIntro: "In a terminal (not in the Claude conversation):",
     ccVerif: `Then check with <code>claude mcp list</code> — the line must end with <strong>✔ Connected</strong>.`,
     ccPiege: `The <code>https://</code> is required: without it the command is accepted but the connection fails.`,
+    vidLegende: "Thirty seconds, both routes, and the two most common mistakes. Sound is not required.",
     copier: "copy", copie: "copied",
     lblC: "Other MCP clients",
     pC: `Any compatible client (streamable HTTP transport) works with the same URL. The server exposes 16 read-only tools, 5 prompts (<code>hebrewbooks</code>, <code>havrouta</code>, <code>paracha</code>, <code>debutant</code>, <code>avance</code>) and one MCP App — the daf viewer.`,
@@ -1157,6 +1160,7 @@ const INSTALL_T: Record<Lang, InstallStrings> = {
     ccIntro: "בטרמינל (לא בשיחה עם Claude):",
     ccVerif: `אחר כך בדקו עם <code>claude mcp list</code> — השורה צריכה להסתיים ב-<strong>✔ Connected</strong>.`,
     ccPiege: `ה-<code>https://</code> הכרחי: בלעדיו הפקודה מתקבלת אך החיבור נכשל.`,
+    vidLegende: "שלושים שניות, שתי הדרכים, ושתי הטעויות הנפוצות. אין צורך בקול.",
     copier: "העתקה", copie: "הועתק",
     lblA: "claude.ai",
     step1: `פתחו <a href="https://claude.ai/settings/connectors" dir="ltr">claude.ai → Settings → Connectors</a>`,
@@ -1232,6 +1236,12 @@ ${GA}
     padding:.42rem .62rem .46rem; transition:filter .2s; }
   .url .cop:hover { filter:brightness(1.08); }
   p.apres { margin-top:-.3rem; }
+  /* Le tutoriel : vertical, donc borné en hauteur, et jamais en lecture
+     automatique — c'est une explication, pas un décor. */
+  figure.demo { margin:1.8rem 0 2.4rem; display:flex; flex-direction:column; align-items:flex-start; gap:.7rem; }
+  figure.demo video { width:auto; max-width:min(100%,320px); max-height:70vh; height:auto; display:block;
+    border:1.5px solid var(--ink-15); background:var(--ink); }
+  figure.demo figcaption { font-size:.9rem; opacity:.75; max-width:32rem; }
   p.piege { background:#fff6d6; border-inline-start:3px solid var(--pop); padding:.6rem .9rem; margin-top:.9rem; font-size:.94rem; }
   .url::selection { background:var(--paper); color:var(--ink); }
   code { border-bottom:1px dotted var(--ink-40); font-family:ui-monospace, Menlo, monospace; font-size:.9em; direction:ltr; unicode-bidi:isolate; }
@@ -1245,6 +1255,11 @@ ${GA}
   <nav><a class="wm" href="${href(lang, "/")}" dir="ltr"><img src="/icon.png" alt="" width="34" height="34"><b>Mamash</b>&nbsp;IA</a><span class="r"><a class="b" href="${href(lang, "/")}">${s.back}</a>${langSwitcher(lang, path)}</span></nav>
   <h1>${s.h1}</h1>
   <p class="muted">${s.muted}</p>
+
+  <figure class="demo">
+    <video src="/installation.mp4" poster="/installation-poster.webp" controls playsinline preload="none" width="1080" height="1920"></video>
+    <figcaption>${s.vidLegende}</figcaption>
+  </figure>
 
   <div class="amud-head"><span class="ot">א</span><span class="rule"></span><span class="lbl">${s.lblA}</span></div>
   <ol>
