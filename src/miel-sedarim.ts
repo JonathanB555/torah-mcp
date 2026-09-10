@@ -89,6 +89,18 @@ const tnSim = (
   ...(section ? { section } : {}),
 });
 
+/** Un siman dont la source ne donne pas le texte vocalisé. Même traitement
+ *  que pour le sédèr de Tunis : phonétique et sens, sans nikoud inventé. */
+const simNu = (
+  fr: string, en: string, he: string,
+  phon: string, sensFr: string, sensEn: string, sensHe: string,
+): Siman => ({
+  lab: { fr, en, he },
+  heb: "",
+  phon: YRP(phon),
+  sens: { fr: sensFr, en: sensEn, he: sensHe },
+});
+
 export const SEDARIM: Record<Rite, Seder> = {
   // ---------------------------------------------------------------------
   // Le Choulhan Aroukh — l'ordre le plus répandu, celui de la feuille depuis
@@ -211,24 +223,44 @@ export const SEDARIM: Record<Rite, Seder> = {
       he: "ברכות ליל ראש השנה — סדר הסימנים כמנהג ג׳רבה",
     },
     source: {
-      fr: "Brit Kehouna, Orah Hayim, Roch Hachana § 12 — Rav Moché Khalfon HaCohen de Djerba (1874-1950), pages 209-210, lues sur hebrewbooks.org/8751",
-      en: "Brit Kehuna, Orach Chayim, Rosh Hashana § 12 — Rabbi Moshe Khalfon HaCohen of Djerba (1874-1950), pages 209-210, read on hebrewbooks.org/8751",
-      he: "ברית כהונה, אורח חיים, ראש השנה סי׳ יב — הרב משה כלפון הכהן מג׳רבה (1874-1950), עמ׳ 209-210, hebrewbooks.org/8751",
+      fr: "Brit Kehouna, Orah Hayim § 12, pages 209-210 · Rav Moché Khalfon HaCohen, Djerba 1941",
+      en: "Brit Kehuna, Orach Chayim § 12, pages 209-210 · Rabbi Moshe Khalfon HaCohen, Djerba 1941",
+      he: "ברית כהונה, אורח חיים סי׳ יב, עמ׳ 209-210 · הרב משה כלפון הכהן, ג׳רבה תש״א",
     },
     note: {
-      fr: "Chaque siman porte son nom judéo-arabe : la kra est la « kar'a », la roubia la « loubia », la silka le « salq », le karti le « karat ». S'il n'y a pas de pommes, on prend un autre fruit doux.",
-      en: "Each siman carries its Judeo-Arabic name: kra is “qar'a”, rubia is “lubia”, silka is “salq”, karti is “karat”. If no apples are to be had, another sweet fruit is taken.",
-      he: "כל סימן נושא את שמו הערבי־יהודי: הקרא ״קרעא״, הרוביא ״לוביא״, הסלקא ״סלק״, הכרתי ״כראת״. אם אין תפוחים, לוקחים פרי מתוק אחר.",
+      fr: "Chaque siman porte son nom judéo-arabe : kar'a, loubia, salq, karat. Rav Khalfon écrit qu'on n'est pas regardant sur leur ordre : on prend ce qui est prêt. Les trois derniers sont en phonétique, la source ne les vocalisant pas.",
+      en: "Each siman carries its Judeo-Arabic name: qar'a, lubia, salq, karat. Rav Khalfon writes that their order is not insisted upon: one takes what is ready. The last three are transliterated, the source not vocalising them.",
+      he: "כל סימן נושא שם ערבי־יהודי: קרעא, לוביא, סלק, כראת. הרב כלפון כותב ״ואין קפידא בסידורם״ — לוקחים מן המוכן. שלושת האחרונים בתעתיק, שהמקור אינו מנקד.",
+    },
+    intro: {
+      fr: "On trempe le pain du Motsi dans le sucre. Sur le premier fruit, on bénit",
+      en: "The Motzi bread is dipped in sugar. Over the first fruit, one says",
+      he: "טובלים את פרוסת המוציא בסוכר. על הפרי הראשון מברכים",
     },
     simanim: [
       sim("La courge — kra, « kar'a »", "The gourd — kra, “qar'a”", "הקרא (ובערבי קרעא)", Q.kra, { bpe: true, trad: true }),
-      sim("La tête de mouton — avec le souvenir de la ligature d'Its'hak", "The sheep's head — with the remembrance of the binding of Isaac", "ראש כבש — וזכר עקדת יצחק", Q.roch),
-      sim("La loubia — roubia, « et en arabe loubia »", "Black-eyed peas — rubia, “and in Arabic lubia”", "הרוביא (ובערבי לוביא)", Q.rubia),
+      sim("La tête de mouton — et le bélier d'Its'hak", "The sheep's head — and Isaac's ram", "ראש כבש — וזכר עקדת יצחק", Q.roch),
+      sim("La loubia — « en arabe, loubia »", "Black-eyed peas — “in Arabic, lubia”", "הרוביא (ובערבי לוביא)", Q.rubia),
       sim("La blette — silka, « salq »", "The chard — silka, “salq”", "הסלקא (ובערבי סלק)", Q.silka),
       sim("Le poireau — karti, « karat »", "The leek — karti, “karat”", "הכרתי (ובערבי כראת)", Q.karti),
       sim("La datte — tamar", "The date — tamar", "התמר", Q.tamar),
       sim("La grenade — rimone", "The pomegranate — rimon", "הרימון", Q.rimon),
-      sim("La pomme trempée dans le miel — « douce sur nous comme le miel »", "The apple dipped in honey — “sweet upon us as honey”", "תפוח מטובל בדבש", Q.annee),
+      sim("La pomme au miel — « douce comme le miel »", "The apple in honey — “sweet as honey”", "תפוח מטובל בדבש", Q.annee),
+      simNu("Le poumon", "The lung", "בשר הריאה",
+        "chétihyé chana zo kala alénou karéa",
+        "Que cette année soit légère sur nous comme le poumon.",
+        "May this year be light upon us as the lung.",
+        "שתהיה שנה זו קלה עלינו כריאה."),
+      simNu("Le cœur", "The heart", "בשר הלב",
+        "chétiftah libénou betora",
+        "Qu'Il ouvre notre cœur à la Torah.",
+        "May He open our heart to the Torah.",
+        "שתפתח לבנו בתורה."),
+      simNu("L'œuf", "The egg", "ביצה",
+        "chétihyé chana zo levana alénou kabétsa",
+        "Que cette année soit blanche sur nous comme l'œuf.",
+        "May this year be white upon us as the egg.",
+        "שתהיה שנה זו לבנה עלינו כביצה."),
     ],
   },
 

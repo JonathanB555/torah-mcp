@@ -342,11 +342,12 @@ ${altLinks(lang, "/miel")}
   .simsens { font-size:2.3mm; line-height:1.25; font-style:italic; color:#4a4a63; }
   /* Onze simanim et trois intertitres : le rite tunisien demande un corps
      plus serré pour tenir sur la même page A4 que les autres. */
-  .sims-tn { font-size:.78em; gap:0 4mm; line-height:1.14; }
-  .sims-tn .sim { margin-bottom:0; }
-  .sims-tn .simsens { font-size:2.05mm; line-height:1.18; }
-  .sims-tn .simph { line-height:1.2; }
-  .sims-tn .ssect { margin-top:.7mm; padding-bottom:.3mm; }
+  .sims-tn, .sims-djerba { font-size:.78em; gap:0 4mm; line-height:1.14; }
+  .sims-djerba { font-size:.745em; line-height:1.1; }
+  .sims-tn .sim, .sims-djerba .sim { margin-bottom:0; }
+  .sims-tn .simsens, .sims-djerba .simsens { font-size:2.05mm; line-height:1.18; }
+  .sims-tn .simph, .sims-djerba .simph { line-height:1.2; }
+  .sims-tn .ssect, .sims-djerba .ssect { margin-top:.7mm; padding-bottom:.3mm; }
   .minhag { width:100%; margin-top:.8mm; font-size:2.4mm; line-height:1.25; font-style:italic; color:#3a3a52; border-top:.2mm solid rgba(26,26,46,.25); padding-top:.9mm; text-align:left; }
   [dir="rtl"] .minhag { direction:rtl; text-align:right; }
   .simt .bpe { color:#1a1a2e; font-weight:400; font-style:italic; font-family:"Frank Ruhl Libre", serif; }
