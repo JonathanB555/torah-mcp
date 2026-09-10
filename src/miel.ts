@@ -245,11 +245,17 @@ ${altLinks(lang, "/miel")}
 </script>
 <link rel="icon" href="/icon.png">
 <link rel="stylesheet" href="/fonts/fonts-miel.css">
+<!-- Literata sert au texte autour de la feuille (titre, chapeau, formulaire).
+     La feuille elle-même n'utilise que les polices auto-hébergées ci-dessus :
+     html2canvas a besoin qu'elles soient de même origine pour rendre le PNG. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600;7..72,700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
   :root { --paper:#f7f6f1; --ink:#082a99; --pop:#ffd23f; --muted:#5a5a6e; --rouge:#b3232a; --encre:#23233d; }
   * { box-sizing:border-box; margin:0; }
-  body { background:var(--paper); color:var(--ink); font:16px/1.65 "Frank Ruhl Libre", Georgia, serif; }
+  body { background:var(--paper); color:var(--ink); font:16px/1.65 "Literata", "Frank Ruhl Libre", Georgia, serif; }
   /* ---- interface ---- */
   .ui { max-width:1200px; margin:0 auto; padding:1.2rem 4vw 2rem; }
   nav { display:flex; justify-content:space-between; align-items:center; padding:.4rem 0 1rem; }

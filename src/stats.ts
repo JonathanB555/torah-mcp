@@ -257,10 +257,10 @@ export async function pageStats(request: Request, env: Env): Promise<Response> {
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">
 <title>Statistiques — Mamash IA</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Frank+Ruhl+Libre:wght@400;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600;7..72,700&family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Frank+Ruhl+Libre:wght@400;700&display=swap');
   :root { --paper:#f7f6f1; --ink:#082a99; --ink-40:rgba(8,42,153,.4); --ink-15:rgba(8,42,153,.14); --muted:rgba(8,42,153,.65); --hl:#dbe3ff; }
   * { box-sizing:border-box; } html { scroll-behavior:auto; }
-  body { margin:0; background:var(--paper); color:var(--ink); font:16px/1.6 "Frank Ruhl Libre", Georgia, serif; padding:0 4vw 5rem; }
+  body { margin:0; background:var(--paper); color:var(--ink); font:16px/1.6 "Literata", "Frank Ruhl Libre", Georgia, serif; padding:0 4vw 5rem; }
   main { max-width:64rem; margin:0 auto; } a { color:var(--ink); }
   nav { display:flex; justify-content:space-between; align-items:baseline; padding:1.4rem 0; border-bottom:1px solid var(--ink-15); }
   nav .wm { font-family:"Fraunces", Georgia, serif; font-weight:300; text-decoration:none; } nav .wm b { font-weight:600; border-bottom:3px solid var(--ink); }

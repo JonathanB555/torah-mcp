@@ -513,7 +513,7 @@ export async function landingHtml(lang: Lang, env?: Env): Promise<string> {
 ${altLinks(lang, path)}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Frank+Ruhl+Libre:wght@300;400;700;900&family=Rubik:wght@900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600;7..72,700&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Frank+Ruhl+Libre:wght@300;400;700;900&family=Rubik:wght@900&display=swap" rel="stylesheet">
 <meta property="og:type" content="website">
 <meta property="og:title" content="${ogTitle[lang]}">
 <meta property="og:description" content="${ogDesc[lang]}">
@@ -528,7 +528,7 @@ ${GA}
   }
   * { box-sizing:border-box; margin:0; }
   html { scroll-behavior:smooth; overflow-x:clip; }
-  body { background:var(--paper); color:var(--ink); font:17px/1.7 "Frank Ruhl Libre", Georgia, serif; }
+  body { background:var(--paper); color:var(--ink); font:17px/1.7 "Literata", "Frank Ruhl Libre", Georgia, serif; }
   ::selection { background:var(--pop); color:var(--ink); }
   a { color:var(--ink); text-decoration-thickness:1px; text-underline-offset:3px; }
   a:hover { text-decoration-thickness:2px; }
@@ -1188,7 +1188,7 @@ export function installHtml(lang: Lang): string {
 ${altLinks(lang, path)}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Frank+Ruhl+Libre:wght@400;700&family=Rubik:wght@900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600;7..72,700&family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Frank+Ruhl+Libre:wght@400;700&family=Rubik:wght@900&display=swap" rel="stylesheet">
 <meta property="og:type" content="website">
 <meta property="og:title" content="${ogTitle[lang]}">
 <meta property="og:description" content="${ogDesc[lang]}">
@@ -1198,7 +1198,7 @@ ${GA}
 <style>
   :root { --paper:#f7f6f1; --ink:#082a99; --pop:#ffd23f; --ink-40:rgba(8,42,153,.4); --ink-15:rgba(8,42,153,.14); --ease:cubic-bezier(0.16,1,0.3,1); }
   * { box-sizing:border-box; margin:0; }
-  body { background:var(--paper); color:var(--ink); font:17px/1.7 "Frank Ruhl Libre", Georgia, serif; padding:0 4vw 5rem; }
+  body { background:var(--paper); color:var(--ink); font:17px/1.7 "Literata", "Frank Ruhl Libre", Georgia, serif; padding:0 4vw 5rem; }
   ::selection { background:var(--pop); color:var(--ink); }
   main { max-width:820px; margin:0 auto; }
   a { color:var(--ink); }

@@ -353,10 +353,10 @@ ${altLinks(lang, PATH)}
   gtag('config', 'G-NG6P5HPH9K');
 </script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Frank+Ruhl+Libre:wght@400;700&family=Rubik:wght@900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600;7..72,700&family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Frank+Ruhl+Libre:wght@400;700&family=Rubik:wght@900&display=swap');
   :root { --paper:#f7f6f1; --ink:#082a99; --pop:#ffd23f; --ink-40:rgba(8,42,153,.4); --ink-15:rgba(8,42,153,.14); --muted:rgba(8,42,153,.65); --hl:#ffeeb2; --ease:cubic-bezier(0.16,1,0.3,1); }
   * { box-sizing:border-box; margin:0; }
-  body { background:var(--paper); color:var(--ink); font:17px/1.7 "Frank Ruhl Libre", Georgia, serif; padding:0 4vw 5rem; }
+  body { background:var(--paper); color:var(--ink); font:17px/1.7 "Literata", "Frank Ruhl Libre", Georgia, serif; padding:0 4vw 5rem; }
   ::selection { background:var(--pop); color:var(--ink); }
   main { max-width:820px; margin:0 auto; }
   main { position:relative; }

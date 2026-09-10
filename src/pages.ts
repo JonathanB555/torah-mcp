@@ -22,10 +22,10 @@ const I18N_STYLE = `
 `;
 
 const STYLE = `
-  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Frank+Ruhl+Libre:wght@400;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600;7..72,700&family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Frank+Ruhl+Libre:wght@400;700&display=swap');
   :root { --ink:#082a99; --pop:#ffd23f; --muted:rgba(8,42,153,.65); --accent:#082a99; --paper:#f7f6f1; --card:#ffffff; --line:rgba(8,42,153,.14); }
   * { box-sizing:border-box; margin:0; }
-  body { font:17px/1.7 "Frank Ruhl Libre", Georgia, serif; color:var(--ink); background:var(--paper); padding:3rem 1.25rem 4rem; }
+  body { font:17px/1.7 "Literata", "Frank Ruhl Libre", Georgia, serif; color:var(--ink); background:var(--paper); padding:3rem 1.25rem 4rem; }
   ::selection { background:var(--pop); color:var(--ink); }
   main { max-width:680px; margin:0 auto; }
   h1 { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(2rem,4.5vw,3rem); line-height:1.08; letter-spacing:-.02em; margin-bottom:.5rem; }
@@ -434,8 +434,8 @@ ${altLinks(lang, path)}
 <style>
   :root { --paper:#f7f6f1; --card:#ffffff; --ink:#082a99; --pop:#ffd23f; --muted:rgba(8,42,153,.65); --line:rgba(8,42,153,.18); --accent:#082a99; --gold:rgba(8,42,153,.55); }
   * { box-sizing:border-box; margin:0; }
-  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Frank+Ruhl+Libre:wght@400;700&display=swap');
-  body { font:17px/1.7 "Frank Ruhl Libre", Georgia, serif; color:var(--ink); background:var(--paper); padding:0 1.25rem 4rem; }
+  @import url('https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600;7..72,700&family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Frank+Ruhl+Libre:wght@400;700&display=swap');
+  body { font:17px/1.7 "Literata", "Frank Ruhl Libre", Georgia, serif; color:var(--ink); background:var(--paper); padding:0 1.25rem 4rem; }
   ::selection { background:var(--pop); color:var(--ink); }
   main { max-width:760px; margin:0 auto; }
   h1 { font-family:"Fraunces", Georgia, serif; font-weight:300; font-size:clamp(2.2rem,5vw,3.4rem); letter-spacing:-.02em; margin:2.6rem 0 .3rem; }

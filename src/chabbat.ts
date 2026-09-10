@@ -265,6 +265,7 @@ const T = {
     gifErr: "GIF momentanément indisponible.",
     gifCredit: "GIF via Tenor.",
     colle: "Message copié — collez-le dans la conversation (Cmd+V ou Ctrl+V).",
+    ouvert: "WhatsApp Web s'ouvre avec le message déjà écrit — choisissez le destinataire. (Il est aussi copié : Cmd+V si besoin.)",
     vide: "Le premier message sera composé vendredi matin — revenez alors, ou recevez-le en installant Torah MCP dans Claude.",
     genere: "Composé le",
     nav: { question: "Une question", daf: "Le daf", outils: "Outils", install: "Installer le MCP" },
@@ -292,6 +293,7 @@ const T = {
     gifErr: "GIF temporarily unavailable.",
     gifCredit: "GIFs via Tenor.",
     colle: "Message copied — paste it into the conversation (Cmd+V or Ctrl+V).",
+    ouvert: "WhatsApp Web opens with the message already written — just pick the recipient. (It is copied too: Cmd+V if needed.)",
     vide: "The first message will be composed on Friday morning — come back then, or get it by installing Torah MCP in Claude.",
     genere: "Composed on",
     nav: { question: "Ask a question", daf: "The daf", outils: "Tools", install: "Install the MCP" },
@@ -319,6 +321,7 @@ const T = {
     gifErr: "הגיף אינו זמין כרגע.",
     gifCredit: "גיפים דרך Tenor.",
     colle: "ההודעה הועתקה — הדביקו אותה בשיחה (Cmd+V או Ctrl+V).",
+    ouvert: "וואטסאפ ווב נפתח וההודעה כבר כתובה — בחרו נמען. (היא גם הועתקה: Cmd+V במידת הצורך.)",
     vide: "המסר הראשון יחובר ביום שישי בבוקר — חזרו אז, או קבלו אותו בהתקנת Torah MCP ב-Claude.",
     genere: "חובר בתאריך",
     nav: { question: "שאלה", daf: "הדף", outils: "כלים", install: "התקנת ה-MCP" },
@@ -385,10 +388,10 @@ ${altLinks(lang, "/chabbat")}
   gtag('config', 'G-NG6P5HPH9K');
 </script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Frank+Ruhl+Libre:wght@400;700&family=Rubik:wght@900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600;7..72,700&family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Frank+Ruhl+Libre:wght@400;700&family=Rubik:wght@900&display=swap');
   :root { --paper:#f7f6f1; --ink:#082a99; --pop:#ffd23f; --ink-40:rgba(8,42,153,.4); --ink-15:rgba(8,42,153,.14); --muted:rgba(8,42,153,.65); --ease:cubic-bezier(0.16,1,0.3,1); }
   * { box-sizing:border-box; margin:0; }
-  body { background:var(--paper); color:var(--ink); font:17px/1.7 "Frank Ruhl Libre", Georgia, serif; padding:0 4vw 5rem; }
+  body { background:var(--paper); color:var(--ink); font:17px/1.7 "Literata", "Frank Ruhl Libre", Georgia, serif; padding:0 4vw 5rem; }
   ::selection { background:var(--pop); color:var(--ink); }
   main { max-width:720px; margin:0 auto; }
   main { position:relative; }
@@ -507,6 +510,11 @@ ${altLinks(lang, "/chabbat")}
 <script>
 (function () {
   var texte = ${JSON.stringify(texte)};
+  // Safari et Chrome sur Mac exposent navigator.share, mais la feuille de
+  // partage du système ne liste pas WhatsApp : le bouton semblait alors ne
+  // rien faire. On ne se fie donc pas à navigator.share seul — on exige un
+  // vrai appareil tactile (téléphone, tablette).
+  var surMobile = (navigator.maxTouchPoints || 0) > 1 && matchMedia("(pointer: coarse)").matches;
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
     document.querySelectorAll("video[autoplay]").forEach(function (v) { v.removeAttribute("autoplay"); v.pause(); });
   }
@@ -540,7 +548,7 @@ ${altLinks(lang, "/chabbat")}
       .then(function (r) { if (!r.ok) throw 0; return r.blob(); })
       .then(function (b) {
         var file = new File([b], "chabbat-chalom.gif", { type: "image/gif" });
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        if (surMobile && navigator.canShare && navigator.canShare({ files: [file] })) {
           var charge = texte ? { files: [file], text: texte } : { files: [file] };
           if (texte && !navigator.canShare(charge)) charge = { files: [file] };
           return navigator.share(charge).then(function () { if (texte) gifFeedback("${s.gifOk}"); }, function (er) { if (er && er.name === "AbortError") return; throw er; });
@@ -558,14 +566,19 @@ ${altLinks(lang, "/chabbat")}
   var msg = document.getElementById("msg"); if (!msg) return;
   document.getElementById("share").addEventListener("click", function (e) {
     e.preventDefault();
-    if (navigator.share) {
+    if (surMobile && navigator.share) {
       navigator.share({ text: texte }).catch(function (er) { if (er && er.name !== "AbortError") feedback("${s.copieErr}"); });
       return;
     }
-    copier(texte).then(function () {
-      feedback("${s.colle}");
-      window.open("https://web.whatsapp.com/", "_blank", "noopener");
-    }, function () { feedback("${s.copieErr}"); });
+    // Ordinateur : WhatsApp Web s'ouvre avec le message déjà rédigé, il ne
+    // reste qu'à choisir le destinataire. La copie reste faite en parallèle,
+    // au cas où la session WhatsApp Web demanderait d'abord le QR code.
+    // On ouvre d'abord (le geste de l'utilisateur est encore actif, sinon le
+    // navigateur bloque la fenêtre), et la copie n'est qu'un filet : si elle
+    // échoue, WhatsApp Web a quand même le message — on ne crie pas à l'erreur.
+    window.open("https://web.whatsapp.com/send?text=" + encodeURIComponent(texte), "_blank", "noopener");
+    feedback("${s.ouvert}");
+    copier(texte).catch(function () {});
   });
   document.getElementById("copy").addEventListener("click", function (e) {
     e.preventDefault();
