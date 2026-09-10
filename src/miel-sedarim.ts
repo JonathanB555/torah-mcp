@@ -30,7 +30,7 @@ const Q = {
   silka:   { h: "שֶׁיִּסְתַּלְּקוּ אוֹיְבֵינוּ וְשׂוֹנְאֵינוּ וְכָל מְבַקְשֵׁי רָעָתֵנוּ", p: "chéyistalkou oyevénou vésonénou vékhol mevakché raaténou" },
   roch:    { h: "שֶׁנִּהְיֶה לְרֹאשׁ וְלֹא לְזָנָב", p: "chénihyé leroch vélo lezanav" },
   daguim:  { h: "שֶׁנִּפְרֶה וְנִרְבֶּה כַּדָּגִים", p: "chénifré vénirbé kadaguim" },
-  // Le mahzor Koren abrège : « nos ennemis » sans la suite.
+  // Le mahzor Koren abrège : « nos ennemis » sans la suite.
   tamarK:  { h: "שֶׁיִּתַּמּוּ שׂוֹנְאֵינוּ", p: "chéyitamou sonénou" },
   rimonK:  { h: "שֶׁנַּרְבֶּה זְכֻיּוֹת כְּרִמּוֹן", p: "chénarbé zekhouyot kerimone" },
   rubiaK:  { h: "שֶׁיִּרְבּוּ זְכֻיּוֹתֵינוּ", p: "chéyirbou zekhouyoténou" },
@@ -47,7 +47,7 @@ export interface Siman {
   sens?: Record<Lang, string>;
   /** Intertitre ouvrant une bénédiction (bore peri haets, haadama, chéhakol). */
   section?: Record<Lang, string>;
-  /** Le fruit sur lequel on dit « bore peri haets ». */
+  /** Le fruit sur lequel on dit « bore peri haets ». */
   bpe?: boolean;
   /** Traduction française du yehi ratsone, imprimée sur le premier siman. */
   trad?: boolean;
@@ -129,7 +129,7 @@ export const SEDARIM: Record<Rite, Seder> = {
   // Le Ben Ich Haï — Bagdad, mais c'est le sédèr des communautés
   // arabophones, et son ordre n'a rien à voir avec le précédent : on
   // commence par la datte, la pomme vient à l'avant-dernier rang et cuite
-  // au sucre, et il écrit noir sur blanc qu'on ne dit pas « comme le miel ».
+  // au sucre, et il écrit noir sur blanc qu'on ne dit pas « comme le miel ».
   // ---------------------------------------------------------------------
   bih: {
     nom: { fr: "Ben Ich Haï — usage séfarade arabophone", en: "Ben Ish Hai — Arabic-speaking Sephardi", he: "בן איש חי — מנהג הספרדים דוברי הערבית" },
@@ -144,18 +144,18 @@ export const SEDARIM: Record<Rite, Seder> = {
       he: "מקורות שנקראו בספריא: הוריות יב ע״א (אביי) · בן איש חי, הלכות שנה א, נצבים ד",
     },
     note: {
-      fr: "Le Ben Ich Haï écrit que la roubia est ce qu'on appelle loubia en arabe, et qu'on dit sur la pomme « une année bonne et douce » sans ajouter « comme le miel ».",
+      fr: "Le Ben Ich Haï écrit que la roubia est ce qu'on appelle loubia en arabe, et qu'on dit sur la pomme « une année bonne et douce » sans ajouter « comme le miel ».",
       en: "The Ben Ish Hai writes that rubia is what is called lubia in Arabic, and that over the apple one says “a good and sweet year” without adding “like honey”.",
       he: "הבן איש חי כותב שהרוביא היא מה שקוראים בערבית לוביא, ושעל התפוח אומרים ״שנה טובה ומתוקה״ בלי ״כדבש״.",
     },
     simanim: [
       sim("La datte — tamar (on en mange une, puis on dit la formule sur la seconde)", "The date — tamar (eat one, then say the formula over the second)", "התמר (אוכלים אחת, ואומרים על השנייה)", Q.tamar, { bpe: true, trad: true }),
-      sim("La loubia — roubia « ce qu'on appelle loubia en arabe »", "Black-eyed peas — rubia, “what we call lubia in Arabic”", "הרוביא — ״מה שקורין בלשון ערבי לוביא״", Q.rubiaAr),
+      sim("La loubia — roubia « ce qu'on appelle loubia en arabe »", "Black-eyed peas — rubia, “what we call lubia in Arabic”", "הרוביא — ״מה שקורין בלשון ערבי לוביא״", Q.rubiaAr),
       sim("Le poireau — karti", "The leek — karti", "הכרתי", Q.karti),
       sim("La blette — silka", "The chard — silka", "הסלקא", Q.silka),
       sim("La courge — kra", "The gourd — kra", "הקרא (דלעת)", Q.kra),
       sim("La grenade douce — rimone", "The sweet pomegranate — rimon", "הרימון המתוק", Q.rimon),
-      sim("La pomme cuite au sucre (sans dire « comme le miel »)", "The apple cooked in sugar (without saying “like honey”)", "התפוח המבושל בסוכר (בלי ״כדבש״)", Q.annee),
+      sim("La pomme cuite au sucre (sans dire « comme le miel »)", "The apple cooked in sugar (without saying “like honey”)", "התפוח המבושל בסוכר (בלי ״כדבש״)", Q.annee),
       sim("La tête d'agneau — on ajoute le souvenir de la ligature d'Its'hak", "The lamb's head — one adds the remembrance of the binding of Isaac", "ראש כבש — ומוסיפים זכר עקדת יצחק", Q.roch),
     ],
   },
@@ -164,7 +164,7 @@ export const SEDARIM: Record<Rite, Seder> = {
   // ---------------------------------------------------------------------
   // Le rite achkénaze, tel que le donne le mahzor Koren — les formules y
   // sont plus courtes qu'en séfarade, et le mahzor glose la roubia par
-  // « חילבה », le fenugrec, comme le Choulhan Aroukh.
+  // « חילבה », le fenugrec, comme le Choulhan Aroukh.
   // ---------------------------------------------------------------------
   ash: {
     nom: { fr: "Achkénaze — mahzor Koren", en: "Ashkenaz — Koren mahzor", he: "אשכנז — מחזור קורן" },
@@ -179,7 +179,7 @@ export const SEDARIM: Record<Rite, Seder> = {
       he: "מקורות שנקראו בספריא: הוריות יב ע״א (אביי) · מחזור קורן לראש השנה, נוסח אשכנז",
     },
     note: {
-      fr: "Le mahzor précise que la berakha « bore peri haadama » se dit sur la roubia, qu'il glose « חילבה » — le fenugrec, comme le Choulhan Aroukh.",
+      fr: "Le mahzor précise que la berakha « bore peri haadama » se dit sur la roubia, qu'il glose « חילבה » — le fenugrec, comme le Choulhan Aroukh.",
       en: "The mahzor places “borei peri ha'adama” over the rubia, which it glosses “חילבה”, fenugreek, as the Shulchan Arukh does.",
       he: "המחזור קובע ״בורא פרי האדמה״ על הרוביא, שאותה הוא מגלה ״חילבה״ — תלתן, כדעת השולחן ערוך.",
     },
@@ -201,7 +201,7 @@ export const SEDARIM: Record<Rite, Seder> = {
   // par la recherche plein texte, pages 209 et 210. Son sédèr suit l'ordre
   // du Choulhan Aroukh, mais chaque siman porte son nom judéo-arabe, et il
   // ouvre par la courge et non par la pomme. C'est lui qui écrit, pour un
-  // lecteur tunisien, « roubia, et en arabe loubia ».
+  // lecteur tunisien, « roubia, et en arabe loubia ».
   // ---------------------------------------------------------------------
   djerba: {
     nom: { fr: "Djerba — Brit Kehouna", en: "Djerba — Brit Kehuna", he: "ג׳רבה — ברית כהונה" },
@@ -216,19 +216,19 @@ export const SEDARIM: Record<Rite, Seder> = {
       he: "ברית כהונה, אורח חיים, ראש השנה סי׳ יב — הרב משה כלפון הכהן מג׳רבה (1874-1950), עמ׳ 209-210, hebrewbooks.org/8751",
     },
     note: {
-      fr: "Chaque siman porte son nom judéo-arabe : la kra est la « kar'a », la roubia la « loubia », la silka le « salq », le karti le « karat ». S'il n'y a pas de pommes, on prend un autre fruit doux.",
+      fr: "Chaque siman porte son nom judéo-arabe : la kra est la « kar'a », la roubia la « loubia », la silka le « salq », le karti le « karat ». S'il n'y a pas de pommes, on prend un autre fruit doux.",
       en: "Each siman carries its Judeo-Arabic name: kra is “qar'a”, rubia is “lubia”, silka is “salq”, karti is “karat”. If no apples are to be had, another sweet fruit is taken.",
       he: "כל סימן נושא את שמו הערבי־יהודי: הקרא ״קרעא״, הרוביא ״לוביא״, הסלקא ״סלק״, הכרתי ״כראת״. אם אין תפוחים, לוקחים פרי מתוק אחר.",
     },
     simanim: [
-      sim("La courge — kra, « kar'a »", "The gourd — kra, “qar'a”", "הקרא (ובערבי קרעא)", Q.kra, { bpe: true, trad: true }),
+      sim("La courge — kra, « kar'a »", "The gourd — kra, “qar'a”", "הקרא (ובערבי קרעא)", Q.kra, { bpe: true, trad: true }),
       sim("La tête de mouton — avec le souvenir de la ligature d'Its'hak", "The sheep's head — with the remembrance of the binding of Isaac", "ראש כבש — וזכר עקדת יצחק", Q.roch),
-      sim("La loubia — roubia, « et en arabe loubia »", "Black-eyed peas — rubia, “and in Arabic lubia”", "הרוביא (ובערבי לוביא)", Q.rubia),
-      sim("La blette — silka, « salq »", "The chard — silka, “salq”", "הסלקא (ובערבי סלק)", Q.silka),
-      sim("Le poireau — karti, « karat »", "The leek — karti, “karat”", "הכרתי (ובערבי כראת)", Q.karti),
+      sim("La loubia — roubia, « et en arabe loubia »", "Black-eyed peas — rubia, “and in Arabic lubia”", "הרוביא (ובערבי לוביא)", Q.rubia),
+      sim("La blette — silka, « salq »", "The chard — silka, “salq”", "הסלקא (ובערבי סלק)", Q.silka),
+      sim("Le poireau — karti, « karat »", "The leek — karti, “karat”", "הכרתי (ובערבי כראת)", Q.karti),
       sim("La datte — tamar", "The date — tamar", "התמר", Q.tamar),
       sim("La grenade — rimone", "The pomegranate — rimon", "הרימון", Q.rimon),
-      sim("La pomme trempée dans le miel — « douce sur nous comme le miel »", "The apple dipped in honey — “sweet upon us as honey”", "תפוח מטובל בדבש", Q.annee),
+      sim("La pomme trempée dans le miel — « douce sur nous comme le miel »", "The apple dipped in honey — “sweet upon us as honey”", "תפוח מטובל בדבש", Q.annee),
     ],
   },
 
@@ -236,10 +236,10 @@ export const SEDARIM: Record<Rite, Seder> = {
   // La Tunisie. Rien à voir avec les deux précédents : le sédèr n'est pas une
   // liste plate mais trois séries, une par bénédiction — fruits de l'arbre,
   // fruits de la terre, puis chéhakol. La figue ouvre, le sésame et l'ail en
-  // sont, la pomme est douce « comme la pomme » et non « comme le miel »,
+  // sont, la pomme est douce « comme la pomme » et non « comme le miel »,
   // lequel a sa propre place et sa propre formule.
   //
-  // Transcrit depuis « La page de miel — sédèr de Roch Hachana » (harissa.com,
+  // Transcrit depuis « La page de miel — sédèr de Roch Hachana » (harissa.com,
   // recueil des coutumes des Juifs de Tunisie), lue en entier. Ce document
   // donne la phonétique française et non l'hébreu vocalisé : les formules sont
   // donc imprimées telles qu'elles se disent, sans hébreu — plutôt qu'avec un
@@ -253,7 +253,7 @@ export const SEDARIM: Record<Rite, Seder> = {
       he: "ברכות ליל ראש השנה — סדר הסימנים כמנהג תוניסיה",
     },
     source: {
-      fr: "Sédèr de Tunis · feuille imprimée « Séder pour les deux soirées » et « La page de miel », concordantes · à Djerba, le Brit Kehouna suit l'ordre du Choulhan Aroukh",
+      fr: "Sédèr de Tunis · feuille imprimée « Séder pour les deux soirées » et « La page de miel », concordantes · à Djerba, le Brit Kehouna suit l'ordre du Choulhan Aroukh",
       en: "Tunis seder · printed sheet “Séder pour les deux soirées” and “La page de miel”, in agreement · in Djerba, Brit Kehuna follows the Shulchan Arukh order",
       he: "סדר תוניס · דף מודפס ״Séder pour les deux soirées״ ו״La page de miel״, תואמים · בג׳רבה, ברית כהונה הולך אחר סדר השולחן ערוך",
     },
@@ -281,7 +281,7 @@ export const SEDARIM: Record<Rite, Seder> = {
         "שירבו זכיותינו כרימון."),
       tnSim("La pomme", "The apple", "התפוח",
         "chetehé chana zo habaa alénou tova oumetouka katapouah",
-        "Une année bonne et douce comme la pomme, et non « comme le miel ».",
+        "Une année bonne et douce comme la pomme, et non « comme le miel ».",
         "A good and sweet year, as the apple, not “as honey”.",
         "שתהא השנה הזאת טובה ומתוקה כתפוח."),
       tnSim("Les graines de sésame", "Sesame seeds", "השומשום",
@@ -323,7 +323,7 @@ export const SEDARIM: Record<Rite, Seder> = {
         "שנהיה לראש ולא לזנב, ותזכור לנו אילו של יצחק אבינו עליו השלום."),
       tnSim("Le poisson", "The fish", "הדגים",
         "chénifré vénirbé kadaguim",
-        "Féconds comme les poissons. Certains ajoutent « vétichgah alénou beéna pekiha ».",
+        "Féconds comme les poissons. Certains ajoutent « vétichgah alénou beéna pekiha ».",
         "Fruitful as fish. Some add “vetishgah alenu be-eina pekiha”.",
         "שנפרה ונרבה כדגים."),
     ],

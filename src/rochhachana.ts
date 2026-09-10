@@ -24,16 +24,22 @@ const S = {
     talmudTitre: "D'où cela vient",
     talmudIntro: "Abayé, dans le Talmud, à propos des signes qu'on prend au sérieux :",
     talmudHeb: "לְעוֹלָם יְהֵא רָגִיל לְמִיחְזֵי בְּרֵישׁ שַׁתָּא קָרָא וְרוּבְּיָא, כַּרָּתֵי וְסִילְקָא וְתַמְרֵי",
-    talmudFr: "« Qu'on prenne toujours l'habitude de voir, à la tête de l'année, la courge et la roubia, le poireau, la blette et les dattes. »",
+    talmudFr: "« Qu'on prenne toujours l'habitude de voir, à la tête de l'année, la courge et la roubia, le poireau, la blette et les dattes. »",
     talmudRef: "Talmud, Horayot 12a — lu sur Sefaria",
     compTitre: "Choisissez un rite",
     compAide: "Les aliments se replacent dans l'ordre où ce rite les mange. Ce qui n'en fait pas partie s'efface.",
     compOrdre: "Dans cet ordre",
     fichesTitre: "Chaque siman, et ce qu'il fait entendre",
     dossierTitre: "La roubia : fenugrec ou loubia ?",
-    dossierP1: "C'est la question qui revient le plus souvent, et les textes ne disent pas tous la même chose. Le Choulhan Aroukh écrit « roubia, c'est-à-dire tiltan » — le fenugrec — et Rachi dit de même sur Horayot 12a. Le mahzor Koren le glose « חילבה », qui est le même mot.",
-    dossierP2: "Mais les autorités qui écrivent en pays arabophone lisent autrement. Le Ben Ich Haï, à Bagdad, écrit que la roubia est « ce qu'on appelle loubia en arabe ». Rav Moché Khalfon HaCohen, à Djerba, écrit exactement pareil : « et en arabe, loubia ». Pour une famille tunisienne, la réponse est donc la loubia, et elle vient d'un décisionnaire tunisien.",
+    dossierP1: "C'est la question qui revient le plus souvent, et les textes ne disent pas tous la même chose. Le Choulhan Aroukh écrit « roubia, c'est-à-dire tiltan » — le fenugrec — et Rachi dit de même sur Horayot 12a. Le mahzor Koren le glose « חילבה », qui est le même mot.",
+    dossierP2: "Mais les autorités qui écrivent en pays arabophone lisent autrement. Le Ben Ich Haï, à Bagdad, écrit que la roubia est « ce qu'on appelle loubia en arabe ». Rav Moché Khalfon HaCohen, à Djerba, écrit exactement pareil : « et en arabe, loubia ». Pour une famille tunisienne, la réponse est donc la loubia, et elle vient d'un décisionnaire tunisien.",
     dossierP3: "Les deux lectures sont anciennes et défendues. Ce n'est pas une erreur d'un côté ou de l'autre, c'est le mot roubia qui porte les deux.",
+    citTitre: "Rav Moché Khalfon HaCohen, Djerba",
+    citHeb: "וכן רוביא (ובערבי לוביא) ואומרים יה״ר וגו׳ שירבו זכיותינו",
+    citTrad: "« Et de même la roubia — et en arabe, loubia — et l'on dit : que se multiplient nos mérites. »",
+    citRef: "Brit Kehouna, Orah Hayim, Roch Hachana § 12, page 209",
+    citVoir: "voir le fac-similé",
+    citNote: "Transcrit depuis la reconnaissance optique de la page, dont l'orthographe est imparfaite ; le fac-similé fait foi. C'est un décisionnaire tunisien qui écrit ici, pour des lecteurs tunisiens, que la roubia du Talmud est la loubia.",
     sourcesTitre: "Les sources, rite par rite",
     imprimer: "Imprimer votre feuille",
     imprimerP: "Le générateur reprend ces mêmes sédarim, avec les horaires de votre ville et le prénom de chaque convive.",
@@ -58,6 +64,12 @@ const S = {
     dossierP1: "This is the question that comes up most, and the texts do not all say the same thing. The Shulchan Arukh writes “rubia, that is tiltan” — fenugreek — and Rashi says the same on Horayot 12a. The Koren mahzor glosses it “חילבה”, the same word.",
     dossierP2: "But the authorities writing in Arabic-speaking lands read it otherwise. The Ben Ish Hai, in Baghdad, writes that rubia is “what we call lubia in Arabic”. Rabbi Moshe Khalfon HaCohen, in Djerba, writes exactly the same: “and in Arabic, lubia”. For a Tunisian family the answer is therefore lubia, and it comes from a Tunisian authority.",
     dossierP3: "Both readings are old and defensible. It is not a mistake on either side; the word rubia carries both.",
+    citTitre: "Rabbi Moshe Khalfon HaCohen, Djerba",
+    citHeb: "וכן רוביא (ובערבי לוביא) ואומרים יה״ר וגו׳ שירבו זכיותינו",
+    citTrad: "“And likewise the rubia — and in Arabic, lubia — and one says: may our merits multiply.”",
+    citRef: "Brit Kehuna, Orach Chayim, Rosh Hashana § 12, page 209",
+    citVoir: "see the facsimile",
+    citNote: "Transcribed from the optical recognition of the page, whose spelling is imperfect; the facsimile is authoritative. It is a Tunisian authority writing here, for Tunisian readers, that the Talmud's rubia is the lubia.",
     sourcesTitre: "The sources, rite by rite",
     imprimer: "Print your own sheet",
     imprimerP: "The generator uses these same sedarim, with your city's times and each guest's name.",
@@ -82,6 +94,12 @@ const S = {
     dossierP1: "זו השאלה החוזרת, והמקורות אינם אומרים דבר אחד. השולחן ערוך כותב ״רוביא דהיינו תלתן״, וכן רש״י בהוריות יב ע״א. מחזור קורן מגלה ״חילבה״, אותה מילה.",
     dossierP2: "אך הפוסקים שכתבו בארצות דוברות ערבית קראו אחרת. הבן איש חי בבגדאד כותב שהרוביא היא ״מה שקורין בלשון ערבי לוביא״. הרב משה כלפון הכהן בג׳רבה כותב בדיוק כך: ״ובערבי לוביא״. למשפחה תוניסאית, אם כן, התשובה היא לוביא — מפי פוסק תוניסאי.",
     dossierP3: "שתי הקריאות עתיקות ומיוסדות. אין כאן טעות מצד אחד; המילה רוביא נושאת את שתיהן.",
+    citTitre: "הרב משה כלפון הכהן, ג׳רבה",
+    citHeb: "וכן רוביא (ובערבי לוביא) ואומרים יה״ר וגו׳ שירבו זכיותינו",
+    citTrad: "",
+    citRef: "ברית כהונה, אורח חיים, ראש השנה סי׳ יב, עמ׳ 209",
+    citVoir: "לצפייה בדף הסרוק",
+    citNote: "הועתק מזיהוי אופטי של הדף, שכתיבו אינו מדויק; הדף הסרוק הוא הקובע. פוסק תוניסאי כותב כאן, לקוראים תוניסאים, שהרוביא שבתלמוד היא הלוביא.",
     sourcesTitre: "המקורות, מנהג אחר מנהג",
     imprimer: "להדפיס את הדף שלכם",
     imprimerP: "המחולל משתמש באותם סדרים, עם זמני העיר שלכם ושם כל מסובה.",
@@ -141,7 +159,7 @@ export function rochHachanaHtml(lang: Lang): string {
   ).join("\n");
 
   const sources = RITES.map(
-    (r) => `<div class="src rv"><h3>${SEDARIM[r].nom[lang]}</h3><p class="ref">${SEDARIM[r].source[lang]}</p><p class="nt">${SEDARIM[r].note[lang]}</p></div>`
+    (r) => `<div class="src rv"><img src="/rites/${r}.webp" alt="" width="720" height="480" loading="lazy" decoding="async"><h3>${SEDARIM[r].nom[lang]}</h3><p class="ref">${SEDARIM[r].source[lang]}</p><p class="nt">${SEDARIM[r].note[lang]}</p></div>`
   ).join("\n");
 
   return `<!doctype html>
@@ -225,9 +243,19 @@ ${altLinks(lang, PATH)}
   .dossier .duo img { border:1.5px solid rgba(255,255,255,.28); background:var(--paper); }
   .dossier .duo figcaption { margin-top:.5rem; font-family:"Rubik",sans-serif; font-weight:900; font-size:.66rem; letter-spacing:.14em; text-transform:uppercase; color:var(--pop); }
 
+  /* --- la citation, dans le texte de l'auteur --- */
+  .citation blockquote { border-inline-start:5px solid var(--pop); padding:.4rem 0 .4rem 1.4rem; margin:1.4rem 0 1rem; }
+  [dir="rtl"] .citation blockquote { padding:.4rem 1.4rem .4rem 0; }
+  .citation .heb { font-family:"Frank Ruhl Libre",serif; font-size:clamp(1.25rem,2.6vw,1.9rem); line-height:1.7; }
+  .citation .tr { margin-top:.9rem; font-family:"Fraunces",Georgia,serif; font-weight:300; font-size:clamp(1.05rem,1.9vw,1.35rem); line-height:1.35; max-width:32em; }
+  [dir="rtl"] .citation .tr { font-family:"Frank Ruhl Libre",Georgia,serif; }
+  .citation .ref { font-size:.88rem; }
+  .citation .nt { margin-top:.7rem; font-size:.85rem; color:var(--muted); max-width:40em; }
+
   /* --- les sources --- */
   .srcs { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr)); gap:1.5rem; margin-top:1.8rem; }
   .src { border-top:2px solid var(--ink); padding-top:.9rem; }
+  .src img { width:100%; height:auto; border:1.5px solid var(--line); background:#fff; margin-bottom:.9rem; }
   .src h3 { font-family:"Fraunces",Georgia,serif; font-weight:600; font-size:1.1rem; }
   .src .ref { margin-top:.5rem; font-size:.88rem; }
   .src .nt { margin-top:.6rem; font-size:.86rem; color:var(--muted); }
@@ -285,6 +313,16 @@ ${altLinks(lang, PATH)}
       <figure><img src="/simanim/fenugrec.webp" alt="" width="440" height="440" loading="lazy"><figcaption>תלתן · ${lang === "he" ? "תלתן" : lang === "en" ? "fenugreek" : "fenugrec"}</figcaption></figure>
       <figure><img src="/simanim/loubia.webp" alt="" width="440" height="440" loading="lazy"><figcaption>לוביא · ${lang === "he" ? "לוביא" : lang === "en" ? "black-eyed peas" : "loubia"}</figcaption></figure>
     </div>
+  </section>
+
+  <section class="citation rv">
+    <p class="kicker">${s.citTitre}</p>
+    <blockquote>
+      <p class="heb" dir="rtl">${s.citHeb}</p>
+      <p class="tr">${s.citTrad}</p>
+    </blockquote>
+    <p class="ref">${s.citRef} · <a href="https://hebrewbooks.org/pdfpager.aspx?req=8751&amp;pgnum=209" rel="noopener">${s.citVoir}</a></p>
+    <p class="nt">${s.citNote}</p>
   </section>
 
   <section>
