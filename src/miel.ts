@@ -301,17 +301,17 @@ ${altLinks(lang, "/miel")}
            padding:4.5mm 8mm 4mm; display:flex; flex-direction:column; align-items:center; text-align:center; }
   .bande { width:100%; display:flex; justify-content:space-between; font-size:2.9mm; font-weight:700; letter-spacing:.3mm; }
   .bande .bh { font-family:"Frank Ruhl Libre", serif; }
-  .titre { font-family:"Monoton", cursive; font-size:12mm; line-height:1.12; color:var(--encre); margin-top:3mm; letter-spacing:.5mm; }
-  .ligne-annee { display:flex; align-items:center; gap:5mm; margin-top:2.4mm; }
+  .titre { font-family:"Monoton", cursive; font-size:12mm; line-height:1.12; color:var(--encre); margin-top:2.5mm; letter-spacing:.5mm; }
+  .ligne-annee { display:flex; align-items:center; gap:5mm; margin-top:2mm; }
   .sceau { width:11mm; height:11mm; border-radius:50%; }
   .annee { font-family:"Playfair Display", serif; font-weight:900; font-style:italic; font-size:5.8mm; color:var(--rouge); }
   .main { font-size:7mm; }
-  .rouge1 { font-family:"Playfair Display", serif; font-weight:900; font-size:5.8mm; color:var(--rouge); margin-top:2mm; }
+  .rouge1 { font-family:"Playfair Display", serif; font-weight:900; font-size:5.8mm; color:var(--rouge); margin-top:1.7mm; }
   .rouge2 { font-family:"Playfair Display", serif; font-weight:900; font-size:7.4mm; color:var(--rouge); letter-spacing:1.6mm; }
   .regle { width:100%; border-top:.5mm solid var(--rouge); border-bottom:.5mm solid var(--rouge); color:var(--rouge);
-           font-weight:700; font-size:3.3mm; letter-spacing:.35mm; padding:1.1mm 0; margin-top:1.8mm; }
+           font-weight:700; font-size:3.3mm; letter-spacing:.35mm; padding:1.1mm 0; margin-top:1.5mm; }
   .regle.r2 { margin-top:2.4mm; font-size:2.95mm; letter-spacing:.22mm; }
-  .dates { width:100%; border-collapse:collapse; margin-top:1.8mm; }
+  .dates { width:100%; border-collapse:collapse; margin-top:1.5mm; }
   .dates td { font-size:2.8mm; padding:.2mm 0; vertical-align:baseline; text-align:left; }
   .dates .f { font-weight:700; white-space:nowrap; }
   .dates .f i { font-weight:400; font-style:italic; font-size:2.7mm; }
@@ -353,6 +353,16 @@ ${altLinks(lang, "/miel")}
   .simt .bpe { color:#1a1a2e; font-weight:400; font-style:italic; font-family:"Frank Ruhl Libre", serif; }
   .simheb { font-family:"Frank Ruhl Libre", serif; font-weight:700; font-size:3.2mm; direction:rtl; text-align:right; line-height:1.3; }
   .simph { font-size:2.3mm; font-style:italic; line-height:1.2; opacity:.9; }
+  /* Le rythme vertical : il tient à quelques millimètres de marge, et c'est là
+     que se joue le tenir-sur-une-page. Les rites à onze simanim en reprennent
+     un peu plus, faute de quoi le pied déborde du filet à l'impression. */
+  .cadre[data-rite="tn"] .titre, .cadre[data-rite="djerba"] .titre { margin-top:2mm; font-size:11mm; }
+  .cadre[data-rite="tn"] .ligne-annee, .cadre[data-rite="djerba"] .ligne-annee { margin-top:1.6mm; }
+  .cadre[data-rite="tn"] .rouge1, .cadre[data-rite="djerba"] .rouge1 { margin-top:1.3mm; }
+  .cadre[data-rite="tn"] .regle, .cadre[data-rite="djerba"] .regle { margin-top:1.2mm; padding:.7mm 0; }
+  .cadre[data-rite="tn"] .dates, .cadre[data-rite="djerba"] .dates { margin-top:1.2mm; }
+  .cadre[data-rite="tn"] .dates td, .cadre[data-rite="djerba"] .dates td { padding:0; }
+  .cadre[data-rite="tn"] .nomrow, .cadre[data-rite="djerba"] .nomrow { margin-top:1.2mm; }
   .pied { width:100%; margin-top:auto; display:flex; justify-content:space-between; align-items:baseline;
           border-top:.3mm solid var(--encre); padding-top:1.4mm; font-size:2.6mm; }
   .pied .pm { font-size:2.9mm; font-weight:700; }
@@ -362,11 +372,12 @@ ${altLinks(lang, "/miel")}
   @media print {
     @page { size: A4; margin: 0; }
     body { background:none; }
-    nav, h1, p.chapeau, form, footer.site { display:none !important; }
+    nav, .entete, form, footer.site { display:none !important; }
     .ui { padding:0; max-width:none; margin:0; }
     .atelier { display:block; margin:0; gap:0; }
     .cadre-apercu { border:none; background:none; overflow:visible; height:auto !important; }
     .apercu { transform:none !important; }
+
   }
 </style>
 </head>
@@ -472,6 +483,8 @@ ${altLinks(lang, "/miel")}
     document.querySelectorAll(".rbloc, .rsrc").forEach(function (el) {
       el.hidden = el.getAttribute("data-rite") !== r;
     });
+    var cadre = document.querySelector(".cadre");
+    if (cadre) cadre.setAttribute("data-rite", r);
   }
   if (rite) { rite.addEventListener("change", majRite); majRite(); }
 
