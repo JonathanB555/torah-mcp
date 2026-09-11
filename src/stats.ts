@@ -200,6 +200,55 @@ export async function journaliserFeuille(
   }
 }
 
+/** Un appel du connecteur MCP. On enregistre ce qui a été fait, jamais ce qui
+ *  a été demandé : le nom de l'outil et rien du contenu. L'écriture ne doit
+ *  jamais ralentir ni faire échouer la réponse au client. */
+export async function journaliserAppel(
+  env: Env,
+  e: { outil: string; pays: string | null; ms: number; ok: boolean }
+): Promise<void> {
+  if (!env.STATS_DB) return;
+  try {
+    await env.STATS_DB.prepare(
+      `INSERT INTO appels (ts, outil, pays, ms, ok) VALUES (?1, ?2, ?3, ?4, ?5)`
+    )
+      .bind(new Date().toISOString(), String(e.outil).slice(0, 60), e.pays, Math.round(e.ms), e.ok ? 1 : 0)
+      .run();
+  } catch {
+    // le journal ne doit jamais gêner le connecteur
+  }
+}
+
+/** Les chiffres du connecteur, pour la page /stats. */
+export async function chiffresAppels(env: Env): Promise<{
+  total: number; j7: number; j1: number;
+  outils: { k: string; n: number }[];
+  pays: { k: string; n: number }[];
+  jours: { k: string; n: number }[];
+  lents: { k: string; n: number }[];
+} | null> {
+  if (!env.STATS_DB) return null;
+  const iso = (ms: number) => new Date(Date.now() - ms).toISOString();
+  const un = async (sql: string, ...b: any[]) =>
+    ((await env.STATS_DB!.prepare(sql).bind(...b).first<{ n: number }>())?.n ?? 0);
+  const liste = async (sql: string, ...b: any[]) =>
+    (((await env.STATS_DB!.prepare(sql).bind(...b).all()).results as any[]) ?? []) as { k: string; n: number }[];
+  try {
+    const [total, j7, j1, outils, pays, jours, lents] = await Promise.all([
+      un(`SELECT COUNT(*) n FROM appels`),
+      un(`SELECT COUNT(*) n FROM appels WHERE ts >= ?1`, iso(7 * 86_400_000)),
+      un(`SELECT COUNT(*) n FROM appels WHERE ts >= ?1`, iso(86_400_000)),
+      liste(`SELECT outil k, COUNT(*) n FROM appels GROUP BY outil ORDER BY n DESC LIMIT 20`),
+      liste(`SELECT COALESCE(pays,'?') k, COUNT(*) n FROM appels GROUP BY k ORDER BY n DESC LIMIT 10`),
+      liste(`SELECT substr(ts,1,10) k, COUNT(*) n FROM appels GROUP BY k ORDER BY k DESC LIMIT 14`),
+      liste(`SELECT outil k, CAST(AVG(ms) AS INTEGER) n FROM appels WHERE ok = 1 GROUP BY outil ORDER BY n DESC LIMIT 8`),
+    ]);
+    return { total, j7, j1, outils, pays, jours, lents };
+  } catch {
+    return null;
+  }
+}
+
 /** Les chiffres des feuilles de miel, pour la page /stats. */
 export async function chiffresFeuilles(env: Env): Promise<{
   total: number; j7: number; j1: number;
@@ -236,6 +285,7 @@ export async function pageStats(request: Request, env: Env): Promise<Response> {
   const iso = (ms: number) => new Date(now - ms).toISOString();
   const feuilles = await chiffresFeuilles(env);
   const retours = await chiffresRetours(env);
+  const appels = await chiffresAppels(env);
   const [tout, j30, j7, j1, modes, pays, causes, langs, jours, recentes] = await Promise.all([
     totaux(db, null),
     totaux(db, iso(30 * 86_400_000)),
@@ -307,6 +357,18 @@ export async function pageStats(request: Request, env: Env): Promise<Response> {
     <div class="k"><span class="lab">Villes distinctes</span><b>${num(feuilles.villes.length)}</b></div>
   </div>
   <div class="grid">${liste("Comment", feuilles.modes, feuilles.total)}${liste("Villes", feuilles.villes, feuilles.total)}${liste("Par jour", feuilles.jours, feuilles.total)}</div>
+
+  <h2>Le <strong>connecteur</strong>, outil par outil</h2>
+  <p class="muted">Appels MCP journalisés depuis le 11 septembre 2026. On enregistre le nom de l'outil, l'heure, le pays et la durée. Jamais les arguments, qui portent la question, jamais d'adresse IP.</p>
+  ${!appels ? '<p class="muted">Base indisponible.</p>' : `
+  <div class="ks">
+    <div class="k"><span class="lab">Appels depuis le début</span><b>${num(appels.total)}</b></div>
+    <div class="k"><span class="lab">7 jours</span><b>${num(appels.j7)}</b></div>
+    <div class="k"><span class="lab">24 heures</span><b>${num(appels.j1)}</b></div>
+    <div class="k"><span class="lab">Sessions ouvertes</span><b>${num((appels.outils.find((o) => o.k === "initialize") || { n: 0 }).n)}</b></div>
+  </div>
+  <div class="grid">${liste("Outils appelés", appels.outils.filter((o) => o.k !== "initialize"), appels.total)}${liste("Pays", appels.pays, appels.total)}${liste("Par jour", appels.jours, appels.total)}</div>
+  <div class="grid">${liste("Durée moyenne, en millisecondes", appels.lents, 0)}</div>`}
 
   <h2>Les <strong>retours</strong> des visiteurs${retours && retours.nonLus ? ` <span class="pastille">${retours.nonLus} non lu${retours.nonLus > 1 ? "s" : ""}</span>` : ""}</h2>
   <p class="muted">Formulaire <code>/retour</code>, accessible par l'onglet en bas de chaque page. Le contact est facultatif ; ni identité ni adresse IP.</p>

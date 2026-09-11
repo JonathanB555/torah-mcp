@@ -23,7 +23,7 @@ import { landingHtml, privacyHtml, installHtml } from "./landing";
 import { repondreQuestion } from "./question";
 import { questionHtml } from "./question-page";
 import { parseLang } from "./i18n";
-import { journaliser, pageStats, csvStats, journaliserFeuille } from "./stats";
+import { journaliser, pageStats, csvStats, journaliserFeuille, journaliserAppel} from "./stats";
 import { genererChabbat, chabbatPage, servirGif } from "./chabbat";
 import { chiourimPage, rafraichirChiourim, chiourSemaine } from "./chiourim";
 import { limoudTools, limoudHandlers } from "./limoud";
@@ -148,11 +148,18 @@ const SERVER_INSTRUCTIONS = `${HEBREWBOOKS_INSTRUCTIONS}
   semaine, personnalisable),
   \`hebrewbooks_search\` (recherche PLEIN TEXTE dans ~50 000 seforim océrisés : renvoie le passage, sa page et le fac-similé : pour localiser un texte, pas pour le citer).`;
 
-async function handleRpc(req: JsonRpcRequest, env: Env) {
+async function handleRpc(
+  req: JsonRpcRequest,
+  env: Env,
+  journal?: { pays: string | null; differer: (p: Promise<unknown>) => void }
+) {
   const id = req.id ?? null;
   try {
     switch (req.method) {
       case "initialize":
+        // Une session qui s'ouvre : utile pour rapporter les appels d'outils
+        // à un nombre de conversations, sans rien identifier.
+        journal?.differer(journaliserAppel(env, { outil: "initialize", pays: journal.pays, ms: 0, ok: true }));
         return rpcResult(id, {
           protocolVersion: "2025-06-18",
           capabilities: {
@@ -175,7 +182,18 @@ async function handleRpc(req: JsonRpcRequest, env: Env) {
         const name: string = req.params?.name;
         const handler = (allHandlers as any)[name];
         if (!handler) return rpcError(id, -32601, `Unknown tool: ${name}`);
-        const out = await handler(req.params?.arguments ?? {}, env);
+        // On mesure l'appel pour savoir quels outils servent réellement. Le nom
+        // de l'outil et rien d'autre : jamais les arguments, qui portent la
+        // question de l'utilisateur.
+        const debut = Date.now();
+        let out: any;
+        try {
+          out = await handler(req.params?.arguments ?? {}, env);
+        } catch (err) {
+          journal?.differer(journaliserAppel(env, { outil: name, pays: journal.pays, ms: Date.now() - debut, ok: false }));
+          throw err;
+        }
+        journal?.differer(journaliserAppel(env, { outil: name, pays: journal.pays, ms: Date.now() - debut, ok: true }));
         // Un handler peut renvoyer un CallToolResult complet (MCP Apps :
         // content + structuredContent) via la cle __mcpResult.
         if (out && typeof out === "object" && (out as any).__mcpResult) {
@@ -500,7 +518,10 @@ export default {
         } catch {
           return jsonResponse({ error: "Invalid JSON" }, 400);
         }
-        const response = await handleRpc(body, env);
+        const response = await handleRpc(body, env, {
+          pays: request.headers.get("cf-ipcountry"),
+          differer: (p) => ctx.waitUntil(p),
+        });
         const accept = request.headers.get("Accept") || "";
         return accept.includes("text/event-stream") ? sseResponse(response) : jsonResponse(response);
       }
