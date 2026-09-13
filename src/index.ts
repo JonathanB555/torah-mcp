@@ -31,6 +31,7 @@ import { renderDaily, outilsHtml } from "./pages";
 import { mielPage, VILLES_MIEL } from "./miel";
 import { retourHtml, enregistrerRetour } from "./retour";
 import { rochHachanaHtml } from "./rochhachana";
+import { kippourHtml } from "./kippour";
 import { dafViewerTools, dafViewerHandlers, DAF_VIEWER_URI, DAF_VIEWER_HTML, dafViewerHtml, MCP_APP_MIME } from "./dafviewer";
 import { ICON_PNG_BASE64, OG_JPEG_BASE64 } from "./icon";
 import { PICTOS_PNG_BASE64 } from "./pictos";
@@ -450,6 +451,7 @@ export default {
         case "/miel": return html(mielPage(lang));
         case "/retour": return html(retourHtml(lang));
         case "/roch-hachana": return html(rochHachanaHtml(lang), { "Cache-Control": "public, max-age=3600" });
+        case "/kippour": return html(kippourHtml(lang), { "Cache-Control": "public, max-age=3600" });
         case "/install": return html(installHtml(lang));
         case "/privacy": return html(privacyHtml(lang));
         case "/daily": return html(await renderDaily(env, lang), { "Cache-Control": "public, max-age=900" });
