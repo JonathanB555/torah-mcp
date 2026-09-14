@@ -169,7 +169,7 @@ type LandingStrings = {
   tuiles: { to: string; t: string; d: string }[];
   maisonLab: string; maisonT: string; maisonD: string;
   navMiel: string;
-  navRh: string; badgeMielT: string; badgeMielS: string;
+  navRh: string; navKippour: string; badgeMielT: string; badgeMielS: string;
   chiourLab: string; chiourVoir: string;
   bibLab: string; bibT: string; bibD: string;
   kezAria: string; kezId: string;
@@ -192,7 +192,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     desc: "Claude cite la Torah depuis les textes, plus jamais de mémoire. Méthode d'étude, havrouta, guide de paracha, page de Vilna interactive, Sefaria, HebrewBooks, zmanim, guematria. Gratuit, sans compte.",
     chiourLab: "Le chiour de la semaine",
     chiourVoir: "Voir tous les chiourim",
-    navMiel: "La feuille de miel", navRh: "Roch Hachana",
+    navMiel: "La feuille de miel", navRh: "Roch Hachana", navKippour: "Kippour",
     badgeMielT: "La feuille de miel",
     badgeMielS: "une par invité, créez la vôtre",
     maisonLab: "770 Eastern Parkway · Brooklyn, photographie réelle",
@@ -291,7 +291,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     desc: "Claude quotes the Torah from the texts, never again from memory. Study method, chavruta, parashah guide, interactive Vilna page, Sefaria, HebrewBooks, zmanim, gematria. Free, no account.",
     chiourLab: "This week's shiur",
     chiourVoir: "All the shiurim",
-    navMiel: "The honey sheet", navRh: "Rosh Hashana",
+    navMiel: "The honey sheet", navRh: "Rosh Hashana", navKippour: "Yom Kippur",
     badgeMielT: "The honey sheet",
     badgeMielS: "one per guest, make yours",
     maisonLab: "770 Eastern Parkway · Brooklyn, a real photograph",
@@ -390,7 +390,7 @@ const LANDING_T: Record<Lang, LandingStrings> = {
     desc: "Claude מצטט את התורה מתוך הטקסטים, לעולם לא מהזיכרון. שיטת לימוד, חברותא, מדריך לפרשה, דף וילנא אינטראקטיבי, ספריא, HebrewBooks, זמנים, גימטריה. חינם, בלי חשבון.",
     chiourLab: "השיעור של השבוע",
     chiourVoir: "כל השיעורים",
-    navMiel: "דף הדבש", navRh: "ראש השנה",
+    navMiel: "דף הדבש", navRh: "ראש השנה", navKippour: "יום הכיפורים",
     badgeMielT: "דף הדבש",
     badgeMielS: "אחד לכל אורח, צרו את שלכם",
     maisonLab: "איסטרן פארקוויי 770 · ברוקלין, צילום אמיתי",
@@ -864,6 +864,7 @@ ${GA}
   <div class="r">
     ${saisonMiel() ? `<a href="${href(lang, "/miel")}" class="navmiel hide-m">${s.navMiel}</a>` : ""}
     ${saisonMiel() ? `<a href="${href(lang, "/roch-hachana")}" class="hide-m">${s.navRh}</a>` : ""}
+    ${saisonMiel() ? `<a href="${href(lang, "/kippour")}" class="hide-m">${s.navKippour}</a>` : ""}
     <a href="${href(lang, "/question")}" class="hide-m">${s.navQuestion}</a>
     <a href="${href(lang, "/chabbat")}" class="hide-m">${s.navChabbat}</a>
     <a href="${href(lang, "/chiourim")}" class="hide-m">${s.navChiourim}</a>
