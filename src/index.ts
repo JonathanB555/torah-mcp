@@ -24,7 +24,7 @@ import { repondreQuestion } from "./question";
 import { questionHtml } from "./question-page";
 import { parseLang } from "./i18n";
 import { journaliser, pageStats, csvStats, journaliserFeuille, journaliserAppel} from "./stats";
-import { genererChabbat, chabbatPage, servirGif } from "./chabbat";
+import { genererChabbat, chabbatPage, servirGif, chabbatAJour, journaliserTache } from "./chabbat";
 import { chiourimPage, rafraichirChiourim, chiourSemaine } from "./chiourim";
 import { limoudTools, limoudHandlers } from "./limoud";
 import { renderDaily, outilsHtml } from "./pages";
@@ -270,8 +270,19 @@ function resterSurAncienDomaine(path: string): boolean {
 export default {
   // Cron du vendredi matin : composer le WhatsApp de Chabbat de la semaine.
   async scheduled(_controller: ScheduledController, env: Env, ctx: ExecutionContext): Promise<void> {
-    ctx.waitUntil(genererChabbat(env).then((r) => console.log("chabbat:", JSON.stringify(r))));
-    ctx.waitUntil(rafraichirChiourim(env).then((r) => console.log("chiourim:", JSON.stringify(r))));
+    // Une promesse rejetée passée à waitUntil meurt en silence : c'est ainsi
+    // que le message de Chabbat a cessé d'être régénéré pendant douze jours
+    // sans que personne puisse le constater. Tout est journalisé en base.
+    ctx.waitUntil(
+      genererChabbat(env, { siAbsent: true })
+        .then((r) => journaliserTache(env, "chabbat", "cron", r.ok, r.detail ?? r.vendredi))
+        .catch((e) => journaliserTache(env, "chabbat", "cron", false, String(e?.message || e))),
+    );
+    ctx.waitUntil(
+      rafraichirChiourim(env)
+        .then((r) => journaliserTache(env, "chiourim", "cron", true, JSON.stringify(r).slice(0, 200)))
+        .catch((e) => journaliserTache(env, "chiourim", "cron", false, String(e?.message || e))),
+    );
   },
 
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
@@ -327,7 +338,9 @@ export default {
     if (request.method === "POST" && url.pathname === "/chabbat/generer") {
       const page = await pageStats(request, env);
       if (page.status !== 200) return page; // 404 sans secret, 401 sans mot de passe
-      return jsonResponse(await genererChabbat(env));
+      const r = await genererChabbat(env);
+      await journaliserTache(env, "chabbat", "manuel", r.ok, r.detail ?? r.vendredi);
+      return jsonResponse(r);
     }
 
     // GIF de Chabbat : sélection servie par le Worker (index borné).
@@ -455,7 +468,19 @@ export default {
         case "/install": return html(installHtml(lang));
         case "/privacy": return html(privacyHtml(lang));
         case "/daily": return html(await renderDaily(env, lang), { "Cache-Control": "public, max-age=900" });
-        case "/chabbat": return html(await chabbatPage(env, lang));
+        case "/chabbat": {
+          // Filet de sécurité : si le déclencheur hebdomadaire a été manqué,
+          // la première visite de la semaine relance la composition en fond.
+          // La garde siAbsent empêche deux visiteurs de la lancer deux fois.
+          if (!(await chabbatAJour(env))) {
+            ctx.waitUntil(
+              genererChabbat(env, { siAbsent: true })
+                .then((r) => journaliserTache(env, "chabbat", "page", r.ok, r.detail ?? r.vendredi))
+                .catch((e) => journaliserTache(env, "chabbat", "page", false, String(e?.message || e))),
+            );
+          }
+          return html(await chabbatPage(env, lang));
+        }
         case "/chiourim": return html(await chiourimPage(env, lang), { "Cache-Control": "public, max-age=3600" });
       }
       if (url.pathname === "/og.png") {

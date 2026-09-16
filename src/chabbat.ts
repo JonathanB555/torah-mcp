@@ -113,8 +113,39 @@ export function vendrediCourant(now = new Date()): string {
   return d.toISOString().slice(0, 10);
 }
 
-export async function genererChabbat(env: Env): Promise<{ vendredi: string; ok: boolean; detail?: string }> {
+/** Trace d'une tâche planifiée, pour que l'échec cesse d'être invisible. */
+export async function journaliserTache(
+  env: Env, tache: string, origine: string, ok: boolean, detail?: string,
+): Promise<void> {
+  if (!env.STATS_DB) return;
+  try {
+    await env.STATS_DB
+      .prepare(`INSERT INTO taches (ts, tache, origine, ok, detail) VALUES (?1, ?2, ?3, ?4, ?5)`)
+      .bind(new Date().toISOString(), tache, origine, ok ? 1 : 0, detail?.slice(0, 500) ?? null)
+      .run();
+  } catch {}
+}
+
+/** Le message de la semaine est-il déjà écrit ? */
+export async function chabbatAJour(env: Env): Promise<boolean> {
+  if (!env.STATS_DB) return false;
+  try {
+    const r = await env.STATS_DB
+      .prepare(`SELECT 1 AS x FROM chabbat WHERE vendredi = ?1`)
+      .bind(vendrediCourant()).first();
+    return !!r;
+  } catch {
+    return false;
+  }
+}
+
+export async function genererChabbat(
+  env: Env, opts: { siAbsent?: boolean } = {},
+): Promise<{ vendredi: string; ok: boolean; detail?: string }> {
   const vendredi = vendrediCourant();
+  if (opts.siAbsent && await chabbatAJour(env)) {
+    return { vendredi, ok: true, detail: "déjà à jour" };
+  }
   if (!env.STATS_DB) return { vendredi, ok: false, detail: "STATS_DB absent" };
   if (!env.ANTHROPIC_API_KEY) return { vendredi, ok: false, detail: "ANTHROPIC_API_KEY absent" };
 
