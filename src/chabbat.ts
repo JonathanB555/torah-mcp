@@ -42,6 +42,7 @@ Et la haftara (Isaïe 54) murmure la même chose : les montagnes peuvent chancel
 
 📚 Le limoud du jour : mamash-ia.com/daily
 💬 Une question ? mamash-ia.com/question
+🎬 La série en vidéo : instagram.com/mamash_ia
 
 *Chabbat chalom !* ✨`;
 
@@ -67,12 +68,13 @@ Règles absolues :
   pas de liens [](), pas de _italique_.
 - Émojis : SEULEMENT en tête de ligne, comme repères, et seulement ceux-ci :
   🕯️ (titre), 📅 (date), 🌇/✨ (entrée/sortie), 📍 (ville), 📖 (référence),
-  💡 (la morale, sur sa propre ligne), 📚 et 💬 (les deux liens), ✨ (final).
+  💡 (la morale, sur sa propre ligne), 📚, 💬 et 🎬 (les trois liens), ✨ (final).
   Jamais d'émoji au milieu d'une phrase.
 - Reprends EXACTEMENT la structure du gabarit ci-dessous : en-tête (nom de la
   paracha translittéré + nom hébreu), date hébraïque et dates civiles, horaires
   des trois villes, corps (référence de la paracha puis le développement),
-  les deux liens du site, « *Chabbat chalom !* ✨ » final.
+  les trois liens (le limoud, la question, puis le compte Instagram tel quel,
+  instagram.com/mamash_ia), « *Chabbat chalom !* ✨ » final.
 - Longueur totale : proche du gabarit (ni plus courte de moitié, ni double).
 - Réponds par le message seul, sans préambule ni commentaire.`;
 
@@ -161,8 +163,8 @@ export async function genererChabbat(env: Env): Promise<{ vendredi: string; ok: 
   const trData = await appelClaude(
     env,
     `Tu traduis un message WhatsApp de Chabbat. Rends deux versions complètes du message fourni :
-- entre <EN> et </EN> : anglais naturel, translittération anglaise usuelle (Shabbat, parashah, Rashi…), liens mamash-ia.com/en/daily et mamash-ia.com/en/question, « *Shabbat shalom!* ✨ » final ;
-- entre <HE> et </HE> : hébreu israélien soigné (pas de calque), les versets cités le sont dans leur texte original, liens mamash-ia.com/he/daily et mamash-ia.com/he/question, « *שבת שלום!* ✨ » final.
+- entre <EN> et </EN> : anglais naturel, translittération anglaise usuelle (Shabbat, parashah, Rashi…), liens mamash-ia.com/en/daily et mamash-ia.com/en/question, ligne Instagram conservée telle quelle (instagram.com/mamash_ia), « *Shabbat shalom!* ✨ » final ;
+- entre <HE> et </HE> : hébreu israélien soigné (pas de calque), les versets cités le sont dans leur texte original, liens mamash-ia.com/he/daily et mamash-ia.com/he/question, ligne Instagram conservée telle quelle (instagram.com/mamash_ia), « *שבת שלום!* ✨ » final.
 Conserve la structure, les *gras* WhatsApp et les émojis-repères de début de ligne. Réponds par les deux blocs seuls.`,
     [{ role: "user", content: fr }],
     undefined,
