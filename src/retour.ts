@@ -9,7 +9,7 @@
  */
 
 import type { Env } from "./sefaria";
-import { type Lang, href, altLinks, langSwitcher, htmlAttrs, colophon, t } from "./i18n";
+import { type Lang, href, altLinks, langSwitcher, htmlAttrs, colophon, t, suivre } from "./i18n";
 // Imports statiques : le module intégré cloudflare:email et mimetext ne
 // survivent pas à un import() dynamique dans le bundle du Worker.
 import { EmailMessage } from "cloudflare:email";
@@ -390,6 +390,7 @@ ${altLinks(lang, PATH)}
   <footer>
     <p><a href="${href(lang, "/")}">mamash-ia.com</a> · <a href="${href(lang, "/privacy")}">${lang === "he" ? "פרטיות" : lang === "en" ? "Privacy" : "Vie privée"}</a> · ${langSwitcher(lang, PATH)}</p>
     <p style="margin-top:.6rem"><img src="/icon.png" alt="">${colophon(lang)}</p>
+    ${suivre(lang)}
   </footer>
 </main>
 <script>

@@ -13,7 +13,7 @@
 import type { Env } from "./sefaria";
 import { sefariaHandlers, sefariaTools } from "./sefaria";
 import { limoudHandlers } from "./limoud";
-import { type Lang, altLinks, htmlAttrs, href, langSwitcher, colophon, t, saisonMiel, retourTab } from "./i18n";
+import { type Lang, altLinks, htmlAttrs, href, langSwitcher, colophon, t, saisonMiel, retourTab, suivre } from "./i18n";
 
 const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
 const ANTHROPIC_VERSION = "2023-06-01";
@@ -508,6 +508,7 @@ ${altLinks(lang, "/chabbat")}
     <figcaption>${s.vidLab}</figcaption>
   </figure>
   <footer><p><a href="${href(lang, "/")}">${s.foot.accueil}</a> · <a href="${href(lang, "/daily")}">${s.foot.daily}</a> · <a href="${href(lang, "/privacy")}">${s.foot.privacy}</a> · ${langSwitcher(lang, "/chabbat")}</p><p><img class="fsceau" src="/icon.png" alt="">${colophon(lang)}</p></footer>
+    ${suivre(lang)}
 </main>
 <script>
 (function () {

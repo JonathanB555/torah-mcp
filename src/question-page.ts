@@ -8,7 +8,7 @@
  * du dictionnaire `T`, et celles utilisées par le script sont injectées dans `S`.
  */
 
-import { type Lang, href, altLinks, langSwitcher, htmlAttrs, colophon, saisonMiel, t, retourTab } from "./i18n";
+import { type Lang, href, altLinks, langSwitcher, htmlAttrs, colophon, saisonMiel, t, retourTab, suivre } from "./i18n";
 
 const PATH = "/question";
 
@@ -534,6 +534,7 @@ ${altLinks(lang, PATH)}
   </section>
 
   <footer><p><a href="${href(lang, "/")}">${s.footHome}</a> · <a href="${href(lang, "/outils")}">${s.navTools}</a> · <a href="${href(lang, "/privacy")}">${s.footPrivacy}</a> · ${langSwitcher(lang, PATH)}</p><p><img class="fsceau" src="/icon.png" alt="">${colophon(lang)}</p></footer>
+    ${suivre(lang)}
 </main>
 <script>
 (function () {

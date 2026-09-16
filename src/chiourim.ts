@@ -10,7 +10,7 @@
  */
 
 import type { Env } from "./sefaria";
-import { type Lang, altLinks, htmlAttrs, href, langSwitcher, colophon, t, saisonMiel, retourTab } from "./i18n";
+import { type Lang, altLinks, htmlAttrs, href, langSwitcher, colophon, t, saisonMiel, retourTab, suivre } from "./i18n";
 
 const CHANNEL_ID = "UCtqyBROvt1svSBieQqDAUBA";
 const CHANNEL_URL = "https://www.youtube.com/@meirattal6523";
@@ -444,6 +444,7 @@ ${altLinks(lang, "/chiourim")}
   <p class="srcnote">${s.note} <a href="${href(lang, "/privacy")}">${s.notePrivacy}</a>.</p>
 
   <footer><p><a href="${href(lang, "/")}">${s.foot.accueil}</a> · <a href="${href(lang, "/daily")}">${s.foot.daily}</a> · <a href="${href(lang, "/privacy")}">${s.foot.privacy}</a> · ${langSwitcher(lang, "/chiourim")}</p><p><img class="fsceau" src="/icon.png" alt="">${colophon(lang)}</p></footer>
+    ${suivre(lang)}
 </main>
 <script>
 (function () {

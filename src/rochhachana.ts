@@ -9,7 +9,7 @@
  * imprimable ne peuvent pas diverger.
  */
 
-import { type Lang, href, altLinks, langSwitcher, htmlAttrs, colophon, retourTab, SITE } from "./i18n";
+import { type Lang, href, altLinks, langSwitcher, htmlAttrs, colophon, retourTab, SITE, suivre } from "./i18n";
 import { SEDARIM, RITES, type Rite } from "./miel-sedarim";
 import { FICHES, imageDe } from "./simanim-catalogue";
 
@@ -399,6 +399,7 @@ ${altLinks(lang, PATH)}
   <footer class="site">
     <p><a href="${href(lang, "/")}">mamash-ia.com</a> · <a href="${href(lang, "/privacy")}">${lang === "he" ? "פרטיות" : lang === "en" ? "Privacy" : "Vie privée"}</a> · ${langSwitcher(lang, PATH)}</p>
     <p style="margin-top:.6rem"><img src="/icon.png" alt="">${colophon(lang)}</p>
+    ${suivre(lang)}
   </footer>
 </main>
 ${retourTab(lang, PATH)}

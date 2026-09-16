@@ -78,6 +78,39 @@ export const colophon = (lang: Lang) =>
  * saisonnières (nav, badge) disparaissent d'elles-mêmes. */
 export const saisonMiel = (): boolean => Date.now() < Date.parse("2026-10-05T00:00:00Z");
 
+/** Le compte Instagram, posé en pied de page.
+ *
+ *  Le site reçoit des gens qui posent des questions, impriment des feuilles et
+ *  repartent sans savoir que le compte existe. Ce sont exactement les personnes
+ *  que la série vise, et elles sont déjà là : c'est le lien le moins cher et le
+ *  mieux ciblé que le projet puisse poser.
+ *
+ *  Styles inclus, le composant doit tenir seul quelle que soit la feuille de
+ *  style de la page qui l'appelle. */
+export const INSTAGRAM = "mamash_ia";
+
+export const suivre = (lang: Lang): string => {
+  const mot = t(lang, {
+    fr: "La série en vidéo, sur Instagram",
+    en: "The video series, on Instagram",
+    he: "סדרת הסרטונים, באינסטגרם",
+  });
+  return `<style>
+  .insta { display:inline-flex; align-items:center; gap:.5rem; margin-top:.9rem;
+    font-size:.86rem; text-decoration:none; color:inherit; }
+  .insta svg { width:1.05em; height:1.05em; flex:none; }
+  .insta b { font-weight:600; }
+  .insta:hover b { text-decoration:underline; text-underline-offset:3px; }
+</style>
+<a class="insta" href="https://www.instagram.com/${INSTAGRAM}/" target="_blank" rel="noopener">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+    <rect x="2.5" y="2.5" width="19" height="19" rx="5"/>
+    <circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/>
+  </svg>
+  <span>${mot} <b dir="ltr">@${INSTAGRAM}</b></span>
+</a>`;
+};
+
 /** L'onglet « un bug ? une idée ? », posé en bas de chaque page.
  *  Il emporte la page d'origine dans ?de= pour que le formulaire sache de quoi
  *  l'on parle. Styles inclus : le composant doit tenir seul, quelle que soit

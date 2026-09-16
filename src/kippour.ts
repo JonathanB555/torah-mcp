@@ -10,7 +10,7 @@
  * références exactes sont dans STATIONS et dans la section des sources.
  */
 
-import { type Lang, href, altLinks, langSwitcher, htmlAttrs, colophon, retourTab, SITE } from "./i18n";
+import { type Lang, href, altLinks, langSwitcher, htmlAttrs, colophon, retourTab, SITE, suivre } from "./i18n";
 
 const PATH = "/kippour";
 
@@ -464,6 +464,7 @@ ${altLinks(lang, PATH)}
   <footer class="site">
     <a href="${href(lang, "/")}"><img src="/icon.png" alt="">Mamash IA</a>
     <p style="margin-top:.8rem">${colophon(lang)}</p>
+    ${suivre(lang)}
   </footer>
 </main>
 

@@ -4,7 +4,7 @@
  * le gabarit HTML/CSS/JS est unique, seules les chaînes changent.
  */
 
-import { type Lang, SITE, href, altLinks, langSwitcher, htmlAttrs, colophon, saisonMiel, retourTab } from "./i18n";
+import { type Lang, SITE, href, altLinks, langSwitcher, htmlAttrs, colophon, saisonMiel, retourTab, suivre } from "./i18n";
 import type { Env } from "./sefaria";
 import { chiourSemaine } from "./chiourim";
 
@@ -1313,7 +1313,9 @@ ${GA}
   });
 })();
 </script>
-  <footer style="margin-top:2.5rem;font-size:.88rem;opacity:.65"><p><img class="fsceau" src="/icon.png" alt="" style="width:26px;height:26px;border-radius:50%;vertical-align:-8px;margin-inline-end:.45rem">${colophon(lang)}</p><p style="margin-top:.6rem">${langSwitcher(lang, path)}</p></footer>
+  <footer style="margin-top:2.5rem;font-size:.88rem;opacity:.65"><p><img class="fsceau" src="/icon.png" alt="" style="width:26px;height:26px;border-radius:50%;vertical-align:-8px;margin-inline-end:.45rem">${colophon(lang)}</p>
+    ${suivre(lang)}
+    <p style="margin-top:.6rem">${langSwitcher(lang, path)}</p></footer>
 </main>
 ${retourTab(lang, path)}
 </body>

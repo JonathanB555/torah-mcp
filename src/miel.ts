@@ -6,7 +6,7 @@
  * les PDF de référence). Horaires : /api/miel-horaires (proxy Hebcal, worker).
  */
 
-import { Lang, href, altLinks, htmlAttrs, langSwitcher, colophon, t, retourTab } from "./i18n";
+import { Lang, href, altLinks, htmlAttrs, langSwitcher, colophon, t, retourTab, suivre } from "./i18n";
 import { SEDARIM, RITES, RITE_DEFAUT, type Rite } from "./miel-sedarim";
 
 /** Villes proposées, geonameids vérifiés un à un sur l'API Hebcal (08.09.2026). */
@@ -425,6 +425,7 @@ ${altLinks(lang, "/miel")}
   </div>
 </div>
 <footer class="site"><p><a href="${href(lang, "/")}">mamash-ia.com</a> · ${colophon(lang)}</p></footer>
+    ${suivre(lang)}
 <script>
 (function () {
   var NOMS = ${JSON.stringify(NOMS_HEBREU).replace(/</g, "\\u003c")};
