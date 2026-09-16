@@ -1020,6 +1020,7 @@ ${chiour ? `<section class="chiousem rv" aria-label="${s.chiourLab}">
   </div>
   <p><a href="https://www.sefaria.org" aria-label="Powered by Sefaria"><img src="https://files.readme.io/dcee0a8-image.png" alt="Powered by Sefaria" width="104" height="54" style="display:block;margin-bottom:.7rem"></a>
   ${s.credits1} <img class="fsceau" src="/icon.png" alt="">${colophon(lang)} ${s.credits2}</p>
+  ${suivre(lang)}
 </footer>
 
 <script>
