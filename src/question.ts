@@ -30,6 +30,12 @@ const QUESTION_TOOLS = [
 ];
 const MAX_ROUNDS = 8;
 const MAX_TOOL_RESULT_CHARS = 7000;
+/** Budget de lecture pour UNE question, tous tours confondus.
+ *  Le plafond par source ne suffisait pas : une question ayant lu huit pages
+ *  sur huit tours a coûté 303 724 jetons d'entrée à elle seule, la conversation
+ *  étant renvoyée entière à chaque tour. Au-delà de ce budget, on cesse de
+ *  fournir du texte et l'on demande la synthèse. */
+const BUDGET_LECTURE_CHARS = 45000;
 const MAX_QUESTION_CHARS = 600;
 const MAX_OUTPUT_TOKENS = 6000;
 
@@ -137,6 +143,8 @@ export interface QuestionMeta {
   lang: string;
   tokens_in: number;
   tokens_out: number;
+  cache_ecrit?: number;
+  cache_lu?: number;
 }
 
 export async function repondreQuestion(
@@ -178,7 +186,11 @@ La question actuelle fait suite à l'échange précédent, fourni dans l'histori
 Appuie-toi dessus sans répéter ce qui a déjà été dit : complète, précise,
 approfondis. Relis un texte si la précision demandée l'exige.`;
 
-  const system = `${SKILL_MD}\n\n${MODES[mode].md}\n\n${WEB_CONTEXT_MD}${LANG_MD[lang] ? "\n\n" + LANG_MD[lang] : ""}${enSuite ? "\n\n" + SUITE_MD : ""}`;
+  const systemTexte = `${SKILL_MD}\n\n${MODES[mode].md}\n\n${WEB_CONTEXT_MD}${LANG_MD[lang] ? "\n\n" + LANG_MD[lang] : ""}${enSuite ? "\n\n" + SUITE_MD : ""}`;
+  // Les consignes et les schémas d'outils sont identiques d'un tour à l'autre,
+  // et la même question en enchaîne 4,6 en moyenne. Sans cache, on les paie
+  // plein tarif à chaque fois : c'est ce qui faisait 78 % de la facture.
+  const system = [{ type: "text", text: systemTexte, cache_control: { type: "ephemeral" } }];
   const anthropicTools = toAnthropicTools(tools);
   const messages: any[] = enSuite
     ? [{ role: "user", content: precQ }, { role: "assistant", content: precR }, { role: "user", content: question }]
@@ -186,12 +198,33 @@ approfondis. Relis un texte si la précision demandée l'exige.`;
   const sources = new Map<string, string>();
   let tours = 0;
   let tokensIn = 0, tokensOut = 0;
-  const compter = (d: any) => { tokensIn += Number(d?.usage?.input_tokens) || 0; tokensOut += Number(d?.usage?.output_tokens) || 0; };
-  const meta = (): QuestionMeta => ({ question: (enSuite ? "↳ " : "") + question, mode, lang, tokens_in: tokensIn, tokens_out: tokensOut });
+  let cacheEcrit = 0, cacheLu = 0;
+  let luChars = 0;   // texte de sources déjà fourni, tous tours confondus
+  const compter = (d: any) => {
+    tokensIn += Number(d?.usage?.input_tokens) || 0;
+    tokensOut += Number(d?.usage?.output_tokens) || 0;
+    cacheEcrit += Number(d?.usage?.cache_creation_input_tokens) || 0;
+    cacheLu += Number(d?.usage?.cache_read_input_tokens) || 0;
+  };
+  const meta = (): QuestionMeta => ({ question: (enSuite ? "↳ " : "") + question, mode, lang, tokens_in: tokensIn, tokens_out: tokensOut, cache_ecrit: cacheEcrit, cache_lu: cacheLu });
   let final = "";
+
+  /** Déplace l'unique point de cache sur le dernier bloc de la conversation.
+   *  L'API n'accepte que quatre points : on retire l'ancien avant de poser le
+   *  nouveau, pour que le préfixe déjà payé soit relu au dixième du prix. */
+  const marquerCache = () => {
+    for (const m of messages) {
+      if (Array.isArray(m.content)) for (const bloc of m.content) delete bloc.cache_control;
+    }
+    const dernier = messages[messages.length - 1];
+    if (dernier && Array.isArray(dernier.content) && dernier.content.length) {
+      dernier.content[dernier.content.length - 1].cache_control = { type: "ephemeral" };
+    }
+  };
 
   while (tours < MAX_ROUNDS) {
     tours += 1;
+    marquerCache();
     const resp = await fetch(ANTHROPIC_URL, {
       method: "POST",
       headers: {
@@ -254,6 +287,15 @@ approfondis. Relis un texte si la précision demandée l'exige.`;
           sources.set(ref, refToUrl(ref));
         }
         if (out.length > MAX_TOOL_RESULT_CHARS) out = out.slice(0, MAX_TOOL_RESULT_CHARS) + "\n…[tronqué]";
+        // Budget global : au-delà, on rend la source coupée court et l'on dit
+        // au modèle d'écrire la réponse avec ce qu'il a déjà lu.
+        if (luChars >= BUDGET_LECTURE_CHARS) {
+          out = "…[budget de lecture atteint : rédige la réponse à partir des textes déjà lus, sans en ouvrir d'autres]";
+        } else if (luChars + out.length > BUDGET_LECTURE_CHARS) {
+          out = out.slice(0, Math.max(0, BUDGET_LECTURE_CHARS - luChars)) +
+            "\n…[budget de lecture atteint : rédige la réponse avec ce qui précède]";
+        }
+        luChars += out.length;
         return { type: "tool_result", tool_use_id: u.id, content: out };
       })
     );

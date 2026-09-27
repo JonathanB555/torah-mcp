@@ -32,8 +32,8 @@ export async function journaliser(env: Env, e: JournalEntry): Promise<void> {
   const statut = ok ? "ok" : e.status === 429 ? "refus" : "erreur";
   try {
     await env.STATS_DB.prepare(
-      `INSERT INTO questions (ts, mode, question, statut, cause, duree_ms, nb_sources, tours, tokens_in, tokens_out, modele, pays, reponse_len, lang)
-       VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14)`
+      `INSERT INTO questions (ts, mode, question, statut, cause, duree_ms, nb_sources, tours, tokens_in, tokens_out, modele, pays, reponse_len, lang, cache_ecrit, cache_lu)
+       VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16)`
     )
       .bind(
         new Date().toISOString(),
@@ -49,7 +49,9 @@ export async function journaliser(env: Env, e: JournalEntry): Promise<void> {
         e.modele,
         e.pays,
         ok ? String(e.body?.reponse || "").length : null,
-        e.meta.lang || "fr"
+        e.meta.lang || "fr",
+        e.meta.cache_ecrit ?? null,
+        e.meta.cache_lu ?? null
       )
       .run();
   } catch (err) {
