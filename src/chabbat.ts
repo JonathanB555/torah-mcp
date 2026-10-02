@@ -89,8 +89,19 @@ async function appelClaude(env: Env, system: string, messages: any[], tools?: an
 }
 
 
+/** Le message est-il entier ? Il doit porter sa formule de clôture, et peser.
+ *
+ * Un fragment peut contenir la formule par hasard dans un brouillon, d'où le
+ * plancher de longueur : le gabarit pèse environ 1100 caractères, un message
+ * complet n'en fait jamais moins de 400. La casse est ignorée, « Chabbat
+ * Chalom » ne doit pas faire échouer une semaine entière.
+ */
+function messageComplet(t: string): boolean {
+  return t.length >= 400 && /chabbat\s+chalom/i.test(t);
+}
+
 /** Garde la mise en forme WhatsApp utile, retire le reste (Markdown, émojis hors charte). */
-const EMOJIS_CHARTE = new Set(["🕯", "📅", "🌇", "✨", "📍", "📖", "💡", "📚", "💬"]);
+const EMOJIS_CHARTE = new Set(["🕯", "📅", "🌇", "✨", "📍", "📖", "💡", "📚", "💬", "🎬"]);
 function nettoyerWhatsApp(t: string): string {
   // Tout préambule avant la ligne-titre 🕯️ saute (« Voici le message : »…).
   const debut = t.indexOf("🕯");
@@ -163,15 +174,25 @@ export async function genererChabbat(
     .map((t) => ({ name: t.name, description: t.description || t.name, input_schema: t.inputSchema }));
   const system = `${CONSIGNES}\n\n# Gabarit (semaine précédente, structure et ton à reproduire, contenu à renouveler)\n\n${GABARIT}`;
   const messages: any[] = [{ role: "user", content: `Données du jour (calendriers Sefaria, date hébraïque, zmanim de Chabbat) :\n${donnees}\n\nLis la haftara, puis rédige le message de cette semaine.` }];
+  const TOURS_LECTURE = 5;
+  const textes = (content: any[]) =>
+    content.filter((b) => b.type === "text").map((b) => b.text).join("\n").trim();
   let fr = "";
-  for (let tour = 0; tour < 5; tour++) {
+  let stop = "";
+  let tours = 0;
+  let attenteOutils = false;
+  for (let tour = 0; tour < TOURS_LECTURE; tour++) {
+    tours = tour + 1;
     const data = await appelClaude(env, system, messages, toolDefs);
+    stop = data.stop_reason || "";
     const content: any[] = data.content || [];
     const uses = content.filter((b) => b.type === "tool_use");
-    if (data.stop_reason !== "tool_use" || uses.length === 0 || tour === 4) {
-      fr = content.filter((b) => b.type === "text").map((b) => b.text).join("\n").trim();
+    if (stop !== "tool_use" || uses.length === 0) {
+      fr = textes(content);
+      attenteOutils = false;
       break;
     }
+    attenteOutils = true;
     messages.push({ role: "assistant", content });
     const results = await Promise.all(
       uses.map(async (u: any) => {
@@ -187,8 +208,38 @@ export async function genererChabbat(
     );
     messages.push({ role: "user", content: results });
   }
+
+  // Le budget de lecture peut s'épuiser alors que Claude veut encore lire. On
+  // ne garde surtout pas le texte qui accompagnait le dernier appel d'outil :
+  // c'est un fragment, et c'est lui qui a laissé la page douze jours en
+  // arrière, puis muette du 28 septembre au 2 octobre 2026. On redemande le
+  // message une dernière fois, sans outils, pour qu'il sorte maintenant.
+  if (!messageComplet(nettoyerWhatsApp(fr))) {
+    const relance = "Tu as lu ce qu'il fallait. Écris maintenant le message complet, "
+      + "du titre jusqu'au « Chabbat chalom ! » final, sans appeler d'outil. Le message seul.";
+    const dernier = messages[messages.length - 1];
+    if (attenteOutils && dernier?.role === "user" && Array.isArray(dernier.content)) {
+      // La dernière main est aux résultats d'outils : la relance s'ajoute au
+      // même tour, deux tours « user » de suite étant refusés par l'API.
+      dernier.content.push({ type: "text", text: relance });
+    } else {
+      if (fr) messages.push({ role: "assistant", content: fr });
+      messages.push({ role: "user", content: relance });
+    }
+    const data = await appelClaude(env, system, messages);
+    stop = `${stop}>${data.stop_reason || ""}`;
+    tours += 1;
+    fr = textes(data.content || []);
+  }
+
   fr = nettoyerWhatsApp(fr);
-  if (!fr || !fr.includes("Chabbat chalom")) return { vendredi, ok: false, detail: "composition française invalide" };
+  if (!messageComplet(fr)) {
+    const fin = fr.slice(-100).replace(/\n/g, " / ");
+    return {
+      vendredi, ok: false,
+      detail: `composition française invalide (${tours} tours, stop ${stop}, ${fr.length} car., fin : ${fin || "vide"})`,
+    };
+  }
 
   // 3. Traductions anglaise et hébraïque du même message.
   const trData = await appelClaude(
@@ -211,7 +262,7 @@ Conserve la structure, les *gras* WhatsApp et les émojis-repères de début de 
   };
   const en = nettoyerWhatsApp(extraire("EN"));
   const he = nettoyerWhatsApp(extraire("HE"));
-  if (!en.includes("Shabbat shalom") || !he.includes("שבת שלום")) {
+  if (!/shabbat\s+shalom/i.test(en) || !he.includes("שבת שלום")) {
     return { vendredi, ok: false, detail: `traductions invalides (stop: ${trData.stop_reason}, en: ${en.length}, he: ${he.length})` };
   }
 
@@ -303,6 +354,7 @@ const T = {
     ouvert: "WhatsApp Web s'ouvre avec le message déjà écrit, choisissez le destinataire. (Il est aussi copié : Cmd+V si besoin.)",
     vide: "Le premier message sera composé vendredi matin, revenez alors, ou recevez-le en installant Torah MCP dans Claude.",
     genere: "Composé le",
+    retard: "Ce message est celui du Chabbat précédent. Celui de cette semaine est en cours de composition, revenez dans quelques minutes.",
     nav: { question: "Une question", daf: "Le daf", outils: "Outils", install: "Installer le MCP" },
     foot: { accueil: "Accueil", daily: "Limoud du jour", privacy: "Confidentialité" },
   },
@@ -331,6 +383,7 @@ const T = {
     ouvert: "WhatsApp Web opens with the message already written, just pick the recipient. (It is copied too: Cmd+V if needed.)",
     vide: "The first message will be composed on Friday morning, come back then, or get it by installing Torah MCP in Claude.",
     genere: "Composed on",
+    retard: "This is the previous Shabbat\u2019s message. This week\u2019s is being composed, come back in a few minutes.",
     nav: { question: "Ask a question", daf: "The daf", outils: "Tools", install: "Install the MCP" },
     foot: { accueil: "Home", daily: "Today's learning", privacy: "Privacy" },
   },
@@ -359,6 +412,7 @@ const T = {
     ouvert: "וואטסאפ ווב נפתח וההודעה כבר כתובה, בחרו נמען. (היא גם הועתקה: Cmd+V במידת הצורך.)",
     vide: "המסר הראשון יחובר ביום שישי בבוקר, חזרו אז, או קבלו אותו בהתקנת Torah MCP ב-Claude.",
     genere: "חובר בתאריך",
+    retard: "זהו המסר של שבת שעברה. המסר של השבוע מתחבר כעת, חזרו בעוד כמה דקות.",
     nav: { question: "שאלה", daf: "הדף", outils: "כלים", install: "התקנת ה-MCP" },
     foot: { accueil: "עמוד הבית", daily: "הלימוד היומי", privacy: "פרטיות" },
   },
@@ -375,6 +429,10 @@ export async function chabbatPage(env: Env, lang: Lang): Promise<string> {
       : null;
   } catch {}
   const texte: string = row ? row[lang] || row.fr : "";
+  // Le message affiché est-il bien celui de la semaine ? Tant que la réponse
+  // n'était pas écrite ici, un échec de composition passait pour du contenu
+  // à jour, et c'est ainsi que la page a servi du Chabbat Souccot un 2 octobre.
+  const enRetard = !!row && row.vendredi !== vendrediCourant();
   const indices = gifsDeLaSemaine(row?.vendredi || vendrediCourant());
   // Aperçu du message pour la carte du composeur (sans les * de gras WhatsApp)
   const brut = texte.replace(/\*/g, "");
@@ -472,6 +530,9 @@ ${altLinks(lang, "/chabbat")}
   p.muted { color:var(--muted); max-width:40rem; }
   .msg { margin-top:2.4rem; border:1.5px solid var(--ink-15); padding:1.6rem 1.8rem; white-space:pre-wrap; font-size:1.02rem; line-height:1.65; }
   .meta { margin-top:.7rem; font-size:.82rem; color:var(--muted); }
+  .retard { margin:1.1rem 0 0; padding:.7rem .9rem; font-size:.88rem; line-height:1.45;
+    background:rgba(255,210,63,.22); border-left:3px solid var(--pop); color:var(--ink); }
+  [dir="rtl"] .retard { border-left:0; border-right:3px solid var(--pop); }
   .acts { margin-top:1.6rem; display:flex; gap:1.6rem; flex-wrap:wrap; align-items:baseline; font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.05rem; }
   [dir="rtl"] .acts { font-family:"Frank Ruhl Libre", Georgia, serif; font-weight:700; }
   .acts a { text-decoration:none; } .acts a::before { content:"[ "; color:var(--ink-40); } .acts a::after { content:" ]"; color:var(--ink-40); } .acts a:hover::before { content:"[ → "; }
@@ -531,6 +592,7 @@ ${altLinks(lang, "/chabbat")}
   <h1>${s.h1}</h1>
   <p class="muted">${s.chapeau}</p>
   <p class="lienmiel"><a href="${href(lang, "/miel")}">${s.mielLien}</a></p>
+  ${texte && enRetard ? `<p class="retard">${s.retard}</p>` : ""}
   ${texte ? `${gifsHtml}
   <div class="msg" id="msg">${esc(texte).replace(/\*([^*\n]+)\*/g, "<strong>$1</strong>")}</div>
   <p class="meta">${s.genere} ${esc(dateGen)}.</p>
