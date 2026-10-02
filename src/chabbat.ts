@@ -78,11 +78,20 @@ Règles absolues :
 - Longueur totale : proche du gabarit (ni plus courte de moitié, ni double).
 - Réponds par le message seul, sans préambule ni commentaire.`;
 
-async function appelClaude(env: Env, system: string, messages: any[], tools?: any[], maxTokens = 2500): Promise<any> {
+/** Un tour d'API. `sansOutils` garde la déclaration des outils, que l'API
+ *  exige dès qu'un bloc tool_use figure dans la conversation, tout en
+ *  interdisant un nouvel appel : c'est ainsi qu'on force la rédaction. */
+async function appelClaude(
+  env: Env, system: string, messages: any[], tools?: any[], maxTokens = 2500,
+  sansOutils = false,
+): Promise<any> {
   const resp = await fetch(ANTHROPIC_URL, {
     method: "POST",
     headers: { "content-type": "application/json", "x-api-key": env.ANTHROPIC_API_KEY!, "anthropic-version": ANTHROPIC_VERSION },
-    body: JSON.stringify({ model: env.ANTHROPIC_MODEL || DEFAULT_MODEL, max_tokens: maxTokens, system, ...(tools?.length ? { tools } : {}), messages }),
+    body: JSON.stringify({
+      model: env.ANTHROPIC_MODEL || DEFAULT_MODEL, max_tokens: maxTokens, system, messages,
+      ...(tools?.length ? { tools, ...(sansOutils ? { tool_choice: { type: "none" } } : {}) } : {}),
+    }),
   });
   if (!resp.ok) throw new Error(`API Anthropic ${resp.status}: ${(await resp.text()).slice(0, 300)}`);
   return resp.json();
@@ -137,28 +146,90 @@ export async function journaliserTache(
   } catch {}
 }
 
-/** Le message de la semaine est-il déjà écrit ? */
-export async function chabbatAJour(env: Env): Promise<boolean> {
-  if (!env.STATS_DB) return false;
+/** La ligne de la semaine, telle qu'elle est en base. */
+async function ligneCourante(env: Env): Promise<{ fr: string; en: string; he: string } | null> {
+  if (!env.STATS_DB) return null;
   try {
-    const r = await env.STATS_DB
-      .prepare(`SELECT 1 AS x FROM chabbat WHERE vendredi = ?1`)
+    const r: any = await env.STATS_DB
+      .prepare(`SELECT fr, en, he FROM chabbat WHERE vendredi = ?1`)
       .bind(vendrediCourant()).first();
-    return !!r;
+    return r ? { fr: r.fr || "", en: r.en || "", he: r.he || "" } : null;
   } catch {
-    return false;
+    return null;
   }
+}
+
+/** Le message de la semaine est-il écrit ET traduit ?
+ *
+ *  La composition est enregistrée avant les traductions. Tant que les trois
+ *  langues ne sont pas là, le travail reste à finir, et le filet doit se
+ *  redéclencher : il ne recomposera pas le français, il traduira seulement.
+ */
+export async function chabbatAJour(env: Env): Promise<boolean> {
+  const l = await ligneCourante(env);
+  return !!l && messageComplet(l.fr) && !!l.en && !!l.he;
+}
+
+/** Les deux traductions, enregistrées en mise à jour de la ligne du vendredi.
+ *
+ *  Étape séparée, et c'est le point : la composition est déjà en base quand
+ *  on arrive ici. Si la traduction échoue ou se fait couper, le français
+ *  reste servi dans les trois langues, et le filet revient la finir.
+ */
+async function traduireChabbat(
+  env: Env, vendredi: string, fr: string,
+): Promise<{ vendredi: string; ok: boolean; detail?: string }> {
+  
+  const trData = await appelClaude(
+    env,
+    `Tu traduis un message WhatsApp de Chabbat. Rends deux versions complètes du message fourni :
+- entre <EN> et </EN> : anglais naturel, translittération anglaise usuelle (Shabbat, parashah, Rashi…), liens mamash-ia.com/en/daily et mamash-ia.com/en/question, ligne Instagram conservée telle quelle (instagram.com/mamash_ia), « *Shabbat shalom!* ✨ » final ;
+- entre <HE> et </HE> : hébreu israélien soigné (pas de calque), les versets cités le sont dans leur texte original, liens mamash-ia.com/he/daily et mamash-ia.com/he/question, ligne Instagram conservée telle quelle (instagram.com/mamash_ia), « *שבת שלום!* ✨ » final.
+Conserve la structure, les *gras* WhatsApp et les émojis-repères de début de ligne. Réponds par les deux blocs seuls.`,
+    [{ role: "user", content: fr }],
+    undefined,
+    6000
+  );
+  const trText = (trData.content || []).filter((b: any) => b.type === "text").map((b: any) => b.text).join("\n");
+  // Analyse tolérante : si une balise fermante manque (réponse tronquée), on
+  // prend jusqu'à la balise suivante ou la fin, le message doit rester valide
+  // (présence du « Chabbat chalom » final de chaque langue).
+  const extraire = (tag: string): string => {
+    const m = trText.match(new RegExp(`<${tag}>([\\s\\S]*?)(?:</${tag}>|<(?:EN|HE)>|$)`));
+    return m?.[1]?.trim() || "";
+  };
+  const en = nettoyerWhatsApp(extraire("EN"));
+  const he = nettoyerWhatsApp(extraire("HE"));
+  if (!/shabbat\s+shalom/i.test(en) || !he.includes("שבת שלום")) {
+    // Le français est en base et la page le sert dans les trois langues : on
+    // signale l'échec partiel sans effacer ce qui a réussi.
+    return {
+      vendredi, ok: false,
+      detail: `français enregistré, traductions invalides (stop ${trData.stop_reason}, en ${en.length}, he ${he.length})`,
+    };
+  }
+
+  await env.STATS_DB!.prepare(`UPDATE chabbat SET en = ?2, he = ?3, ts = ?4 WHERE vendredi = ?1`)
+    .bind(vendredi, en, he, new Date().toISOString())
+    .run();
+  return { vendredi, ok: true };
 }
 
 export async function genererChabbat(
   env: Env, opts: { siAbsent?: boolean } = {},
 ): Promise<{ vendredi: string; ok: boolean; detail?: string }> {
   const vendredi = vendrediCourant();
-  if (opts.siAbsent && await chabbatAJour(env)) {
-    return { vendredi, ok: true, detail: "déjà à jour" };
-  }
   if (!env.STATS_DB) return { vendredi, ok: false, detail: "STATS_DB absent" };
   if (!env.ANTHROPIC_API_KEY) return { vendredi, ok: false, detail: "ANTHROPIC_API_KEY absent" };
+
+  const deja = await ligneCourante(env);
+  if (opts.siAbsent && deja && messageComplet(deja.fr) && deja.en && deja.he) {
+    return { vendredi, ok: true, detail: "déjà à jour" };
+  }
+  // Reprise : si le français est en base, on ne le recompose pas, on traduit.
+  if (deja && messageComplet(deja.fr)) {
+    return traduireChabbat(env, vendredi, deja.fr);
+  }
 
   // 1. Les données réelles, par les mêmes handlers que les tools MCP.
   const [calendrier, date, ...zmanim] = await Promise.all([
@@ -174,7 +245,10 @@ export async function genererChabbat(
     .map((t) => ({ name: t.name, description: t.description || t.name, input_schema: t.inputSchema }));
   const system = `${CONSIGNES}\n\n# Gabarit (semaine précédente, structure et ton à reproduire, contenu à renouveler)\n\n${GABARIT}`;
   const messages: any[] = [{ role: "user", content: `Données du jour (calendriers Sefaria, date hébraïque, zmanim de Chabbat) :\n${donnees}\n\nLis la haftara, puis rédige le message de cette semaine.` }];
-  const TOURS_LECTURE = 5;
+  // Trois lectures suffisent : la haftara, et au plus deux compléments. Au-delà,
+  // on dépensait du temps que la promesse n'a pas, et c'est ce temps qui
+  // manquait ensuite pour écrire en base.
+  const TOURS_LECTURE = 3;
   const textes = (content: any[]) =>
     content.filter((b) => b.type === "text").map((b) => b.text).join("\n").trim();
   let fr = "";
@@ -226,7 +300,7 @@ export async function genererChabbat(
       if (fr) messages.push({ role: "assistant", content: fr });
       messages.push({ role: "user", content: relance });
     }
-    const data = await appelClaude(env, system, messages);
+    const data = await appelClaude(env, system, messages, toolDefs, 2500, true);
     stop = `${stop}>${data.stop_reason || ""}`;
     tours += 1;
     fr = textes(data.content || []);
@@ -241,35 +315,19 @@ export async function genererChabbat(
     };
   }
 
-  // 3. Traductions anglaise et hébraïque du même message.
-  const trData = await appelClaude(
-    env,
-    `Tu traduis un message WhatsApp de Chabbat. Rends deux versions complètes du message fourni :
-- entre <EN> et </EN> : anglais naturel, translittération anglaise usuelle (Shabbat, parashah, Rashi…), liens mamash-ia.com/en/daily et mamash-ia.com/en/question, ligne Instagram conservée telle quelle (instagram.com/mamash_ia), « *Shabbat shalom!* ✨ » final ;
-- entre <HE> et </HE> : hébreu israélien soigné (pas de calque), les versets cités le sont dans leur texte original, liens mamash-ia.com/he/daily et mamash-ia.com/he/question, ligne Instagram conservée telle quelle (instagram.com/mamash_ia), « *שבת שלום!* ✨ » final.
-Conserve la structure, les *gras* WhatsApp et les émojis-repères de début de ligne. Réponds par les deux blocs seuls.`,
-    [{ role: "user", content: fr }],
-    undefined,
-    6000
-  );
-  const trText = (trData.content || []).filter((b: any) => b.type === "text").map((b: any) => b.text).join("\n");
-  // Analyse tolérante : si une balise fermante manque (réponse tronquée), on
-  // prend jusqu'à la balise suivante ou la fin, le message doit rester valide
-  // (présence du « Chabbat chalom » final de chaque langue).
-  const extraire = (tag: string): string => {
-    const m = trText.match(new RegExp(`<${tag}>([\\s\\S]*?)(?:</${tag}>|<(?:EN|HE)>|$)`));
-    return m?.[1]?.trim() || "";
-  };
-  const en = nettoyerWhatsApp(extraire("EN"));
-  const he = nettoyerWhatsApp(extraire("HE"));
-  if (!/shabbat\s+shalom/i.test(en) || !he.includes("שבת שלום")) {
-    return { vendredi, ok: false, detail: `traductions invalides (stop: ${trData.stop_reason}, en: ${en.length}, he: ${he.length})` };
-  }
+  // 3. On enregistre le français MAINTENANT, avant de traduire.
+  //
+  // La composition et les deux traductions tenaient dans une seule promesse :
+  // si la fin était coupée, rien n'était écrit, et la page gardait le message
+  // de la semaine précédente. C'est ce qui s'est produit le 2 octobre 2026.
+  // Désormais chaque étape qui aboutit laisse sa trace : le français d'abord,
+  // les traductions ensuite, en mise à jour de la même ligne.
+  await env.STATS_DB.prepare(
+    `INSERT INTO chabbat (vendredi, fr, en, he, ts) VALUES (?1, ?2, '', '', ?3)
+     ON CONFLICT(vendredi) DO UPDATE SET fr = excluded.fr, ts = excluded.ts`,
+  ).bind(vendredi, fr, new Date().toISOString()).run();
 
-  await env.STATS_DB.prepare(`INSERT OR REPLACE INTO chabbat (vendredi, fr, en, he, ts) VALUES (?1, ?2, ?3, ?4, ?5)`)
-    .bind(vendredi, fr, en, he, new Date().toISOString())
-    .run();
-  return { vendredi, ok: true };
+  return traduireChabbat(env, vendredi, fr);
 }
 
 
