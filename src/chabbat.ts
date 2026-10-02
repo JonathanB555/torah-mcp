@@ -81,8 +81,20 @@ Règles absolues :
 /** Un tour d'API. `sansOutils` garde la déclaration des outils, que l'API
  *  exige dès qu'un bloc tool_use figure dans la conversation, tout en
  *  interdisant un nouvel appel : c'est ainsi qu'on force la rédaction. */
+/** Le budget de sortie, et pourquoi il est si large.
+ *
+ *  Le modèle émet des blocs « thinking » avant d'écrire, et ces jetons se
+ *  paient sur max_tokens. À 2500, le tour de rédaction voyait sa réflexion
+ *  consommer tout le budget : l'API rendait stop_reason « max_tokens » et pas
+ *  un seul bloc de texte, si bien que la page de Chabbat est restée sur le
+ *  message de la semaine précédente du 28 septembre au 2 octobre 2026. La
+ *  facturation étant au jeton réellement produit, un plafond large ne coûte
+ *  rien de plus : il évite seulement d'être coupé au mauvais moment.
+ */
+const JETONS_SORTIE = 8000;
+
 async function appelClaude(
-  env: Env, system: string, messages: any[], tools?: any[], maxTokens = 2500,
+  env: Env, system: string, messages: any[], tools?: any[], maxTokens = JETONS_SORTIE,
   sansOutils = false,
 ): Promise<any> {
   const resp = await fetch(ANTHROPIC_URL, {
@@ -188,7 +200,7 @@ async function traduireChabbat(
 Conserve la structure, les *gras* WhatsApp et les émojis-repères de début de ligne. Réponds par les deux blocs seuls.`,
     [{ role: "user", content: fr }],
     undefined,
-    6000
+    JETONS_SORTIE
   );
   const trText = (trData.content || []).filter((b: any) => b.type === "text").map((b: any) => b.text).join("\n");
   // Analyse tolérante : si une balise fermante manque (réponse tronquée), on
@@ -300,7 +312,7 @@ export async function genererChabbat(
       if (fr) messages.push({ role: "assistant", content: fr });
       messages.push({ role: "user", content: relance });
     }
-    const data = await appelClaude(env, system, messages, toolDefs, 2500, true);
+    const data = await appelClaude(env, system, messages, toolDefs, JETONS_SORTIE, true);
     stop = `${stop}>${data.stop_reason || ""}`;
     tours += 1;
     fr = textes(data.content || []);
