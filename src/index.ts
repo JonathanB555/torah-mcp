@@ -468,19 +468,16 @@ export default {
         case "/install": return html(installHtml(lang));
         case "/privacy": return html(privacyHtml(lang));
         case "/daily": return html(await renderDaily(env, lang), { "Cache-Control": "public, max-age=900" });
-        case "/chabbat": {
-          // Filet de sécurité : si le déclencheur hebdomadaire a été manqué,
-          // la première visite de la semaine relance la composition en fond.
-          // La garde siAbsent empêche deux visiteurs de la lancer deux fois.
-          if (!(await chabbatAJour(env))) {
-            ctx.waitUntil(
-              genererChabbat(env, { siAbsent: true })
-                .then((r) => journaliserTache(env, "chabbat", "page", r.ok, r.detail ?? r.vendredi))
-                .catch((e) => journaliserTache(env, "chabbat", "page", false, String(e?.message || e))),
-            );
-          }
+        case "/chabbat":
+          // La page ne compose plus. Elle en a été chargée le 28 septembre,
+          // comme filet de sécurité, et c'était une erreur : la composition
+          // demande environ 75 s, bien plus que ne vit une promesse confiée à
+          // waitUntil après la réponse. Elle était donc tuée chaque fois, sans
+          // rien écrire ni journaliser, en payant les jetons déjà produits.
+          // Le rattrapage appartient aux crons, qui ont le temps : voir les
+          // déclencheurs horaires du vendredi dans wrangler.jsonc. La page, de
+          // son côté, dit honnêtement quand son message n'est pas de la semaine.
           return html(await chabbatPage(env, lang));
-        }
         case "/chiourim": return html(await chiourimPage(env, lang), { "Cache-Control": "public, max-age=3600" });
       }
       if (url.pathname === "/og.png") {

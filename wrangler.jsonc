@@ -12,7 +12,7 @@
 	// Deux tirs plutôt qu'un : le vendredi 11 septembre a été manqué en
 	// silence et la page est restée douze jours en arrière. Le second
 	// passage ne refait rien si le premier a réussi (garde siAbsent).
-	"triggers": { "crons": ["0 5 * * FRI", "0 10 * * FRI", "0 15 * * THU"] },
+	"triggers": { "crons": ["0 15 * * THU", "0 5-16 * * FRI"] },
 	"upload_source_maps": true,
 
 	// URL canonique : torah-mcp.com (domaine custom Cloudflare). L'adresse

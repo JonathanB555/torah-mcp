@@ -28,7 +28,7 @@ const GABARIT = `🕯️ *Chabbat Ki Tétsé* · כי תצא
 📍 *Marseille* 20h14 · 21h16
 📍 *Genève* 20h16 · 21h20
 
-📖 *Devarim 21, 10 – 25, 19*
+📖 *Devarim 21, 10 à 25, 19*
 
 La paracha la plus riche de la Torah en mitsvot. Et regardez lesquelles : rendre un objet perdu, relever l'âne qui plie, poser une rambarde sur son toit, payer l'ouvrier le jour même.
 
@@ -55,8 +55,16 @@ Règles absolues :
   (ses thèmes connus) peut être évoqué sans citation textuelle.
 - Jamais de tiret cadratin (\u2014) ni de tiret demi-cadratin (\u2013). Une virgule,
   un deux-points ou un point, selon le sens.
+- JAMAIS d'antithèse. C'est la tournure qui fait entendre la machine, et elle est
+  interdite sous toutes ses formes : « ce n'est pas X, c'est Y », « non pas X mais
+  Y », « il ne s'agit pas de X mais de Y », « X n'est pas A, il est B », et les
+  phrases jumelles « Pas X. Y. ». Ne pose jamais une idée en niant son contraire :
+  affirme-la directement. Au lieu de « la joie n'est pas dans le spectacle, elle
+  est dans la présence », écrire « la joie tient à la présence ».
 - Translittération française séfarade : ch (pas sh), t (pas th), h, ts, k
   Chabbat, paracha, mitsvot, Houlin, Tétsé.
+  Cela vaut aussi pour le titre, nom de fête compris : Chemini Atseret et non
+  Shmini Atzeret, Souccot et non Sukkot, Pessah et non Pesach.
 - Un seul fil et une vraie morale : choisis UNE idée de la paracha, développe-la,
   et fais servir la haftara (et le daf yomi seulement si le lien est réel et
   naturel, sinon ne le mentionne pas) à cette même idée. Pas de catalogue.
@@ -128,6 +136,8 @@ function nettoyerWhatsApp(t: string): string {
   const debut = t.indexOf("🕯");
   if (debut > 0) t = t.slice(debut);
   return t
+    .replace(/(\d)\s*[\u2013\u2014]\s*(\d)/g, "$1 à $2")
+    .replace(/\s*[\u2013\u2014]\s*/g, ", ")
     .replace(/\*\*+/g, "*")
     .replace(/^#+\s*/gm, "")
     .replace(/\[([^\]]+)\]\((https?:[^\s)]+)\)/g, "$1 : $2")
