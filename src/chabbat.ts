@@ -78,6 +78,18 @@ Règles absolues :
   🕯️ (titre), 📅 (date), 🌇/✨ (entrée/sortie), 📍 (ville), 📖 (référence),
   💡 (la morale, sur sa propre ligne), 📚, 💬 et 🎬 (les trois liens), ✨ (final).
   Jamais d'émoji au milieu d'une phrase.
+- HORAIRES, cas de la fête qui enchaîne. L'heure de sortie fournie par les
+  données est celle du samedi soir. Quand le Chabbat est lui-même un jour de
+  fête suivi d'un SECOND jour de fête le dimanche (Chemini Atseret suivi de
+  Simhat Torah, premier jour de Souccot ou de Pessah suivi du deuxième, premier
+  jour de Roch Hachana suivi du second), il n'y a pas de sortie le samedi soir :
+  on allume pour le second jour et la sortie est le dimanche soir. Dans ce cas,
+  n'écris PAS d'heure de sortie. Remplace l'en-tête « 🌇 Entrée · ✨ Sortie » par
+  « 🌇 Entrée », ne donne qu'une heure par ville, et ajoute juste après le bloc
+  des villes une ligne commençant par ✨ qui dit que la fête se poursuit le
+  dimanche, la sortie ayant lieu le dimanche soir. Le calendrier fourni dans les
+  données te dit quel jour suit. En cas de doute, abstiens-toi de donner une
+  heure de sortie plutôt que d'en donner une fausse.
 - Reprends EXACTEMENT la structure du gabarit ci-dessous : en-tête (nom de la
   paracha translittéré + nom hébreu), date hébraïque et dates civiles, horaires
   des trois villes, corps (référence de la paracha puis le développement),
@@ -131,13 +143,21 @@ function messageComplet(t: string): boolean {
 
 /** Garde la mise en forme WhatsApp utile, retire le reste (Markdown, émojis hors charte). */
 const EMOJIS_CHARTE = new Set(["🕯", "📅", "🌇", "✨", "📍", "📖", "💡", "📚", "💬", "🎬"]);
-function nettoyerWhatsApp(t: string): string {
+function nettoyerWhatsApp(t: string, langue: Lang = "fr"): string {
   // Tout préambule avant la ligne-titre 🕯️ saute (« Voici le message : »…).
   const debut = t.indexOf("🕯");
   if (debut > 0) t = t.slice(debut);
   return t
-    .replace(/(\d)\s*[\u2013\u2014]\s*(\d)/g, "$1 à $2")
-    .replace(/\s*[\u2013\u2014]\s*/g, ", ")
+    .split("\n")
+    .map((ligne) =>
+      /[\u2013\u2014]/.test(ligne)
+        ? ligne.startsWith("📖")
+          // La ligne de référence porte une fourchette de versets : le tiret
+          // s'y remplace par un mot, dans la langue de la ligne.
+          ? ligne.replace(/\s*[\u2013\u2014]\s*/g, { fr: " à ", en: " to ", he: " עד " }[langue])
+          : ligne.replace(/\s*[\u2013\u2014]\s*/g, ", ")
+        : ligne)
+    .join("\n")
     .replace(/\*\*+/g, "*")
     .replace(/^#+\s*/gm, "")
     .replace(/\[([^\]]+)\]\((https?:[^\s)]+)\)/g, "$1 : $2")
@@ -205,8 +225,8 @@ async function traduireChabbat(
   const trData = await appelClaude(
     env,
     `Tu traduis un message WhatsApp de Chabbat. Rends deux versions complètes du message fourni :
-- entre <EN> et </EN> : anglais naturel, translittération anglaise usuelle (Shabbat, parashah, Rashi…), liens mamash-ia.com/en/daily et mamash-ia.com/en/question, ligne Instagram conservée telle quelle (instagram.com/mamash_ia), « *Shabbat shalom!* ✨ » final ;
-- entre <HE> et </HE> : hébreu israélien soigné (pas de calque), les versets cités le sont dans leur texte original, liens mamash-ia.com/he/daily et mamash-ia.com/he/question, ligne Instagram conservée telle quelle (instagram.com/mamash_ia), « *שבת שלום!* ✨ » final.
+- entre <EN> et </EN> : anglais naturel, translittération anglaise usuelle (Shabbat, parashah, Rashi…), la fourchette de versets avec « to » et non « à » (Devarim 14:22 to 16:17), liens mamash-ia.com/en/daily et mamash-ia.com/en/question, ligne Instagram conservée telle quelle (instagram.com/mamash_ia), « *Shabbat shalom!* ✨ » final ;
+- entre <HE> et </HE> : hébreu israélien soigné (pas de calque), les versets cités le sont dans leur texte original, la fourchette de versets avec « עד » et non une virgule, liens mamash-ia.com/he/daily et mamash-ia.com/he/question, ligne Instagram conservée telle quelle (instagram.com/mamash_ia), « *שבת שלום!* ✨ » final.
 Conserve la structure, les *gras* WhatsApp et les émojis-repères de début de ligne. Réponds par les deux blocs seuls.`,
     [{ role: "user", content: fr }],
     undefined,
@@ -220,8 +240,8 @@ Conserve la structure, les *gras* WhatsApp et les émojis-repères de début de 
     const m = trText.match(new RegExp(`<${tag}>([\\s\\S]*?)(?:</${tag}>|<(?:EN|HE)>|$)`));
     return m?.[1]?.trim() || "";
   };
-  const en = nettoyerWhatsApp(extraire("EN"));
-  const he = nettoyerWhatsApp(extraire("HE"));
+  const en = nettoyerWhatsApp(extraire("EN"), "en");
+  const he = nettoyerWhatsApp(extraire("HE"), "he");
   if (!/shabbat\s+shalom/i.test(en) || !he.includes("שבת שלום")) {
     // Le français est en base et la page le sert dans les trois langues : on
     // signale l'échec partiel sans effacer ce qui a réussi.
