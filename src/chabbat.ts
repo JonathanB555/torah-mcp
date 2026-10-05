@@ -175,6 +175,18 @@ export function vendrediCourant(now = new Date()): string {
   return d.toISOString().slice(0, 10);
 }
 
+/** La composition de la semaine est-elle attendue à cet instant ?
+ *
+ *  Le premier déclencheur tombe le jeudi à 15 h UTC, soit neuf heures avant le
+ *  vendredi courant. Avant cette heure, servir le message du Chabbat passé est
+ *  le fonctionnement normal : un lundi, rien ne manque. C'est seulement
+ *  au-delà qu'une absence est un retard, et qu'il faut le dire au lecteur.
+ */
+export function compositionAttendue(now = new Date()): boolean {
+  const vendredi = Date.parse(`${vendrediCourant(now)}T00:00:00Z`);
+  return now.getTime() >= vendredi - 9 * 3_600_000;
+}
+
 /** Trace d'une tâche planifiée, pour que l'échec cesse d'être invisible. */
 export async function journaliserTache(
   env: Env, tache: string, origine: string, ok: boolean, detail?: string,
@@ -532,7 +544,12 @@ export async function chabbatPage(env: Env, lang: Lang): Promise<string> {
   // Le message affiché est-il bien celui de la semaine ? Tant que la réponse
   // n'était pas écrite ici, un échec de composition passait pour du contenu
   // à jour, et c'est ainsi que la page a servi du Chabbat Souccot un 2 octobre.
-  const enRetard = !!row && row.vendredi !== vendrediCourant();
+  //
+  // L'avis ne paraît qu'une fois la composition attendue. Sans cette garde il
+  // s'affichait du samedi soir au jeudi, en annonçant une composition
+  // « dans quelques minutes » qui n'était pas due : le lecteur du lundi voyait
+  // un avertissement pour un message parfaitement à jour.
+  const enRetard = !!row && row.vendredi !== vendrediCourant() && compositionAttendue();
   const indices = gifsDeLaSemaine(row?.vendredi || vendrediCourant());
   // Aperçu du message pour la carte du composeur (sans les * de gras WhatsApp)
   const brut = texte.replace(/\*/g, "");
