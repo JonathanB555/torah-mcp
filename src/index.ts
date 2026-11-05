@@ -24,7 +24,7 @@ import { repondreQuestion } from "./question";
 import { questionHtml } from "./question-page";
 import { parseLang } from "./i18n";
 import { journaliser, pageStats, csvStats, journaliserFeuille, journaliserAppel} from "./stats";
-import { genererChabbat, chabbatPage, servirGif, chabbatAJour, journaliserTache } from "./chabbat";
+import { genererChabbat, chabbatPage, servirGif, chabbatAJour, journaliserTache, etatChabbat } from "./chabbat";
 import { chiourimPage, rafraichirChiourim, chiourSemaine } from "./chiourim";
 import { limoudTools, limoudHandlers } from "./limoud";
 import { renderDaily, outilsHtml } from "./pages";
@@ -501,6 +501,7 @@ export default {
         server: { name: env.SERVER_NAME, version: env.SERVER_VERSION },
         tools_count: allTools.length,
         auth: (env.BEARER_TOKENS || "").trim() ? "invitation" : "public",
+        chabbat: await etatChabbat(env),
       });
     }
 

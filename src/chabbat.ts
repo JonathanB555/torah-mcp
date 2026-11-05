@@ -287,6 +287,45 @@ Conserve la structure, les *gras* WhatsApp et les émojis-repères de début de 
   return { vendredi, ok: true };
 }
 
+/** L'état du message de la semaine, en clair, pour /health.
+ *
+ *  Né d'un besoin concret : savoir si la composition hebdomadaire a eu lieu
+ *  sans ouvrir la base ni manier d'identifiants. La panne de septembre 2026 a
+ *  duré cinq jours faute d'un endroit où la lire.
+ */
+export async function etatChabbat(env: Env): Promise<Record<string, unknown>> {
+  const vendredi = vendrediCourant();
+  const attendu = compositionAttendue();
+  try {
+    const l = await ligneCourante(env);
+    const titre = l?.fr?.split("\n")[0]?.replace(/[*]/g, "").replace(/^\s*🕯️?\s*/, "").trim();
+    const date = l?.fr?.split("\n")[1]?.replace(/^\s*📅\s*/, "").trim();
+    const echec: any = env.STATS_DB
+      ? await env.STATS_DB
+          .prepare(`SELECT ts, origine, detail FROM taches
+                    WHERE tache = 'chabbat' AND ok = 0 ORDER BY id DESC LIMIT 1`)
+          .first()
+      : null;
+    const ts: any = env.STATS_DB
+      ? await env.STATS_DB.prepare(`SELECT ts FROM chabbat WHERE vendredi = ?1`).bind(vendredi).first()
+      : null;
+    const complet = !!l && messageComplet(l.fr) && !!l.en && !!l.he;
+    return {
+      vendredi_vise: vendredi,
+      compose: complet,
+      composition_attendue: attendu,
+      en_retard: attendu && !complet,
+      compose_le: ts?.ts ?? null,
+      titre: titre ?? null,
+      date_annoncee: date ?? null,
+      langues: l ? { fr: l.fr.length, en: l.en.length, he: l.he.length } : null,
+      dernier_echec: echec ? { ts: echec.ts, origine: echec.origine, detail: echec.detail } : null,
+    };
+  } catch (e: any) {
+    return { vendredi_vise: vendredi, composition_attendue: attendu, erreur: String(e?.message || e) };
+  }
+}
+
 export async function genererChabbat(
   env: Env, opts: { siAbsent?: boolean } = {},
 ): Promise<{ vendredi: string; ok: boolean; detail?: string }> {
