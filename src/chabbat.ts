@@ -1,5 +1,5 @@
 /**
- * Le WhatsApp de Chabbat, généré chaque vendredi matin (cron), publié sur
+ * Le WhatsApp de Chabbat, généré chaque mercredi après-midi (cron), publié sur
  * /chabbat en trois langues avec [ Copier ] et [ Partager sur WhatsApp ].
  *
  * Génération : les données réelles (paracha, haftara, daf yomi, zmanim
@@ -21,7 +21,7 @@ const DEFAULT_MODEL = "claude-sonnet-5";
 const VILLES = ["paris", "marseille", "geneve"] as const;
 
 const GABARIT = `🕯️ *Chabbat Ki Tétsé* · כי תצא
-📅 8 Eloul 5786 · 21-22 août
+📅 9 Eloul 5786 · 21-22 août
 
 🌇 Entrée · ✨ Sortie
 📍 *Paris* 20h36 · 21h44
@@ -78,6 +78,13 @@ Règles absolues :
   🕯️ (titre), 📅 (date), 🌇/✨ (entrée/sortie), 📍 (ville), 📖 (référence),
   💡 (la morale, sur sa propre ligne), 📚, 💬 et 🎬 (les trois liens), ✨ (final).
   Jamais d'émoji au milieu d'une phrase.
+- LIGNE DE DATE. La date hébraïque à écrire est celle du SAMEDI, fournie dans
+  les données sous date_hebraique_du_samedi, et jamais celle du jour où tu
+  rédiges. Chabbat entre au coucher du soleil le vendredi, donc le Chabbat tout
+  entier tombe sur cette date hébraïque. Les dates civiles qui suivent sont
+  celles du vendredi et du samedi, données sous chabbat.vendredi et
+  chabbat.samedi (et jusqu'au dimanche quand un second jour de fête enchaîne).
+  Ne recalcule jamais ces dates toi-même.
 - HORAIRES, cas de la fête qui enchaîne. L'heure de sortie fournie par les
   données est celle du samedi soir. Quand le Chabbat est lui-même un jour de
   fête suivi d'un SECOND jour de fête le dimanche (Chemini Atseret suivi de
@@ -175,16 +182,25 @@ export function vendrediCourant(now = new Date()): string {
   return d.toISOString().slice(0, 10);
 }
 
+/** Combien d'heures avant le vendredi tombe le premier déclencheur.
+ *
+ *  Jonathan veut le message disponible dès le mercredi après-midi, pour avoir
+ *  le temps de le relire et de le faire circuler. Soixante heures avant le
+ *  vendredi à 0 h UTC, c'est le mercredi à 12 h UTC, soit 13 h à Paris en
+ *  hiver et 14 h en été. La valeur doit rester accordée au cron de
+ *  wrangler.jsonc, « 0 12 * * WED ».
+ */
+const AVANCE_H = 60;
+
 /** La composition de la semaine est-elle attendue à cet instant ?
  *
- *  Le premier déclencheur tombe le jeudi à 15 h UTC, soit neuf heures avant le
- *  vendredi courant. Avant cette heure, servir le message du Chabbat passé est
- *  le fonctionnement normal : un lundi, rien ne manque. C'est seulement
- *  au-delà qu'une absence est un retard, et qu'il faut le dire au lecteur.
+ *  Avant le premier déclencheur, servir le message du Chabbat passé est le
+ *  fonctionnement normal : un lundi, rien ne manque. C'est seulement au-delà
+ *  qu'une absence est un retard, et qu'il faut le dire au lecteur.
  */
 export function compositionAttendue(now = new Date()): boolean {
   const vendredi = Date.parse(`${vendrediCourant(now)}T00:00:00Z`);
-  return now.getTime() >= vendredi - 9 * 3_600_000;
+  return now.getTime() >= vendredi - AVANCE_H * 3_600_000;
 }
 
 /** Trace d'une tâche planifiée, pour que l'échec cesse d'être invisible. */
@@ -286,12 +302,27 @@ export async function genererChabbat(
   }
 
   // 1. Les données réelles, par les mêmes handlers que les tools MCP.
+  //
+  // Les deux calendriers sont interrogés sur la date du SAMEDI, pas sur
+  // « aujourd'hui ». Sans cela ils répondaient pour le jour de la composition,
+  // le jeudi le plus souvent, et la ligne de date du message annonçait le
+  // 18 Cheshvan pour le Chabbat des 30 et 31 octobre 2026, qui étaient les
+  // 19 et 20. Chabbat entre au coucher du soleil : tout le Chabbat tombe sur
+  // la date hébraïque du samedi, c'est donc elle qu'il faut annoncer.
+  const samedi = new Date(`${vendredi}T00:00:00Z`);
+  samedi.setUTCDate(samedi.getUTCDate() + 1);
+  const samediISO = samedi.toISOString().slice(0, 10);
   const [calendrier, date, ...zmanim] = await Promise.all([
-    sefariaHandlers.sefaria_calendar({}, env),
-    limoudHandlers.date_hebraique({}, env),
+    sefariaHandlers.sefaria_calendar({ date: samediISO }, env),
+    limoudHandlers.date_hebraique({ date: samediISO }, env),
     ...VILLES.map((v) => limoudHandlers.zmanim({ ville: v, chabbat: true }, env)),
   ]);
-  const donnees = JSON.stringify({ calendrier, date_hebraique: date, zmanim: Object.fromEntries(VILLES.map((v, i) => [v, zmanim[i]])) });
+  const donnees = JSON.stringify({
+    chabbat: { vendredi, samedi: samediISO },
+    calendrier,
+    date_hebraique_du_samedi: date,
+    zmanim: Object.fromEntries(VILLES.map((v, i) => [v, zmanim[i]])),
+  });
 
   // 2. Composition française, avec lecture réelle (sefaria_text, 4 tours max).
   const toolDefs = sefariaTools
@@ -445,7 +476,7 @@ const T = {
     title: "Le WhatsApp de Chabbat · Mamash IA",
     desc: "Le message de Chabbat de la semaine (paracha, horaires, un fil et une morale), prêt à copier dans WhatsApp.",
     h1: 'Le <strong>WhatsApp</strong> de Chabbat.',
-    chapeau: "Chaque vendredi matin, le site compose le message de la semaine : la paracha, les horaires de Paris, Marseille et Genève, un fil, une morale : la haftara réellement lue avant d'être citée. Copiez, envoyez.",
+    chapeau: "Chaque mercredi après-midi, le site compose le message du Chabbat qui vient : la paracha, les horaires de Paris, Marseille et Genève, un fil, une morale : la haftara réellement lue avant d'être citée. Copiez, envoyez.",
     copier: "Copier le message",
     partager: "Partager sur WhatsApp",
     copie: "Copié.",
@@ -464,7 +495,7 @@ const T = {
     gifCredit: "GIF via Tenor.",
     colle: "Message copié, collez-le dans la conversation (Cmd+V ou Ctrl+V).",
     ouvert: "WhatsApp Web s'ouvre avec le message déjà écrit, choisissez le destinataire. (Il est aussi copié : Cmd+V si besoin.)",
-    vide: "Le premier message sera composé vendredi matin, revenez alors, ou recevez-le en installant Torah MCP dans Claude.",
+    vide: "Le premier message sera composé mercredi après-midi, revenez alors, ou recevez-le en installant Torah MCP dans Claude.",
     genere: "Composé le",
     retard: "Ce message est celui du Chabbat précédent. Celui de cette semaine est en cours de composition, revenez dans quelques minutes.",
     nav: { question: "Une question", daf: "Le daf", outils: "Outils", install: "Installer le MCP" },
@@ -474,7 +505,7 @@ const T = {
     title: "The Shabbat WhatsApp · Mamash IA",
     desc: "This week's Shabbat message (parashah, candle-lighting times, one thread and one lesson), ready to paste into WhatsApp.",
     h1: 'The Shabbat <strong>WhatsApp</strong>.',
-    chapeau: "Every Friday morning the site composes the week's message: the parashah, times for Paris, Marseille and Geneva, one thread, one lesson : the haftarah actually read before being quoted. Copy it, send it.",
+    chapeau: "Every Wednesday afternoon the site composes the coming Shabbat's message: the parashah, times for Paris, Marseille and Geneva, one thread, one lesson : the haftarah actually read before being quoted. Copy it, send it.",
     copier: "Copy the message",
     partager: "Share on WhatsApp",
     copie: "Copied.",
@@ -493,7 +524,7 @@ const T = {
     gifCredit: "GIFs via Tenor.",
     colle: "Message copied, paste it into the conversation (Cmd+V or Ctrl+V).",
     ouvert: "WhatsApp Web opens with the message already written, just pick the recipient. (It is copied too: Cmd+V if needed.)",
-    vide: "The first message will be composed on Friday morning, come back then, or get it by installing Torah MCP in Claude.",
+    vide: "The first message will be composed on Wednesday afternoon, come back then, or get it by installing Torah MCP in Claude.",
     genere: "Composed on",
     retard: "This is the previous Shabbat\u2019s message. This week\u2019s is being composed, come back in a few minutes.",
     nav: { question: "Ask a question", daf: "The daf", outils: "Tools", install: "Install the MCP" },
@@ -503,7 +534,7 @@ const T = {
     title: "הוואטסאפ של שבת · Mamash IA",
     desc: "מסר השבת של השבוע (פרשה, זמני הדלקת נרות, חוט אחד ומוסר אחד) מוכן להדבקה בוואטסאפ.",
     h1: 'הוואטסאפ של <strong>שבת</strong>.',
-    chapeau: "בכל יום שישי בבוקר האתר מחבר את מסר השבוע: הפרשה, זמני פריז, מרסיי וז'נבה, חוט אחד, מוסר אחד : ההפטרה נקראת באמת לפני שהיא מצוטטת. העתיקו ושלחו.",
+    chapeau: "בכל יום רביעי אחר הצהריים האתר מחבר את המסר של השבת הקרובה: הפרשה, זמני פריז, מרסיי וז'נבה, חוט אחד, מוסר אחד : ההפטרה נקראת באמת לפני שהיא מצוטטת. העתיקו ושלחו.",
     copier: "העתקת המסר",
     partager: "שיתוף בוואטסאפ",
     copie: "הועתק.",
@@ -522,7 +553,7 @@ const T = {
     gifCredit: "גיפים דרך Tenor.",
     colle: "ההודעה הועתקה, הדביקו אותה בשיחה (Cmd+V או Ctrl+V).",
     ouvert: "וואטסאפ ווב נפתח וההודעה כבר כתובה, בחרו נמען. (היא גם הועתקה: Cmd+V במידת הצורך.)",
-    vide: "המסר הראשון יחובר ביום שישי בבוקר, חזרו אז, או קבלו אותו בהתקנת Torah MCP ב-Claude.",
+    vide: "המסר הראשון יחובר ביום רביעי אחר הצהריים, חזרו אז, או קבלו אותו בהתקנת Torah MCP ב-Claude.",
     genere: "חובר בתאריך",
     retard: "זהו המסר של שבת שעברה. המסר של השבוע מתחבר כעת, חזרו בעוד כמה דקות.",
     nav: { question: "שאלה", daf: "הדף", outils: "כלים", install: "התקנת ה-MCP" },
