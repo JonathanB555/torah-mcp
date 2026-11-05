@@ -158,11 +158,13 @@ function nettoyerWhatsApp(t: string, langue: Lang = "fr"): string {
     .split("\n")
     .map((ligne) =>
       /[\u2013\u2014]/.test(ligne)
-        ? ligne.startsWith("📖")
+        ? ligne.startsWith("📅")
+          ? ligne.replace(/\s*[\u2013\u2014]\s*/g, "-")
+          : ligne.startsWith("📖")
           // La ligne de référence porte une fourchette de versets : le tiret
           // s'y remplace par un mot, dans la langue de la ligne.
           ? ligne.replace(/\s*[\u2013\u2014]\s*/g, { fr: " à ", en: " to ", he: " עד " }[langue])
-          : ligne.replace(/\s*[\u2013\u2014]\s*/g, ", ")
+            : ligne.replace(/\s*[\u2013\u2014]\s*/g, ", ")
         : ligne)
     .join("\n")
     .replace(/\*\*+/g, "*")
@@ -254,7 +256,7 @@ async function traduireChabbat(
     env,
     `Tu traduis un message WhatsApp de Chabbat. Rends deux versions complètes du message fourni :
 - entre <EN> et </EN> : anglais naturel, translittération anglaise usuelle (Shabbat, parashah, Rashi…), la fourchette de versets avec « to » et non « à » (Devarim 14:22 to 16:17), liens mamash-ia.com/en/daily et mamash-ia.com/en/question, ligne Instagram conservée telle quelle (instagram.com/mamash_ia), « *Shabbat shalom!* ✨ » final ;
-- entre <HE> et </HE> : hébreu israélien soigné (pas de calque), les versets cités le sont dans leur texte original, la fourchette de versets avec « עד » et non une virgule, liens mamash-ia.com/he/daily et mamash-ia.com/he/question, ligne Instagram conservée telle quelle (instagram.com/mamash_ia), « *שבת שלום!* ✨ » final.
+- entre <HE> et </HE> : hébreu israélien soigné (pas de calque), titre sans redite, « *שבת חיי שרה* » et non « *שבת חיי שרה* · חיי שרה », le nom de la paracha n'étant écrit qu'une fois puisque l'hébreu et la translittération se confondent, les versets cités le sont dans leur texte original, la fourchette de versets avec « עד » et non une virgule, liens mamash-ia.com/he/daily et mamash-ia.com/he/question, ligne Instagram conservée telle quelle (instagram.com/mamash_ia), « *שבת שלום!* ✨ » final.
 Conserve la structure, les *gras* WhatsApp et les émojis-repères de début de ligne. Réponds par les deux blocs seuls.`,
     [{ role: "user", content: fr }],
     undefined,
