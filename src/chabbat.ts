@@ -300,11 +300,25 @@ export async function etatChabbat(env: Env): Promise<Record<string, unknown>> {
     const l = await ligneCourante(env);
     const titre = l?.fr?.split("\n")[0]?.replace(/[*]/g, "").replace(/^\s*🕯️?\s*/, "").trim();
     const date = l?.fr?.split("\n")[1]?.replace(/^\s*📅\s*/, "").trim();
-    const echec: any = env.STATS_DB
+    // Les échecs ne comptent qu'à partir du moment où la composition de CETTE
+    // semaine était attendue. Sans cette borne, /health remontait l'échec du
+    // 2 octobre des mois plus tard, ce qui donnait à croire à une panne en
+    // cours alors que le message du jour était écrit.
+    const depuis = new Date(
+      Date.parse(`${vendredi}T00:00:00Z`) - AVANCE_H * 3_600_000,
+    ).toISOString();
+    const echecs: any = env.STATS_DB
       ? await env.STATS_DB
+          .prepare(`SELECT COUNT(*) AS n, MAX(ts) AS ts FROM taches
+                    WHERE tache = 'chabbat' AND ok = 0 AND ts >= ?1`)
+          .bind(depuis).first()
+      : null;
+    const echec: any = echecs?.n
+      ? await env.STATS_DB!
           .prepare(`SELECT ts, origine, detail FROM taches
-                    WHERE tache = 'chabbat' AND ok = 0 ORDER BY id DESC LIMIT 1`)
-          .first()
+                    WHERE tache = 'chabbat' AND ok = 0 AND ts >= ?1
+                    ORDER BY id DESC LIMIT 1`)
+          .bind(depuis).first()
       : null;
     const ts: any = env.STATS_DB
       ? await env.STATS_DB.prepare(`SELECT ts FROM chabbat WHERE vendredi = ?1`).bind(vendredi).first()
@@ -319,6 +333,7 @@ export async function etatChabbat(env: Env): Promise<Record<string, unknown>> {
       titre: titre ?? null,
       date_annoncee: date ?? null,
       langues: l ? { fr: l.fr.length, en: l.en.length, he: l.he.length } : null,
+      echecs_cette_semaine: echecs?.n ?? null,
       dernier_echec: echec ? { ts: echec.ts, origine: echec.origine, detail: echec.detail } : null,
     };
   } catch (e: any) {
