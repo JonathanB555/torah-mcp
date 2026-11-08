@@ -26,6 +26,7 @@ import { parseLang } from "./i18n";
 import { journaliser, pageStats, csvStats, journaliserFeuille, journaliserAppel} from "./stats";
 import { genererChabbat, chabbatPage, servirGif, chabbatAJour, journaliserTache, etatChabbat } from "./chabbat";
 import { chiourimPage, rafraichirChiourim, chiourSemaine } from "./chiourim";
+import { etudeIndexHtml, etudePage } from "./etude";
 import { limoudTools, limoudHandlers } from "./limoud";
 import { renderDaily, outilsHtml } from "./pages";
 import { mielPage, VILLES_MIEL } from "./miel";
@@ -456,6 +457,14 @@ export default {
       const { lang, path } = parseLang(url.pathname);
       const html = (body: string, extra: Record<string, string> = {}) =>
         new Response(body, { headers: { "Content-Type": "text/html; charset=utf-8", "Content-Language": lang, ...extra, ...CORS_HEADERS } });
+      // Un dossier d'étude : /etude/<paracha>. Les PDF du même préfixe sont
+      // servis par les assets avant que le Worker ne soit appelé, ils ne
+      // passent donc jamais ici.
+      if (path.startsWith("/etude/")) {
+        const page = etudePage(lang, path.slice("/etude/".length));
+        if (page) return html(page, { "Cache-Control": "public, max-age=3600" });
+      }
+
       switch (path) {
         case "/": return html(await landingHtml(lang, env));
         case "/question": return html(questionHtml(lang));
@@ -479,6 +488,7 @@ export default {
           // son côté, dit honnêtement quand son message n'est pas de la semaine.
           return html(await chabbatPage(env, lang));
         case "/chiourim": return html(await chiourimPage(env, lang), { "Cache-Control": "public, max-age=3600" });
+        case "/etude": return html(etudeIndexHtml(lang), { "Cache-Control": "public, max-age=3600" });
       }
       if (url.pathname === "/og.png") {
         const bytes = Uint8Array.from(atob(OG_JPEG_BASE64), (c) => c.charCodeAt(0));

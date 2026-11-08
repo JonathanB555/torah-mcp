@@ -9,6 +9,7 @@
  */
 
 import type { Env } from "./sefaria";
+import { CHEMINS_ETUDE, nomsEtude } from "./etude";
 import { type Lang, href, altLinks, langSwitcher, htmlAttrs, colophon, t, suivre } from "./i18n";
 // Imports statiques : le module intégré cloudflare:email et mimetext ne
 // survivent pas à un import() dynamique dans le bundle du Worker.
@@ -29,6 +30,9 @@ const DESTINATAIRE = "jonathan@bensaid-avocats.fr";
 const PAGES_SITE = [
   "/", "/question", "/chabbat", "/miel", "/chiourim", "/daf", "/daily",
   "/outils", "/install", "/privacy", "/retour",
+  // Les dossiers d'étude : le rav Attal veut que chaque cours puisse recevoir
+  // une remarque, « pour qu'on trouve vraiment le juste milieu ».
+  ...CHEMINS_ETUDE,
 ];
 
 // ---------------------------------------------------------------------------
@@ -268,7 +272,9 @@ const NOMS_PAGES = {
 
 export function retourHtml(lang: Lang): string {
   const s = S[lang];
-  const noms = NOMS_PAGES[lang] as Record<string, string>;
+  // Les dossiers d'étude s'ajoutent aux pages fixes : ils naissent et
+  // s'accumulent, les écrire à la main ici reviendrait à les oublier.
+  const noms = { ...(NOMS_PAGES[lang] as Record<string, string>), ...nomsEtude(lang) };
   const options = Object.keys(noms)
     .map((p) => `<option value="${p}">${noms[p]}</option>`)
     .join("");

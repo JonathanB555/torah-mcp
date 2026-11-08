@@ -160,7 +160,7 @@ const T = {
     chaine: "Toute la chaîne sur YouTube",
     note: "Les vidéos sont hébergées par YouTube (lecture via youtube-nocookie.com, sans cookies avant le clic) : voir la",
     notePrivacy: "page confidentialité",
-    nav: { question: "Une question", daf: "Le daf", outils: "Outils", install: "Installer le MCP" },
+    nav: { etude: "L’étude", question: "Une question", daf: "Le daf", outils: "Outils", install: "Installer le MCP" },
     foot: { accueil: "Accueil", daily: "Limoud du jour", privacy: "Confidentialité" },
   },
   en: {
@@ -180,7 +180,7 @@ const T = {
     chaine: "The full channel on YouTube",
     note: "Videos are hosted by YouTube (played via youtube-nocookie.com, no cookies before you click) : see the",
     notePrivacy: "privacy page",
-    nav: { question: "Ask a question", daf: "The daf", outils: "Tools", install: "Install the MCP" },
+    nav: { etude: "The study", question: "Ask a question", daf: "The daf", outils: "Tools", install: "Install the MCP" },
     foot: { accueil: "Home", daily: "Today's learning", privacy: "Privacy" },
   },
   he: {
@@ -200,7 +200,7 @@ const T = {
     chaine: "הערוץ המלא ביוטיוב",
     note: "הסרטונים מתארחים ביוטיוב (ניגון דרך youtube-nocookie.com, ללא עוגיות לפני הלחיצה) : ראו את",
     notePrivacy: "עמוד הפרטיות",
-    nav: { question: "שאלה", daf: "הדף", outils: "כלים", install: "התקנת ה-MCP" },
+    nav: { etude: "הלימוד", question: "שאלה", daf: "הדף", outils: "כלים", install: "התקנת ה-MCP" },
     foot: { accueil: "עמוד הבית", daily: "הלימוד היומי", privacy: "פרטיות" },
   },
 } as const;
@@ -529,7 +529,7 @@ ${altLinks(lang, "/chiourim")}
 <main>
   <nav>
     <a class="wm" href="${href(lang, "/")}"><img src="/icon.png" alt="" width="34" height="34"><b>Mamash</b>&nbsp;IA</a>
-    <span class="r">${saisonMiel() ? `<a class="navmiel" href="${href(lang, "/miel")}">${t(lang, { fr: "La feuille de miel", en: "The honey sheet", he: "דף הדבש" })}</a>` : ""}<a href="${href(lang, "/question")}">${s.nav.question}</a><a href="${href(lang, "/daf")}">${s.nav.daf}</a><a href="${href(lang, "/outils")}">${s.nav.outils}</a><a href="${href(lang, "/install")}"><strong>${s.nav.install}</strong></a>${langSwitcher(lang, "/chiourim")}</span>
+    <span class="r">${saisonMiel() ? `<a class="navmiel" href="${href(lang, "/miel")}">${t(lang, { fr: "La feuille de miel", en: "The honey sheet", he: "דף הדבש" })}</a>` : ""}<a href="${href(lang, "/etude")}">${s.nav.etude}</a><a href="${href(lang, "/question")}">${s.nav.question}</a><a href="${href(lang, "/daf")}">${s.nav.daf}</a><a href="${href(lang, "/outils")}">${s.nav.outils}</a><a href="${href(lang, "/install")}"><strong>${s.nav.install}</strong></a>${langSwitcher(lang, "/chiourim")}</span>
   </nav>
   <img class="sceau" src="/icon.png" alt="">
   <h1>${s.h1}</h1>
