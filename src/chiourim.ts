@@ -208,7 +208,7 @@ const T = {
 const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const mins = (d: number) => (d ? Math.round(d / 60) : 0);
 
-interface RssEntry { id: string; t: string; date: string }
+interface RssEntry { id: string; t: string; date: string; court?: boolean }
 
 /** Certaines vidéos ont une date pour titre (« 9 août 2026 ») : inutilisables en vitrine. */
 const titreUtile = (t: string): boolean => !!t && !/^\d{1,2} [\p{L}]+ \d{4}$/u.test(t.trim());
@@ -227,30 +227,16 @@ async function fluxRecent(): Promise<RssEntry[]> {
         id: m[1].match(/<yt:videoId>([^<]*)<\/yt:videoId>/)?.[1] || "",
         t: (m[1].match(/<media:title>([^<]*)<\/media:title>/)?.[1] || "").replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#39;/g, "'"),
         date: m[1].match(/<published>([^<]*)<\/published>/)?.[1]?.slice(0, 10) || "",
+        // YouTube déclare lui-même les shorts : le lien canonique d'un short
+        // est /shorts/<id>, celui d'une vidéo ordinaire /watch?v=<id>.
+        // Contrôlé le 8 novembre 2026 sur les quinze entrées du flux : accord
+        // parfait avec les durées réellement mesurées, 44 à 66 s d'un côté,
+        // 20 à 38 min de l'autre.
+        court: /<link[^>]+href="[^"]*\/shorts\//.test(m[1]),
       }))
       .filter((e) => e.id && titreUtile(e.t));
   } catch {
     return [];
-  }
-}
-
-/** La durée d'une vidéo, en secondes, ou null.
- *
- *  Le flux RSS ne la donne pas, et sans elle un clip peut se retrouver à la
- *  une à la place d'un cours. Elle figure sur la page de visionnage, seul
- *  endroit public où la lire. Contrôlée le 8 novembre 2026 sur quatre vidéos
- *  du catalogue : valeurs identiques, à une seconde près.
- */
-async function dureeYoutube(id: string): Promise<number | null> {
-  try {
-    const resp = await fetch(`https://www.youtube.com/watch?v=${encodeURIComponent(id)}`, {
-      headers: { "User-Agent": "torah-mcp/1.10 (+https://mamash-ia.com)" },
-    });
-    if (!resp.ok) return null;
-    const m = (await resp.text()).match(/"lengthSeconds":"(\d{1,6})"/);
-    return m ? Number(m[1]) : null;
-  } catch {
-    return null;
   }
 }
 
@@ -262,27 +248,29 @@ export async function rafraichirChiourim(env: Env): Promise<{ vus: number; nouve
   for (const e of rss) {
     if (!titreUtile(e.t)) continue;
     const r = await env.STATS_DB
-      .prepare(`INSERT OR IGNORE INTO chiourim (id, titre, publie) VALUES (?, ?, ?)`)
-      .bind(e.id, e.t, e.date)
+      .prepare(`INSERT OR IGNORE INTO chiourim (id, titre, publie, court) VALUES (?, ?, ?, ?)`)
+      .bind(e.id, e.t, e.date, e.court ? 1 : 0)
       .run();
     nouveaux += r.meta.changes || 0;
+    // Le drapeau se rafraîchit à chaque passage : une ligne archivée avant que
+    // la colonne existe le reçoit au premier cron qui la revoit dans le flux.
+    await env.STATS_DB
+      .prepare(`UPDATE chiourim SET court = ?2 WHERE id = ?1 AND (court IS NULL OR court <> ?2)`)
+      .bind(e.id, e.court ? 1 : 0).run();
   }
 
-  // Les durées manquantes, par petits paquets. C'est le cron qui les récolte,
-  // pour que la page n'ait jamais à le faire en pleine requête. Le catalogue
-  // porte déjà les siennes, inutile d'aller les redemander.
+  // Les durées que le catalogue connaît déjà, versées en base. Elles ne
+  // servent qu'à l'affichage « 27 min » : le tri, lui, suit le drapeau du flux.
+  // Aller chercher les autres sur YouTube ne marche pas depuis le Worker, qui
+  // reçoit un 429 et une redirection vers une page de consentement.
   let durees = 0;
   try {
-    const connues = new Set(CATALOGUE.map((v) => v.id));
     const rows: any = await env.STATS_DB
-      .prepare(`SELECT id FROM chiourim WHERE duree IS NULL ORDER BY publie DESC LIMIT 12`)
-      .all();
+      .prepare(`SELECT id FROM chiourim WHERE duree IS NULL`).all();
     for (const row of rows?.results || []) {
-      const d = connues.has(row.id)
-        ? CATALOGUE.find((v) => v.id === row.id)!.d
-        : await dureeYoutube(row.id);
-      if (d === null || d === undefined) continue;
-      await env.STATS_DB.prepare(`UPDATE chiourim SET duree = ?2 WHERE id = ?1`).bind(row.id, d).run();
+      const v = CATALOGUE.find((c) => c.id === row.id);
+      if (!v) continue;
+      await env.STATS_DB.prepare(`UPDATE chiourim SET duree = ?2 WHERE id = ?1`).bind(row.id, v.d).run();
       durees += 1;
     }
   } catch {}
@@ -300,23 +288,22 @@ export async function chiourSemaine(env: Env): Promise<RssEntry | null> {
     for (const r of rows?.results || []) duree.set(r.id, Number(r.duree));
   } catch {}
 
-  // Un clip de deux minutes ne tient pas la vitrine de l'accueil à la place
-  // d'un cours. Une vidéo dont la durée est encore inconnue est écartée plutôt
-  // que risquée : le cron la renseigne dans les heures qui suivent.
-  const cours = rss.find((e) => duree.has(e.id) && !estCourt(duree.get(e.id)));
+  // Un clip d'une minute ne tient pas la vitrine de l'accueil à la place d'un
+  // cours. Le flux dit lui-même lesquels sont des shorts, et pour les vidéos
+  // plus anciennes la durée tranche.
+  const cours = rss.find((e) => !e.court && !estCourt(duree.get(e.id)));
   if (cours) return cours;
   try {
     const row: any = env.STATS_DB
       ? await env.STATS_DB
           .prepare(`SELECT id, titre, publie FROM chiourim
-                    WHERE duree IS NOT NULL AND duree >= ?1 ORDER BY publie DESC LIMIT 1`)
+                    WHERE COALESCE(court, 0) = 0 AND COALESCE(duree, ?1) >= ?1
+                    ORDER BY publie DESC LIMIT 1`)
           .bind(SEUIL_COURS).first()
       : null;
     if (row) return { id: row.id, t: row.titre, date: row.publie };
   } catch {}
-  // Dernier recours, pour ne pas laisser la vitrine vide tant qu'aucune durée
-  // n'est encore enregistrée : la dernière vidéo du flux, comme auparavant.
-  return rss[0] ?? null;
+  return null;
 }
 
 /** Un récent en ligne compacte : miniature réduite + titre, pour la colonne de droite. */
@@ -342,41 +329,28 @@ export async function chiourimPage(env: Env, lang: Lang): Promise<string> {
   const catalogueParId = new Map(CATALOGUE.map((v) => [v.id, v]));
   let archive: RssEntry[] = [];
   const dureeArchive = new Map<string, number>();
+  const courtArchive = new Map<string, boolean>();
   try {
     const rows: any = env.STATS_DB
-      ? await env.STATS_DB.prepare(`SELECT id, titre, publie, duree FROM chiourim ORDER BY publie DESC LIMIT 60`).all()
+      ? await env.STATS_DB.prepare(`SELECT id, titre, publie, duree, court FROM chiourim ORDER BY publie DESC LIMIT 60`).all()
       : null;
     for (const r of rows?.results || []) {
       archive.push({ id: r.id, t: r.titre, date: r.publie });
       if (r.duree != null) dureeArchive.set(r.id, Number(r.duree));
+      if (r.court != null) courtArchive.set(r.id, Number(r.court) === 1);
     }
   } catch {}
   const dureeDe = (id: string): number | undefined =>
     catalogueParId.get(id)?.d ?? dureeArchive.get(id);
 
-  // Les vidéos que le cron n'a pas encore classées : on va chercher leur durée
-  // ici, sans quoi un clip peut tenir la une.
+  // La séparation demandée, décidée dès le tri, avant toute mise en page.
   //
-  // Le plafond était d'abord fixé à trois, et c'était trop peu : la chaîne
-  // publie parfois plusieurs clips d'affilée, et le 8 novembre 2026 les trois
-  // premières entrées du flux faisaient 58, 60 et 49 secondes, si bien que la
-  // quatrième, jamais sondée, montait à la une. Elle durait 66 secondes.
-  //
-  // En régime normal cette boucle ne coûte rien : le cron enregistre les
-  // durées, et tout le flux est déjà connu. Le plafond ne sert qu'au cas froid.
-  let sondes = 0;
-  for (const e of rss) {
-    if (dureeDe(e.id) !== undefined) continue;
-    if (sondes >= 10) break;
-    sondes += 1;
-    const d = await dureeYoutube(e.id);
-    if (d !== null) dureeArchive.set(e.id, d);
-  }
-
-  // La séparation demandée : les clips d'un côté, les cours de l'autre, et
-  // cela dès le tri, avant toute mise en page. Une durée encore inconnue est
-  // tenue pour un cours, afin de ne jamais faire disparaître un vrai chiour.
-  const estClip = (id: string) => estCourt(dureeDe(id));
+  // Trois sources, dans cet ordre : ce que le flux déclare à l'instant, ce que
+  // le cron en a retenu, et la durée pour les vidéos anciennes qu'aucun flux
+  // ne porte plus. Rien n'est demandé à YouTube au passage du lecteur.
+  const courtRss = new Map(rss.map((e) => [e.id, !!e.court]));
+  const estClip = (id: string) =>
+    courtRss.get(id) ?? courtArchive.get(id) ?? estCourt(dureeDe(id));
   const rssCours = rss.filter((e) => !estClip(e.id));
 
   const dernier = rssCours[0];
