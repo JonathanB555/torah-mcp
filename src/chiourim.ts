@@ -113,14 +113,34 @@ const CATALOGUE: Video[] = [
   { id: "mDJNIwcVTYI", d: 1770, g: "moussar", t: "ÂME & CORPS, Mieux se Comprendre 😊" },
   { id: "gozlcciryV0", d: 1138, g: "moussar", t: "Action OU Etude :Que faut il choisir ?" },
   { id: "gILKxa8qNLk", d: 721, g: "emouna", t: "(L'instinct animal) tanya chapitre 1 partie 4" },
-  { id: "qxW5vd_iieM", d: 547, g: "courts", t: "tanya chapitre 1 partie 3 quell est la particularite du tsadik" },
-  { id: "hn5w4WiQTiE", d: 530, g: "courts", t: "tanya chapitre 1 partie 2 \" La definition du Benoni , ce que D.... attend de nous\"" },
-  { id: "tKf6RTVTvz8", d: 497, g: "courts", t: "Cours TANYA, chapitre 1 première partie." },
+  { id: "qxW5vd_iieM", d: 547, g: "emouna", t: "tanya chapitre 1 partie 3 quell est la particularite du tsadik" },
+  { id: "hn5w4WiQTiE", d: 530, g: "emouna", t: "tanya chapitre 1 partie 2 \" La definition du Benoni , ce que D.... attend de nous\"" },
+  { id: "tKf6RTVTvz8", d: 497, g: "emouna", t: "Cours TANYA, chapitre 1 première partie." },
   { id: "vdSMDECuJJc", d: 746, g: "moussar", t: "L'importance de garder une maison pure" },
   { id: "rn65VE19i2o", d: 291, g: "courts", t: "Un Roi Parfait / Hommage aux Victimes d'Hypercacher musique juive" },
 ];
 
-const GROUPES: readonly Groupe[] = ["fetes", "torah", "emouna", "moussar", "courts"];
+/** La frontière entre un clip et un cours, en secondes.
+ *
+ *  Le rav Attal l'a posée nettement : « il y a les shorts d'un côté, il y a
+ *  les cours, les vrais cours, d'un autre côté, faut pas du tout les classer
+ *  de la même manière, ça va rien dire. »
+ *
+ *  Sept minutes et demie, et non dix comme je l'avais d'abord posé. Un seuil à
+ *  dix minutes reproduisait le classement fait à la main, or c'est justement
+ *  lui que le rav conteste : il rangeait dans les formats courts les trois
+ *  premières parties du cours de Tanya, 497, 530 et 547 s, alors que les
+ *  parties suivantes étaient dans Émouna. La série se trouvait coupée en deux.
+ *  À 450 s, le cours de Tanya revient avec les cours, et il ne reste de l'autre
+ *  côté que les clips, dont aucun ne dépasse 415 s.
+ */
+const SEUIL_COURS = 450;
+const estCourt = (d?: number | null): boolean =>
+  typeof d === "number" && d > 0 && d < SEUIL_COURS;
+
+/** Les thèmes du catalogue. « courts » n'en fait plus partie : les clips ont
+ *  leur propre rayon, en bas de page, et ne se mêlent plus aux cours. */
+const GROUPES: readonly Groupe[] = ["fetes", "torah", "emouna", "moussar"];
 
 const T = {
   fr: {
@@ -130,6 +150,8 @@ const T = {
     lead: "Du moussar enraciné dans les textes, une trentaine de minutes chacun. Rien ne se charge depuis YouTube avant votre clic.",
     courtsG: { fetes: "Fêtes", torah: "Textes", emouna: "Émouna", moussar: "Moussar", courts: "Courts" } as Record<Groupe, string>,
     toutVoir: "Tout le catalogue",
+    clipsNote: "Des extraits de quelques minutes. Ils sont rangés à part, les cours gardent leur place au-dessus.",
+    versClips: "Voir les formats courts",
     dernier: "Le dernier chiour",
     nouveaux: "Les plus récents",
     groupes: { fetes: "Les fêtes et le calendrier", torah: "Figures et textes", emouna: "Émouna et pensée juive", moussar: "Moussar et vie intérieure", courts: "Formats courts" } as Record<Groupe, string>,
@@ -148,6 +170,8 @@ const T = {
     lead: "Mussar rooted in the texts, about thirty minutes each : in French. Nothing loads from YouTube until you click.",
     courtsG: { fetes: "Festivals", torah: "Texts", emouna: "Emunah", moussar: "Mussar", courts: "Short" } as Record<Groupe, string>,
     toutVoir: "The whole catalogue",
+    clipsNote: "Clips of a few minutes. They are kept apart, the lessons keep their place above.",
+    versClips: "See the short clips",
     dernier: "The latest shiur",
     nouveaux: "Most recent",
     groupes: { fetes: "Festivals and the calendar", torah: "Figures and texts", emouna: "Emunah and Jewish thought", moussar: "Mussar and inner life", courts: "Short clips" } as Record<Groupe, string>,
@@ -166,6 +190,8 @@ const T = {
     lead: "מוסר מושרש בטקסטים, כחצי שעה כל אחד : בצרפתית. שום דבר לא נטען מיוטיוב לפני הלחיצה.",
     courtsG: { fetes: "חגים", torah: "טקסטים", emouna: "אמונה", moussar: "מוסר", courts: "קצרים" } as Record<Groupe, string>,
     toutVoir: "כל הקטלוג",
+    clipsNote: "קטעים של כמה דקות. הם מסודרים בנפרד, והשיעורים שומרים על מקומם למעלה.",
+    versClips: "לצפייה בקטעים הקצרים",
     dernier: "השיעור האחרון",
     nouveaux: "החדשים ביותר",
     groupes: { fetes: "חגים ולוח השנה", torah: "דמויות וטקסטים", emouna: "אמונה ומחשבה יהודית", moussar: "מוסר ועבודת המידות", courts: "קטעים קצרים" } as Record<Groupe, string>,
@@ -208,8 +234,28 @@ async function fluxRecent(): Promise<RssEntry[]> {
   }
 }
 
-/** Cron du vendredi : verse le RSS dans l'archive D1 (INSERT OR IGNORE). */
-export async function rafraichirChiourim(env: Env): Promise<{ vus: number; nouveaux: number }> {
+/** La durée d'une vidéo, en secondes, ou null.
+ *
+ *  Le flux RSS ne la donne pas, et sans elle un clip peut se retrouver à la
+ *  une à la place d'un cours. Elle figure sur la page de visionnage, seul
+ *  endroit public où la lire. Contrôlée le 8 novembre 2026 sur quatre vidéos
+ *  du catalogue : valeurs identiques, à une seconde près.
+ */
+async function dureeYoutube(id: string): Promise<number | null> {
+  try {
+    const resp = await fetch(`https://www.youtube.com/watch?v=${encodeURIComponent(id)}`, {
+      headers: { "User-Agent": "torah-mcp/1.10 (+https://mamash-ia.com)" },
+    });
+    if (!resp.ok) return null;
+    const m = (await resp.text()).match(/"lengthSeconds":"(\d{1,6})"/);
+    return m ? Number(m[1]) : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Cron : verse le RSS dans l'archive D1, et complète les durées manquantes. */
+export async function rafraichirChiourim(env: Env): Promise<{ vus: number; nouveaux: number; durees?: number }> {
   const rss = await fluxRecent();
   if (!env.STATS_DB || rss.length === 0) return { vus: rss.length, nouveaux: 0 };
   let nouveaux = 0;
@@ -221,21 +267,56 @@ export async function rafraichirChiourim(env: Env): Promise<{ vus: number; nouve
       .run();
     nouveaux += r.meta.changes || 0;
   }
-  return { vus: rss.length, nouveaux };
+
+  // Les durées manquantes, par petits paquets. C'est le cron qui les récolte,
+  // pour que la page n'ait jamais à le faire en pleine requête. Le catalogue
+  // porte déjà les siennes, inutile d'aller les redemander.
+  let durees = 0;
+  try {
+    const connues = new Set(CATALOGUE.map((v) => v.id));
+    const rows: any = await env.STATS_DB
+      .prepare(`SELECT id FROM chiourim WHERE duree IS NULL ORDER BY publie DESC LIMIT 12`)
+      .all();
+    for (const row of rows?.results || []) {
+      const d = connues.has(row.id)
+        ? CATALOGUE.find((v) => v.id === row.id)!.d
+        : await dureeYoutube(row.id);
+      if (d === null || d === undefined) continue;
+      await env.STATS_DB.prepare(`UPDATE chiourim SET duree = ?2 WHERE id = ?1`).bind(row.id, d).run();
+      durees += 1;
+    }
+  } catch {}
+  return { vus: rss.length, nouveaux, durees };
 }
 
 /** Le chiour de la semaine, pour la vignette de l'accueil (RSS, repli D1). */
 export async function chiourSemaine(env: Env): Promise<RssEntry | null> {
   const rss = await fluxRecent();
-  if (rss[0]) return rss[0];
+  const duree = new Map<string, number>(CATALOGUE.map((v) => [v.id, v.d]));
+  try {
+    const rows: any = env.STATS_DB
+      ? await env.STATS_DB.prepare(`SELECT id, duree FROM chiourim WHERE duree IS NOT NULL`).all()
+      : null;
+    for (const r of rows?.results || []) duree.set(r.id, Number(r.duree));
+  } catch {}
+
+  // Un clip de deux minutes ne tient pas la vitrine de l'accueil à la place
+  // d'un cours. Une vidéo dont la durée est encore inconnue est écartée plutôt
+  // que risquée : le cron la renseigne dans les heures qui suivent.
+  const cours = rss.find((e) => duree.has(e.id) && !estCourt(duree.get(e.id)));
+  if (cours) return cours;
   try {
     const row: any = env.STATS_DB
-      ? await env.STATS_DB.prepare(`SELECT id, titre, publie FROM chiourim ORDER BY publie DESC LIMIT 1`).first()
+      ? await env.STATS_DB
+          .prepare(`SELECT id, titre, publie FROM chiourim
+                    WHERE duree IS NOT NULL AND duree >= ?1 ORDER BY publie DESC LIMIT 1`)
+          .bind(SEUIL_COURS).first()
       : null;
-    return row ? { id: row.id, t: row.titre, date: row.publie } : null;
-  } catch {
-    return null;
-  }
+    if (row) return { id: row.id, t: row.titre, date: row.publie };
+  } catch {}
+  // Dernier recours, pour ne pas laisser la vitrine vide tant qu'aucune durée
+  // n'est encore enregistrée : la dernière vidéo du flux, comme auparavant.
+  return rss[0] ?? null;
 }
 
 /** Un récent en ligne compacte : miniature réduite + titre, pour la colonne de droite. */
@@ -258,23 +339,61 @@ function carte(v: { id: string; t: string; d?: number }, s: (typeof T)[Lang], gr
 export async function chiourimPage(env: Env, lang: Lang): Promise<string> {
   const s = T[lang];
   const rss = await fluxRecent();
-  const dernier = rss[0];
   const catalogueParId = new Map(CATALOGUE.map((v) => [v.id, v]));
   let archive: RssEntry[] = [];
+  const dureeArchive = new Map<string, number>();
   try {
     const rows: any = env.STATS_DB
-      ? await env.STATS_DB.prepare(`SELECT id, titre, publie FROM chiourim ORDER BY publie DESC LIMIT 60`).all()
+      ? await env.STATS_DB.prepare(`SELECT id, titre, publie, duree FROM chiourim ORDER BY publie DESC LIMIT 60`).all()
       : null;
-    archive = (rows?.results || []).map((r: any) => ({ id: r.id, t: r.titre, date: r.publie }));
+    for (const r of rows?.results || []) {
+      archive.push({ id: r.id, t: r.titre, date: r.publie });
+      if (r.duree != null) dureeArchive.set(r.id, Number(r.duree));
+    }
   } catch {}
+  const dureeDe = (id: string): number | undefined =>
+    catalogueParId.get(id)?.d ?? dureeArchive.get(id);
+
+  // Les vidéos que le cron n'a pas encore classées : on va chercher leur durée
+  // ici, sans quoi un clip peut tenir la une.
+  //
+  // Le plafond était d'abord fixé à trois, et c'était trop peu : la chaîne
+  // publie parfois plusieurs clips d'affilée, et le 8 novembre 2026 les trois
+  // premières entrées du flux faisaient 58, 60 et 49 secondes, si bien que la
+  // quatrième, jamais sondée, montait à la une. Elle durait 66 secondes.
+  //
+  // En régime normal cette boucle ne coûte rien : le cron enregistre les
+  // durées, et tout le flux est déjà connu. Le plafond ne sert qu'au cas froid.
+  let sondes = 0;
+  for (const e of rss) {
+    if (dureeDe(e.id) !== undefined) continue;
+    if (sondes >= 10) break;
+    sondes += 1;
+    const d = await dureeYoutube(e.id);
+    if (d !== null) dureeArchive.set(e.id, d);
+  }
+
+  // La séparation demandée : les clips d'un côté, les cours de l'autre, et
+  // cela dès le tri, avant toute mise en page. Une durée encore inconnue est
+  // tenue pour un cours, afin de ne jamais faire disparaître un vrai chiour.
+  const estClip = (id: string) => estCourt(dureeDe(id));
+  const rssCours = rss.filter((e) => !estClip(e.id));
+
+  const dernier = rssCours[0];
   const rssIds = new Set(rss.map((e) => e.id));
-  const horsRss = archive.filter((e) => !rssIds.has(e.id) && !catalogueParId.has(e.id) && titreUtile(e.t));
-  const recents = [...rss.slice(1), ...horsRss].slice(0, 12);
+  const horsRss = archive.filter(
+    (e) => !rssIds.has(e.id) && !catalogueParId.has(e.id) && titreUtile(e.t) && !estClip(e.id),
+  );
+  const recents = [...rssCours.slice(1), ...horsRss].slice(0, 12);
   const dejaMontres = new Set([dernier?.id, ...recents.map((e) => e.id)].filter(Boolean) as string[]);
-  const dureeDe = (id: string) => catalogueParId.get(id)?.d;
 
   const parGroupe = GROUPES.map((g) => ({ g, vids: CATALOGUE.filter((v) => v.g === g && !dejaMontres.has(v.id)) })).filter((x) => x.vids.length);
-  const total = parGroupe.reduce((n, x) => n + x.vids.length, 0) + (dernier ? 1 : 0) + recents.length;
+
+  // Le rayon des clips : ceux du catalogue, plus ceux qui passent dans le flux.
+  const clips = [
+    ...rss.filter((e) => estClip(e.id)).map((e) => ({ id: e.id, t: e.t, d: dureeDe(e.id) })),
+    ...CATALOGUE.filter((v) => v.g === "courts").map((v) => ({ id: v.id, t: v.t, d: v.d })),
+  ].filter((v, i, a) => a.findIndex((x) => x.id === v.id) === i);
 
   const sections = parGroupe
     .map(({ g, vids }) => `<section class="grp" id="g-${g}"><div class="ghead"><span class="glab">${s.groupes[g]}</span><span class="grule"></span><span class="gn">${vids.length}</span></div>
@@ -285,7 +404,18 @@ export async function chiourimPage(env: Env, lang: Lang): Promise<string> {
   // pastille descend à sa section.
   const barre = `<nav class="themes" aria-label="${esc(s.toutVoir)}">
     ${parGroupe.map(({ g, vids }) => `<a href="#g-${g}"><b>${s.courtsG[g]}</b><span>${vids.length}</span></a>`).join("\n    ")}
-  </nav>`;
+  </nav>
+  ${clips.length ? `<p class="versclips"><a href="#clips">${esc(s.versClips)} (${clips.length})</a></p>` : ""}`;
+
+  // Le rayon des clips, en bas, hors de la barre de thèmes et hors du compte
+  // des cours. Vignettes réduites : un clip de deux minutes ne doit pas peser
+  // à l'écran autant qu'un chiour d'une demi-heure.
+  const rayonClips = clips.length
+    ? `<section class="grp clips" id="clips">
+    <div class="ghead"><span class="glab">${s.groupes.courts}</span><span class="grule"></span><span class="gn">${clips.length}</span></div>
+    <p class="clipsnote">${esc(s.clipsNote)}</p>
+    <div class="grid">${clips.map((v) => carte(v, s)).join("\n")}</div></section>`
+    : "";
 
   return `<!doctype html>
 <html ${htmlAttrs(lang)}>
@@ -376,6 +506,15 @@ ${altLinks(lang, "/chiourim")}
   .v figcaption { padding:.55rem .1rem 0; display:flex; gap:.8rem; align-items:baseline; }
   .v .vt { font-size:.95rem; line-height:1.45; flex:1; min-width:0; overflow-wrap:anywhere; }
   .v .vd { font-size:.78rem; letter-spacing:.1em; opacity:.55; white-space:nowrap; font-variant-numeric:tabular-nums; }
+  /* ---- le rayon des clips : à part, et qui se voit ---- */
+  .versclips { margin:.5rem 0 0; font-size:.86rem; }
+  .versclips a { color:var(--muted); text-decoration:none; border-bottom:1px solid var(--ink-15); }
+  .versclips a:hover { color:var(--ink); border-bottom-color:var(--pop); }
+  .clips { margin-top:3.4rem; border-top:3px solid var(--pop); padding-top:1.5rem; }
+  .clips .clipsnote { margin:-.2rem 0 1.1rem; font-size:.88rem; color:var(--muted); max-width:46ch; }
+  .clips .grid { grid-template-columns:repeat(auto-fill, minmax(168px, 1fr)); }
+  .clips .vt { font-size:.9rem; }
+
   /* ---- la barre de thèmes : l'ampleur du catalogue, visible d'emblée ---- */
   .themes { display:flex; flex-wrap:wrap; gap:.5rem; margin:.85rem 0 .1rem; }
   .themes a { display:flex; align-items:baseline; gap:.45rem; text-decoration:none; color:var(--ink);
@@ -439,6 +578,7 @@ ${altLinks(lang, "/chiourim")}
   <div class="grid">${recents.slice(5).map((e) => carte({ id: e.id, t: e.t, d: dureeDe(e.id) }, s)).join("\n")}</div></section>` : ""}
 
   ${sections}
+  ${rayonClips}
 
   <p class="chaine"><a href="${CHANNEL_URL}" target="_blank" rel="noopener">${s.chaine}</a></p>
   <p class="srcnote">${s.note} <a href="${href(lang, "/privacy")}">${s.notePrivacy}</a>.</p>
